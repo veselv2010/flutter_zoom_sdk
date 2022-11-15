@@ -14,12 +14,12 @@ class ZoomView extends ZoomPlatform {
   Future<List> initZoom(ZoomOptions options) async {
     var optionMap = <String, String?>{};
 
-    // if (options.appKey != null) {
-    //   optionMap.putIfAbsent("appKey", () => options.appKey!);
-    // }
-    // if (options.appSecret != null) {
-    //   optionMap.putIfAbsent("appSecret", () => options.appSecret!);
-    // }
+    if (options.appKey != null) {
+      optionMap.putIfAbsent("appKey", () => options.appKey!);
+    }
+    if (options.appSecret != null) {
+      optionMap.putIfAbsent("appSecret", () => options.appSecret!);
+    }
 
     optionMap.putIfAbsent("domain", () => options.domain);
     return await channel
