@@ -130,12 +130,13 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         meetingPasswordController.text.isNotEmpty) {
       ZoomOptions zoomOptions = ZoomOptions(
         domain: "zoom.us",
-        appKey: "XKE4uWfeLwWEmh78YMbC6mqKcF8oM4YHTr9I", //API KEY FROM ZOOM
+        appKey: "6zTxpQsHajwBjVEMjjnmZS5MdlFe6OoVaM3H", //API KEY FROM ZOOM
         appSecret:
-            "bT7N61pQzaLXU6VLj9TVl7eYuLbqAiB0KAdb", //API SECRET FROM ZOOM
+            "iBF8Y5GFWquxloHjD8uhEXNTSo0vNOKCFfTY", //API SECRET FROM ZOOM
       );
       var meetingOptions = ZoomMeetingOptions(
           userId: 'username',
+          sdkKey: "6zTxpQsHajwBjVEMjjnmZS5MdlFe6OoVaM3H",
 
           /// pass username for join meeting only --- Any name eg:- EVILRATT.
           meetingId: meetingIdController.text,
@@ -171,7 +172,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
           if (kDebugMode) {
             print("listen on event channel");
           }
-          zoom.joinMeeting(meetingOptions).then((joinMeetingResult) {
+          zoom.joinMeeting(meetingOptions, true).then((joinMeetingResult) {
             timer = Timer.periodic(const Duration(seconds: 2), (timer) {
               zoom.meetingStatus(meetingOptions.meetingId!).then((status) {
                 if (kDebugMode) {

@@ -76,3 +76,8 @@
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 .vscode/
+android/libs/
+android/commonlib/
+android/mobilertc/
+example/android/commonlib/
+example/android/mobilertc/

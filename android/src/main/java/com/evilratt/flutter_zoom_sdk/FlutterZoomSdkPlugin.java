@@ -214,10 +214,10 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
       }
     };
 
-    if(!zoomSDK.isLoggedIn()){
-      zoomSDK.loginWithZoom(options.get("userId"), options.get("userPassword"));
-      zoomSDK.addAuthenticationListener(authenticationListener);
-    }
+//    if(!zoomSDK.isLoggedIn()){
+//      zoomSDK.loginWithZoom(options.get("userId"), options.get("userPassword"));
+//      zoomSDK.addAuthenticationListener(authenticationListener);
+//    }
 
     if(zoomSDK.isLoggedIn()){
       startMeeting(methodCall);
@@ -348,10 +348,10 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
       }
     };
 
-    if(!zoomSDK.isLoggedIn()){
-      zoomSDK.loginWithZoom(options.get("userId"), options.get("userPassword"));
-      zoomSDK.addAuthenticationListener(authenticationListener);
-    }
+//    if(!zoomSDK.isLoggedIn()){
+//      zoomSDK.loginWithZoom(options.get("userId"), options.get("userPassword"));
+//      zoomSDK.addAuthenticationListener(authenticationListener);
+//    }
   }
 
   // Meeting ID passed Start Meeting Function called on startMeetingNormal triggered via startMeetingNormal function

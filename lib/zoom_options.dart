@@ -5,6 +5,9 @@ class ZoomOptions {
   final String? leaveUrl;
   final String? helper;
   final String? domain;
+  final String? appKey;
+  final String? appSecret;
+  final bool? debug;
   final String? language; //--for web
   final bool? showMeetingHeader; //--for web
   final bool? disableInvite; //--for web
@@ -36,6 +39,9 @@ class ZoomOptions {
   const ZoomOptions({
     required this.domain,
     this.leaveUrl,
+    this.debug,
+    this.appKey,
+    this.appSecret,
     this.helper,
     this.language = "en-US",
     this.showMeetingHeader = true,
@@ -125,10 +131,10 @@ class ZoomMeetingOptions {
   String? zoomAccessToken;
 
   /// Zoom access token for SDK
-  String? jwtAPIKey;
+  String? sdkKey;
 
   /// JWT API KEY For Web Only
-  String? jwtSignature;
+  String? signature;
 
   /// JWT API Signature For Web Only
 
@@ -148,8 +154,8 @@ class ZoomMeetingOptions {
     this.noAudio,
     this.zoomToken,
     this.zoomAccessToken,
-    this.jwtAPIKey,
-    this.jwtSignature,
+    this.sdkKey,
+    this.signature,
   });
 }
 

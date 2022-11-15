@@ -35,6 +35,8 @@ class ZoomViewWeb extends ZoomPlatform {
     ZoomMtg.preLoadWasm();
     ZoomMtg.prepareWebSDK();
     ZoomMtg.init(InitParams(
+        debug: options.debug ?? kDebugMode,
+        helper: options.helper,
         leaveUrl: options.leaveUrl ?? "/index.html",
         showMeetingHeader: options.showMeetingHeader,
         disableInvite: options.disableInvite,
@@ -73,8 +75,7 @@ class ZoomViewWeb extends ZoomPlatform {
 
   String generateSignature(
       String sdkKey, String sdkSecret, String meetingNumber, int role) {
-    final iat =
-        ((DateTime.now().millisecondsSinceEpoch - 30000) / 1000).truncate();
+    final iat = (DateTime.now().millisecondsSinceEpoch - 30000) ~/ 1000;
     final exp = iat + 60 * 60 * 2;
 
     final oHeader = {'alg': 'HS256', 'typ': 'JWT'};
@@ -87,6 +88,11 @@ class ZoomViewWeb extends ZoomPlatform {
       'appKey': sdkKey,
       'tokenExp': exp
     };
+    if (kDebugMode) {
+      print(oPayload.entries
+          .map((entry) => '${entry.key}: ${entry.value.toString()}')
+          .join('\n'));
+    }
     final oHeader64 = base64Encode(utf8.encode(jsonEncode(oHeader)));
     final oPayload64 = base64Encode(utf8.encode(jsonEncode(oPayload)));
 
@@ -94,7 +100,7 @@ class ZoomViewWeb extends ZoomPlatform {
     final hmac = Hmac(sha256, utf8.encode(sdkSecret)).convert(bytes);
     final signature = '$oHeader64.$oPayload64.${base64Encode(hmac.bytes)}';
 
-    return signature.replaceAll(RegExp("="), "");
+    return signature.replaceAll(RegExp('='), '').replaceAll('+/', '-_');
   }
 
   ButtonElement? _getCloseButton() {
@@ -134,9 +140,9 @@ class ZoomViewWeb extends ZoomPlatform {
     final Completer<List> completer = Completer();
     ZoomMtg.join(JoinParams(
         meetingNumber: options.meetingId,
-        userName: options.displayName ?? options.userId,
-        signature: options.jwtSignature!,
-        sdkKey: options.jwtAPIKey!,
+        userName: options.displayName ?? options.userId ?? 'user',
+        signature: options.signature!,
+        sdkKey: options.sdkKey!,
         passWord: options.meetingPassword,
         success: allowInterop((var res) {
           completer.complete(["MEETING STATUS", "SUCCESS"]);
@@ -156,16 +162,18 @@ class ZoomViewWeb extends ZoomPlatform {
       JoinParams(
         meetingNumber: options.meetingId,
         userName: options.displayName ?? options.userId,
-        signature: options.jwtSignature!,
-        sdkKey: options.jwtAPIKey!,
+        signature: options.signature!,
+        sdkKey: options.sdkKey!,
         passWord: options.meetingPassword,
         success: allowInterop((var res) {
-          int counter = 0;
-          Future.doWhile(() async {
-            await Future.delayed(const Duration(seconds: 1), _joinAudioAuto);
-            counter++;
-            return counter < 15;
-          });
+          if (autoAudioJoin) {
+            int counter = 0;
+            Future.doWhile(() async {
+              await Future.delayed(const Duration(seconds: 1), _joinAudioAuto);
+              counter++;
+              return counter < 15;
+            });
+          }
           return;
         }),
         // error: allowInterop(
