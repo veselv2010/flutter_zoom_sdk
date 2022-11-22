@@ -333,9 +333,9 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
     params.password = options.get("meetingPassword");
 
     meetingService.joinMeetingWithParams(context, params, opts);
-    zoomSDK.getInMeetingService().addListener(new InMeetingServiceListener() {
-
-    });
+//    zoomSDK.getInMeetingService().addListener(new InMeetingServiceListener() {
+//
+//    });
     result.success(true);
   }
 
