@@ -45,11 +45,15 @@ abstract class ZoomPlatform extends PlatformInterface {
   }
 
   /// Flutter Zoom SDK Get Meeting ID & Passcode after Starting Meeting function
-  Future<List> meetinDetails() async {
+  Future<List> meetingDetails() async {
     throw UnimplementedError('meetingDetails() has not been implemented.');
   }
 
   Future<bool> leaveMeeting() async {
     throw UnimplementedError('leaveMeeting() has not been implemented.');
+  }
+
+  Future<bool> openZoomActivity() async {
+    throw UnimplementedError('openZoomActivity() has not been implemented.');
   }
 }

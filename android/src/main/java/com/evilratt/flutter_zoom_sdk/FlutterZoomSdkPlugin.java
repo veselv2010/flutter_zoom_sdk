@@ -99,6 +99,9 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
       case "logout":
         logout();
         break;
+      case "leave_meeting":
+        leaveMeeting();
+        break;
       case "join":
         joinMeeting(methodCall, result);
         break;
@@ -110,6 +113,9 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
         break;
       case "meeting_details":
         meetingDetails(result);
+        break;
+      case "open_zoom_activity":
+        openZoomActivity(methodCall, result);
         break;
       default:
         result.notImplemented();
@@ -301,10 +307,8 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
 
   // Join Meeting with passed Meeting ID and Passcode
   private void joinMeeting(MethodCall methodCall, Result result) {
-
-    Map<String, String> options = methodCall.arguments();
-
     ZoomSDK zoomSDK = getInitializedZoomInstance();
+    Map<String, String> options = methodCall.arguments();
 
     if (zoomSDK == null) {
       result.success(false);
@@ -507,11 +511,24 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
     MeetingStatus status = meetingService.getMeetingStatus();
     result.success(status != null ? Arrays.asList(status.name(), "")
         : Arrays.asList("MEETING_STATUS_UNKNOWN", "No status available"));
+
+    if(status == MeetingStatus.MEETING_STATUS_INMEETING) {
+      InMeetingAudioController controller = ZoomSDK.getInstance().getInMeetingService().getInMeetingAudioController();
+
+      if (!controller.isAudioConnected()){
+        controller.connectAudioWithVoIP();
+      }
+    }
   }
 
   public void logout() {
     ZoomSDK zoomSDK = ZoomSDK.getInstance();
     zoomSDK.logoutZoom();
+  }
+
+  public void leaveMeeting() {
+    ZoomSDK zoomSDK = ZoomSDK.getInstance();
+    zoomSDK.getInMeetingService().leaveCurrentMeeting(true);
   }
 
   @Nullable
@@ -535,5 +552,14 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
   @Override
   public void onDetachedFromActivity() {
     this.activity = null;
+  }
+
+  private void openZoomActivity(MethodCall methodCall, Result result) {
+    Intent myIntent = new Intent(activity,MyMeetingActivity.class);
+    myIntent.putExtra("isClose",false);
+
+    activity.startActivity(myIntent);
+
+    result.success(true);
   }
 }

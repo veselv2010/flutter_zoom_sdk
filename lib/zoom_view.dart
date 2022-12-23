@@ -108,9 +108,23 @@ class ZoomView extends ZoomPlatform {
 
   /// The event channel used to interact with the native platform meetinDetails(iOS & Android) function
   @override
-  Future<List> meetinDetails() async {
+  Future<List> meetingDetails() async {
     return await channel
         .invokeMethod<List>('meeting_details')
         .then<List>((List? value) => value ?? List.empty());
+  }
+
+  /// The event channel used to interact with the native platform openZoomActivity(iOS & Android) function
+  @override
+  Future<bool> openZoomActivity() async {
+    return await channel
+        .invokeMethod<bool>('open_zoom_activity')
+        .then<bool>((bool? value) => value ?? false);
+  }
+
+  Future<bool> leaveMeeting() async {
+    return await channel
+        .invokeMethod<bool>('leave_meeting')
+        .then<bool>((bool? value) => value ?? false);
   }
 }

@@ -1,4 +1,4 @@
-//include ':commonlib'
-//include ':mobilertc'
+include ':commonlib'
+include ':mobilertc'
 
 rootProject.name = 'flutter_zoom_sdk'
