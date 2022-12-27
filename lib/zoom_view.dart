@@ -122,6 +122,13 @@ class ZoomView extends ZoomPlatform {
         .then<bool>((bool? value) => value ?? false);
   }
 
+  /// The event channel used to interact with the native platform putToBgZoomActivity(iOS & Android) function
+  Future<bool> putToBgZoomActivity() async {
+    return await channel
+        .invokeMethod<bool>('put_to_bg_zoom_activity')
+        .then<bool>((bool? value) => value ?? false);
+  }
+
   Future<bool> leaveMeeting() async {
     return await channel
         .invokeMethod<bool>('leave_meeting')

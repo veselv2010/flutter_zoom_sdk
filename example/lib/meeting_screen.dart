@@ -183,7 +183,8 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         appSecret: sdkSecret, //API SECRET FROM ZOOM
       );
       var meetingOptions = ZoomMeetingOptions(
-        userId: 'username',
+        userId: 'userId',
+        displayName: 'userName',
         sdkKey: sdkKey,
 
         /// pass username for join meeting only --- Any name eg:- EVILRATT.

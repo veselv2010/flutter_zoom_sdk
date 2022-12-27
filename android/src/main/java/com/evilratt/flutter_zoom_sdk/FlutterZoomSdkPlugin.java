@@ -117,6 +117,9 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
       case "open_zoom_activity":
         openZoomActivity(methodCall, result);
         break;
+      case "put_to_bg_zoom_activity":
+        putToBgZoomActivity(methodCall, result);
+        break;
       default:
         result.notImplemented();
     }
@@ -332,7 +335,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
 
     JoinMeetingParams params = new JoinMeetingParams();
 
-    params.displayName = options.get("userId");
+    params.displayName = options.get("displayName");
     params.meetingNo = options.get("meetingId");
     params.password = options.get("meetingPassword");
 
@@ -555,10 +558,19 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
   }
 
   private void openZoomActivity(MethodCall methodCall, Result result) {
-    Intent myIntent = new Intent(activity,MyMeetingActivity.class);
-    myIntent.putExtra("isClose",false);
+    Intent myIntent = new Intent(activity, MyMeetingActivity.class);
+    myIntent.putExtra("isClose", false);
 
     activity.startActivity(myIntent);
+
+    result.success(true);
+  }
+
+  private void putToBgZoomActivity(MethodCall methodCall, Result result) {
+    Intent myIntent = new Intent("my_meeting_activity_broadcast");
+    myIntent.putExtra("broadcast", "finishMyMeetingActivity");
+
+    activity.sendBroadcast(myIntent);
 
     result.success(true);
   }

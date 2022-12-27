@@ -73,6 +73,7 @@ class ZoomViewWeb extends ZoomPlatform {
     return completer.future;
   }
 
+  @override
   String generateSignature(
       String sdkKey, String sdkSecret, String meetingNumber, int role) {
     final iat = (DateTime.now().millisecondsSinceEpoch - 30000) ~/ 1000;

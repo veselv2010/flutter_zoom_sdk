@@ -86,57 +86,56 @@ class ZoomOptions {
 
 /// Basic Zoom Meeting Options required for plugin (WEB, iOS, Android)
 class ZoomMeetingOptions {
+  /// Username For Join Meeting & Host Email For Start Meeting
   String? userId;
 
-  /// Username For Join Meeting & Host Email For Start Meeting
+  /// Host Password For Start Meeting
   String? userPassword;
 
-  /// Host Password For Start Meeting
+  /// Display Name
   String? displayName;
 
-  /// Display Name
+  /// Personal meeting id for start meeting required
   String? meetingId;
 
-  /// Personal meeting id for start meeting required
+  /// Personal meeting passcode for start meeting required
   String? meetingPassword;
 
-  /// Personal meeting passcode for start meeting required
+  /// Disable Dial In Mode
   String? disableDialIn;
 
-  /// Disable Dial In Mode
+  /// Disable Drive In Mode
   String? disableDrive;
 
-  /// Disable Drive In Mode
+  /// Disable Invite Mode
   String? disableInvite;
 
-  /// Disable Invite Mode
+  /// Disable Share Mode
   String? disableShare;
 
-  /// Disable Share Mode
+  /// Disable Title Bar Mode
   String? disableTitlebar;
 
-  /// Disable Title Bar Mode
+  /// No Disconnect Audio Mode
   String? noDisconnectAudio;
 
-  /// No Disconnect Audio Mode
+  /// View option to disable zoom icon for Learning system
   String? viewOptions;
 
-  /// View option to disable zoom icon for Learning system
+  /// Disable No Audio
   String? noAudio;
 
-  /// Disable No Audio
+  /// Zoom token for SDK
   String? zoomToken;
 
-  /// Zoom token for SDK
+  /// Zoom access token for SDK
   String? zoomAccessToken;
 
-  /// Zoom access token for SDK
+  /// JWT API KEY For Web Only
   String? sdkKey;
 
-  /// JWT API KEY For Web Only
-  String? signature;
-
   /// JWT API Signature For Web Only
+  String? signature;
 
   ZoomMeetingOptions({
     this.userId,
