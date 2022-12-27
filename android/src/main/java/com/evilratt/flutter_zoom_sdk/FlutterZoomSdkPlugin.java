@@ -1,8 +1,10 @@
 package com.evilratt.flutter_zoom_sdk;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
