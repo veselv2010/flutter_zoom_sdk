@@ -52,7 +52,7 @@ import us.zoom.sdk.ZoomSDKInitializeListener;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 /** FlutterZoomPlugin */
-public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware {
+public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware {
   Activity activity;
   Activity zoomActivity;
   private Result pendingResult;
@@ -61,6 +61,8 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
   private Context context;
   private EventChannel meetingStatusChannel;
   private InMeetingService inMeetingService;
+
+    private static final int RECORD_AUDIO_PERMISSION_CODE = 100;
 
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
@@ -516,11 +518,7 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
         : Arrays.asList("MEETING_STATUS_UNKNOWN", "No status available"));
 
     if(status == MeetingStatus.MEETING_STATUS_INMEETING) {
-      InMeetingAudioController controller = ZoomSDK.getInstance().getInMeetingService().getInMeetingAudioController();
-
-      if (!controller.isAudioConnected()){
-        controller.connectAudioWithVoIP();
-      }
+       checkAudioPermission();
     }
   }
 
@@ -573,5 +571,36 @@ public class FlutterZoomSdkPlugin implements FlutterPlugin, MethodChannel.Method
     activity.sendBroadcast(myIntent);
 
     result.success(true);
+  }
+
+  public void connectAudioInMeeting() {
+    InMeetingAudioController controller = ZoomSDK.getInstance().getInMeetingService().getInMeetingAudioController();
+
+    if (!controller.isAudioConnected()){
+      controller.connectAudioWithVoIP();
+    }
+  }
+
+  public void checkAudioPermission() {
+    String permission = Manifest.permission.RECORD_AUDIO;
+    int checkResult = activity.checkSelfPermission(permission);
+
+    if (checkResult == PackageManager.PERMISSION_DENIED) {
+      activity.requestPermissions(new String[] {permission}, RECORD_AUDIO_PERMISSION_CODE);
+    } else if (checkResult == PackageManager.PERMISSION_GRANTED){
+      connectAudioInMeeting();
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+  {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    if (requestCode == RECORD_AUDIO_PERMISSION_CODE) {
+      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        connectAudioInMeeting();
+      }
+    }
   }
 }
