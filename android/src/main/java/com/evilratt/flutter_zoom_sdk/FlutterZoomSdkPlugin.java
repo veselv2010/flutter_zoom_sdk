@@ -64,7 +64,9 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
   private EventChannel meetingStatusChannel;
   private InMeetingService inMeetingService;
 
-    private static final int RECORD_AUDIO_PERMISSION_CODE = 100;
+  private static final int RECORD_AUDIO_PERMISSION_CODE = 100;
+
+  private String returnBtnMsg;
 
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
@@ -210,6 +212,8 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
     initParams.appSecret = options.get("appSecret");
     initParams.domain = options.get("domain");
     initParams.enableLog = true;
+
+    returnBtnMsg = options.get("returnBtnMsg");
 
     final InMeetingNotificationHandle handle = (context, intent) -> {
       intent = new Intent(context, FlutterZoomSdkPlugin.class);
@@ -560,6 +564,7 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
   private void openZoomActivity(MethodCall methodCall, Result result) {
     Intent myIntent = new Intent(activity, MyMeetingActivity.class);
     myIntent.putExtra("isClose", false);
+    myIntent.putExtra("returnBtnMsg", returnBtnMsg.toString());
 
     activity.startActivity(myIntent);
 

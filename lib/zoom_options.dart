@@ -35,6 +35,7 @@ class ZoomOptions {
   final bool? disableVOIP; //--for web
   final bool? disableReport; //--for web
   final List<String>? meetingInfo; //--for web
+  final String? returnBtnMsg; //--for android
 
   const ZoomOptions({
     required this.domain,
@@ -81,6 +82,7 @@ class ZoomOptions {
       'enctype',
       'report'
     ],
+    this.returnBtnMsg,
   });
 }
 

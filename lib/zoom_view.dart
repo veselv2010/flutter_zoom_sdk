@@ -20,6 +20,9 @@ class ZoomView extends ZoomPlatform {
     if (options.appSecret != null) {
       optionMap.putIfAbsent("appSecret", () => options.appSecret!);
     }
+    if (options.returnBtnMsg != null) {
+      optionMap.putIfAbsent("returnBtnMsg", () => options.returnBtnMsg!);
+    }
 
     optionMap.putIfAbsent("domain", () => options.domain);
     return await channel
