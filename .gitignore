@@ -77,7 +77,7 @@
 
 .vscode/
 android/libs/
-android/commonlib/
-android/mobilertc/
-example/android/commonlib/
-example/android/mobilertc/
+android/commonlib/build
+android/commonlib/commonlib.aar
+android/mobilertc/build
+android/mobilertc/mobilertc.aar
