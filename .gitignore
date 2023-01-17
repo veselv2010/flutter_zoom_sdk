@@ -79,3 +79,4 @@
 android/libs/
 android/commonlib/build
 android/mobilertc/build
+android/mobilertc/mobilertc.aar
