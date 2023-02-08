@@ -188,10 +188,10 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         sdkKey: sdkKey,
 
         /// pass username for join meeting only --- Any name eg:- EVILRATT.
-        meetingId: '',
+        meetingId: meetingIdController.text,
 
         /// pass meeting id for join meeting only
-        meetingPassword: '',
+        meetingPassword: meetingPasswordController.text,
 
         /// pass meeting password for join meeting only
         disableDialIn: 'true',
