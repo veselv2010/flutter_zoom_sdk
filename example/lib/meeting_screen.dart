@@ -19,8 +19,8 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   late final ZoomView zoom;
   late Timer timer;
 
-  static const String sdkKey = '';
-  static const String sdkSecret = '';
+  static const String sdkKey = 'YsfM9h1qciOPpigVHeG5eiFn3bHJmsYxMn7G';
+  static const String sdkSecret = 'XHNfOZmKo14TAtPiajtu26zjiYBJGIMXph0c';
 
   @override
   void initState() {
@@ -188,10 +188,10 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         sdkKey: sdkKey,
 
         /// pass username for join meeting only --- Any name eg:- EVILRATT.
-        meetingId: meetingIdController.text,
+        meetingId: '557 175 3000',
 
         /// pass meeting id for join meeting only
-        meetingPassword: meetingPasswordController.text,
+        meetingPassword: 'ELr7gV',
 
         /// pass meeting password for join meeting only
         disableDialIn: 'true',
@@ -203,9 +203,10 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         noAudio: 'false',
         noDisconnectAudio: 'false',
       );
-
+      
       var zoom = ZoomView();
       zoom.initZoom(zoomOptions).then((results) {
+        print(results.toString());
         if (results[0] == 0) {
           zoom.onMeetingStatus().listen((status) {
             if (kDebugMode) {
