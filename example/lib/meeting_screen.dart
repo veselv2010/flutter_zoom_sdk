@@ -19,8 +19,8 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   late final ZoomView zoom;
   late Timer timer;
 
-  static const String sdkKey = 'YsfM9h1qciOPpigVHeG5eiFn3bHJmsYxMn7G';
-  static const String sdkSecret = 'XHNfOZmKo14TAtPiajtu26zjiYBJGIMXph0c';
+  static const String sdkKey = '';
+  static const String sdkSecret = '';
 
   @override
   void initState() {
@@ -188,10 +188,10 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         sdkKey: sdkKey,
 
         /// pass username for join meeting only --- Any name eg:- EVILRATT.
-        meetingId: '557 175 3000',
+        meetingId: '',
 
         /// pass meeting id for join meeting only
-        meetingPassword: 'ELr7gV',
+        meetingPassword: '',
 
         /// pass meeting password for join meeting only
         disableDialIn: 'true',
