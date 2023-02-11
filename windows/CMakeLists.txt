@@ -16,19 +16,15 @@ set(PLUGIN_NAME "${PROJECT_NAME}_plugin")
 list(APPEND PLUGIN_SOURCES
   "flutter_zoom_sdk_plugin.cpp"
   "flutter_zoom_sdk_plugin.h"
-  "${CMAKE_CURRENT_SOURCE_DIR}/include/zoom_sdk.h"
-  "${CMAKE_CURRENT_SOURCE_DIR}/include/zoom_sdk_def.h"
 )
 
-link_directories("${PROJECT_SOURCE_DIR}/lib/")
+link_directories("${PROJECT_SOURCE_DIR}/lib")
 
 # Define the plugin library target. Its name must not be changed (see comment
 # on PLUGIN_NAME above).
 add_library(${PLUGIN_NAME} SHARED
   "include/flutter_zoom_sdk/flutter_zoom_sdk_plugin_c_api.h"
   "flutter_zoom_sdk_plugin_c_api.cpp"
-  "${CMAKE_CURRENT_SOURCE_DIR}/include/zoom_sdk.h"
-  "${CMAKE_CURRENT_SOURCE_DIR}/include/zoom_sdk_def.h"
   ${PLUGIN_SOURCES}
 )
 
@@ -46,16 +42,15 @@ target_compile_definitions(${PLUGIN_NAME} PRIVATE FLUTTER_PLUGIN_IMPL)
 
 # Source include directories and library dependencies. Add any plugin-specific
 # dependencies here.
-target_include_directories(${PLUGIN_NAME} INTERFACE
-  "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_include_directories(${PLUGIN_NAME} INTERFACE
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/h")
-target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin)
+target_include_directories(${PLUGIN_NAME} PUBLIC
+        "${PROJECT_SOURCE_DIR}/h"
+        "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin "sdk")
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an
 # external build triggered from this build file.
 set(flutter_zoom_sdk_bundled_libraries
-  "${CMAKE_CURRENT_SOURCE_DIR}/bin"
+  "${PROJECT_SOURCE_DIR}/bin"
   PARENT_SCOPE
 )

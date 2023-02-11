@@ -1,5 +1,5 @@
 #include "flutter_zoom_sdk_plugin.h"
-#include <include/zoom_sdk.h>
+#include <zoom_sdk.h>
 
 // This must be included before many other Windows headers.
 #include <windows.h>
@@ -62,7 +62,7 @@ void FlutterZoomSdkPlugin::HandleMethodCall(
         {
             EncodableList results;
             results.push_back(EncodableValue("init windows zoom sdk"));
-            AuthorizeSDK();
+            FlutterZoomSdkPlugin::AuthorizeSDK();
             result->Success(results);
         }
   else {
@@ -70,7 +70,7 @@ void FlutterZoomSdkPlugin::HandleMethodCall(
   }
 }
 
-void AuthorizeSDK()
+void FlutterZoomSdkPlugin::AuthorizeSDK()
 {
     // Initialize SDK with InitParam object
     ZOOM_SDK_NAMESPACE::InitParam initParam;
