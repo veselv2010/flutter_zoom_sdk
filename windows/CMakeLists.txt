@@ -18,8 +18,6 @@ list(APPEND PLUGIN_SOURCES
   "flutter_zoom_sdk_plugin.h"
 )
 
-link_directories("${PROJECT_SOURCE_DIR}/lib")
-
 # Define the plugin library target. Its name must not be changed (see comment
 # on PLUGIN_NAME above).
 add_library(${PLUGIN_NAME} SHARED
@@ -28,11 +26,6 @@ add_library(${PLUGIN_NAME} SHARED
   ${PLUGIN_SOURCES}
 )
 
-# Apply a standard set of build settings that are configured in the
-# application-level CMakeLists.txt. This can be removed for plugins that want
-# full control over build settings.
-apply_standard_settings(${PLUGIN_NAME})
-
 # Symbols are hidden by default to reduce the chance of accidental conflicts
 # between plugins. This should not be removed; any symbols that should be
 # exported should be explicitly exported with the FLUTTER_PLUGIN_EXPORT macro.
@@ -40,17 +33,19 @@ set_target_properties(${PLUGIN_NAME} PROPERTIES
   CXX_VISIBILITY_PRESET hidden)
 target_compile_definitions(${PLUGIN_NAME} PRIVATE FLUTTER_PLUGIN_IMPL)
 
+find_library(SDK_LOCATION NAMES sdk HINTS "${PROJECT_SOURCE_DIR}/lib")
+
 # Source include directories and library dependencies. Add any plugin-specific
 # dependencies here.
 target_include_directories(${PLUGIN_NAME} PUBLIC
         "${PROJECT_SOURCE_DIR}/h"
         "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin "sdk")
+target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin ${SDK_LOCATION})
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an
 # external build triggered from this build file.
 set(flutter_zoom_sdk_bundled_libraries
-  "${PROJECT_SOURCE_DIR}/bin"
+  "${PROJECT_SOURCE_DIR}/bin/"
   PARENT_SCOPE
 )

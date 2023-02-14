@@ -206,7 +206,6 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       
       var zoom = ZoomView();
       zoom.initZoom(zoomOptions).then((results) {
-        print(results.toString());
         if (results[0] == 0) {
           zoom.onMeetingStatus().listen((status) {
             if (kDebugMode) {

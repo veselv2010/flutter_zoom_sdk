@@ -82,8 +82,8 @@ void FlutterZoomSdkPlugin::AuthorizeSDK()
 
     // Check if InitSDK call succeeded
     if (initReturnVal == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS)
-    {
-        cout << "Initialized";
+   {
+         _cputts(L"Initialized");
     }
 }
 
