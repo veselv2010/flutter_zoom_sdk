@@ -111,7 +111,7 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
       case "join":
         joinMeeting(methodCall, result);
         break;
-      case "startNormal":
+      case "start_normal":
         startMeetingNormal(methodCall, result);
         break;
       case "meeting_status":

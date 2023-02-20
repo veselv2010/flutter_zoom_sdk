@@ -29,7 +29,7 @@ public class SwiftFlutterZoomSdkPlugin: NSObject, FlutterPlugin,FlutterStreamHan
               self.login(call: call, result: result)
           case "join":
               self.joinMeeting(call: call, result: result)
-          case "startNormal":
+          case "start_normal":
               self.startMeetingNormal(call: call, result: result)
           case "meeting_status":
               self.meetingStatus(call: call, result: result)

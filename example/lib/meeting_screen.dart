@@ -184,16 +184,16 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       );
       var meetingOptions = ZoomMeetingOptions(
         userId: 'userId',
+
+        /// pass username for join meeting only
         displayName: 'userName',
         sdkKey: sdkKey,
 
-        /// pass username for join meeting only --- Any name eg:- EVILRATT.
+        /// pass meeting id for join meeting only
         meetingId: meetingIdController.text,
 
-        /// pass meeting id for join meeting only
-        meetingPassword: meetingPasswordController.text,
-
         /// pass meeting password for join meeting only
+        meetingPassword: meetingPasswordController.text,
         disableDialIn: 'true',
         disableDrive: 'true',
         disableInvite: 'true',
@@ -201,10 +201,26 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         disableTitlebar: 'false',
         viewOptions: 'true',
         noAudio: 'false',
+        noVideo: 'false',
         noDisconnectAudio: 'false',
       );
-      
-      var zoom = ZoomView();
+
+      if (defaultTargetPlatform == TargetPlatform.windows) {
+        zoom.initZoomAndJoinMeeting(zoomOptions, meetingOptions).then((result) {
+          if (result) {
+            zoom.onMeetingStatus().listen((status) {
+              if (status[0] == 'MEETING_STATUS_DISCONNECTING') {
+                if (kDebugMode) {
+                  print('[Meeting Status] :- Ended');
+                }
+              }
+            });
+          }
+        });
+
+        return;
+      }
+
       zoom.initZoom(zoomOptions).then((results) {
         if (results[0] == 0) {
           zoom.onMeetingStatus().listen((status) {
@@ -274,8 +290,8 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       appSecret: sdkSecret, //API SECRET FROM ZOOM -- SDK SECRET
     );
     var meetingOptions = ZoomMeetingOptions(
-        userId: 'evilrattdeveloper@gmail.com', //pass host email for zoom
-        userPassword: 'Dlinkmoderm0641', //pass host password for zoom
+        userId: 'user@gmail.com', //pass host email for zoom
+        userPassword: 'userPsw', //pass host password for zoom
         disableDialIn: 'false',
         disableDrive: 'false',
         disableInvite: 'false',
@@ -367,8 +383,8 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       appSecret: sdkSecret, //API SECRET FROM ZOOM -- SDK SECRET
     );
     var meetingOptions = ZoomMeetingOptions(
-        userId: 'evilrattdeveloper@gmail.com', //pass host email for zoom
-        userPassword: 'Dlinkmoderm0641', //pass host password for zoom
+        userId: 'user@gmail.com', //pass host email for zoom
+        userPassword: 'userPsw', //pass host password for zoom
         meetingId: meetingIdController.text,
         disableDialIn: 'false',
         disableDrive: 'false',
