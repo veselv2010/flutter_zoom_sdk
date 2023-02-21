@@ -46,6 +46,6 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin ${SD
 # This list could contain prebuilt libraries, or libraries created by an
 # external build triggered from this build file.
 set(flutter_zoom_sdk_bundled_libraries
-  "${PROJECT_SOURCE_DIR}/bin/"
+  "${PROJECT_SOURCE_DIR}/zoom_bin/"
   PARENT_SCOPE
 )

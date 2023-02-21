@@ -1,3 +1,5 @@
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
+
 #include "flutter_zoom_sdk_plugin.h"
 
 // This must be included before many other Windows headers.
@@ -5,6 +7,8 @@
 
 // For getPlatformVersion; remove unless needed for your plugin implementation.
 #include <VersionHelpers.h>
+
+#include <codecvt>
 
 namespace flutter_zoom_sdk {
 	FlutterZoomSdkPlugin* plagin;
@@ -43,6 +47,8 @@ namespace flutter_zoom_sdk {
 	}
 
 	FlutterZoomSdkPlugin::FlutterZoomSdkPlugin() {
+		setlocale(LC_ALL, "");
+
 		plagin = this;
 		FlutterZoomSdkPlugin::AuthService = nullptr;
 		FlutterZoomSdkPlugin::MeetingService = nullptr;
@@ -186,8 +192,9 @@ namespace flutter_zoom_sdk {
 		string noAudioStr = get<string>(ZoomMeetingOptions.find(EncodableValue("noAudio"))->second);
 		string noVideoStr = get<string>(ZoomMeetingOptions.find(EncodableValue("noVideo"))->second);
 
-		wstring meetingPasswordWstr = wstring(meetingPasswordStr.begin(), meetingPasswordStr.end());
-		wstring userNameWstr = wstring(userNameStr.begin(), userNameStr.end());
+		wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> convert;
+		wstring meetingPasswordWstr = convert.from_bytes(meetingPasswordStr);
+		wstring userNameWstr = convert.from_bytes(userNameStr);
 
 		joinMeetingForNonLoginUserParam.meetingNumber = stoull(meetingNumberStr);
 		joinMeetingForNonLoginUserParam.psw = meetingPasswordWstr.c_str();
