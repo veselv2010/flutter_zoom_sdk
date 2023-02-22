@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_sdk/zoom_options.dart';
-import 'package:flutter_zoom_sdk/zoom_view.dart';
+import 'package:flutter_zoom_sdk/zoom_platform_view.dart';
 
 class MeetingWidget extends StatefulWidget {
   const MeetingWidget({super.key});
@@ -16,7 +16,7 @@ class MeetingWidget extends StatefulWidget {
 class _MeetingWidgetState extends State<MeetingWidget> {
   late final TextEditingController meetingIdController;
   late final TextEditingController meetingPasswordController;
-  late final ZoomView zoom;
+  late final ZoomPlatform zoom;
   late Timer timer;
 
   static const String sdkKey = '';
@@ -26,7 +26,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   void initState() {
     meetingIdController = TextEditingController();
     meetingPasswordController = TextEditingController();
-    zoom = ZoomView();
+    zoom = ZoomPlatform.instance;
     super.initState();
   }
 
@@ -177,6 +177,17 @@ class _MeetingWidgetState extends State<MeetingWidget> {
 
     if (meetingIdController.text.isNotEmpty &&
         meetingPasswordController.text.isNotEmpty) {
+      String? signature;
+
+      if (kIsWeb) {
+        signature = zoom.generateSignature(
+          sdkKey,
+          sdkSecret,
+          meetingIdController.text,
+          0,
+        );
+      }
+
       ZoomOptions zoomOptions = const ZoomOptions(
         domain: 'zoom.us',
         appKey: sdkKey, //API KEY FROM ZOOM
@@ -203,9 +214,10 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         noAudio: 'false',
         noVideo: 'false',
         noDisconnectAudio: 'false',
+        signature: signature,
       );
 
-      if (defaultTargetPlatform == TargetPlatform.windows) {
+      if (Platform.isWindows) {
         zoom.initZoomAndJoinMeeting(zoomOptions, meetingOptions).then((result) {
           if (result) {
             zoom.onMeetingStatus().listen((status) {
