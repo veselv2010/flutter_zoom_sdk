@@ -151,19 +151,19 @@ class ZoomView extends ZoomPlatform {
         .then<List>((List? value) => value ?? List.empty());
   }
 
-  /// The event channel used to interact with the native platform openZoomActivity(iOS & Android) function
+  /// The event channel used to interact with the native platform showMeeting(Android & Windows) function
   @override
-  Future<bool> openZoomActivity() async {
+  Future<bool> showMeeting() async {
     return await channel
-        .invokeMethod<bool>('open_zoom_activity')
+        .invokeMethod<bool>('show_meeting')
         .then<bool>((bool? value) => value ?? false);
   }
 
-  /// The event channel used to interact with the native platform putToBgZoomActivity(iOS & Android) function
+  /// The event channel used to interact with the native platform hideMeeting(Android & Windows) function
   @override
-  Future<bool> putToBgZoomActivity() async {
+  Future<bool> hideMeeting() async {
     return await channel
-        .invokeMethod<bool>('put_to_bg_zoom_activity')
+        .invokeMethod<bool>('hide_meeting')
         .then<bool>((bool? value) => value ?? false);
   }
 

@@ -145,8 +145,24 @@ class _MeetingWidgetState extends State<MeetingWidget> {
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.blue, // foreground
                         ),
-                        onPressed: () async => openZoomActivity(context),
-                        child: const Text('Open zoom activity'),
+                        onPressed: () async => showMeeting(),
+                        child: const Text('Show meeting'),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Builder(
+                    builder: (context) {
+                      // The basic Material Design action button.
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blue, // foreground
+                        ),
+                        onPressed: () async => hideMeeting(),
+                        child: const Text('Hide meeting'),
                       );
                     },
                   ),
@@ -221,7 +237,11 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         zoom.initZoomAndJoinMeeting(zoomOptions, meetingOptions).then((result) {
           if (result) {
             zoom.onMeetingStatus().listen((status) {
-              if (status[0] == 'MEETING_STATUS_DISCONNECTING') {
+              if (status[0] == 'MEETING_STATUS_INMEETING') {
+                if (kDebugMode) {
+                  print('[Meeting Status] :- In meeting');
+                }
+              } else if (status[0] == 'MEETING_STATUS_DISCONNECTING') {
                 if (kDebugMode) {
                   print('[Meeting Status] :- Ended');
                 }
@@ -457,7 +477,11 @@ class _MeetingWidgetState extends State<MeetingWidget> {
     });
   }
 
-  Future<void> openZoomActivity(BuildContext context) async {
-    await zoom.openZoomActivity();
+  Future<void> showMeeting() async {
+    await zoom.showMeeting();
+  }
+
+  Future<void> hideMeeting() async {
+    await zoom.hideMeeting();
   }
 }

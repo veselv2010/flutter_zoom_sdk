@@ -18,6 +18,7 @@
 #include <meeting_service_interface.h>
 #include <auth_service_interface.h>
 #include <setting_service_interface.h>
+#include <meeting_service_components/meeting_ui_ctrl_interface.h>
 
 namespace flutter_zoom_sdk {
 	using flutter::EncodableList;
@@ -63,6 +64,10 @@ namespace flutter_zoom_sdk {
 		void createSettingService();
 
 		bool leaveMeeting();
+
+		bool hideMeeting();
+
+		bool showMeeting();
 	};
 
 	class AuthEvent : public ZOOM_SDK_NAMESPACE::IAuthServiceEvent {
