@@ -224,6 +224,12 @@ public:
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
 	virtual SDKError StopShare() = 0;
 
+	/// \brief host / co - host can use this function to lock current meeting share.
+	/// \param isLock TRUE means to lock the meeting share, FALSE not.
+    /// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError LockShare(bool isLock) = 0;
+
 	/// \brief Block the window when sharing in full screen.
 	///Once the function is called, you need to redraw the window to take effect.
 	/// \param bBlock TRUE indicates to block the window when sharing in full screen.
@@ -244,14 +250,6 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid only for ZOOM style user interface mode.
 	virtual SDKError SwitchToFitWindowModeWhenViewShare(SDKViewType type) = 0;
-
-	/// \brief Switch the window size to originality by the function when watching the share on the specified view.
-	/// \param type Specify the view you want to set, either primary or secondary. For more details, see \link SDKViewType \endlink enum.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid only for ZOOM style user interface mode.
-	/// \deprecated This interface will be deprecated, please stop using it.
-	virtual SDKError SwitchToOriginalSizeModeWhenViewShare(SDKViewType type) = 0;
 
 	/// \brief Switch the window size by the function when watching the share on the specified view.
 	/// \param userid Specify the user ID that you want to switch zoom ratio.

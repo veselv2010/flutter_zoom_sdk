@@ -292,6 +292,18 @@ enum SDKShareViewZoomRatio
 	SDK_ShareViewZoomRatio_300
 };
 
+/*! \enum InMeetingSupportAudioType
+	\brief meeting supported audio type.
+	Here are more detailed structural descriptions.
+*/
+enum InMeetingSupportAudioType
+{
+	AUDIO_TYPE_NONE = 0,
+	AUDIO_TYPE_VOIP = 1,
+	AUDIO_TYPE_TELEPHONY = 1 << 1
+};
+
+
 /*! \enum MeetingConnType
     \brief Meeting connection type.
     Here are more detailed structural descriptions.
@@ -351,6 +363,10 @@ public:
 	/// \brief Get the connection type of the current meeting.
 	/// \return The connection type. For more details, see \link MeetingConnType \endlink enum.
 	virtual MeetingConnType GetMeetingConnType() = 0;
+
+	/// \brief Get the audio type supported by the current meeting. see \link InMeetingSupportAudioType \endlink enum. 
+	/// \return If the function succeeds, it will return the type. The value is the 'bitwise OR' of each supported audio type.
+	virtual int GetSupportedMeetingAudioType() = 0;
 
 	virtual ~IMeetingInfo(){};
 };

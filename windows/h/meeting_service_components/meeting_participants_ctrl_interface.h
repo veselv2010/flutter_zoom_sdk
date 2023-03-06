@@ -172,12 +172,6 @@ public:
 	virtual void onLowOrRaiseHandStatusChanged(bool bLow, unsigned int userid) = 0;
 
 	/// \brief Callback event of changing the screen name. 
-	/// this interface be marked as deprecated, then it will be instead by onUserNamesChanged
-	/// \param userId Specify the user ID whose status changes.
-	/// \param userName New screen name displayed.
-	virtual void onUserNameChanged(unsigned int userId, const wchar_t* userName) = 0;
-
-	/// \brief Callback event of changing the screen name. 
 	/// \param userId list Specify the users ID whose status changes.
 	virtual void onUserNamesChanged(IList<unsigned int>* lstUserID) = 0;
 
@@ -322,6 +316,26 @@ public:
 	virtual bool IsParticipantsUnmuteSelfAllowed() = 0;
 
 	virtual SDKError AskAllToUnmute() = 0;
+
+	/// \brief Allowing the regular attendees to start video, it can only be used in regular meeetings(no bo).
+	/// \param bAllow TRUE indicates Allowing the regular attendees to start video. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError AllowParticipantsToStartVideo(bool bAllow) = 0;
+
+	/// \brief Check whether the current meeting allows participants to start video, it can only be used in regular meeetings(no bo).
+	/// \return If allows participants to start video, the return value is true.
+	virtual bool IsParticipantsStartVideoAllowed() = 0;
+
+	/// \brief Allowing the regular attendees to share whiteboard, it can only be used in regular meeetings(no bo).
+	/// \param bAllow TRUE indicates Allowing the regular attendees to share whiteboard. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError AllowParticipantsToShareWhiteBoard(bool bAllow) = 0;
+
+	/// \brief Check whether the current meeting allows participants to share whiteboard, it can only be used in regular meeetings(no bo).
+	/// \return If allows participants to start video, the return value is true.
+	virtual bool IsParticipantsShareWhiteBoardAllowed() = 0;
 
 	/// \brief Allowing the regular attendees to use chat, it can only be used in regular meeetings(no webinar or bo).
 	/// \param bAllow TRUE indicates Allowing the regular attendees to use chat. 

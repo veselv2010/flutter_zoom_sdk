@@ -437,6 +437,10 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SetReactionSkinTone(ReactionSkinToneType skinTone) = 0;
 
+	/// \brief Get the emoji reaction skin tone type.
+	/// \return The return value is the emoji reaction skin tone type.
+	virtual ReactionSkinToneType GetReactionSkinTone() = 0;
+
 	/// \brief Enable or disable to stop user's video and audio when user's display is off or screen save begins. 
 	/// \param bEnable TRUE indicates to stop.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -807,18 +811,6 @@ public:
 	/// \brief Get the flag to enable to turn off the video when join meeting.
 	/// \return Enabled or disabled.
 	virtual bool IsAutoTurnOffVideoWhenJoinMeetingEnabled() = 0;
-	
-	/// \brief Enable or disable the 16V9 video mode.
-	/// \param bEnable TRUE indicates to enable the 16V9 video mode.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \deprecated This interface will be deprecated, please stop using it.
-	virtual SDKError EnableAlwaysUse16v9(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable/disable the 16V9 video mode.
-	/// \return Enabled or disabled.
-	/// \deprecated This interface will be deprecated, please stop using it.
-	virtual bool IsAlwaysUse16v9() = 0;
 
 	/// \brief Enable or disable to spotlight the video.
 	/// \param bEnable TRUE indicates to enable to spotlight the video.

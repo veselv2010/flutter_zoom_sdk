@@ -41,6 +41,18 @@ public:
 
 	/// \brief Callback to disable the attendees to chat. Available only for the host and the co-host.
 	virtual void onDisallowAttendeeChatNotification() = 0;
+
+	/// \brief Callback to emoji Reactions Status Changed.
+	/// \param can_reaction If the Reaction is allow, the result is true, False not.
+	virtual void onAllowWebinarReactionStatusChanged(bool can_reaction) = 0;
+
+	/// \brief Callback to attendee rise hand Status Changed.
+	/// \param can_riseHand If the raise hand is allow, the result is true, False not.
+	virtual void onAllowAttendeeRaiseHandStatusChanged(bool can_riseHand) = 0;
+
+	/// \brief Callback to attendee view the participant count status Changed.
+	/// \param can_riseHand If attendee view the participant count is allow, the result is true, False not.
+	virtual void onAllowAttendeeViewTheParticipantCountStatusChanged(bool can_viewParticipantCount) = 0;
   
 	/// \brief Attendee will receive this callback if his audio status changes.
 	/// \param userid The ID of the user whose audio status changes.
@@ -62,6 +74,9 @@ typedef struct tagWebinarMeetingStatus
 {
 	bool allow_panellist_start_video;///<TRUE indicates that the panelist is able to turn on the video. FALSE not.
 	bool allow_attendee_chat;///<TRUE indicates that the attendee is able to chat. FALSE not.
+	bool allow_emoji_reaction;///<TRUE indicates that the attendee is able to emojireaction. FALSE not.
+	bool allow_attendee_raise_hand;///<TRUE indicates that the attendee is able to raise hand. FALSE not.
+	bool allow_attendee_view_participant_count;///<TRUE indicates that the attendee is able to view participant count. FALSE not.
 	tagWebinarMeetingStatus()
 	{
 		Reset();
@@ -71,6 +86,9 @@ typedef struct tagWebinarMeetingStatus
 	{
 		allow_panellist_start_video = false;
 		allow_attendee_chat = false;
+		allow_emoji_reaction = false;
+		allow_attendee_raise_hand = false;
+		allow_attendee_view_participant_count = false;
 	}
 }WebinarMeetingStatus;
 
@@ -81,6 +99,20 @@ enum SDKPanelistChatPrivilege
 {
 	SDKPanelistChatPrivilege_PanelistOnly = 1,	/// Allow panelists only to chat with each other.
 	SDKPanelistChatPrivilege_All = 2			/// Allow panelist to chat with everyone.
+};
+
+/**
+ * @brief Enumerations of the attendee view display mode.
+ */
+enum  SDKAttendeeViewMode
+{
+	SDKAttendeeViewMode_None,           ///attendee view display mode is invaild
+	SDKAttendeeViewMode_FollowHost,     ///follow host
+	SDKAttendeeViewMode_Speaker,        ///always view active speaker
+	SDKAttendeeViewMode_Gallery,        ///always view gallery
+	SDKAttendeeViewMode_Standard,       ///attendee can manually switch between gallery and active speaker
+	SDKAttendeeViewMode_SidebysideSpeaker,
+	SDKAttendeeViewMode_SidebysideGallery
 };
 
 /// \brief Webinar controller interface
@@ -134,10 +166,60 @@ public:
 	virtual SDKError AllowPanelistStartVideo() = 0;
 
 	/// \brief Forbid the panelist to start video.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks If the function succeeds, the user will receive the IMeetingWebinarCtrlEvent::onDisallowPanelistStartVideoNotification() callback event. Available only for the host.
 	virtual SDKError DisallowPanelistStartVideo() = 0;
+
+	/// \brief Permitted to use emoji reactions.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks If the function succeeds, the user will receive the IMeetingWebinarCtrlEvent::onAllowWebinarReactionStatusChanged(bool) callback event. Available only for the host.
+	virtual SDKError AllowWebinarEmojiReaction() = 0;
+
+	/// \brief Forbid to use emoji reactions.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks If the function succeeds, the user will receive the IMeetingWebinarCtrlEvent::onAllowWebinarReactionStatusChanged(bool) callback event. Available only for the host.
+	virtual SDKError DisallowWebinarEmojiReaction() = 0;
+
+	/// \brief The attendee is permitted to use the raise hand.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks If the function succeeds, the user will receive the IMeetingWebinarCtrlEvent::onAllowAttendeeRaiseHandStatusChanged(bool) callback event. Available only for the host.
+	virtual SDKError AllowAttendeeRaiseHand() = 0;
+
+	/// \brief Forbid the attendee to use the raise hand.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks If the function succeeds, the user will receive the IMeetingWebinarCtrlEvent::onAllowAttendeeRaiseHandStatusChanged(bool) callback event. Available only for the host.
+	virtual SDKError DisallowAttendeeRaiseHand() = 0;
+
+	/// \brief The attendee is permitted to view the participant count.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks If the function succeeds, the user will receive the IMeetingWebinarCtrlEvent::onAllowAttendeeViewTheParticipantCountStatusChanged(bool) callback event. Available only for the host.
+	virtual SDKError AllowAttendeeViewTheParticipantCount() = 0;
+
+	/// \brief Forbid the attendee to view the participant count.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks If the function succeeds, the user will receive the IMeetingWebinarCtrlEvent::onAllowAttendeeViewTheParticipantCountStatusChanged(bool) callback event. Available only for the host.
+	virtual SDKError DisallowAttendeeViewTheParticipantCount() = 0;
+
+	/// \brief Get the participant count.
+    /// \return The count of participant.
+	virtual int GetParticipantCount() = 0;
+
+	/// \brief Set the view mode of the attendee. Available only for zoom ui.
+    /// \param mode The view mode of the attendee.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS..
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetAttendeeViewMode(SDKAttendeeViewMode mode) = 0;
+
+	/// \brief Get the view mode of the attendee.Available only for zoom ui.
+    /// \return If the function succeeds, it will return the attendee's view mode. For more details, see \link ZoomSDKAttendeeViewMode \endlink.
+	virtual SDKAttendeeViewMode GetAttendeeViewMode() = 0;
 
 	/// \brief Get the webinar status.
 	/// \return The status of webinar. For more details, see \link WebinarMeetingStatus \endlink.

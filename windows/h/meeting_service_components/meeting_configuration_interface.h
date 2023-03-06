@@ -496,6 +496,10 @@ public:
 	/// \brief Set the visibility of share button on cloud Whiteboard. Default is displaying.
 	/// \param [in] bHide TRUE means hiding, otherwise not.
 	virtual void HideCloudWhiteboardShareButton(bool bHide) = 0;
+
+	/// \brief Set the visibility of request local recording privilege dialog when attendee request local recording privilege. Default is displaying.
+	/// \param [in] bHide TRUE means hiding, otherwise not.
+	virtual void HideRequestRecordPrivilegeDialog(bool bHide) = 0;
 };
 
 /// \brief Meeting connect configuration Interface

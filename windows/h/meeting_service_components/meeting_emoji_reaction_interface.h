@@ -24,6 +24,18 @@ typedef enum tagSDKEmojiReactionType
 	SDKEmojiReactionType_Tada,
 }SDKEmojiReactionType;
 
+/*! \enum SDKEmojiReactionType
+	\brief Specify the emoji display type.
+	Here are more detailed enum descriptions.
+*/
+typedef enum tagSDKEmojiReactionDisplayType
+{
+	SDKEmojiReactionDisplayType_None,
+	SDKEmojiReactionDisplayType_Full,
+	SDKEmojiReactionDisplayType_Medium,
+	SDKEmojiReactionDisplayType_Hidden
+}SDKEmojiReactionDisplayType;
+
 /// \brief Emoji Reaction controller callback event.
 ///
 class IEmojiReactionControllerEvent
@@ -59,6 +71,16 @@ public:
 	/// /// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SendEmojiReaction(SDKEmojiReactionType type) = 0;
+
+	/// \brief Set emoji reaction display type in webinar.
+    /// \param type The display type of the emoji reaction.
+    /// \return If the function succeeds, the return value is SDKErr_Success.
+	/// Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetWebinarEmojiReactionDisplayType(SDKEmojiReactionDisplayType type) = 0;
+
+	/// \brief Get emoji reaction display type in webinar.
+	/// \return If the function succeeds, it will return the display type of the emoji reaction, otherwise returns SDKEmojiReactionDisplayType_None.
+	virtual SDKEmojiReactionDisplayType GetWebinarEmojiReactionDisplayType() = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE
