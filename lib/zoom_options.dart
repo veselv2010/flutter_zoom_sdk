@@ -127,6 +127,9 @@ class ZoomMeetingOptions {
   /// Disable No Audio
   String? noAudio;
 
+  /// Disable video
+  String? noVideo;
+
   /// Zoom token for SDK
   String? zoomToken;
 
@@ -153,6 +156,7 @@ class ZoomMeetingOptions {
     this.noDisconnectAudio,
     this.viewOptions,
     this.noAudio,
+    this.noVideo,
     this.zoomToken,
     this.zoomAccessToken,
     this.sdkKey,

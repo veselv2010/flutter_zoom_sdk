@@ -81,11 +81,11 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     context = flutterPluginBinding.getApplicationContext();
-    methodChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "com.evilratt/zoom_sdk");
+    methodChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_zoom_sdk");
     methodChannel.setMethodCallHandler(this);
 
     meetingStatusChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(),
-        "com.evilratt/zoom_sdk_event_stream");
+        "flutter_zoom_sdk_event_stream");
   }
 
   @Override
@@ -111,7 +111,7 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
       case "join":
         joinMeeting(methodCall, result);
         break;
-      case "startNormal":
+      case "start_normal":
         startMeetingNormal(methodCall, result);
         break;
       case "meeting_status":
@@ -120,11 +120,11 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
       case "meeting_details":
         meetingDetails(result);
         break;
-      case "open_zoom_activity":
-        openZoomActivity(methodCall, result);
+      case "show_meeting":
+        showMeeting(methodCall, result);
         break;
-      case "put_to_bg_zoom_activity":
-        putToBgZoomActivity(methodCall, result);
+      case "hide_meeting":
+        hideMeeting(methodCall, result);
         break;
       default:
         result.notImplemented();
@@ -543,7 +543,6 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
   }
 
   public void leaveMeeting() {
-    Log.e("leaveMeeting111", "leaveMeeting111");
     ZoomSDK zoomSDK = ZoomSDK.getInstance();
     zoomSDK.getInMeetingService().leaveCurrentMeeting(true);
   }
@@ -571,7 +570,7 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
     this.activity = null;
   }
 
-  private void openZoomActivity(MethodCall methodCall, Result result) {
+  private void showMeeting(MethodCall methodCall, Result result) {
     Intent myIntent = new Intent(activity, MyMeetingActivity.class);
     myIntent.putExtra("isClose", false);
 
@@ -584,7 +583,7 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
     result.success(true);
   }
 
-  private void putToBgZoomActivity(MethodCall methodCall, Result result) {
+  private void hideMeeting(MethodCall methodCall, Result result) {
     Intent myIntent = new Intent("my_meeting_activity_broadcast");
     myIntent.putExtra("broadcast", "finishMyMeetingActivity");
 

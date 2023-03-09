@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_sdk/zoom_options.dart';
-import 'package:flutter_zoom_sdk/zoom_view.dart';
+import 'package:flutter_zoom_sdk/zoom_platform_view.dart';
 
 class MeetingWidget extends StatefulWidget {
   const MeetingWidget({super.key});
@@ -16,7 +16,7 @@ class MeetingWidget extends StatefulWidget {
 class _MeetingWidgetState extends State<MeetingWidget> {
   late final TextEditingController meetingIdController;
   late final TextEditingController meetingPasswordController;
-  late final ZoomView zoom;
+  late final ZoomPlatform zoom;
   late Timer timer;
 
   static const String sdkKey = '';
@@ -26,7 +26,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   void initState() {
     meetingIdController = TextEditingController();
     meetingPasswordController = TextEditingController();
-    zoom = ZoomView();
+    zoom = ZoomPlatform.instance;
     super.initState();
   }
 
@@ -145,8 +145,24 @@ class _MeetingWidgetState extends State<MeetingWidget> {
                           foregroundColor: Colors.white,
                           backgroundColor: Colors.blue, // foreground
                         ),
-                        onPressed: () async => openZoomActivity(context),
-                        child: const Text('Open zoom activity'),
+                        onPressed: () async => showMeeting(),
+                        child: const Text('Show meeting'),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Builder(
+                    builder: (context) {
+                      // The basic Material Design action button.
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blue, // foreground
+                        ),
+                        onPressed: () async => hideMeeting(),
+                        child: const Text('Hide meeting'),
                       );
                     },
                   ),
@@ -177,6 +193,17 @@ class _MeetingWidgetState extends State<MeetingWidget> {
 
     if (meetingIdController.text.isNotEmpty &&
         meetingPasswordController.text.isNotEmpty) {
+      String? signature;
+
+      if (kIsWeb) {
+        signature = zoom.generateSignature(
+          sdkKey,
+          sdkSecret,
+          meetingIdController.text,
+          0,
+        );
+      }
+
       ZoomOptions zoomOptions = const ZoomOptions(
         domain: 'zoom.us',
         appKey: sdkKey, //API KEY FROM ZOOM
@@ -184,16 +211,16 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       );
       var meetingOptions = ZoomMeetingOptions(
         userId: 'userId',
+
+        /// pass username for join meeting only
         displayName: 'userName',
         sdkKey: sdkKey,
 
-        /// pass username for join meeting only --- Any name eg:- EVILRATT.
+        /// pass meeting id for join meeting only
         meetingId: meetingIdController.text,
 
-        /// pass meeting id for join meeting only
-        meetingPassword: meetingPasswordController.text,
-
         /// pass meeting password for join meeting only
+        meetingPassword: meetingPasswordController.text,
         disableDialIn: 'true',
         disableDrive: 'true',
         disableInvite: 'true',
@@ -201,10 +228,31 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         disableTitlebar: 'false',
         viewOptions: 'true',
         noAudio: 'false',
+        noVideo: 'false',
         noDisconnectAudio: 'false',
+        signature: signature,
       );
 
-      var zoom = ZoomView();
+      if (Platform.isWindows) {
+        zoom.initZoomAndJoinMeeting(zoomOptions, meetingOptions).then((result) {
+          if (result) {
+            zoom.onMeetingStatus().listen((status) {
+              if (status[0] == 'MEETING_STATUS_INMEETING') {
+                if (kDebugMode) {
+                  print('[Meeting Status] :- In meeting');
+                }
+              } else if (status[0] == 'MEETING_STATUS_DISCONNECTING') {
+                if (kDebugMode) {
+                  print('[Meeting Status] :- Ended');
+                }
+              }
+            });
+          }
+        });
+
+        return;
+      }
+
       zoom.initZoom(zoomOptions).then((results) {
         if (results[0] == 0) {
           zoom.onMeetingStatus().listen((status) {
@@ -274,8 +322,8 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       appSecret: sdkSecret, //API SECRET FROM ZOOM -- SDK SECRET
     );
     var meetingOptions = ZoomMeetingOptions(
-        userId: 'evilrattdeveloper@gmail.com', //pass host email for zoom
-        userPassword: 'Dlinkmoderm0641', //pass host password for zoom
+        userId: 'user@gmail.com', //pass host email for zoom
+        userPassword: 'userPsw', //pass host password for zoom
         disableDialIn: 'false',
         disableDrive: 'false',
         disableInvite: 'false',
@@ -367,8 +415,8 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       appSecret: sdkSecret, //API SECRET FROM ZOOM -- SDK SECRET
     );
     var meetingOptions = ZoomMeetingOptions(
-        userId: 'evilrattdeveloper@gmail.com', //pass host email for zoom
-        userPassword: 'Dlinkmoderm0641', //pass host password for zoom
+        userId: 'user@gmail.com', //pass host email for zoom
+        userPassword: 'userPsw', //pass host password for zoom
         meetingId: meetingIdController.text,
         disableDialIn: 'false',
         disableDrive: 'false',
@@ -429,7 +477,11 @@ class _MeetingWidgetState extends State<MeetingWidget> {
     });
   }
 
-  Future<void> openZoomActivity(BuildContext context) async {
-    await zoom.openZoomActivity();
+  Future<void> showMeeting() async {
+    await zoom.showMeeting();
+  }
+
+  Future<void> hideMeeting() async {
+    await zoom.hideMeeting();
   }
 }

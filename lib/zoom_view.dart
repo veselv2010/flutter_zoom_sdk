@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_zoom_sdk/zoom_platform_view.dart';
 
 class ZoomView extends ZoomPlatform {
-  final MethodChannel channel = const MethodChannel('com.evilratt/zoom_sdk');
+  final MethodChannel channel = const MethodChannel('flutter_zoom_sdk');
 
   /// The event channel used to interact with the native platform.
   final EventChannel eventChannel =
-      const EventChannel('com.evilratt/zoom_sdk_event_stream');
+      const EventChannel('flutter_zoom_sdk_event_stream');
 
   /// The event channel used to interact with the native platform init function
   @override
@@ -30,6 +30,35 @@ class ZoomView extends ZoomPlatform {
         .then<List>((List? value) => value ?? List.empty());
   }
 
+  /// The event channel used to interact with the native platform init function
+  @override
+  Future<bool> initZoomAndJoinMeeting(
+    ZoomOptions zoomOptions,
+    ZoomMeetingOptions meetingOptions,
+  ) async {
+    var optionsMap = <String, Map>{};
+    var initOptionsMap = <String, String?>{};
+    var meetingOptionsMap = <String, String?>{};
+
+    initOptionsMap.putIfAbsent("appKey", () => zoomOptions.appKey);
+    initOptionsMap.putIfAbsent("appSecret", () => zoomOptions.appSecret);
+    initOptionsMap.putIfAbsent("returnBtnMsg", () => zoomOptions.returnBtnMsg);
+    initOptionsMap.putIfAbsent("domain", () => zoomOptions.domain);
+
+    meetingOptionsMap.putIfAbsent("displayName", () => meetingOptions.displayName);
+    meetingOptionsMap.putIfAbsent("meetingId", () => meetingOptions.meetingId);
+    meetingOptionsMap.putIfAbsent("meetingPassword", () => meetingOptions.meetingPassword);
+    meetingOptionsMap.putIfAbsent("noAudio", () => meetingOptions.noAudio);
+    meetingOptionsMap.putIfAbsent("noVideo", () => meetingOptions.noVideo);
+
+    optionsMap.putIfAbsent('initOptions', () => initOptionsMap);
+    optionsMap.putIfAbsent('meetingOptions', () => meetingOptionsMap);
+
+    return await channel
+        .invokeMethod<bool>('init_and_join', optionsMap)
+        .then<bool>((bool? value) => value ?? false);
+  }
+
   /// The event channel used to interact with the native platform startMeetingNormal function
   @override
   Future<List> startMeetingNormal(ZoomMeetingOptions options) async {
@@ -47,13 +76,16 @@ class ZoomView extends ZoomPlatform {
     optionMap.putIfAbsent("viewOptions", () => options.viewOptions);
 
     return await channel
-        .invokeMethod<List>('startNormal', optionMap)
+        .invokeMethod<List>('start_normal', optionMap)
         .then<List>((List? value) => value ?? List.empty());
   }
 
   /// The event channel used to interact with the native platform joinMeeting function
   @override
-  Future<bool> joinMeeting(ZoomMeetingOptions options, bool autoAudioJoin) async {
+  Future<bool> joinMeeting(
+    ZoomMeetingOptions options,
+    bool autoAudioJoin,
+  ) async {
     var optionMap = <String, String?>{};
     optionMap.putIfAbsent("userId", () => options.userId);
     optionMap.putIfAbsent("displayName", () => options.displayName);
@@ -67,6 +99,7 @@ class ZoomView extends ZoomPlatform {
     optionMap.putIfAbsent("noDisconnectAudio", () => options.noDisconnectAudio);
     optionMap.putIfAbsent("viewOptions", () => options.viewOptions);
     optionMap.putIfAbsent("noAudio", () => options.noAudio);
+    optionMap.putIfAbsent("noVideo", () => options.noVideo);
 
     return await channel
         .invokeMethod<bool>('join', optionMap)
@@ -118,21 +151,23 @@ class ZoomView extends ZoomPlatform {
         .then<List>((List? value) => value ?? List.empty());
   }
 
-  /// The event channel used to interact with the native platform openZoomActivity(iOS & Android) function
+  /// The event channel used to interact with the native platform showMeeting(Android & Windows) function
   @override
-  Future<bool> openZoomActivity() async {
+  Future<bool> showMeeting() async {
     return await channel
-        .invokeMethod<bool>('open_zoom_activity')
+        .invokeMethod<bool>('show_meeting')
         .then<bool>((bool? value) => value ?? false);
   }
 
-  /// The event channel used to interact with the native platform putToBgZoomActivity(iOS & Android) function
-  Future<bool> putToBgZoomActivity() async {
+  /// The event channel used to interact with the native platform hideMeeting(Android & Windows) function
+  @override
+  Future<bool> hideMeeting() async {
     return await channel
-        .invokeMethod<bool>('put_to_bg_zoom_activity')
+        .invokeMethod<bool>('hide_meeting')
         .then<bool>((bool? value) => value ?? false);
   }
 
+  @override
   Future<bool> leaveMeeting() async {
     return await channel
         .invokeMethod<bool>('leave_meeting')
