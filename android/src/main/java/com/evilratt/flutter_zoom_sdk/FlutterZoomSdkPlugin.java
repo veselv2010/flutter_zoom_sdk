@@ -303,6 +303,11 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
       public void onZoomAuthIdentityExpired() {
 
       }
+
+      @Override
+      public void onNotificationServiceStatus​(ZoomSDKAuthenticationListener.SDKNotificationServiceStatus status) {
+
+      }
     };
 
     // if(!zoomSDK.isLoggedIn()){
@@ -431,6 +436,10 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
 
       @Override
       public void onZoomAuthIdentityExpired() {
+
+      }
+      @Override
+      public void onNotificationServiceStatus​(ZoomSDKAuthenticationListener.SDKNotificationServiceStatus status) {
 
       }
     };
@@ -564,7 +573,10 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
   private void showMeeting(MethodCall methodCall, Result result) {
     Intent myIntent = new Intent(activity, MyMeetingActivity.class);
     myIntent.putExtra("isClose", false);
-    myIntent.putExtra("returnBtnMsg", returnBtnMsg.toString());
+
+    if (returnBtnMsg != null) {
+      myIntent.putExtra("returnBtnMsg", returnBtnMsg.toString());
+    }
 
     activity.startActivity(myIntent);
 

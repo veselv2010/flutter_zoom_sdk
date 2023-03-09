@@ -27,6 +27,7 @@
         </activity>
        <activity
            android:name="com.evilratt.flutter_zoom_sdk.MyMeetingActivity"
+           android:exported="false"
            android:configChanges="screenSize"
            android:hardwareAccelerated="true" />
         <!-- Don't delete the meta-data below.
