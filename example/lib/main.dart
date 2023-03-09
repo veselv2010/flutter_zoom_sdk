@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'main_page.dart';
 import 'meeting_screen.dart';
 
 // for complete example see https://github.com/evilrat/flutter_zoom_sdk/tree/master/example
@@ -19,7 +21,8 @@ class ExampleApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const MeetingWidget(),
+        '/': (context) => const MainPage(),
+        '/meeting': (context) => const MeetingWidget(),
       },
     );
   }

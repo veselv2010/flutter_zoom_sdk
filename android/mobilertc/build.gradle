@@ -1,0 +1,17 @@
+plugins {
+    id "maven-publish"
+}
+
+configurations.create("default")
+def mobilertc = artifacts.add("default", file('mobilertc.aar'))
+
+publishing {
+    publications {
+        common(MavenPublication) {
+            groupId = 'online.studyrooms'
+            artifactId = 'mobilertc'
+            version = '1.0.0'
+            artifact mobilertc
+        }
+    }
+}

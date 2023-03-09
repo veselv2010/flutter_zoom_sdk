@@ -8,7 +8,9 @@ abstract class ZoomPlatform extends PlatformInterface {
   ZoomPlatform() : super(token: _token);
   static final Object _token = Object();
   static ZoomPlatform _instance = ZoomView();
+
   static ZoomPlatform get instance => _instance;
+
   static set instance(ZoomPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
@@ -17,6 +19,25 @@ abstract class ZoomPlatform extends PlatformInterface {
   /// Flutter Zoom SDK Initialization function
   Future<List> initZoom(ZoomOptions options) async {
     throw UnimplementedError('initZoom() has not been implemented.');
+  }
+
+  /// Flutter Zoom SDK Initialization and Join Meeting function for desktop
+  Future<bool> initZoomAndJoinMeeting(
+    ZoomOptions zoomOptions,
+    ZoomMeetingOptions meetingOptions,
+  ) async {
+    throw UnimplementedError(
+        'initZoomAndJoinMeeting() has not been implemented.');
+  }
+
+  /// Flutter Zoom SDK Generate Signature for Web only
+  String generateSignature(
+    String sdkKey,
+    String sdkSecret,
+    String meetingNumber,
+    int role,
+  ) {
+    throw UnimplementedError('generateSignature() has not been implemented.');
   }
 
   /// Flutter Zoom SDK Start Meeting function
@@ -30,7 +51,10 @@ abstract class ZoomPlatform extends PlatformInterface {
   }
 
   /// Flutter Zoom SDK Join Meeting function
-  Future<bool> joinMeeting(ZoomMeetingOptions options, bool autoAudioJoin) async {
+  Future<bool> joinMeeting(
+    ZoomMeetingOptions options,
+    bool autoAudioJoin,
+  ) async {
     throw UnimplementedError('joinMeeting() has not been implemented.');
   }
 
@@ -45,11 +69,19 @@ abstract class ZoomPlatform extends PlatformInterface {
   }
 
   /// Flutter Zoom SDK Get Meeting ID & Passcode after Starting Meeting function
-  Future<List> meetinDetails() async {
+  Future<List> meetingDetails() async {
     throw UnimplementedError('meetingDetails() has not been implemented.');
   }
 
   Future<bool> leaveMeeting() async {
     throw UnimplementedError('leaveMeeting() has not been implemented.');
+  }
+
+  Future<bool> showMeeting() async {
+    throw UnimplementedError('openZoomActivity() has not been implemented.');
+  }
+
+  Future<bool> hideMeeting() async {
+    throw UnimplementedError('putToBgZoomActivity() has not been implemented.');
   }
 }

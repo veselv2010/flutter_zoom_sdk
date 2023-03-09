@@ -35,6 +35,7 @@ class ZoomOptions {
   final bool? disableVOIP; //--for web
   final bool? disableReport; //--for web
   final List<String>? meetingInfo; //--for web
+  final String? returnBtnMsg; //--for android
 
   const ZoomOptions({
     required this.domain,
@@ -81,62 +82,65 @@ class ZoomOptions {
       'enctype',
       'report'
     ],
+    this.returnBtnMsg,
   });
 }
 
 /// Basic Zoom Meeting Options required for plugin (WEB, iOS, Android)
 class ZoomMeetingOptions {
+  /// Username For Join Meeting & Host Email For Start Meeting
   String? userId;
 
-  /// Username For Join Meeting & Host Email For Start Meeting
+  /// Host Password For Start Meeting
   String? userPassword;
 
-  /// Host Password For Start Meeting
+  /// Display Name
   String? displayName;
 
-  /// Display Name
+  /// Personal meeting id for start meeting required
   String? meetingId;
 
-  /// Personal meeting id for start meeting required
+  /// Personal meeting passcode for start meeting required
   String? meetingPassword;
 
-  /// Personal meeting passcode for start meeting required
+  /// Disable Dial In Mode
   String? disableDialIn;
 
-  /// Disable Dial In Mode
+  /// Disable Drive In Mode
   String? disableDrive;
 
-  /// Disable Drive In Mode
+  /// Disable Invite Mode
   String? disableInvite;
 
-  /// Disable Invite Mode
+  /// Disable Share Mode
   String? disableShare;
 
-  /// Disable Share Mode
+  /// Disable Title Bar Mode
   String? disableTitlebar;
 
-  /// Disable Title Bar Mode
+  /// No Disconnect Audio Mode
   String? noDisconnectAudio;
 
-  /// No Disconnect Audio Mode
+  /// View option to disable zoom icon for Learning system
   String? viewOptions;
 
-  /// View option to disable zoom icon for Learning system
+  /// Disable No Audio
   String? noAudio;
 
-  /// Disable No Audio
-  String? zoomToken;
+  /// Disable video
+  String? noVideo;
 
   /// Zoom token for SDK
-  String? zoomAccessToken;
+  String? zoomToken;
 
   /// Zoom access token for SDK
-  String? sdkKey;
+  String? zoomAccessToken;
 
   /// JWT API KEY For Web Only
-  String? signature;
+  String? sdkKey;
 
   /// JWT API Signature For Web Only
+  String? signature;
 
   ZoomMeetingOptions({
     this.userId,
@@ -152,6 +156,7 @@ class ZoomMeetingOptions {
     this.noDisconnectAudio,
     this.viewOptions,
     this.noAudio,
+    this.noVideo,
     this.zoomToken,
     this.zoomAccessToken,
     this.sdkKey,

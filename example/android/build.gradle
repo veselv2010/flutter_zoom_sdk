@@ -2,10 +2,11 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenLocal()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath 'com.android.tools.build:gradle:7.1.2'
     }
 }
 
@@ -13,15 +14,15 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenLocal()
     }
 }
 
 rootProject.buildDir = '../build'
-subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
+
 subprojects {
     project.evaluationDependsOn(':app')
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 
 task clean(type: Delete) {

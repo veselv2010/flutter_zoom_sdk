@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_sdk/zoom_options.dart';
-import 'package:flutter_zoom_sdk/zoom_view.dart';
+import 'package:flutter_zoom_sdk/zoom_platform_view.dart';
 
 class MeetingWidget extends StatefulWidget {
   const MeetingWidget({super.key});
@@ -16,6 +16,7 @@ class MeetingWidget extends StatefulWidget {
 class _MeetingWidgetState extends State<MeetingWidget> {
   late final TextEditingController meetingIdController;
   late final TextEditingController meetingPasswordController;
+  late final ZoomPlatform zoom;
   late Timer timer;
 
   static const String sdkKey = '';
@@ -25,6 +26,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   void initState() {
     meetingIdController = TextEditingController();
     meetingPasswordController = TextEditingController();
+    zoom = ZoomPlatform.instance;
     super.initState();
   }
 
@@ -32,12 +34,12 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   void dispose() {
     meetingIdController.dispose();
     meetingPasswordController.dispose();
+    zoom.leaveMeeting();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // new page needs scaffolding!
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -45,88 +47,128 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Join meeting'),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 8.0,
             horizontal: 32.0,
           ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: TextField(
-                  controller: meetingIdController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Meeting ID',
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: TextField(
+                    controller: meetingIdController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Meeting ID',
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: TextField(
-                  controller: meetingPasswordController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: TextField(
+                    controller: meetingPasswordController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Builder(
-                  builder: (context) {
-                    // The basic Material Design action button.
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.blue, // foreground
-                      ),
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                        joinMeeting(context);
-                      },
-                      child: const Text('Join'),
-                    );
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Builder(
+                    builder: (context) {
+                      // The basic Material Design action button.
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blue, // foreground
+                        ),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          joinMeeting(context);
+                        },
+                        child: const Text('Join'),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Builder(
-                  builder: (context) {
-                    // The basic Material Design action button.
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.blue, // foreground
-                      ),
-                      onPressed: () {
-                        startMeeting(context);
-                      },
-                      child: const Text('Start Meeting'),
-                    );
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Builder(
+                    builder: (context) {
+                      // The basic Material Design action button.
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blue, // foreground
+                        ),
+                        onPressed: () {
+                          startMeeting(context);
+                        },
+                        child: const Text('Start Meeting'),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Builder(
-                  builder: (context) {
-                    // The basic Material Design action button.
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.blue, // foreground
-                      ),
-                      onPressed: () => startMeetingNormal(context),
-                      child: const Text('Start Meeting With Meeting ID'),
-                    );
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Builder(
+                    builder: (context) {
+                      // The basic Material Design action button.
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blue, // foreground
+                        ),
+                        onPressed: () => startMeetingNormal(context),
+                        child: const Text('Start Meeting With Meeting ID'),
+                      );
+                    },
+                  ),
                 ),
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Builder(
+                    builder: (context) {
+                      // The basic Material Design action button.
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blue, // foreground
+                        ),
+                        onPressed: () async => showMeeting(),
+                        child: const Text('Show meeting'),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Builder(
+                    builder: (context) {
+                      // The basic Material Design action button.
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blue, // foreground
+                        ),
+                        onPressed: () async => hideMeeting(),
+                        child: const Text('Hide meeting'),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -151,32 +193,66 @@ class _MeetingWidgetState extends State<MeetingWidget> {
 
     if (meetingIdController.text.isNotEmpty &&
         meetingPasswordController.text.isNotEmpty) {
+      String? signature;
+
+      if (kIsWeb) {
+        signature = zoom.generateSignature(
+          sdkKey,
+          sdkSecret,
+          meetingIdController.text,
+          0,
+        );
+      }
+
       ZoomOptions zoomOptions = const ZoomOptions(
         domain: 'zoom.us',
         appKey: sdkKey, //API KEY FROM ZOOM
         appSecret: sdkSecret, //API SECRET FROM ZOOM
       );
       var meetingOptions = ZoomMeetingOptions(
-          userId: 'username',
-          sdkKey: sdkKey,
+        userId: 'userId',
 
-          /// pass username for join meeting only --- Any name eg:- EVILRATT.
-          meetingId: meetingIdController.text,
+        /// pass username for join meeting only
+        displayName: 'userName',
+        sdkKey: sdkKey,
 
-          /// pass meeting id for join meeting only
-          meetingPassword: meetingPasswordController.text,
+        /// pass meeting id for join meeting only
+        meetingId: meetingIdController.text,
 
-          /// pass meeting password for join meeting only
-          disableDialIn: 'true',
-          disableDrive: 'true',
-          disableInvite: 'true',
-          disableShare: 'true',
-          disableTitlebar: 'false',
-          viewOptions: 'true',
-          noAudio: 'false',
-          noDisconnectAudio: 'false');
+        /// pass meeting password for join meeting only
+        meetingPassword: meetingPasswordController.text,
+        disableDialIn: 'true',
+        disableDrive: 'true',
+        disableInvite: 'true',
+        disableShare: 'true',
+        disableTitlebar: 'false',
+        viewOptions: 'true',
+        noAudio: 'false',
+        noVideo: 'false',
+        noDisconnectAudio: 'false',
+        signature: signature,
+      );
 
-      var zoom = ZoomView();
+      if (Platform.isWindows) {
+        zoom.initZoomAndJoinMeeting(zoomOptions, meetingOptions).then((result) {
+          if (result) {
+            zoom.onMeetingStatus().listen((status) {
+              if (status[0] == 'MEETING_STATUS_INMEETING') {
+                if (kDebugMode) {
+                  print('[Meeting Status] :- In meeting');
+                }
+              } else if (status[0] == 'MEETING_STATUS_DISCONNECTING') {
+                if (kDebugMode) {
+                  print('[Meeting Status] :- Ended');
+                }
+              }
+            });
+          }
+        });
+
+        return;
+      }
+
       zoom.initZoom(zoomOptions).then((results) {
         if (results[0] == 0) {
           zoom.onMeetingStatus().listen((status) {
@@ -246,8 +322,8 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       appSecret: sdkSecret, //API SECRET FROM ZOOM -- SDK SECRET
     );
     var meetingOptions = ZoomMeetingOptions(
-        userId: 'evilrattdeveloper@gmail.com', //pass host email for zoom
-        userPassword: 'Dlinkmoderm0641', //pass host password for zoom
+        userId: 'user@gmail.com', //pass host email for zoom
+        userPassword: 'userPsw', //pass host password for zoom
         disableDialIn: 'false',
         disableDrive: 'false',
         disableInvite: 'false',
@@ -257,7 +333,6 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         noAudio: 'false',
         noDisconnectAudio: 'false');
 
-    var zoom = ZoomView();
     zoom.initZoom(zoomOptions).then((results) {
       if (results[0] == 0) {
         zoom.onMeetingStatus().listen((status) {
@@ -271,7 +346,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
             timer.cancel();
           }
           if (status[0] == 'MEETING_STATUS_INMEETING') {
-            zoom.meetinDetails().then((meetingDetailsResult) {
+            zoom.meetingDetails().then((meetingDetailsResult) {
               if (kDebugMode) {
                 print('[MeetingDetailsResult] :- ' +
                     meetingDetailsResult.toString());
@@ -340,9 +415,9 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       appSecret: sdkSecret, //API SECRET FROM ZOOM -- SDK SECRET
     );
     var meetingOptions = ZoomMeetingOptions(
-        userId: 'evilrattdeveloper@gmail.com', //pass host email for zoom
-        userPassword: 'Dlinkmoderm0641', //pass host password for zoom
-        meetingId: meetingIdController.text, //
+        userId: 'user@gmail.com', //pass host email for zoom
+        userPassword: 'userPsw', //pass host password for zoom
+        meetingId: meetingIdController.text,
         disableDialIn: 'false',
         disableDrive: 'false',
         disableInvite: 'false',
@@ -352,7 +427,6 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         noAudio: 'false',
         noDisconnectAudio: 'false');
 
-    var zoom = ZoomView();
     zoom.initZoom(zoomOptions).then((results) {
       if (results[0] == 0) {
         zoom.onMeetingStatus().listen((status) {
@@ -366,7 +440,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
             timer.cancel();
           }
           if (status[0] == 'MEETING_STATUS_INMEETING') {
-            zoom.meetinDetails().then((meetingDetailsResult) {
+            zoom.meetingDetails().then((meetingDetailsResult) {
               if (kDebugMode) {
                 print('[MeetingDetailsResult] :- ' +
                     meetingDetailsResult.toString());
@@ -401,5 +475,13 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         print('[Error Generated] : ' + error);
       }
     });
+  }
+
+  Future<void> showMeeting() async {
+    await zoom.showMeeting();
+  }
+
+  Future<void> hideMeeting() async {
+    await zoom.hideMeeting();
   }
 }
