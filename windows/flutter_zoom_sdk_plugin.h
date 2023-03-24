@@ -102,6 +102,8 @@ namespace flutter_zoom_sdk {
 		void onMeetingStatisticsWarningNotification(ZOOM_SDK_NAMESPACE::StatisticsWarningType type);
 
 		void onMeetingParameterNotification(const ZOOM_SDK_NAMESPACE::MeetingParameter* meeting_param);
+
+		void onSuspendParticipantsActivities();
 	};
 
 }  // namespace flutter_zoom_sdk

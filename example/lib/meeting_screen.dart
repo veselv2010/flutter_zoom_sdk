@@ -181,11 +181,13 @@ class _MeetingWidgetState extends State<MeetingWidget> {
     bool _isMeetingEnded(String status) {
       var result = false;
 
-      if (Platform.isAndroid) {
-        result = status == 'MEETING_STATUS_DISCONNECTING' ||
-            status == 'MEETING_STATUS_FAILED';
-      } else {
-        result = status == 'MEETING_STATUS_IDLE';
+      if(!kIsWeb) {
+        if (Platform.isAndroid) {
+          result = status == 'MEETING_STATUS_DISCONNECTING' ||
+              status == 'MEETING_STATUS_FAILED';
+        } else {
+          result = status == 'MEETING_STATUS_IDLE';
+        }
       }
 
       return result;
@@ -233,24 +235,27 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         signature: signature,
       );
 
-      if (Platform.isWindows) {
-        zoom.initZoomAndJoinMeeting(zoomOptions, meetingOptions).then((result) {
-          if (result) {
-            zoom.onMeetingStatus().listen((status) {
-              if (status[0] == 'MEETING_STATUS_INMEETING') {
-                if (kDebugMode) {
-                  print('[Meeting Status] :- In meeting');
+      if(!kIsWeb) {
+        if (Platform.isWindows) {
+          zoom.initZoomAndJoinMeeting(zoomOptions, meetingOptions).then((
+              result) {
+            if (result) {
+              zoom.onMeetingStatus().listen((status) {
+                if (status[0] == 'MEETING_STATUS_INMEETING') {
+                  if (kDebugMode) {
+                    print('[Meeting Status] :- In meeting');
+                  }
+                } else if (status[0] == 'MEETING_STATUS_DISCONNECTING') {
+                  if (kDebugMode) {
+                    print('[Meeting Status] :- Ended');
+                  }
                 }
-              } else if (status[0] == 'MEETING_STATUS_DISCONNECTING') {
-                if (kDebugMode) {
-                  print('[Meeting Status] :- Ended');
-                }
-              }
-            });
-          }
-        });
+              });
+            }
+          });
 
-        return;
+          return;
+        }
       }
 
       zoom.initZoom(zoomOptions).then((results) {
