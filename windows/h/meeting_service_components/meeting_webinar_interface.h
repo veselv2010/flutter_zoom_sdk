@@ -41,17 +41,17 @@ public:
 
 	/// \brief Callback to disable the attendees to chat. Available only for the host and the co-host.
 	virtual void onDisallowAttendeeChatNotification() = 0;
-
+	
 	/// \brief Callback to emoji Reactions Status Changed.
 	/// \param can_reaction If the Reaction is allow, the result is true, False not.
 	virtual void onAllowWebinarReactionStatusChanged(bool can_reaction) = 0;
 
-	/// \brief Callback to attendee rise hand Status Changed.
-	/// \param can_riseHand If the raise hand is allow, the result is true, False not.
-	virtual void onAllowAttendeeRaiseHandStatusChanged(bool can_riseHand) = 0;
+	/// \brief Callback to attendee raise hand Status Changed.
+	/// \param can_raiseHand If the raise hand is allow, the result is true, False not.
+	virtual void onAllowAttendeeRaiseHandStatusChanged(bool can_raiseHand) = 0;
 
 	/// \brief Callback to attendee view the participant count status Changed.
-	/// \param can_riseHand If attendee view the participant count is allow, the result is true, False not.
+	/// \param can_viewParticipantCount If attendee view the participant count is allow, the result is true, False not.
 	virtual void onAllowAttendeeViewTheParticipantCountStatusChanged(bool can_viewParticipantCount) = 0;
   
 	/// \brief Attendee will receive this callback if his audio status changes.
@@ -166,7 +166,7 @@ public:
 	virtual SDKError AllowPanelistStartVideo() = 0;
 
 	/// \brief Forbid the panelist to start video.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks If the function succeeds, the user will receive the IMeetingWebinarCtrlEvent::onDisallowPanelistStartVideoNotification() callback event. Available only for the host.
 	virtual SDKError DisallowPanelistStartVideo() = 0;

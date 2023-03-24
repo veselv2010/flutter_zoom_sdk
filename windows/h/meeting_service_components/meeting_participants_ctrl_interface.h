@@ -190,6 +190,22 @@ public:
 	/// \param userId Specify the user ID whose status changes. 
 	/// \param status Value of recording status. For more details, see \link RecordingStatus \endlink enum.
 	virtual void onLocalRecordingStatusChanged(unsigned int user_id, RecordingStatus status) = 0;
+
+	/// \brief Callback event that lets participants rename themself.
+	/// \param bAllow True allow. If false, participants may not rename themselves.
+	virtual void onAllowParticipantsRenameNotification(bool bAllow) = 0;
+
+	/// \brief Callback event that lets participants unmute themself.
+	/// \param bAllow True allow. If false, participants may not rename themselves.
+	virtual void onAllowParticipantsUnmuteSelfNotification(bool bAllow) = 0;
+
+	/// \brief Callback event that lets participants start a video.
+	/// \param bAllow True allow. If false, disallow.
+	virtual void onAllowParticipantsStartVideoNotification(bool bAllow) = 0;
+
+	/// \brief Callback event that lets participants share a new whiteboard.
+	/// \param bAllow True allow. If false, participants may not share new whiteboard.
+	virtual void onAllowParticipantsShareWhiteBoardNotification(bool bAllow) = 0;
 };
 
 /// \brief Meeting waiting room controller interface
@@ -334,7 +350,7 @@ public:
 	virtual SDKError AllowParticipantsToShareWhiteBoard(bool bAllow) = 0;
 
 	/// \brief Check whether the current meeting allows participants to share whiteboard, it can only be used in regular meeetings(no bo).
-	/// \return If allows participants to start video, the return value is true.
+	/// \return If allows participants to share whiteboard, the return value is true.
 	virtual bool IsParticipantsShareWhiteBoardAllowed() = 0;
 
 	/// \brief Allowing the regular attendees to use chat, it can only be used in regular meeetings(no webinar or bo).

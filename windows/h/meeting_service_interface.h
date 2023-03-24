@@ -454,6 +454,9 @@ public:
 	/// \param meeting_param Meeting parameter. For more details, see \link MeetingParameter \endlink.
 	/// \remarks The callback will be triggered right before the meeting starts. The meeting_param will be destroyed once the function calls end.
 	virtual void onMeetingParameterNotification(const MeetingParameter* meeting_param) = 0;
+
+	/// \brief Callback event when a meeting is suspended.
+	virtual void onSuspendParticipantsActivities() = 0;
 };
 
 class IAnnotationController;
@@ -534,6 +537,15 @@ public:
 	/// \brief Determine if the meeting is locked.
 	/// \return TRUE indicates the meeting status is locked.
 	virtual bool IsMeetingLocked() = 0;
+
+	/// \brief Suspend all participant activities.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SuspendParticipantsActivites() = 0;
+
+	/// \brief Determine if host/cohose can suspend participant activities.
+	/// \return If it can suspend participant activities, the return value is True.
+	virtual bool CanSuspendParticipantsActivities() = 0;
 
 	/// \brief Get meeting information.
 	/// \return If the function succeeds, the return value is the meeting information. Otherwise returns NULL. For more details, see \link IMeetingInfo \endlink.

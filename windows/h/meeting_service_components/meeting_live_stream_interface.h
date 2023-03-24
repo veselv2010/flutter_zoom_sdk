@@ -31,10 +31,12 @@ struct RawLiveStreamInfo
 {
 	unsigned int userId;///<User ID.
 	const wchar_t* broadcastUrl;///<Broadcast URL
+	const wchar_t* broadcastName;///<Broadcast Name
 	RawLiveStreamInfo()
 	{
 		userId = 0;
 		broadcastUrl = NULL;
+		broadcastName = NULL;
 	}
 };
 
@@ -58,6 +60,10 @@ public:
 	/// \brief Get the broadcast URL.
 	/// \return If the function succeeds, the return value is the broadcast URL.
 	virtual const wchar_t* GetBroadcastUrl() = 0;
+
+	/// \brief Get the broadcast name.
+	/// \return If the function succeeds, the return value is the broadcast name.
+	virtual const wchar_t* GetBroadcastName() = 0;
 
 	/// \brief Allows the user to start raw live stream and finally self-destroy.
 	virtual SDKError GrantRawLiveStreamPrivilege() = 0;
@@ -170,13 +176,29 @@ public:
 	/// \param broadcastURL The broadcast URL of the live-stream.
 	/// \return If the function succeeds, the return value is SDKErr_Success and the SDK will send the request.
 	///Otherwise it fails and the request will not be sent. To get extended error information, see \link SDKError \endlink enum.
+	/// \deprecated This interface will be marked as deprecated, then it will be instead by RequestRawLiveStreaming, please stop using it.
 	virtual SDKError RequestRawLiveStream(const wchar_t* broadcastURL) = 0;
+
+	/// \brief Send a request to enable the SDK to start a raw live stream.
+	/// \param broadcastURL The broadcast URL of the live-stream.
+	/// \param broadcastName The broadcast name of the live-stream.
+	/// \return If the function succeeds, the return value is SDKErr_Success and the SDK will send the request.
+	///Otherwise it fails and the request will not be sent. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError RequestRawLiveStreaming(const wchar_t* broadcastURL, const wchar_t* broadcastName) = 0;
 
 	/// \brief Start raw live streaming.
 	/// \param broadcastURL The broadcast URL of the live-stream.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \deprecated This interface will be marked as deprecated, then it will be instead by StartRawLiveStreaming, please stop using it.
 	virtual SDKError StartRawLiveStream(const wchar_t* broadcastURL) = 0;
+
+	/// \brief Start raw live streaming.
+	/// \param broadcastURL The broadcast URL of the live-stream.
+	/// \param broadcastName The broadcast name of the live-stream.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError StartRawLiveStreaming(const wchar_t* broadcastURL, const wchar_t* broadcastName) = 0;
 
 	/// \brief Stop raw live streaming.
 	/// \return If the function succeeds, the return value is SDKErr_Success.

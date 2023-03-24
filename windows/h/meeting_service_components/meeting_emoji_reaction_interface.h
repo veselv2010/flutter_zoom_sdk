@@ -24,7 +24,7 @@ typedef enum tagSDKEmojiReactionType
 	SDKEmojiReactionType_Tada,
 }SDKEmojiReactionType;
 
-/*! \enum SDKEmojiReactionType
+/*! \enum SDKEmojiReactionDisplayType
 	\brief Specify the emoji display type.
 	Here are more detailed enum descriptions.
 */
@@ -35,6 +35,7 @@ typedef enum tagSDKEmojiReactionDisplayType
 	SDKEmojiReactionDisplayType_Medium,
 	SDKEmojiReactionDisplayType_Hidden
 }SDKEmojiReactionDisplayType;
+
 
 /// \brief Emoji Reaction controller callback event.
 ///

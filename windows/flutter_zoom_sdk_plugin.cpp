@@ -374,4 +374,6 @@ namespace flutter_zoom_sdk {
 
 	void MeetingServiceEvent::onMeetingParameterNotification(const ZOOM_SDK_NAMESPACE::MeetingParameter* meeting_param) {}
 
+	void MeetingServiceEvent::onSuspendParticipantsActivities(){}
+
 }  // namespace flutter_zoom_sdk
