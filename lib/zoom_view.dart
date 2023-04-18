@@ -162,10 +162,13 @@ class ZoomView extends ZoomPlatform {
   /// The event channel used to interact with the native platform hideMeeting(Android & Windows) function
   @override
   Future<bool> hideMeeting({bool isWindows = false}) async {
-    /// Вызываем hide_meeting для Windows два раза,
+    /// Для Windows сначала раскрываем окно на весь экран,
+    /// для того чтобы гарантированно поймать фокус клавиатуры.
+    /// После вызываем hide_meeting для Windows два раза с небольшой задержкой,
     /// т.к. сворачиваем окно с помощью клавиш Win+Down,
-    /// а окно может быть в полноэкранном режиме
+    /// а окно может быть в полноэкранном режиме.
     if(isWindows){
+      await channel.invokeMethod<bool>('show_meeting');
       await channel.invokeMethod<bool>('hide_meeting');
       await Future.delayed(Duration(milliseconds: 100));
     }

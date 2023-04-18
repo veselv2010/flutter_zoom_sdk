@@ -181,7 +181,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
     bool _isMeetingEnded(String status) {
       var result = false;
 
-      if(!kIsWeb) {
+      if (!kIsWeb) {
         if (Platform.isAndroid) {
           result = status == 'MEETING_STATUS_DISCONNECTING' ||
               status == 'MEETING_STATUS_FAILED';
@@ -235,7 +235,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         signature: signature,
       );
 
-      if(!kIsWeb) {
+      if (!kIsWeb) {
         if (Platform.isWindows) {
           zoom.initZoomAndJoinMeeting(zoomOptions, meetingOptions).then((
               result) {
@@ -487,6 +487,12 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   }
 
   Future<void> hideMeeting() async {
-    await zoom.hideMeeting();
+    bool isWindows = false;
+
+    if (!kIsWeb) {
+      isWindows = Platform.isWindows;
+    }
+
+    await zoom.hideMeeting(isWindows: isWindows);
   }
 }
