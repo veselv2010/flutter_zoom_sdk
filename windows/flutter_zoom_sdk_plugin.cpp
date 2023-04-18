@@ -311,7 +311,14 @@ namespace flutter_zoom_sdk {
 				UIController->GetMeetingUIWnd(firstView, secondView);
 
 				if (firstView) {
-					ShowWindow(firstView, SW_HIDE);
+					//ShowWindow(firstView, SW_MINIMIZE);
+
+					// Выходим из полноэкранного режима, если он включен (т.к. иначе свернуть с помощью Win+Down не выйдет)
+					UIController->ExitFullScreen(true, true);
+
+					// ShowWindow не позволяет отобразить мини окно Zoom при сворачивании окна, поэтому
+					// сворачиваем окно конференции при помощи клавиш Win + Down.
+					FlutterZoomSdkPlugin::pressWinAndDownKeys();
 
 					_cputts(L"Hide meeting screen\n");
 
@@ -322,6 +329,31 @@ namespace flutter_zoom_sdk {
 		}
 
 		return false;
+	}
+
+	void FlutterZoomSdkPlugin::pressWinAndDownKeys() {
+		INPUT inputs[4] = {};
+		ZeroMemory(inputs, sizeof(inputs));
+
+		inputs[0].type = INPUT_KEYBOARD;
+		inputs[0].ki.wVk = VK_LWIN;
+
+		inputs[1].type = INPUT_KEYBOARD;
+		inputs[1].ki.wVk = VK_DOWN;
+
+		inputs[2].type = INPUT_KEYBOARD;
+		inputs[2].ki.wVk = VK_DOWN;
+		inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+
+		inputs[3].type = INPUT_KEYBOARD;
+		inputs[3].ki.wVk = VK_LWIN;
+		inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+		UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+		if (uSent != ARRAYSIZE(inputs))
+		{
+			_cputts(L"Press win and down key failed\n");
+		}
 	}
 
 	// class AuthEvent 

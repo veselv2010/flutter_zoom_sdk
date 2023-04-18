@@ -81,7 +81,7 @@ abstract class ZoomPlatform extends PlatformInterface {
     throw UnimplementedError('openZoomActivity() has not been implemented.');
   }
 
-  Future<bool> hideMeeting() async {
+  Future<bool> hideMeeting({bool isWindows = false}) async {
     throw UnimplementedError('putToBgZoomActivity() has not been implemented.');
   }
 }
