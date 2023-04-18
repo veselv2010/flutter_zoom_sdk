@@ -68,6 +68,8 @@ namespace flutter_zoom_sdk {
 		bool hideMeeting();
 
 		bool showMeeting();
+
+		void pressWinAndDownKeys();
 	};
 
 	class AuthEvent : public ZOOM_SDK_NAMESPACE::IAuthServiceEvent {
