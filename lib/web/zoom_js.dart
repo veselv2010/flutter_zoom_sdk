@@ -51,7 +51,7 @@ class InitParams {
 /// needed along with factory constructor
 class JoinParams {
   external factory JoinParams(
-      {meetingNumber, userName, userEmail, signature, sdkKey, passWord, success, error});
+      {meetingNumber, userName, signature, sdkKey, passWord, success, error});
 }
 
 /// Signature helper

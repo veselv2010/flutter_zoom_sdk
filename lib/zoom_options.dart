@@ -94,9 +94,6 @@ class ZoomMeetingOptions {
   /// Host Password For Start Meeting
   String? userPassword;
 
-  /// User email for Join Meeting
-  String? userEmail;
-
   /// Display Name
   String? displayName;
 
@@ -148,7 +145,6 @@ class ZoomMeetingOptions {
   ZoomMeetingOptions({
     this.userId,
     this.userPassword,
-    this.userEmail,
     this.displayName,
     this.meetingId,
     this.meetingPassword,

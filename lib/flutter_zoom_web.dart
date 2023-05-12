@@ -163,7 +163,6 @@ class ZoomViewWeb extends ZoomPlatform {
       JoinParams(
         meetingNumber: options.meetingId,
         userName: options.displayName ?? options.userId,
-        userEmail: options.userEmail,
         signature: options.signature!,
         sdkKey: options.sdkKey!,
         passWord: options.meetingPassword,
