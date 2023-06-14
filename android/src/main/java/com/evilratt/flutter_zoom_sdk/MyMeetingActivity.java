@@ -3,15 +3,18 @@ package com.evilratt.flutter_zoom_sdk;
 import us.zoom.sdk.MeetingActivity;
 import us.zoom.sdk.ZoomSDK;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 public class MyMeetingActivity extends MeetingActivity {
     private Button returnBtn;
@@ -48,7 +51,7 @@ public class MyMeetingActivity extends MeetingActivity {
 
         registerReceiver(myBroadcast, new IntentFilter("my_meeting_activity_broadcast"));
 
-        returnBtn = (Button)findViewById(R.id.returnBtn);
+        returnBtn = (Button) findViewById(R.id.returnBtn);
 
         if (returnBtn != null) {
             if (returnBtnMsg != null) {

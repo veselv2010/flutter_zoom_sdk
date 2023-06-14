@@ -1,4 +1,5 @@
 package com.evilratt.flutter_zoom_sdk;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +19,7 @@ public class StatusListener implements MeetingServiceListener {
 
     @Override
     public void onMeetingStatusChanged(MeetingStatus meetingStatus, int errorCode, int internalErrorCode) {
-        if(meetingStatus == MeetingStatus.MEETING_STATUS_FAILED &&
+        if (meetingStatus == MeetingStatus.MEETING_STATUS_FAILED &&
                 errorCode == MeetingError.MEETING_ERROR_CLIENT_INCOMPATIBLE) {
             events.success(Arrays.asList("MEETING_STATUS_UNKNOWN", "Version of ZoomSDK is too low"));
             return;

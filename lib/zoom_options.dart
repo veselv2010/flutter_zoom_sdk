@@ -7,6 +7,7 @@ class ZoomOptions {
   final String? domain;
   final String? appKey;
   final String? appSecret;
+  final String? jwtToken; // android
   final bool? debug;
   final String? language; //--for web
   final bool? showMeetingHeader; //--for web
@@ -40,6 +41,7 @@ class ZoomOptions {
   const ZoomOptions({
     required this.domain,
     this.leaveUrl,
+    this.jwtToken,
     this.debug,
     this.appKey,
     this.appSecret,

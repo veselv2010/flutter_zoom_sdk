@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:flutter_zoom_sdk/models/audio_types.dart';
 import 'package:flutter_zoom_sdk/zoom_platform_view.dart';
 
 class ZoomView extends ZoomPlatform {
@@ -8,6 +9,11 @@ class ZoomView extends ZoomPlatform {
   /// The event channel used to interact with the native platform.
   final EventChannel eventChannel =
       const EventChannel('flutter_zoom_sdk_event_stream');
+
+  final MethodChannel micChannel =
+      const MethodChannel('flutter_zoom_sdk/microphone');
+  final EventChannel micChannelStream =
+      const EventChannel('flutter_zoom_sdk/microphone/stream');
 
   /// The event channel used to interact with the native platform init function
   @override
@@ -22,6 +28,9 @@ class ZoomView extends ZoomPlatform {
     }
     if (options.returnBtnMsg != null) {
       optionMap.putIfAbsent("returnBtnMsg", () => options.returnBtnMsg!);
+    }
+    if (options.jwtToken != null) {
+      optionMap.putIfAbsent('jwtToken', () => options.jwtToken!);
     }
 
     optionMap.putIfAbsent("domain", () => options.domain);
@@ -42,12 +51,15 @@ class ZoomView extends ZoomPlatform {
 
     initOptionsMap.putIfAbsent("appKey", () => zoomOptions.appKey);
     initOptionsMap.putIfAbsent("appSecret", () => zoomOptions.appSecret);
+    initOptionsMap.putIfAbsent("jwtToken", () => zoomOptions.jwtToken);
     initOptionsMap.putIfAbsent("returnBtnMsg", () => zoomOptions.returnBtnMsg);
     initOptionsMap.putIfAbsent("domain", () => zoomOptions.domain);
 
-    meetingOptionsMap.putIfAbsent("displayName", () => meetingOptions.displayName);
+    meetingOptionsMap.putIfAbsent(
+        "displayName", () => meetingOptions.displayName);
     meetingOptionsMap.putIfAbsent("meetingId", () => meetingOptions.meetingId);
-    meetingOptionsMap.putIfAbsent("meetingPassword", () => meetingOptions.meetingPassword);
+    meetingOptionsMap.putIfAbsent(
+        "meetingPassword", () => meetingOptions.meetingPassword);
     meetingOptionsMap.putIfAbsent("noAudio", () => meetingOptions.noAudio);
     meetingOptionsMap.putIfAbsent("noVideo", () => meetingOptions.noVideo);
 
@@ -167,7 +179,7 @@ class ZoomView extends ZoomPlatform {
     /// После вызываем hide_meeting для Windows два раза с небольшой задержкой,
     /// т.к. сворачиваем окно с помощью клавиш Win+Down,
     /// а окно может быть в полноэкранном режиме.
-    if(isWindows){
+    if (isWindows) {
       await channel.invokeMethod<bool>('show_meeting');
       await channel.invokeMethod<bool>('hide_meeting');
       await Future.delayed(Duration(milliseconds: 100));
@@ -183,5 +195,26 @@ class ZoomView extends ZoomPlatform {
     return await channel
         .invokeMethod<bool>('leave_meeting')
         .then<bool>((bool? value) => value ?? false);
+  }
+
+  @override
+  Future<bool> getMicStatus() {
+    return micChannel
+        .invokeMethod<bool>('getMicStatus')
+        .then((value) => value ?? false);
+  }
+
+  @override
+  Future<bool> muteMyAudio({bool isMuted = true}) {
+    return micChannel
+        .invokeMethod<bool>('muteMyAudio', isMuted)
+        .then((value) => value ?? false);
+  }
+
+  @override
+  Stream<ZmAudioStatus> getMicStatusStream() {
+    return micChannelStream
+        .receiveBroadcastStream()
+        .map((event) => ZmAudioStatus.values[event]);
   }
 }

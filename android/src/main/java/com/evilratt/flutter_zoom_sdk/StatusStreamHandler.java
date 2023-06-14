@@ -9,6 +9,7 @@ import us.zoom.sdk.MeetingError;
 import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.MeetingServiceListener;
 import us.zoom.sdk.MeetingStatus;
+import us.zoom.sdk.ZoomSDK;
 
 /**
  * This class implements the handler for the Zoom meeting event in the flutter event channel
@@ -31,6 +32,5 @@ public class StatusStreamHandler implements EventChannel.StreamHandler {
     @Override
     public void onCancel(Object arguments) {
         this.meetingService.removeListener(statusListener);
-
     }
 }

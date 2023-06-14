@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:flutter_zoom_sdk/zoom_options.dart';
 import 'package:flutter_zoom_sdk/zoom_view.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+import 'models/audio_types.dart';
 export 'zoom_options.dart';
+export 'models/audio_types.dart';
 
 abstract class ZoomPlatform extends PlatformInterface {
   ZoomPlatform() : super(token: _token);
@@ -83,5 +86,17 @@ abstract class ZoomPlatform extends PlatformInterface {
 
   Future<bool> hideMeeting({bool isWindows = false}) async {
     throw UnimplementedError('putToBgZoomActivity() has not been implemented.');
+  }
+
+  Future<bool> getMicStatus() {
+    throw UnimplementedError('getMicStatus() has not been implemented.');
+  }
+
+  Future<bool> muteMyAudio({bool isMuted = true}) {
+    throw UnimplementedError('muteMyAudio() has not been implemented.');
+  }
+
+  Stream<ZmAudioStatus> getMicStatusStream() {
+    throw UnimplementedError('getMicStatusStream() has not been implemented.');
   }
 }
