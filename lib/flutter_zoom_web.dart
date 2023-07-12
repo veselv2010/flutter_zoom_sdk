@@ -25,7 +25,7 @@ class ZoomViewWeb extends ZoomPlatform {
   @override
   Future<List> initZoom(ZoomOptions options) async {
     final Completer<List> completer = Completer();
-    var sus = ZoomMtg.checkSystemRequirements();
+    var sus = ZoomMtg.checkFeatureRequirements();
     var susmap = convertToDart(sus);
 
     if (kDebugMode) {
