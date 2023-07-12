@@ -108,7 +108,7 @@ class ZoomMtg {
   external static void showJoinAudioFunction(ShowJoinAudioParams params);
   external static void leaveMeeting(LeaveParams params);
   external static String generateSDKSignature(SignatureParams signatureParams);
-  external static dynamic checkSystemRequirements();
+  external static dynamic checkFeatureRequirements();
   external static void inMeetingServiceListener(
       String event, Function(MeetingStatus?) callback);
 }

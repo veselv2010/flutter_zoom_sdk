@@ -210,7 +210,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         domain: 'zoom.us',
         appKey: sdkKey, //API KEY FROM ZOOM
         appSecret: sdkSecret, //API SECRET FROM ZOOM
-        disableVOIP: false,
+        disablePreview: true,
       );
       var meetingOptions = ZoomMeetingOptions(
         userId: 'userId',
