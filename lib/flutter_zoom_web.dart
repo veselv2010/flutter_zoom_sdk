@@ -1,15 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:html';
 import 'dart:js';
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:flutter_zoom_sdk/web/zoom_js.dart';
 import 'package:flutter_zoom_sdk/zoom_platform_view.dart';
 
 import 'web/js_interop.dart';
+
 export 'package:flutter_zoom_sdk/zoom_platform_view.dart'
     show ZoomOptions, ZoomMeetingOptions;
 
@@ -71,37 +70,6 @@ class ZoomViewWeb extends ZoomPlatform {
           completer.complete([1, 0]);
         })));
     return completer.future;
-  }
-
-  @override
-  String generateSignature(
-      String sdkKey, String sdkSecret, String meetingNumber, int role) {
-    final iat = (DateTime.now().millisecondsSinceEpoch - 30000) ~/ 1000;
-    final exp = iat + 60 * 60 * 2;
-
-    final oHeader = {'alg': 'HS256', 'typ': 'JWT'};
-    final oPayload = {
-      'sdkKey': sdkKey,
-      'mn': meetingNumber,
-      'role': role,
-      'iat': iat,
-      'exp': exp,
-      'appKey': sdkKey,
-      'tokenExp': exp
-    };
-    if (kDebugMode) {
-      print(oPayload.entries
-          .map((entry) => '${entry.key}: ${entry.value.toString()}')
-          .join('\n'));
-    }
-    final oHeader64 = base64Encode(utf8.encode(jsonEncode(oHeader)));
-    final oPayload64 = base64Encode(utf8.encode(jsonEncode(oPayload)));
-
-    final bytes = utf8.encode('$oHeader64.$oPayload64');
-    final hmac = Hmac(sha256, utf8.encode(sdkSecret)).convert(bytes);
-    final signature = '$oHeader64.$oPayload64.${base64Encode(hmac.bytes)}';
-
-    return signature.replaceAll(RegExp('='), '').replaceAll('+/', '-_');
   }
 
   ButtonElement? _getCloseButton() {

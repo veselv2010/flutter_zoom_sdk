@@ -7,6 +7,7 @@
 #define _MEETING_ParticipantsCtrl_INTERFACE_H_
 #include "zoom_sdk_def.h"
 #include "meeting_service_components/meeting_recording_interface.h"
+#include "meeting_service_components/meeting_emoji_reaction_interface.h"
 BEGIN_ZOOM_SDK_NAMESPACE
 /*! \enum UserRole
     \brief Role of user.
@@ -43,6 +44,7 @@ public:
 	/// \brief Get the username matched with the current user information.
 	/// \return If the function succeeds, the return value is the username.
 	///Otherwise failed, the return value is NULL.
+	/// \remarks Valid for both normal user and webinar attendee.
 	virtual const wchar_t* GetUserName() = 0;
 
 	/// \brief Determine whether the member corresponding with the current information is the host or not.
@@ -51,8 +53,14 @@ public:
 
 	/// \brief Get the user ID matched with the current user information.
 	/// \return If the function succeeds, the return value is the user ID.
-	///Otherwise failed, the return value is ZERO(0).
+	///Otherwise the function fails, and the return value is ZERO(0).
+	/// \remarks Valid for both normal user and webinar attendee.
 	virtual unsigned int GetUserID() = 0;
+
+	/// \brief Get the avatar file path matched with the current user information.
+	/// \return If the function succeeds, the return value is the avatar file path.
+	///Otherwise failed, the return value is NULL.
+	virtual const wchar_t* GetAvatarPath() = 0;
 
 	/// \brief Get the user persistent id matched with the current user information.
 	/// \return If the function succeeds, the return value is the user persistent id.
@@ -68,6 +76,7 @@ public:
 
 	/// \brief Determine the video status of the user specified by the current information.
 	/// \return TRUE indicates that the video is turned on.
+	/// \remarks Valid for both normal user and webinar attendee.
 	virtual bool IsVideoOn() = 0;
 
 	/// \brief Determine the audio status of the user specified by the current information.
@@ -142,6 +151,10 @@ public:
 	/// \return TRUE indicates that the specified user has raw live stream privilege, otherwise false.
 	virtual bool HasRawLiveStreamPrivilege() = 0;
 
+	/// \brief Get the emoji feedback type of the user.
+	/// \return The emoji feedback type of the user. For more details, see \link SDKEmojiFeedbackType \endlink enum.
+	virtual SDKEmojiFeedbackType GetEmojiFeedbackType() = 0;
+
 	virtual ~IUserInfo(){};
 };
 
@@ -153,13 +166,15 @@ public:
 	virtual ~IMeetingParticipantsCtrlEvent() {}
 
 	/// \brief Callback event of notification of users who are in the meeting.
-	/// \param lstUserID List of the user ID. 
-	/// \param strUserList List of user in json format. This function is currently invalid, hereby only for reservations.
+	/// \param lstUserID List of user IDs. 
+	/// \param strUserList List of users in JSON format. This function is currently invalid, hereby only for reservations.
+	/// \remarks Valid for both normal user and webinar attendee.
 	virtual void onUserJoin(IList<unsigned int >* lstUserID, const wchar_t* strUserList = NULL) = 0;
 
 	/// \brief Callback event of notification of user who leaves the meeting.
 	/// \param lstUserID List of the user ID who leaves the meeting.
-	/// \param strUserList List of the user in json format. This function is currently invalid, hereby only for reservations.
+	/// \param strUserList List of the users in JSON format. This function is currently invalid, hereby only for reservations.
+	/// \remarks Valid for both normal user and webinar attendee.
 	virtual void onUserLeft(IList<unsigned int >* lstUserID, const wchar_t* strUserList = NULL) = 0;
 
 	/// \brief Callback event of notification of the new host. 
@@ -173,6 +188,7 @@ public:
 
 	/// \brief Callback event of changing the screen name. 
 	/// \param userId list Specify the users ID whose status changes.
+	/// \remarks Valid for both normal user and webinar attendee.
 	virtual void onUserNamesChanged(IList<unsigned int>* lstUserID) = 0;
 
 	/// \brief Callback event of changing the co-host.
@@ -206,6 +222,14 @@ public:
 	/// \brief Callback event that lets participants share a new whiteboard.
 	/// \param bAllow True allow. If false, participants may not share new whiteboard.
 	virtual void onAllowParticipantsShareWhiteBoardNotification(bool bAllow) = 0;
+
+	/// \brief Callback event that the request local recording privilege changes.
+	/// \param status Value of request local recording privilege status. For more details, see \link LocalRecordingRequestPrivilegeStatus \endlink enum.
+	virtual void onRequestLocalRecordingPrivilegeChanged(LocalRecordingRequestPrivilegeStatus status) = 0;
+
+	/// \brief Callback event that the user avatar path is updated in the meeting.
+	/// \param userID Specify the user ID whose avatar updated. 
+	virtual void onInMeetingUserAvatarPathUpdated(unsigned int userID) = 0;
 };
 
 /// \brief Meeting waiting room controller interface
@@ -221,15 +245,15 @@ public:
 
 	/// \brief Get the list of all the panelists in the meeting.
 	/// \return If the function succeeds, the return value is the list of the panelists in the meeting.
-	///Otherwise failed, the return value is NULL.
-	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	///Otherwise the function fails, and the return value is NULL.
+	/// \remarks Valid for both ZOOM style and user custom interface mode. Valid for both normal user and webinar attendee.
 	virtual IList<unsigned int >* GetParticipantsList() = 0;
 
 	/// \brief Get the information of specified user.
 	/// \param userid Specify the user ID for which you want to get the information. 
 	/// \return If the function succeeds, the return value is a pointer to the IUserInfo. For more details, see \link IUserInfo \endlink.
-	///Otherwise failed, the return value is NULL.
-	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	///Otherwise the function fails, and the return value is NULL.
+	/// \remarks Valid for both ZOOM style and user custom interface mode. Valid for both normal user and webinar attendee.
 	virtual IUserInfo* GetUserByUserID(unsigned int userid) = 0;
 
 	/// \brief Get the information of current user.
@@ -364,6 +388,26 @@ public:
 	/// \return If allows participants to chat, the return value is true.
 	/// \remarks Valid for both ZOOM style and user custom interface mode..
 	virtual bool IsParticipantAllowedToChat() = 0;
+
+	/// \brief Check whether the current meeting allows participants to send local recording privilege request, it can only be used in regular meeetings(no webinar or bo).
+	/// \return If allows participants to share whiteboard, the return value is true.
+	virtual bool IsParticipantRequestLocalRecordingAllowed() = 0;
+
+	/// \brief Allowing the regular attendees to send local recording privilege request, it can only be used in regular meeetings(no bo).
+	/// \param bAllow TRUE indicates Allowing the regular attendees to send local recording privilege request. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError AllowParticipantsToRequestLocalRecording(bool bAllow) = 0;
+
+	/// \brief Check whether the current meeting auto grant participants local recording privilege request, it can only be used in regular meeetings(no webinar or bo).
+	/// \return If auto grant participants local recording privilege request, the return value is true.
+	virtual bool IsAutoAllowLocalRecordingRequest() = 0;
+
+	/// \brief Auto grant or deny the regular attendee's local recording privilege request, it can only be used in regular meeetings(no bo).
+	/// \param bAllow TRUE indicates Auto grant or deny the regular attendee's local recording privilege request. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError AutoAllowLocalRecordingRequest(bool bAllow) = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

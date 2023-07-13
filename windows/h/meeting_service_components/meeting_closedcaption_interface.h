@@ -11,7 +11,7 @@ BEGIN_ZOOM_SDK_NAMESPACE
 /**
  * @brief Enumerations of the type for live transcription status.
  */
-	typedef enum
+typedef enum
 {
 	SDK_LiveTranscription_Status_Stop = 0,   //not start
 	SDK_LiveTranscription_Status_Start = 1,  //start
@@ -30,7 +30,6 @@ typedef enum
 	SDK_LiveTranscription_OperationType_Delete,
 	SDK_LiveTranscription_OperationType_Complete,
 	SDK_LiveTranscription_OperationType_NotSupported,
-	SDK_LiveTranscription_OperationType_NoTranslation,
 }SDKLiveTranscriptionOperationType;
 
 /// \brief live transcription language interface.
@@ -41,6 +40,39 @@ public:
 	virtual int GetLTTLanguageID() = 0;
 	virtual const wchar_t* GetLTTLanguageName() = 0;
 	virtual ~ILiveTranscriptionLanguage() {};
+};
+
+/// \brief live transcription message interface.
+///
+class ILiveTranscriptionMessageInfo
+{
+public:
+	/// \brief Get the message ID of the current message.
+	/// \return If the function succeeds, the return value is the message ID of the current message.
+	///Otherwise it fails, and the return value is the string of length zero(0)
+	virtual const wchar_t* GetMessageID() = 0;
+
+	/// \brief Get the speaker's ID.
+	/// \return The user object's speaker ID.
+	virtual unsigned int GetSpeakerID() = 0;
+
+	/// \brief Get the speaker's name.
+	/// \return The user object's speaker name.
+	virtual const wchar_t* GetSpeakerName() = 0;
+
+	/// \brief Get the content of the current message.
+	/// \return The current message's content.
+	virtual const wchar_t* GetMessageContent() = 0;
+
+	/// \brief Get the timestamp of the current message.
+	/// \return The current message's timestamp.
+	virtual time_t GetTimeStamp() = 0;
+
+	/// \brief Get the type of the current message.
+	/// \return The current message's type.
+	virtual SDKLiveTranscriptionOperationType GetMessageOperationType() = 0;
+
+	virtual ~ILiveTranscriptionMessageInfo() {};
 };
 
 /// \brief Closed Caption controller callback event.
@@ -69,7 +101,16 @@ public:
 	/// \param ltMsg: an object pointer to the live transcription message content. 
 	/// \param ltSpearkId: the speaker id of the live transcription message. 
 	/// \param type: the live transcription operation type. For more details, see \link SDKLiveTranscriptionOperationType \endlink.
+	/// \deprecated This interface will be marked as deprecated, then it will be instead by onLiveTranscriptionMsgInfoReceived, please stop using it.
 	virtual void onLiveTranscriptionMsgReceived(const wchar_t* ltMsg, unsigned int speaker_id, SDKLiveTranscriptionOperationType type) = 0;
+
+	/// \brief original language message received callback.
+	/// \param messageInfo The spoken language message, see \link ILiveTranscriptionMessageInfo \endlink.
+	virtual void onOriginalLanguageMsgReceived(ILiveTranscriptionMessageInfo* messageInfo) = 0;
+
+	/// \brief live transcription message received callback.
+	/// \param messageInfo The live transcription message, see \link ILiveTranscriptionMessageInfo \endlink.
+	virtual void onLiveTranscriptionMsgInfoReceived(ILiveTranscriptionMessageInfo* messageInfo) = 0;
 
 	/// \brief The translation message error callback.
 	/// \param speakingLanguage: an object of the spoken message language. 

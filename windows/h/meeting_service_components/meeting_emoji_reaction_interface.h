@@ -36,6 +36,19 @@ typedef enum tagSDKEmojiReactionDisplayType
 	SDKEmojiReactionDisplayType_Hidden
 }SDKEmojiReactionDisplayType;
 
+/*! \enum SDKEmojiFeedbackType
+	\brief Specify the emoji feedback type.
+	Here are more detailed enum descriptions.
+*/
+typedef enum tagSDKEmojiFeedbackType
+{
+	SDKEmojiFeedbackType_None,
+	SDKEmojiFeedbackType_Yes,
+	SDKEmojiFeedbackType_No,
+	SDKEmojiFeedbackType_SpeedUp,
+	SDKEmojiFeedbackType_SlowDown,
+	SDKEmojiFeedbackType_Away
+}SDKEmojiFeedbackType;
 
 /// \brief Emoji Reaction controller callback event.
 ///
@@ -51,6 +64,15 @@ public:
 	/// \brief Emoji reaction callback. This callback notifies the user when an emoji is received in the webinar.
 	/// \param type Specify the type of the received reaction. 
 	virtual void OnEmojiReactionReceivedInWebinar(SDKEmojiReactionType type) = 0;
+
+	/// \brief Emoji feedback received callback. This function is used to inform the user once received the emoji feedback sent by others or user himself.
+	/// \param sender_id Specify the user id of the emoji feedback sender.
+	/// \param type Specify the type of the received emoji feedback.
+	virtual void OnEmojiFeedbackReceived(unsigned int sender_id, SDKEmojiFeedbackType type) = 0;
+
+	/// \brief Emoji feedback canceled callback. This function is used to inform the user once the received emoji feedback sent by others or user himself was canceled.
+	/// \param sender_id Specify the user id of the emoji feedback sender.
+	virtual void OnEmojiFeedbackCanceled(unsigned int sender_id) = 0;
 };
 
 /// \brief Emoji Reaction controller interface.
@@ -69,7 +91,7 @@ public:
 	
 	/// \brief Send the reaction.
 	/// \param type Specify the reaction type to be sent.
-	/// /// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SendEmojiReaction(SDKEmojiReactionType type) = 0;
 
@@ -82,6 +104,17 @@ public:
 	/// \brief Get emoji reaction display type in webinar.
 	/// \return If the function succeeds, it will return the display type of the emoji reaction, otherwise returns SDKEmojiReactionDisplayType_None.
 	virtual SDKEmojiReactionDisplayType GetWebinarEmojiReactionDisplayType() = 0;
+
+	/// \brief Send the emoji feedback.
+	/// \param type Specify the emoji feedback type to be sent.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SendEmojiFeedback(SDKEmojiFeedbackType type) = 0;
+
+	/// \brief Cancel the emoji feedback.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError CancelEmojiFeedback() = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE

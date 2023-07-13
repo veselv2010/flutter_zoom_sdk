@@ -130,12 +130,14 @@ class INormalVideoRenderElement : public IVideoRenderElement
 public:
 	/// \brief Show the data of the specified user through normal render mode.
 	/// \param userid Specify the user ID.
+	/// \remarks Valid for both normal user and webinar attendee.
 	virtual SDKError Subscribe(unsigned int userid) = 0;
 
 	/// \brief Unsubscribe the data of the specified user.
 	/// \param userid Specify the ID of user that you want to unsubscribe his data.
 	/// \remarks Call Subscribe with the other ID if you want to view his data.
 	///Call the function to stop receiving the data before calling the parent class Hide() function if you no longer want to see the data of the specified user.
+	/// \remarks Valid for both normal user and webinar attendee.
 	virtual SDKError Unsubscribe(unsigned int userid) = 0;
 	virtual ~INormalVideoRenderElement(){}
 };

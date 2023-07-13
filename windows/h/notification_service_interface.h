@@ -44,17 +44,24 @@ public:
 };
 
 /// \brief Notification service control interface.
-///
+class IPresenceHelper;
 class INotificationServiceHelper 
 {
 public:
 	virtual ~INotificationServiceHelper () {}
+
+	/// \brief Get the Presence helper.
+	/// \return If the function succeeds, the return value is a pointer to IPresenceHelper. Otherwise the function fails and returns NULL.
+	virtual IPresenceHelper* GetPresenceHelper() = 0;
 
 	/// Set the controller event of notification service.
 	virtual SDKError SetEvent(INotificationServiceEvent* pEvent) = 0;
 
 	/// brief Determine whether the transfer meeting feature is enabled.
 	virtual bool IsTransferMeetingEnabled() = 0;
+
+	/// brief Determine whether the presence feature is enabled.
+	virtual bool IsPresenceFeatureEnabled() = 0;
 
 	/// \brief Try to transfer meeting to current device.
 	/// \param nIndex Specifies the index of meeting list.

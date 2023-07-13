@@ -96,6 +96,15 @@ public:
 ////////////////////////////////////////// IBOCreator //////////////////////////////////////////
 /// \brief BO creator callback handler.
 ///
+
+enum PreAssignBODataStatus
+{
+	PreAssignBODataStatus_none,              ///<initial status, no request was sent
+	PreAssignBODataStatus_downloading,       ///<download in progress
+	PreAssignBODataStatus_download_ok,       ///<download success
+	PreAssignBODataStatus_download_fail      ///<download fail
+};
+
 class IBOCreatorEvent 
 {
 public:
@@ -104,6 +113,10 @@ public:
 	/// \brief If CreateBO successfully, you will receive the event. Make sure you receive the event before start bo.
 	/// \param strBOID, to indicate which bo has been created successfully.
 	virtual void onBOCreateSuccess(const wchar_t* strBOID) = 0;
+
+	/// \brief When the pre-assigned data download status changes, you will receive the event.
+	/// \param status, download status, for more details, see \link PreAssignBODataStatus \endlink.
+	virtual void OnWebPreAssignBODataDownloadStatusChanged(PreAssignBODataStatus status) = 0;
 };
 
 /// \brief enum for BO stop countdown
@@ -214,6 +227,19 @@ public:
 	/// \brief Get the Batch create bo controller.
 	/// \return If the function succeeds, the return value is a pointer to IBatchCreateBOHelper. Otherwise returns NULL.
 	virtual IBatchCreateBOHelper* GetBatchCreateBOHelper() = 0;
+
+	/// \brief Determine whether web enabled the pre-assigned option when scheduling a meeting.
+	/// \return true if it is enabled, otherwise false.
+	virtual bool IsWebPreAssignBOEnabled() = 0;
+
+	/// \brief Request web pre-assigned data and create those rooms.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum
+	virtual SDKError RequestAndUseWebPreAssignBOList() = 0;
+
+	/// \brief Get the pre-assigned data download status.
+	/// \return The return value is a enum for download status. For more details, see \link PreAssignBODataStatus \endlink.
+	virtual PreAssignBODataStatus GetWebPreAssignBODataStatus() = 0;
 };
 
 ////////////////////////////////////////// IBOAdmin //////////////////////////////////////////
@@ -294,6 +320,19 @@ public:
 	/// \brief Host invite user return to main session, When BO is started and user is in BO.
 	/// \return true indicates success, otherwise fail.
 	virtual bool InviteBOUserReturnToMainSession(const wchar_t* strUserID) = 0;
+
+	/// \brief Query if the current meeting supports broadcasting host's voice to BO.
+	/// \return true means that the meeting supports thised, otherwise it's not supported.
+	virtual bool IsBroadcastVoiceToBOSupport() = 0;
+
+	/// \brief Query if the host now has the ability to broadcast voice to BO.
+	/// \return true means that the host now has the ability, otherwise the host does not.
+	virtual bool CanBroadcastVoiceToBO() = 0;
+
+	/// \brief Start or stop broadcasting voice to BO.
+	/// \param bStart True for start and false for stop.
+	/// \return true means that the invocation succeeds. Otherwise, it fails.
+	virtual bool BrodcastVoiceToBo(bool bStart) = 0;
 };
 
 ////////////////////////////////////////// IBOAssistant //////////////////////////////////////////
@@ -518,6 +557,10 @@ public:
 	/// \param strNewBOName The new BO name.
 	/// \param strNewBOID The new BO ID. If the current user is IBOAttendee, then the 2nd parameter strNewBOID will return NULL.
 	virtual void onBOSwitchRequestReceived(const wchar_t* strNewBOName, const wchar_t* strNewBOID) = 0;
+
+	/// \brief The status of broadcasting voice to BO has been changed.
+	/// \param bStart true for start and false for stop.
+	virtual void onBroadcastBOVoiceStatus(bool bStart) = 0;
 };
 
 /// \brief Meeting breakout rooms controller interface
@@ -570,6 +613,10 @@ public:
 	/// \brief Get current BO status
 	/// \return The return value is a enum for bo status. For more details, see \link BO_STATUS \endlink.
 	virtual BO_STATUS GetBOStatus() = 0;
+
+	/// \brief Query if the host is broadcasting voice to BO.
+	/// \return true means that the host is broadcasting, otherwise it's not broadcasting.
+	virtual bool IsBroadcastingVoiceToBO() = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE

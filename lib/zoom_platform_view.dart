@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter_zoom_sdk/zoom_options.dart';
 import 'package:flutter_zoom_sdk/zoom_view.dart';
+import 'package:crypto/crypto.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'models/audio_types.dart';
@@ -33,14 +37,39 @@ abstract class ZoomPlatform extends PlatformInterface {
         'initZoomAndJoinMeeting() has not been implemented.');
   }
 
-  /// Flutter Zoom SDK Generate Signature for Web only
+  /// Flutter Zoom SDK Generate Signature for Web and native platforms
   String generateSignature(
     String sdkKey,
     String sdkSecret,
     String meetingNumber,
     int role,
   ) {
-    throw UnimplementedError('generateSignature() has not been implemented.');
+    final iat = (DateTime.now().millisecondsSinceEpoch - 30000) ~/ 1000;
+    final exp = iat + 60 * 60 * 2;
+
+    final oHeader = {'alg': 'HS256', 'typ': 'JWT'};
+    final oPayload = {
+      'sdkKey': sdkKey,
+      'mn': meetingNumber,
+      'role': role,
+      'iat': iat,
+      'exp': exp,
+      'appKey': sdkKey,
+      'tokenExp': exp
+    };
+    if (kDebugMode) {
+      print(oPayload.entries
+          .map((entry) => '${entry.key}: ${entry.value.toString()}')
+          .join('\n'));
+    }
+    final oHeader64 = base64Encode(utf8.encode(jsonEncode(oHeader)));
+    final oPayload64 = base64Encode(utf8.encode(jsonEncode(oPayload)));
+
+    final bytes = utf8.encode('$oHeader64.$oPayload64');
+    final hmac = Hmac(sha256, utf8.encode(sdkSecret)).convert(bytes);
+    final signature = '$oHeader64.$oPayload64.${base64Encode(hmac.bytes)}';
+
+    return signature.replaceAll(RegExp('='), '').replaceAll('+/', '-_');
   }
 
   /// Flutter Zoom SDK Start Meeting function

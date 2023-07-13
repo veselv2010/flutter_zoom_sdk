@@ -19,6 +19,7 @@
 #include <auth_service_interface.h>
 #include <setting_service_interface.h>
 #include <meeting_service_components/meeting_ui_ctrl_interface.h>
+#include <meeting_service_components/meeting_configuration_interface.h>
 
 namespace flutter_zoom_sdk {
 	using flutter::EncodableList;

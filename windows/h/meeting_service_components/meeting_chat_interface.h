@@ -147,13 +147,13 @@ typedef struct tagChatStatus
  * @brief Enumerations of the chat priviledge.
  */
 typedef enum {
-	SDK_CHAT_PRIVILEDGE_ALL = 1,                    	/// allow attendee to chat with everyone [meeting & webinar]
-	SDK_CHAT_PRIVILEDGE_ALL_PANELIST = 2,		          /// allow attendee to chat with all panelists only, but cannot to "all panelists and attendees" [webinar]
-	SDK_CHAT_PRIVILEDGE_HOST = 3,	                    /// allow attendee to chat with host only [meeting]
-	SDK_CHAT_PRIVILEDGE_DISABLE_ATTENDEE_CHAT = 4,    /// allow attendee to chat with no one [meeting & webinar]
-	SDK_CHAT_PRIVILEDGE_HOST_PUBLIC = 5,              /// allow attendee to chat with host and public [meeting]
-	SDK_CHAT_PRIVILEDGE_END
-} SDKChatPriviledge;
+	SDK_CHAT_PRIVILEGE_ALL = 1,                    	/// allow attendee to chat with everyone [meeting & webinar]
+	SDK_CHAT_PRIVILEGE_ALL_PANELIST = 2,		          /// allow attendee to chat with all panelists only, but cannot to "all panelists and attendees" [webinar]
+	SDK_CHAT_PRIVILEGE_HOST = 3,	                    /// allow attendee to chat with host only [meeting]
+	SDK_CHAT_PRIVILEGE_DISABLE_ATTENDEE_CHAT = 4,    /// allow attendee to chat with no one [meeting & webinar]
+	SDK_CHAT_PRIVILEGE_HOST_PUBLIC = 5,              /// allow attendee to chat with host and public [meeting]
+	SDK_CHAT_PRIVILEGE_END
+} SDKChatPrivilege;
 
 /**
  * @brief Enumerations of the chat message delete type.
@@ -180,7 +180,7 @@ public:
 
 	/// \brief The authority of chat changes callback. This function is used to inform the user when the authority of chat changes in the meeting or webinar.
 	/// \param status_ The chat status. For more details, see \link ChatStatus \endlink.
-	virtual void onChatStautsChangedNotification(ChatStatus* status_) = 0;
+	virtual void onChatStatusChangedNotification(ChatStatus* status_) = 0;
 
 	/// \brief Chat message be deleted callback. This function is used to inform the user host/myself the message be deleted.
 	/// \param MsgID is the id of the deleted message.
@@ -207,11 +207,11 @@ public:
 	///Otherwise failed, the return value is NULL. To get extended error information, see \link ChatStatus \endlink.
 	virtual const ChatStatus* GetChatStatus() = 0;
 
-	/// \brief Set the chat priviledge of participants.
+	/// \brief Set the chat privilege of participants.
 	/// \param priviledge The chat priviledge of participants
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetParticipantsChatPriviledge(SDKChatPriviledge priviledge) = 0;
+	virtual SDKError SetParticipantsChatPrivilege(SDKChatPrivilege privilege) = 0;
 
 	/// \brief Send chat message in the normal meeting.
 	/// \param receiver Specify the user ID who receives the chat message. The message will be sent to all when the value is zero(0). 

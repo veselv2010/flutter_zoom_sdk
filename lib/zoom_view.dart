@@ -39,7 +39,7 @@ class ZoomView extends ZoomPlatform {
         .then<List>((List? value) => value ?? List.empty());
   }
 
-  /// The event channel used to interact with the native platform init function
+  /// The event channel used to interact with windows init and join functions
   @override
   Future<bool> initZoomAndJoinMeeting(
     ZoomOptions zoomOptions,
@@ -49,10 +49,7 @@ class ZoomView extends ZoomPlatform {
     var initOptionsMap = <String, String?>{};
     var meetingOptionsMap = <String, String?>{};
 
-    initOptionsMap.putIfAbsent("appKey", () => zoomOptions.appKey);
-    initOptionsMap.putIfAbsent("appSecret", () => zoomOptions.appSecret);
     initOptionsMap.putIfAbsent("jwtToken", () => zoomOptions.jwtToken);
-    initOptionsMap.putIfAbsent("returnBtnMsg", () => zoomOptions.returnBtnMsg);
     initOptionsMap.putIfAbsent("domain", () => zoomOptions.domain);
 
     meetingOptionsMap.putIfAbsent(
@@ -171,7 +168,7 @@ class ZoomView extends ZoomPlatform {
         .then<bool>((bool? value) => value ?? false);
   }
 
-  /// The event channel used to interact with the native platform hideMeeting(Android & Windows) function
+  /// The event channel used to interact with the native platform hideMeeting (Android & Windows) function
   @override
   Future<bool> hideMeeting({bool isWindows = false}) async {
     /// Для Windows сначала раскрываем окно на весь экран,

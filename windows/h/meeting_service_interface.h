@@ -144,6 +144,7 @@ typedef struct tagJoinParam4WithoutLogin
 	bool		   isVideoOff;///<Turn off the video of not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool		   isAudioOff;///<Turn off the audio or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	const wchar_t* join_token;///<Join token.
+	bool           isMyVoiceInMix; ///<Is my voice in the mixed audio raw data?
 }JoinParam4WithoutLogin;
 
 /*! \struct tagJoinParam4NormalUser
@@ -164,6 +165,7 @@ typedef struct tagJoinParam4NormalUser
 	bool		   isAudioOff;///<Turn off the audio or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
 	const wchar_t* join_token;///<Join token.
+	bool           isMyVoiceInMix; ///<Is my voice in the mixed audio raw data?
 }JoinParam4NormalUser;
 
 /*! \struct tagJoinParam
@@ -216,6 +218,7 @@ typedef struct tagStartParam4WithoutLogin
 	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to share.
 	bool		   isVideoOff;///<Turn off the video or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool		   isAudioOff;///<Turn off the audio or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
+	bool           isMyVoiceInMix; ///<Is my voice in the mixed audio raw data?
 }StartParam4WithoutLogin;
 
 /*! \struct tagStartParam4NormalUser
@@ -231,6 +234,7 @@ typedef struct tagStartParam4NormalUser
 	bool		    isVideoOff;///<Turn off video or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool		    isAudioOff;///<Turn off audio or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool		    isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
+	bool            isMyVoiceInMix; ///<Is my voice in the mixed audio raw data?
 }StartParam4NormalUser;
 
 
@@ -241,6 +245,7 @@ typedef struct tagStartParam4NormalUser
 typedef struct tagStartParam
 {
 	SDKUserType userType;///<User type.
+	const wchar_t* inviteContactId;
 	union 
 	{
 		StartParam4NormalUser normaluserStart;///<The parameter for ordinary user when starts the meeting.
@@ -249,6 +254,7 @@ typedef struct tagStartParam
 	tagStartParam()
 	{
 		userType = SDK_UT_WITHOUT_LOGIN;
+		inviteContactId = NULL;
 		memset(&param, 0, sizeof(param));  //checked safe
 	}
 }StartParam;
@@ -484,6 +490,7 @@ class IEmojiReactionController;
 class IMeetingAANController;
 class IMeetingRawArchivingController;
 class ICustomImmersiveController;
+class IMeetingReminderController;
 /// \brief Meeting Service Interface
 ///
 class IMeetingService
@@ -668,6 +675,10 @@ public:
 	/// \brief Get the immersive controller.
 	/// \return If the function succeeds, the return value is a pointer to ICustomImmersiveController. Otherwise the function returns NULL.
 	virtual ICustomImmersiveController* GetMeetingImmersiveController() = 0;
+
+	/// \brief Get the reminder controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingReminderController. Otherwise the function returns NULL.
+	virtual IMeetingReminderController* GetMeetingReminderController() = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

@@ -72,21 +72,6 @@ typedef enum
 	SDK_Notification_Service_Closed,
 }SDKNotificationServiceStatus;
 
-/*! \struct tagAuthParam
-    \brief SDK Authentication parameter with sdk key/secret.
-    Here are more detailed structural descriptions.
-*/
-typedef struct tagAuthParam
-{
-	const wchar_t* appKey;///<APP Key string.
-	const wchar_t* appSecret;///<APP Secret string.
-	tagAuthParam()
-	{
-		appKey = NULL;
-		appSecret = NULL;
-	}
-}AuthParam;
-
 /*! \struct tagAuthContext
     \brief SDK Authentication parameter with jwt token.
     Here are more detailed structural descriptions.
@@ -130,30 +115,6 @@ enum LoginType
 	LoginType_Unknown,///<Unknown type.
 	LoginType_SSO,///<Login with SSO token.
 };
-
-/*! \struct tagWebinarLegalNoticesExplained
-	\brief Webinar Legal notices explained.
-	Here are more detailed structural descriptions.
-*/
-typedef struct tagWebinarLegalNoticesExplainedInfo
-{
-	const wchar_t* explained_content;
-	const wchar_t* url_register_account_owner;
-	const wchar_t* url_register_terms;
-	const wchar_t* url_register_privacy_policy;
-	tagWebinarLegalNoticesExplainedInfo()
-	{
-		Reset();
-	}
-
-	void Reset()
-	{
-		explained_content = nullptr;
-		url_register_account_owner = nullptr;
-		url_register_terms = nullptr;
-		url_register_privacy_policy = nullptr;
-	}
-}WebinarLegalNoticesExplainedInfo;
 
 /// \brief Account information interface.
 ///
@@ -214,12 +175,6 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SetEvent(IAuthServiceEvent* pEvent) = 0;
 
-	/// \brief SDK Authentication.
-	/// \param authParam The parameter to be used for authentication SDK, see \link AuthParam \endlink structure. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SDKAuth(AuthParam& authParam) = 0;
-
 	/// \brief SDK Authentication with jwt token.
 	/// \param authContext The parameter to be used for authentication SDK, see \link AuthContext \endlink structure. 
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -262,12 +217,6 @@ public:
 	/// \brief Get direct share service helper interface. 
 	/// \return If you logged in your account successfully, the return value is the object pointer IDirectShareServiceHelper. Otherwise is NULL.
 	virtual IDirectShareServiceHelper* GetDirectShareServiceHeler() = 0;
-
-	/// Get the webinal legal notices prompt.
-	virtual const wchar_t* getWebinalLegalNoticesPrompt() = 0;
-
-	/// Get the webinal legal notices explained.
-	virtual bool getWebinalLegalNoticesExplained(WebinarLegalNoticesExplainedInfo& explained_info) = 0;
 
 	/// \brief Enable or disable auto register notification service. This is enabled by default.
 	/// \param [in] bEnable True means enabled, otherwise not. 
