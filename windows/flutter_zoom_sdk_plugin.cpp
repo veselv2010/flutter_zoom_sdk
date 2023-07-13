@@ -183,6 +183,7 @@ namespace flutter_zoom_sdk {
 		}
 
 		FlutterZoomSdkPlugin::createMeetingService();
+		FlutterZoomSdkPlugin::createSettingService();
 
 		// Join meeting for non-login user with JoinParam object
 		ZOOM_SDK_NAMESPACE::JoinParam joinMeetingParam = ZOOM_SDK_NAMESPACE::JoinParam();
@@ -210,8 +211,6 @@ namespace flutter_zoom_sdk {
 
 		joinMeetingParam.param.normaluserJoin = joinMeetingForNonLoginUserParam;
 
-		FlutterZoomSdkPlugin::createSettingService();
-
 		if (FlutterZoomSdkPlugin::SettingService != NULL)
 		{
 			ZOOM_SDK_NAMESPACE::IAudioSettingContext* pAudioContext = FlutterZoomSdkPlugin::SettingService->GetAudioSettings();
@@ -228,6 +227,13 @@ namespace flutter_zoom_sdk {
 				pShareContext->EnableAutoFitToWindowWhenViewSharing(false);
 			}
 		}
+
+		ZOOM_SDK_NAMESPACE::IMeetingConfiguration* meetingConfiguration = FlutterZoomSdkPlugin::MeetingService->GetMeetingConfiguration();
+
+        if (meetingConfiguration)
+        {
+        	meetingConfiguration->HideMeetingInfoOnMeetingUI(true);
+        }
 
 		ZOOM_SDK_NAMESPACE::SDKError joinMeetingCallReturnValue(ZOOM_SDK_NAMESPACE::SDKERR_UNKNOWN);
 
