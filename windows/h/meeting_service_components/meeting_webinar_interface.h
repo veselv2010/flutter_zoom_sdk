@@ -115,6 +115,30 @@ enum  SDKAttendeeViewMode
 	SDKAttendeeViewMode_SidebysideGallery
 };
 
+/*! \struct tagWebinarLegalNoticesExplained
+	\brief Webinar Legal notices explained.
+	Here are more detailed structural descriptions.
+*/
+typedef struct tagWebinarLegalNoticesExplainedInfo
+{
+	const wchar_t* explained_content;
+	const wchar_t* url_register_account_owner;
+	const wchar_t* url_register_terms;
+	const wchar_t* url_register_privacy_policy;
+	tagWebinarLegalNoticesExplainedInfo()
+	{
+		Reset();
+	}
+
+	void Reset()
+	{
+		explained_content = nullptr;
+		url_register_account_owner = nullptr;
+		url_register_terms = nullptr;
+		url_register_privacy_policy = nullptr;
+	}
+}WebinarLegalNoticesExplainedInfo;
+
 /// \brief Webinar controller interface
 ///
 class IMeetingWebinarController
@@ -236,6 +260,14 @@ public:
 	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError GetPanelistChatPrivilege(SDKPanelistChatPrivilege& privilege) = 0;
+
+	/// \brief Get the webinar legal notices prompt.
+	/// \return The webinar legal notices prompt.
+	virtual const wchar_t* getWebinarLegalNoticesPrompt() = 0;
+
+	/// \brief Get the webinar legal notices explained.
+	/// \return The webinar legal notices explained.
+	virtual bool getWebinarLegalNoticesExplained(WebinarLegalNoticesExplainedInfo& explained_info) = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE

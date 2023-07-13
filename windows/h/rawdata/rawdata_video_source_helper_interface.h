@@ -17,7 +17,7 @@ class IZoomSDKVideoSender
 {
 public:
 	virtual ~IZoomSDKVideoSender(){}
-	virtual SDKError sendVideoFrame(char* frameBuffer, int width, int height, int frameLength, int rotation) = 0;
+	virtual SDKError sendVideoFrame(char* frameBuffer, int width, int height, int frameLength, int rotation, FrameDataFormat format = FrameDataFormat_I420_FULL) = 0;
 };
 
 struct VideoSourceCapability

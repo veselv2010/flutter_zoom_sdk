@@ -78,7 +78,7 @@ public:
 
 	/// \brief Determine whether current meeting supports annotation feature.
 	/// \return true not support, false support.
-	virtual bool IsAnnoataionDisable() = 0;
+	virtual bool IsAnnotationDisable() = 0;
 
 	/// \brief Display annotation toolbar.
 	/// \param viewtype Specify which view to display the toolbar. For more details, see \link SDKViewType \endlink enum.

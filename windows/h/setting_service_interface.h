@@ -696,6 +696,34 @@ public:
 	/// \param deviceName Specify the device name assigned by deviceId.
 	virtual void onDefaultCamDeviceChanged(const wchar_t* deviceId, const wchar_t* deviceName) = 0;
 };
+
+enum AutoFramingMode
+{
+	AutoFramingMode_none,               ///<No use of the auto-framing
+	AutoFramingMode_center_coordinates, ///<will use the center point of the video frame as the center for zoom-in
+	AutoFramingMode_face_recognition    ///<will use the detected face in the video frame as the center to zoom-in
+};
+
+enum FaceRecognitionFailStrategy
+{
+	FaceRecognitionFailStrategy_none,					  ///<No use of the fail strategy
+	FaceRecognitionFailStrategy_remain,                   ///<After face recognition fail, do nothing util face recognition success again
+	FaceRecognitionFailStrategy_using_center_coordinates, ///<After face recognition fail, will use center point of the video frame as the center for zoom-in
+	FaceRecognitionFailStrategy_using_original_video      ///<After face recognition fail, will use original video
+};
+
+struct AutoFramingParameter
+{
+	float ratio;                               ///<The zoom in ratio of auto-framing, valid range of values: 1~10(when mode is AutoFramingMode_center_coordinates), 0.1~10(when mode is AutoFramingMode_face_recognition)
+	FaceRecognitionFailStrategy fail_Strategy; ///<Only mode is AutoFramingMode_face_recognition, the param is valid
+
+	AutoFramingParameter()
+	{
+		ratio = 1;
+		fail_Strategy = FaceRecognitionFailStrategy_using_original_video;
+	}
+};
+
 /// \brief Video setting interface.
 ///
 class IVideoSettingContext
@@ -921,6 +949,70 @@ public:
 	///For more details, see \link ILipSyncAvatarSettingContext \endlink.
 	/// \deprecated This interface is marked as deprecated.
 	virtual ILipSyncAvatarSettingContext* GetLipSyncAvatarSettingContext() = 0;
+
+	/// \brief Enable my video auto-framing.
+	/// \param mode the auto-framing mode.
+	/// \param param the auto-framing parameter.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and return an error. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableVideoAutoFraming(AutoFramingMode mode, AutoFramingParameter& param) = 0;	
+
+	/// \brief Determine whether auto-framing is enabled.
+	/// \return true indicates enabled. False not.
+	virtual bool IsVideoAutoFramingEnabled() = 0;
+
+	/// \brief Get current mode of auto-framing.
+	/// \param mode the auto-framing mode.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and return an error. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError GetVideoAutoFramingMode(AutoFramingMode& mode) = 0;
+
+	/// \brief Set the mode of auto-framing when auto-framing is enabled.
+	/// \param mode the auto-framing mode.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and return an error. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetVideoAutoFramingMode(AutoFramingMode mode) = 0;
+
+	/// \brief Set the zoom in ratio of auto-framing when auto-framing is enabled.
+	/// \param ratio the zoom in ratio of auto-framing, valid range of ratio: 
+	///        a. mode is "AutoFramingMode_center_coordinates", 1~10
+	///        b. mode is "AutoFramingMode_face_recognition", 0.1~10
+   	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and return an error. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetVideoAutoFramingRatio(float ratio) = 0;
+
+	/// \brief Set the fail strategy of face recognition when auto-framing is enabled(mode is "AutoFramingMode_face_recognition")
+	/// \param strategy the fail strategy of face recognition.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and return an error. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetFaceRecognitionFailStrategy(FaceRecognitionFailStrategy strategy) = 0;
+
+	/// \brief Get the setting of auto-framing.
+	/// \param mode the auto-framing mode.
+	/// \param param the auto-framing parameter.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and return an error. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError GetVideoAutoFramingSetting(AutoFramingMode mode, AutoFramingParameter& param) = 0;
+
+	/// \brief Stop video auto-framing.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and return an error. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError DisableVideoAutoFraming() = 0;
+
+	/// \brief Enable or disable optimizing received video quality when facing network issues for a variety of reasons.
+	///        Applies to the window in focus: speaker view, pinned / spotlighted videos, gallery view with a small number of videos.
+	/// \param bEnable true indicates to enable this feature. Otherwise disable this feature.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and returns error code. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableOptimizeVideoQuality(bool bEnable) = 0;
+
+	/// \brief Determine if optimizing received video quality is enabled.
+	/// \return true indicates that optimization is enabled. False means optimization is not enabled.
+	virtual bool IsOptimizeVideoQualityEnabled() = 0;
+
+	/// \brief Determine if optimizing received video quality is supported.
+	/// \return true indicates that it is supported, false means that it isn't.
+	virtual bool IsOptimizeVideoQualitySupported() = 0;
 };
 
 /// \brief Audio setting context callback event.

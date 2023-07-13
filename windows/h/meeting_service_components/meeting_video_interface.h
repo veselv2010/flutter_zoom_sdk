@@ -84,6 +84,7 @@ public:
 	/// \brief Callback event of the user video status changes.
 	/// \param userId The user ID whose video status changes
 	/// \param status New video status. For more details, see \link VideoStatus \endlink enum.
+	/// \remarks Valid for both normal user and webinar attendee.
 	virtual void onUserVideoStatusChange(unsigned int userId, VideoStatus status) = 0;
 
 	/// \brief Callback event for when the video spotlight user list changes.

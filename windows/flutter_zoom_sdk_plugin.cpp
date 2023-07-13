@@ -153,21 +153,17 @@ namespace flutter_zoom_sdk {
 				authListener = new AuthEvent();
 				FlutterZoomSdkPlugin::AuthService->SetEvent(authListener);
 
-				// Auth SDK with AuthParam
-				ZOOM_SDK_NAMESPACE::AuthParam authParam;
 				ZOOM_SDK_NAMESPACE::SDKError authCallReturnValue(ZOOM_SDK_NAMESPACE::SDKERR_UNAUTHENTICATION);
 
-				// Provide your keys to the AuthParam object
-				string appKeyStr = get<string>(ZoomInitOptions.find(EncodableValue("appKey"))->second);
-				string appSecretStr = get<string>(ZoomInitOptions.find(EncodableValue("appSecret"))->second);
+				// Auth SDK with AuthContext object
+				ZOOM_SDK_NAMESPACE::AuthContext authContext;
 
-				wstring appKeyWstr = wstring(appKeyStr.begin(), appKeyStr.end());
-				wstring appSecretWstr = wstring(appSecretStr.begin(), appSecretStr.end());
+				// Provide your JWT to the AuthContext object
+				string jwtTokenStr = get<string>(ZoomInitOptions.find(EncodableValue("jwtToken"))->second);
+				wstring jwtTokenWstr = wstring(jwtTokenStr.begin(), jwtTokenStr.end());
+				authContext.jwt_token = jwtTokenWstr.c_str();
 
-				authParam.appKey = appKeyWstr.c_str();
-				authParam.appSecret = appSecretWstr.c_str();
-
-				authCallReturnValue = FlutterZoomSdkPlugin::AuthService->SDKAuth(authParam);
+				authCallReturnValue = FlutterZoomSdkPlugin::AuthService->SDKAuth(authContext);
 
 				if (authCallReturnValue == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
 					_cputts(L"Init and auth succeeded\n");
@@ -192,7 +188,7 @@ namespace flutter_zoom_sdk {
 		ZOOM_SDK_NAMESPACE::JoinParam joinMeetingParam = ZOOM_SDK_NAMESPACE::JoinParam();
 
 		// Provide meeting credentials for non-login user using JoinParam4WithoutLogin
-		ZOOM_SDK_NAMESPACE::JoinParam4WithoutLogin joinMeetingForNonLoginUserParam = ZOOM_SDK_NAMESPACE::JoinParam4WithoutLogin();
+		ZOOM_SDK_NAMESPACE::JoinParam4NormalUser joinMeetingForNonLoginUserParam = ZOOM_SDK_NAMESPACE::JoinParam4NormalUser();
 
 		joinMeetingParam.userType = ZOOM_SDK_NAMESPACE::SDK_UT_WITHOUT_LOGIN;
 
@@ -212,7 +208,7 @@ namespace flutter_zoom_sdk {
 		joinMeetingForNonLoginUserParam.isAudioOff = (noAudioStr == "true");
 		joinMeetingForNonLoginUserParam.isVideoOff = (noVideoStr == "true");
 
-		joinMeetingParam.param.withoutloginuserJoin = joinMeetingForNonLoginUserParam;
+		joinMeetingParam.param.normaluserJoin = joinMeetingForNonLoginUserParam;
 
 		FlutterZoomSdkPlugin::createSettingService();
 

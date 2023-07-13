@@ -60,6 +60,8 @@ enum SDKError
 	SDKERR_NO_SHARE_DATA,///<There is no raw data of sharing.
 	SDKERR_SHARE_CANNOT_SUBSCRIBE_MYSELF,
 	SDKERR_NOT_IN_MEETING,
+	SDKERR_NOT_JOIN_AUDIO,
+	SDKERR_HARDWARE_DONT_SUPPORT, ///<The current device doesn't support the feature.
 };
 
 /*! \enum SDK_LANGUAGE_ID
@@ -275,6 +277,7 @@ enum ShareType
 	SHARE_TYPE_AIRHOST,///<Type of sharing data from the device connected WIFI. 
 	SHARE_TYPE_CAMERA,///<Type of sharing the camera.
 	SHARE_TYPE_DATA,///<Type of sharing the data.
+	SHARE_TYPE_VIDEO_FILE,///<Type of sharing the video file.
 };
 
 /*! \enum LastErrorType
@@ -317,6 +320,12 @@ public:
 };
 #define SDK_NULL_AUDIO_FILE_HANDLE (0xffffffff)
 const RECT _SDK_TEST_VIDEO_INIT_RECT = {0,0,0,0};
+
+enum FrameDataFormat
+{
+	FrameDataFormat_I420_LIMITED,
+	FrameDataFormat_I420_FULL,
+};
 
 END_ZOOM_SDK_NAMESPACE
 

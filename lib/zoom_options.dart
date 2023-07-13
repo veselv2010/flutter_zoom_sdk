@@ -7,7 +7,7 @@ class ZoomOptions {
   final String? domain;
   final String? appKey;
   final String? appSecret;
-  final String? jwtToken; // android
+  final String? jwtToken; // android and windows
   final bool? debug;
   final String? language; //--for web
   final bool? showMeetingHeader; //--for web

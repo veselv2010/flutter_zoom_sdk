@@ -33,6 +33,14 @@ enum RequestLocalRecordingStatus
 	RequestLocalRecording_Timeout,///the request local recording timeout.	
 };
 
+enum LocalRecordingRequestPrivilegeStatus
+{
+	LocalRecordingRequestPrivilege_None,
+	LocalRecordingRequestPrivilege_AllowRequest,///allow participant to send privilege requests.
+	LocalRecordingRequestPrivilege_AutoGrant,///host auto-allow all privilege requests.
+	LocalRecordingRequestPrivilege_AutoDeny,///host auto-deny all privilege requests.
+};
+
 /// \brief Process after the host receives the requirement from the user to give the local recording privilege.
 class IRequestLocalRecordingPrivilegeHandler
 {
@@ -87,7 +95,7 @@ public:
 
 	/// \brief Callback event that the recording authority changes.
 	/// \param bCanRec TRUE indicates to enable to record.
-	virtual void onRecordPriviligeChanged(bool bCanRec) = 0;
+	virtual void onRecordPrivilegeChanged(bool bCanRec) = 0;
 
 	/// \brief Callback event that the status of request local recording privilege.
 	/// \param status Value of request local recording privilege status. For more details, see \link RequestLocalRecordingStatus \endlink enum.

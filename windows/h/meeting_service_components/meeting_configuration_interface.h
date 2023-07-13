@@ -489,13 +489,17 @@ public:
 	/// \param [in] bEnable True means enabled, otherwise not. 
 	virtual void EnableCloudWhiteboard(bool bEnable) = 0;
 
-	/// \brief Set the visibility of feedback button on cloud Whiteboard. Default is displaying.
-	/// \param [in] bHide TRUE means hiding, otherwise not.
+	/// \brief Set Leave Feedback button's visibility on cloud whiteboard. Default is displaying.
+	/// \param [in] bHide TRUE means hiding, otherwise means displaying.
 	virtual void HideCloudWhiteboardFeedbackButton(bool bHide) = 0;
 
-	/// \brief Set the visibility of share button on cloud Whiteboard. Default is displaying.
-	/// \param [in] bHide TRUE means hiding, otherwise not.
+	/// \brief Set Share button's visibility on cloud whiteboard. Default is displaying.
+	/// \param [in] bHide TRUE means hiding, otherwise means displaying.
 	virtual void HideCloudWhiteboardShareButton(bool bHide) = 0;
+
+	/// \brief Set the About button's visibility on cloud whiteboard. Default is displaying.
+	/// \param [in] bHide TRUE means hiding, otherwise means displaying.
+	virtual void HideCloudWhiteboardAboutButton(bool bHide) = 0;
 
 	/// \brief Set the visibility of request local recording privilege dialog when attendee request local recording privilege. Default is displaying.
 	/// \param [in] bHide TRUE means hiding, otherwise not.

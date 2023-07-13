@@ -78,11 +78,11 @@ public:
 
 	/// \brief Callback event of notification that user joins the waiting room.
 	/// \param userID The ID of user who joins the waiting room. 
-	virtual void onWatingRoomUserJoin(unsigned int userID) = 0;
+	virtual void onWaitingRoomUserJoin(unsigned int userID) = 0;
 
 	/// \brief Callback event of notification that user leaves the waiting room.
 	/// \param userID The ID of user who leaves the waiting room.
-	virtual void onWatingRoomUserLeft(unsigned int userID) = 0;
+	virtual void onWaitingRoomUserLeft(unsigned int userID) = 0;
 
 	/// \brief During the waiting room, this callback event will be triggered when host change audio status.	
 	/// \param bAudioCanTurnOn TRUE means audio can be turned on. Otherwise not.
@@ -95,6 +95,11 @@ public:
 	/// \brief During the waiting room, this callback event will be triggered when RequestCustomWaitingRoomData called.	
 	/// \param The WaitingRoom Customize Data Info, handler for download waitingRoom Customize Data if download fail.
 	virtual void onCustomWaitingRoomDataUpdated(CustomWaitingRoomData& bData, IWaitingRoomDataDownloadHandler* bHandler) = 0;
+
+	/// \brief Callback indicating that the name of a user in the waiting room has changed.
+	/// \param userID The ID of the user whose user name have has changed.
+	/// \param userName The new user name.
+	virtual void onWaitingRoomUserNameChanged(unsigned int userID, const wchar_t* userName) = 0;
 };
 /// \brief Meeting waiting room controller interface.
 ///
@@ -162,6 +167,31 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success. See \link onCustomWaitingRoomDataUpdated \endlink to access the result data.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError RequestCustomWaitingRoomData() = 0;
+
+	/// \brief Determine if the host or cohost can rename users in the waiting room.
+	/// \param [out] bIsCan True means the host or cohost can rename users in the waiting room. Otherwise they can?¡¥t.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError CanRenameUser(bool& bIsCan) = 0;
+
+	/// \brief Change a user's screen name in the waiting room.
+	/// \param userid The ID of users put into the waiting room by a host or cohost.
+	/// \param userName The new user name.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError RenameUser(unsigned userid, const wchar_t* newName) = 0;
+
+	/// \brief Determine if a host or cohost can expel user(s) in the waiting room.
+	/// \param [out] bIsCan True means that a host or cohost can expel user(s) in the waiting room. Otherwise they may not
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError CanExpelUser(bool& bIsCan) = 0;
+
+	/// \brief Remove a specified user from the waiting room.
+	/// \param userid The ID of the user  removed from the waiting room by a host or cohost.
+	/// /// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError ExpelUser(unsigned int userid) = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

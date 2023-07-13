@@ -8,7 +8,7 @@ class IZoomSDKShareSender
 {
 public:
 	virtual ~IZoomSDKShareSender() {}
-	virtual SDKError sendShareFrame(char* frameBuffer, int width, int height, int frameLength) = 0;
+	virtual SDKError sendShareFrame(char* frameBuffer, int width, int height, int frameLength, FrameDataFormat format = FrameDataFormat_I420_FULL) = 0;
 };
 
 class IZoomSDKShareSource

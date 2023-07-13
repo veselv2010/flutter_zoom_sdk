@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_zoom_sdk/zoom_options.dart';
 import 'package:flutter_zoom_sdk/zoom_platform_view.dart';
 
 class MeetingWidget extends StatefulWidget {
@@ -195,24 +194,21 @@ class _MeetingWidgetState extends State<MeetingWidget> {
 
     if (meetingIdController.text.isNotEmpty &&
         meetingPasswordController.text.isNotEmpty) {
-      String? signature;
+      final signature = zoom.generateSignature(
+        sdkKey,
+        sdkSecret,
+        meetingIdController.text,
+        0,
+      );
 
-      if (kIsWeb) {
-        signature = zoom.generateSignature(
-          sdkKey,
-          sdkSecret,
-          meetingIdController.text,
-          0,
-        );
-      }
-
-      ZoomOptions zoomOptions = const ZoomOptions(
+      final zoomOptions = ZoomOptions(
         domain: 'zoom.us',
         appKey: sdkKey, //API KEY FROM ZOOM
         appSecret: sdkSecret, //API SECRET FROM ZOOM
         disablePreview: true,
+        jwtToken: signature,
       );
-      var meetingOptions = ZoomMeetingOptions(
+      final meetingOptions = ZoomMeetingOptions(
         userId: 'userId',
 
         /// pass username for join meeting only
@@ -238,8 +234,9 @@ class _MeetingWidgetState extends State<MeetingWidget> {
 
       if (!kIsWeb) {
         if (Platform.isWindows) {
-          zoom.initZoomAndJoinMeeting(zoomOptions, meetingOptions).then((
-              result) {
+          zoom
+              .initZoomAndJoinMeeting(zoomOptions, meetingOptions)
+              .then((result) {
             if (result) {
               zoom.onMeetingStatus().listen((status) {
                 if (status[0] == 'MEETING_STATUS_INMEETING') {

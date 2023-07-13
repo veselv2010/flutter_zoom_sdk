@@ -90,6 +90,16 @@ enum MultiShareOption
 	Enable_All_Grab_Share, ///<One participant can share at a time, during sharing everyone can start a new sharing and the previous sharing will be replaced.
 };
 
+enum ZoomSDKVideoFileSharePlayError
+{
+	ZoomSDKVideoFileSharePlayError_None, 
+	ZoomSDKVideoFileSharePlayError_Not_Supported, ///<Not supported.
+	ZoomSDKVideoFileSharePlayError_Resolution_Too_High, ///<The resolution is too high to play.
+	ZoomSDKVideoFileSharePlayError_Open_Fail, ///<Failed to open.
+	ZoomSDKVideoFileSharePlayError_Play_Fail, ///<Failed to play.
+	ZoomSDKVideoFileSharePlayError_Seek_Fail  ///<Failed to seek.
+};
+
 typedef struct tagShareInfo
 {
 	ShareType eShareType;///<Type of sharing, see \link ShareType \endlink enum.
@@ -147,6 +157,13 @@ public:
 	/// \brief Callback event of sharing setting type changed.
 	/// \param type Sharing setting type. For more details, see \link ShareSettingType \endlink structure.
 	virtual void onShareSettingTypeChangedNotification(ShareSettingType type) = 0;
+
+	/// \brief Callback event of the shared video's playback has completed.
+	virtual void onSharedVideoEnded() = 0;
+
+	/// \brief Callback event of the video file playback error.
+	/// \param error The error type. For more details, see \link ZoomSDKVideoFileSharePlayError \endlink structure.
+	virtual void onVideoFileSharePlayError(ZoomSDKVideoFileSharePlayError error) = 0;
 };
 
 /// \brief Meeting share controller interface.
@@ -302,7 +319,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
-	virtual SDKError GetViewabltShareSourceByUserID(unsigned int userid, ViewableShareSource& shareSource) = 0;
+	virtual SDKError GetViewableShareSourceByUserID(unsigned int userid, ViewableShareSource& shareSource) = 0;
 
 	/// \brief View the share from the specified user.
 	/// \param userid Specify the user ID that you want to view his share. 
@@ -406,6 +423,16 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SwitchToShareNextCamera() = 0;
+
+	/// \brief Share the video file.
+	/// \param filePath Specify the video file path. Only supports mov, mp4, or avi format.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and returns error. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError StartVideoFileShare(const wchar_t* filePath) = 0;
+
+	/// \brief Determine whether the user can share video files.
+	/// \return True indicates that the user can share video files. Otherwise False.
+	virtual bool CanShareVideoFile() = 0;
 
 	/// \brief Determine whether the legal notice for white board is available
 	/// \return True indicates the legal notice for white board is available. Otherwise False.

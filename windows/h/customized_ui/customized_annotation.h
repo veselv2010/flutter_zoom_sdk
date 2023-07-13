@@ -128,7 +128,7 @@ public:
 
 	/// \brief Determine whether current meeting supports annotation feature.
 	/// \return true not support, false support.
-	virtual bool IsAnnoataionDisable() = 0;
+	virtual bool IsAnnotationDisable() = 0;
 
 	/// \brief Disallow/allow participants to annotate when viewing the sharing content.
 	/// \param bDisable TRUE means disabled, FALSE not.
