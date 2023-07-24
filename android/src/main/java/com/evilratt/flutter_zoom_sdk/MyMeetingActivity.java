@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -35,6 +35,13 @@ public class MyMeetingActivity extends MeetingActivity {
     @Override
     protected int getLayout() {
         return R.layout.my_meeting_layout;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        ZoomSDK.getInstance().getZoomUIService().showMiniMeetingWindow();
     }
 
     @Override
@@ -69,24 +76,24 @@ public class MyMeetingActivity extends MeetingActivity {
 
     @Override
     public void onStart() {
-        Intent myIntent = getIntent();
-        boolean isClose = myIntent.getBooleanExtra("isClose", true);
-
         super.onStart();
-
-        if (isClose) {
-            finish();
-        }
     }
 
+
     @Override
-    public void onBackPressed() {
-        finish();
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if(keyCode== KeyEvent.KEYCODE_BACK)   {
+            finish();
+        }
+
+        return true;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         unregisterReceiver(myBroadcast);
     }
 }

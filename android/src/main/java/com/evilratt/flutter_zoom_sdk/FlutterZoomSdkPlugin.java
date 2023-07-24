@@ -24,6 +24,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.MethodChannel.Result;
 import us.zoom.sdk.CustomizedNotificationData;
 import us.zoom.sdk.InMeetingAudioController;
 import us.zoom.sdk.InMeetingNotificationHandle;
@@ -41,7 +42,6 @@ import us.zoom.sdk.ZoomSDK;
 import us.zoom.sdk.ZoomSDKAuthenticationListener;
 import us.zoom.sdk.ZoomSDKInitParams;
 import us.zoom.sdk.ZoomSDKInitializeListener;
-import io.flutter.plugin.common.MethodChannel.Result;
 
 /**
  * FlutterZoomPlugin
@@ -66,6 +66,7 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
 
     private String returnBtnMsg;
     private FlutterSdkAudioHandler audioHandler;
+
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         this.activity = binding.getActivity();
@@ -252,6 +253,7 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
                 ZoomSDK zoomSDK = ZoomSDK.getInstance();
                 ZoomSDK.getInstance().getMeetingSettingsHelper().enableShowMyMeetingElapseTime(true);
                 ZoomSDK.getInstance().getMeetingSettingsHelper().setCustomizedNotificationData(data, handle);
+                ZoomSDK.getInstance().getZoomUIService().enableMinimizeMeeting(true);
 
                 MeetingService meetingService = zoomSDK.getMeetingService();
                 meetingStatusChannel.setStreamHandler(new StatusStreamHandler(meetingService));
@@ -564,7 +566,6 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
 
     private void showMeeting(MethodCall methodCall, Result result) {
         Intent myIntent = new Intent(activity, MyMeetingActivity.class);
-        myIntent.putExtra("isClose", false);
 
         if (returnBtnMsg != null) {
             myIntent.putExtra("returnBtnMsg", returnBtnMsg.toString());

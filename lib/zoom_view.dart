@@ -160,7 +160,7 @@ class ZoomView extends ZoomPlatform {
         .then<List>((List? value) => value ?? List.empty());
   }
 
-  /// The event channel used to interact with the native platform showMeeting(Android & Windows) function
+  /// The event channel used to interact with the native platform showMeeting (Android & Windows) function
   @override
   Future<bool> showMeeting() async {
     return await channel
@@ -187,6 +187,7 @@ class ZoomView extends ZoomPlatform {
         .then<bool>((bool? value) => value ?? false);
   }
 
+  /// The event channel used to interact with the native platform leaveMeeting (Android & Windows) function
   @override
   Future<bool> leaveMeeting() async {
     return await channel
