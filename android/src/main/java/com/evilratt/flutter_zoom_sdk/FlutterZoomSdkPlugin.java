@@ -34,6 +34,7 @@ import us.zoom.sdk.JoinMeetingParams;
 import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.MeetingStatus;
 import us.zoom.sdk.MeetingViewsOptions;
+import us.zoom.sdk.SDKNotificationServiceError;
 import us.zoom.sdk.StartMeetingOptions;
 import us.zoom.sdk.StartMeetingParams4NormalUser;
 import us.zoom.sdk.ZoomAuthenticationError;
@@ -309,6 +310,11 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
             public void onNotificationServiceStatus(SDKNotificationServiceStatus sdkNotificationServiceStatus) {
 
             }
+
+            @Override
+            public void onNotificationServiceStatus(ZoomSDKAuthenticationListener.SDKNotificationServiceStatus status, SDKNotificationServiceError error) {
+
+            }
         };
 
         // if(!zoomSDK.isLoggedIn()){
@@ -440,6 +446,11 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
 
             @Override
             public void onNotificationServiceStatus(SDKNotificationServiceStatus sdkNotificationServiceStatus) {
+
+            }
+
+            @Override
+            public void onNotificationServiceStatus(ZoomSDKAuthenticationListener.SDKNotificationServiceStatus status, SDKNotificationServiceError error) {
 
             }
         };
