@@ -14,7 +14,7 @@
 
     <include
         android:id="@+id/meetingContent"
-        layout="@layout/zm_conf_main_screen"
+        layout="@layout/zm_sdk_new_meeting_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

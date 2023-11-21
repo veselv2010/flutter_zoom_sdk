@@ -12,6 +12,7 @@ import us.zoom.sdk.InMeetingEventHandler;
 import us.zoom.sdk.InMeetingServiceListener;
 //import us.zoom.sdk.LocalRecordingRequestPrivilegeStatus;
 import us.zoom.sdk.VideoQuality;
+import us.zoom.sdk.LocalRecordingRequestPrivilegeStatus;
 
 public class SimpleInMeetingListener implements InMeetingServiceListener {
 
@@ -57,6 +58,11 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onMeetingUserUpdated(long l) {
+
+    }
+
+    @Override
+    public void onInMeetingUserAvatarPathUpdated(long l) {
 
     }
 
@@ -267,6 +273,43 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onLocalRecordingPrivilegeRequested(IRequestLocalRecordingPrivilegeHandler iRequestLocalRecordingPrivilegeHandler) {
+
+    }
+
+    @Override
+    public void onSuspendParticipantsActivities() {
+
+    }
+
+    @Override
+    public void onAllowParticipantsStartVideoNotification(boolean allow) {
+
+    }
+
+    @Override
+    public void onAllowParticipantsRenameNotification(boolean allow) {
+
+    }
+    @Override
+    public void onAllowParticipantsUnmuteSelfNotification(boolean allow) {
+
+    }
+    @Override
+    public void onAllowParticipantsShareWhiteBoardNotification(boolean allow) {
+
+    }
+    @Override
+    public void onAICompanionActiveChangeNotice(boolean active) {
+
+    }
+
+    @Override
+    public void onMeetingLockStatus(boolean isLock) {
+
+    }
+
+    @Override
+    public void onRequestLocalRecordingPrivilegeChanged(LocalRecordingRequestPrivilegeStatus status) {
 
     }
 }

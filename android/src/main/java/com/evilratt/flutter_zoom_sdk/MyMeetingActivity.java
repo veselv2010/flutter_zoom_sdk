@@ -1,11 +1,8 @@
 package com.evilratt.flutter_zoom_sdk;
 
-import us.zoom.sdk.MeetingActivity;
-import us.zoom.sdk.ZoomSDK;
-
-import android.content.Intent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -13,11 +10,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
+import us.zoom.sdk.NewMeetingActivity;
+import us.zoom.sdk.ZoomSDK;
 
-public class MyMeetingActivity extends MeetingActivity {
-    private Button returnBtn;
+public class MyMeetingActivity extends NewMeetingActivity {
+    @Override
+    protected int getLayout() {
+        return R.layout.my_meeting_layout;
+    }
+
+    @Override
+    protected int getLayoutForTablet() {
+        return R.layout.my_meeting_tablet_layout;
+    }
+
+    @Override
+    protected boolean isSensorOrientationEnabled() {
+        return false;
+    }
 
     BroadcastReceiver myBroadcast = new BroadcastReceiver() {
         @Override
@@ -31,11 +41,6 @@ public class MyMeetingActivity extends MeetingActivity {
             }
         }
     };
-
-    @Override
-    protected int getLayout() {
-        return R.layout.my_meeting_layout;
-    }
 
     @Override
     protected void onStop() {
@@ -58,7 +63,7 @@ public class MyMeetingActivity extends MeetingActivity {
 
         registerReceiver(myBroadcast, new IntentFilter("my_meeting_activity_broadcast"));
 
-        returnBtn = (Button) findViewById(R.id.returnBtn);
+        Button returnBtn = (Button) findViewById(R.id.returnBtn);
 
         if (returnBtn != null) {
             if (returnBtnMsg != null) {
@@ -75,15 +80,13 @@ public class MyMeetingActivity extends MeetingActivity {
     }
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
     }
 
-
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if(keyCode== KeyEvent.KEYCODE_BACK)   {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             finish();
         }
 
@@ -91,7 +94,7 @@ public class MyMeetingActivity extends MeetingActivity {
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
 
         unregisterReceiver(myBroadcast);
