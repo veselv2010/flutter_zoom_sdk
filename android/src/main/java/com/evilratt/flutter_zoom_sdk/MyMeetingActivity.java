@@ -16,12 +16,12 @@ import us.zoom.sdk.ZoomSDK;
 public class MyMeetingActivity extends NewMeetingActivity {
     @Override
     protected int getLayout() {
-        return R.layout.my_new_meeting_layout;
+        return R.layout.my_meeting_layout;
     }
 
     @Override
     protected int getLayoutForTablet() {
-        return R.layout.my_new_meeting_tablet_layout;
+        return R.layout.my_meeting_tablet_layout;
     }
 
     @Override
@@ -80,15 +80,13 @@ public class MyMeetingActivity extends NewMeetingActivity {
     }
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
     }
 
-
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if(keyCode== KeyEvent.KEYCODE_BACK)   {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             finish();
         }
 
@@ -96,7 +94,7 @@ public class MyMeetingActivity extends NewMeetingActivity {
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
 
         unregisterReceiver(myBroadcast);

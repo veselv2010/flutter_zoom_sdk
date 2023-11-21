@@ -252,9 +252,10 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
                 }
 
                 ZoomSDK zoomSDK = ZoomSDK.getInstance();
-                ZoomSDK.getInstance().getMeetingSettingsHelper().enableShowMyMeetingElapseTime(true);
-                ZoomSDK.getInstance().getMeetingSettingsHelper().setCustomizedNotificationData(data, handle);
-                ZoomSDK.getInstance().getZoomUIService().enableMinimizeMeeting(true);
+                zoomSDK.getMeetingSettingsHelper().enableShowMyMeetingElapseTime(true);
+                zoomSDK.getMeetingSettingsHelper().setCustomizedNotificationData(data, handle);
+                zoomSDK.getZoomUIService().enableMinimizeMeeting(true);
+                zoomSDK.getZoomUIService().setNewMeetingUI(MyMeetingActivity.class);
 
                 MeetingService meetingService = zoomSDK.getMeetingService();
                 meetingStatusChannel.setStreamHandler(new StatusStreamHandler(meetingService));
@@ -576,13 +577,13 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
     }
 
     private void showMeeting(MethodCall methodCall, Result result) {
-        Intent myIntent = new Intent(activity, MyMeetingActivity.class);
+        Intent myIntent = new Intent(this.activity, MyMeetingActivity.class);
 
         if (returnBtnMsg != null) {
             myIntent.putExtra("returnBtnMsg", returnBtnMsg.toString());
         }
 
-        activity.startActivity(myIntent);
+        this.activity.startActivity(myIntent);
 
         result.success(true);
     }
@@ -591,7 +592,7 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
         Intent myIntent = new Intent("my_meeting_activity_broadcast");
         myIntent.putExtra("broadcast", "finishMyMeetingActivity");
 
-        activity.sendBroadcast(myIntent);
+        this.activity.sendBroadcast(myIntent);
 
         result.success(true);
     }
@@ -606,10 +607,10 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
 
     public void checkAudioPermission() {
         String permission = Manifest.permission.RECORD_AUDIO;
-        int checkResult = activity.checkSelfPermission(permission);
+        int checkResult = this.activity.checkSelfPermission(permission);
 
         if (checkResult == PackageManager.PERMISSION_DENIED) {
-            activity.requestPermissions(new String[]{permission}, RECORD_AUDIO_PERMISSION_CODE);
+            this.activity.requestPermissions(new String[]{permission}, RECORD_AUDIO_PERMISSION_CODE);
         } else if (checkResult == PackageManager.PERMISSION_GRANTED) {
             connectAudioInMeeting();
         }

@@ -1,3 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.evilratt.flutter_zoom_sdk">
+    <application
+        android:extractNativeLibs="true">
+        <activity
+            android:name="com.evilratt.flutter_zoom_sdk.MyMeetingActivity"
+            android:exported="false"
+            android:theme="@style/ZMTheme.SubWindow"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:supportsPictureInPicture="true"
+            android:hardwareAccelerated="true" />
+    </application>
 </manifest>
