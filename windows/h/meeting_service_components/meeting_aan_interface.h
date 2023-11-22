@@ -18,13 +18,25 @@ public:
 	/// \param x: the horizontal coordinate value. 
 	/// \param y: the coordinate coordinate value. 
 	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError ShowAANPanel(unsigned int x, unsigned int y) = 0;
 
 	/// \brief Hide AAN panel window.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError HideAANPanel() = 0;
+
+	/// \brief Show dynamic notice for AI Companion panel window.
+	/// \param x: the horizontal coordinate value. 
+	/// \param y: the coordinate coordinate value. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError ShowDynamicNoticeForAICompanionPanel(unsigned int x, unsigned int y) = 0;
+
+	/// \brief Hide dynamic notice for AI Companion panel window.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError HideDynamicNoticeForAICompanionPanel() = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE

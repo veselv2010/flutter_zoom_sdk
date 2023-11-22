@@ -379,6 +379,8 @@ namespace flutter_zoom_sdk {
 
 	void AuthEvent::onNotificationServiceStatus(ZOOM_SDK_NAMESPACE::SDKNotificationServiceStatus status) {}
 
+	void AuthEvent::onNotificationServiceStatus(ZOOM_SDK_NAMESPACE::SDKNotificationServiceStatus status, ZOOM_SDK_NAMESPACE::SDKNotificationServiceError error) {}
+
 
 	// class MeetingServiceEvent 
 	MeetingServiceEvent::MeetingServiceEvent() {}
@@ -409,5 +411,7 @@ namespace flutter_zoom_sdk {
 	void MeetingServiceEvent::onMeetingParameterNotification(const ZOOM_SDK_NAMESPACE::MeetingParameter* meeting_param) {}
 
 	void MeetingServiceEvent::onSuspendParticipantsActivities(){}
+
+	void MeetingServiceEvent::onAICompanionActiveChangeNotice(bool bActive){}
 
 }  // namespace flutter_zoom_sdk

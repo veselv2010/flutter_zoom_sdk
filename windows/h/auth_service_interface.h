@@ -27,6 +27,7 @@ enum AuthResult
 	AUTHRET_NETWORKISSUE,///<Network issues.
 	AUTHRET_CLIENT_INCOMPATIBLE, ///Account does not support this SDK version
 	AUTHRET_JWTTOKENWRONG, ///<The jwt token to authenticate is wrong.
+	AUTHRET_LIMIT_EXCEEDED_EXCEPTION, ///<The authentication rate limit is exceeded.
 };
 
 /*! \enum LOGINSTATUS
@@ -59,7 +60,7 @@ enum LoginFailReason
 	LoginFail_Need_Bitrthday_ask,
 	LoginFail_OtherIssue = 100, 
 };
-
+#if defined(WIN32)
 /**
  * @brief Enumerations of the type for notification service status.
  */
@@ -72,13 +73,25 @@ typedef enum
 	SDK_Notification_Service_Closed,
 }SDKNotificationServiceStatus;
 
+typedef enum
+{
+	SDK_Notification_Service_Error_Success = 0,///<Success.
+	SDK_Notification_Service_Error_Unknown,///<Unknown error.
+	SDK_Notification_Service_Error_Internal_Error,///<Internal error,need retry.
+	SDK_Notification_Service_Error_Invalid_Token,///<Invalid token.
+	SDK_Notification_Service_Error_Multi_Connect,///<Use same user/resource login again on the same device, the previous login application will receive this error.
+	SDK_Notification_Service_Error_Network_Issue,///<Network issue.
+	SDK_Notification_Service_Error_Max_Duration, ///<Server disconnects the connection if client stayed connected with server for more than 24 hours. Client need to reconnect/login again.	
+}SDKNotificationServiceError;
+
+#endif
 /*! \struct tagAuthContext
     \brief SDK Authentication parameter with jwt token.
     Here are more detailed structural descriptions.
 */
 typedef struct tagAuthContext
 {
-	const wchar_t* jwt_token; /*!JWT token. You may generate your JWT token using the online tool https://jwt.io/. **It is highly recommended to generate your JWT token in your backend server.**
+	const zchar_t* jwt_token; /*!JWT token. You may generate your JWT token using the online tool https://jwt.io/. **It is highly recommended to generate your JWT token in your backend server.**
 								 JWT is generated with three core parts: Header, Payload, and Signature. When combined, these parts are separated by a period to form a token: `aaaaa.bbbbb.cccc`.
 								 Please follow this template to compose your payload for SDK initialization:
 							     ** Header
@@ -123,7 +136,7 @@ class IAccountInfo
 public:
 	/// \brief Get the screen name of user.
 	/// \return The return value is the displayed username. If there is no screen name of user, the return value is a string of length ZERO(0).
-	virtual const wchar_t* GetDisplayName() = 0;
+	virtual const zchar_t* GetDisplayName() = 0;
 	/// \brief Get login type.
 /// \return The return value is the account login type. For more details, see \link LoginType \endlink enum.
 	virtual LoginType GetLoginType() = 0;
@@ -155,15 +168,23 @@ public:
 
 	/// \brief Zoom authentication identity will be expired in 10 minutes, please re-auth.
 	virtual void onZoomAuthIdentityExpired() = 0;
+#if defined(WIN32)
+	/// \brief Notification service status changed callback.
+	/// \param status The value of transfer meeting service. For more details, see \link SDKNotificationServiceStatus \endlink.
+	/// \deprecated This interface will be marked as deprecated, then it will be instead by onLiveTranscriptionMsgInfoReceived, please stop using it.
+	virtual void onNotificationServiceStatus(SDKNotificationServiceStatus status) = 0;
 
 	/// \brief Notification service status changed callback.
 	/// \param status The value of transfer meeting service. For more details, see \link SDKNotificationServiceStatus \endlink.
-	virtual void onNotificationServiceStatus(SDKNotificationServiceStatus status) = 0;
+	/// \param error Connection Notification service fail error code.For more details, see \link SDKNotificationServiceError \endlink enum.
+	virtual void onNotificationServiceStatus(SDKNotificationServiceStatus status, SDKNotificationServiceError error) = 0;
+#endif
 };
-
+#if defined(WIN32)
 class IDirectShareServiceHelper;
 class IOutlookPluginIntegrationHelper;
 class INotificationServiceHelper;
+#endif
 /// \brief Authentication Service Interface.
 ///
 class IAuthService
@@ -187,19 +208,19 @@ public:
 
 	/// \brief Get SDK identity.
 	/// \return The SDK identity.
-	virtual const wchar_t* GetSDKIdentity() = 0;
+	virtual const zchar_t* GetSDKIdentity() = 0;
 
 	/// \brief Get SSO login web url.
 	/// \param prefix_of_vanity_url, prefix of vanity url. 
 	/// \return SSO login web url
-	virtual const wchar_t* GenerateSSOLoginWebURL(const wchar_t* prefix_of_vanity_url) = 0;
+	virtual const zchar_t* GenerateSSOLoginWebURL(const zchar_t* prefix_of_vanity_url) = 0;
 
 	/// \brief Account login.
 	/// \param uri_protocol For the parameter to be used for sso account login
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	///You need to call this APIs after IAuthServiceEvent::onAuthenticationReturn() return SDKErr_Success.
-	virtual SDKError SSOLoginWithWebUriProtocol(const wchar_t* uri_protocol) = 0;
+	virtual SDKError SSOLoginWithWebUriProtocol(const zchar_t* uri_protocol) = 0;
 	
 	/// \brief Account logout.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -213,7 +234,7 @@ public:
 	/// \brief Get login status.
 	/// \return The return value is login status. To get extended error information, see \link LOGINSTATUS \endlink enum.
 	virtual LOGINSTATUS GetLoginStatus() = 0;
-
+#if defined(WIN32)
 	/// \brief Get direct share service helper interface. 
 	/// \return If you logged in your account successfully, the return value is the object pointer IDirectShareServiceHelper. Otherwise is NULL.
 	virtual IDirectShareServiceHelper* GetDirectShareServiceHeler() = 0;
@@ -226,7 +247,7 @@ public:
 	/// \param accessToken Initialize parameter of notification service.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError RegisterNotificationService(const wchar_t* accessToken) = 0;
+	virtual SDKError RegisterNotificationService(const zchar_t* accessToken) = 0;
 
 	/// \brief UnRegister notification service.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -236,6 +257,7 @@ public:
 	/// \brief Get notification service helper interface. 
 	/// \return If the function succeeds, the return value is a pointer to INotificationServiceHelper . Otherwise returns NULL.
 	virtual INotificationServiceHelper* GetNotificationServiceHelper() = 0;
+#endif
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

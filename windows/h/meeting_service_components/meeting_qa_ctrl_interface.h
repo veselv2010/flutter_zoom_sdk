@@ -33,19 +33,19 @@ public:
 	
 	/// \brief Get the text of the answer.
 	/// \return The text of the answer.
-	virtual const wchar_t* GetText() = 0;
+	virtual const zchar_t* GetText() = 0;
 	
 	/// \brief Get the sender's name of the answer.
 	/// \return The sender's name of the answer.
-	virtual const wchar_t* GetSenderName() = 0;
+	virtual const zchar_t* GetSenderName() = 0;
 	
 	/// \brief Get the related question's id of the answer.
 	/// \return The related question's id of the answer.
-	virtual const wchar_t* GetQuestionID() = 0;
+	virtual const zchar_t* GetQuestionID() = 0;
 	
 	/// \brief Get the answer id.
 	/// \return The answer id.
-	virtual const wchar_t* GetAnswerID() = 0;
+	virtual const zchar_t* GetAnswerID() = 0;
 	
 	/// \brief Determine if the answer is private or not.
 	/// \return TRUE indicates to the answer is private.
@@ -76,15 +76,15 @@ public:
 	
 	/// \brief Get the text of the question.
 	/// \return The text of the question.
-	virtual const wchar_t* GetText() = 0;
+	virtual const zchar_t* GetText() = 0;
 	
 	/// \brief Get the sender's name of the question.
 	/// \return The sender's name of the question.
-	virtual const wchar_t* GetSenderName() = 0;
+	virtual const zchar_t* GetSenderName() = 0;
 	
 	/// \brief Get the question id.
 	/// \return The question id.
-	virtual const wchar_t* GetQuestionID() = 0;
+	virtual const zchar_t* GetQuestionID() = 0;
 
 	/// \brief Determine if the question is anonymous.
 	/// \return TRUE indicates the question is anonymous. 
@@ -120,7 +120,7 @@ public:
 	
 	/// \brief Get all the users' names who answers the question live.
 	/// \return All the users' names who answers the question live. Separated by commas.
-	virtual const wchar_t* GetLiveAnswerName() = 0;
+	virtual const zchar_t* GetLiveAnswerName() = 0;
 	
 	/// \brief Determine if the question is being answered live or not.
 	/// \return TRUE indicates the question is being answered live.
@@ -145,54 +145,54 @@ public:
 	/// \brief Callback event of adding question.
 	/// \param questionID The question id.
 	/// \param bSuccess Add question successfully or not.
-	virtual void OnAddQuestion(const wchar_t* questionID, bool bSuccess) = 0;
+	virtual void OnAddQuestion(const zchar_t* questionID, bool bSuccess) = 0;
 
 	/// \brief Callback event of adding answer.
 	/// \param answerID The answer id.
 	/// \param bSuccess Add answer successfully or not.
-	virtual void OnAddAnswer(const wchar_t* answerID, bool bSuccess) = 0;
+	virtual void OnAddAnswer(const zchar_t* answerID, bool bSuccess) = 0;
 
 	/// \brief Callback event of marking question as dismissed.
 	/// \param question_id The question id.
-	virtual void OnQuestionMarkedAsDismissed(const wchar_t* question_id) = 0;
+	virtual void OnQuestionMarkedAsDismissed(const zchar_t* question_id) = 0;
 
 	/// \brief Callback event of reopening question.
 	/// \param question_id The question id.
-	virtual void OnReopenQuestion(const wchar_t* question_id) = 0;
+	virtual void OnReopenQuestion(const zchar_t* question_id) = 0;
 
 	/// \brief Callback event of receiving question.
 	/// \param questionID The question id.
-	virtual void OnReceiveQuestion(const wchar_t* questionID) = 0;
+	virtual void OnReceiveQuestion(const zchar_t* questionID) = 0;
 
 	/// \brief Callback event of receiving answer.
 	/// \param answerID The answer id.
-	virtual void OnReceiveAnswer(const wchar_t* answerID) = 0;
+	virtual void OnReceiveAnswer(const zchar_t* answerID) = 0;
 
 	/// \brief Callback event of user answering live.
 	/// \param questionID The question id.
-	virtual void OnUserLivingReply(const wchar_t* questionID) = 0;
+	virtual void OnUserLivingReply(const zchar_t* questionID) = 0;
 	
 	/// \brief Callback event of end of user answering live. 
 	/// \param questionID The question id.
-	virtual void OnUserEndLiving(const wchar_t* questionID) = 0;
+	virtual void OnUserEndLiving(const zchar_t* questionID) = 0;
 
 	/// \brief Callback event of voting up question.
 	/// \param question_id The question id.
 	/// \param order_changed The order of the question in question list is changed or not.
-	virtual void OnUpvoteQuestion(const wchar_t* question_id, bool order_changed) = 0;
+	virtual void OnUpvoteQuestion(const zchar_t* question_id, bool order_changed) = 0;
 	
 	/// \brief Callback event of revoking voting up question.
 	/// \param question_id The question id.
 	/// \param order_changed The order of the question in question list is changed or not.
-	virtual void OnRevokeUpvoteQuestion(const wchar_t* question_id, bool order_changed) = 0;
+	virtual void OnRevokeUpvoteQuestion(const zchar_t* question_id, bool order_changed) = 0;
 
 	/// \brief Callback event of deleting question(s).
 	/// \param lstQuestionID The list of question ids.
-	virtual void OnDeleteQuestion(IList<const wchar_t*>* lstQuestionID) = 0;
+	virtual void OnDeleteQuestion(IList<const zchar_t*>* lstQuestionID) = 0;
 
 	/// \brief Callback event of  deleting answer(s).
 	/// \param lstAnswerID The list of answer ids.
-	virtual void OnDeleteAnswer(IList<const wchar_t*>* lstAnswerID) = 0;
+	virtual void OnDeleteAnswer(IList<const zchar_t*>* lstAnswerID) = 0;
 
 	/// \brief Callback event of enabling to ask question anonymously.
 	/// \param bEnabled Enbabled or not.
@@ -232,7 +232,7 @@ public:
 	/// \param bAskAnonymous Specifies whether the question is asked anonymously.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError AddQuestion(const wchar_t* questionContent, bool bAskAnonymous) = 0;
+	virtual SDKError AddQuestion(const zchar_t* questionContent, bool bAskAnonymous) = 0;
 	
 	/// \brief Get the question count of the attendee himself.
 	/// \return The question count of the attendee himself.
@@ -248,7 +248,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks The comment will be cut off if it is over long.
-	virtual SDKError CommentQuestion(const wchar_t* questionID, const wchar_t* commentContent) = 0;
+	virtual SDKError CommentQuestion(const zchar_t* questionID, const zchar_t* commentContent) = 0;
 
 	//host
 	
@@ -258,7 +258,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks The answer will be cut off if it is over long.
-	virtual SDKError AnswerQuestionPrivate(const wchar_t* questionID, const wchar_t* answerContent) = 0;
+	virtual SDKError AnswerQuestionPrivate(const zchar_t* questionID, const zchar_t* answerContent) = 0;
 	
 	/// \brief The host answers the question publicly.
 	/// \param questionID Specifies the question id.
@@ -266,43 +266,43 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks The answer will be cut off if it is over long.
-	virtual SDKError AnswerQuestionPublic(const wchar_t* questionID, const wchar_t* answerContent) = 0;
+	virtual SDKError AnswerQuestionPublic(const zchar_t* questionID, const zchar_t* answerContent) = 0;
 	
 	/// \brief The host dismisses the question.
 	/// \param questionID Specifies the question id.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError DismissQuestion(const wchar_t* questionID) = 0;
+	virtual SDKError DismissQuestion(const zchar_t* questionID) = 0;
 
 	/// \brief The host deletes the question.
 	/// \param questionID Specifies the question id.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError DeleteQuestion(const wchar_t* questionID) = 0;
+	virtual SDKError DeleteQuestion(const zchar_t* questionID) = 0;
 
 	/// \brief The host deletes the answerID.
 	/// \param answerID Specifies the answer id.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError DeleteAnswer(const wchar_t* answerID) = 0;
+	virtual SDKError DeleteAnswer(const zchar_t* answerID) = 0;
 
 	/// \brief The host reopens the question.
 	/// \param questionID Specifies the question id.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError ReopenQuestion(const wchar_t* questionID) = 0;
+	virtual SDKError ReopenQuestion(const zchar_t* questionID) = 0;
 	
 	/// \brief Set the question can be answered live.
 	/// \param questionID Specifies the question id.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError StartLiving(const wchar_t* questionID) = 0;
+	virtual SDKError StartLiving(const zchar_t* questionID) = 0;
 	
 	/// \brief Set the question can not be answered live.
 	/// \param questionID Specifies the question id.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EndLiving(const wchar_t* questionID) = 0;
+	virtual SDKError EndLiving(const zchar_t* questionID) = 0;
 
 	/// \brief Get the count of the opened questions.
 	/// \return The count of the opened questions.
@@ -381,29 +381,29 @@ public:
 	/// \brief Get a certain question.
 	/// \param questionID Specifies the question id.
 	/// \return A pointer to IQAItemInfo. For more details, see \link IQAItemInfo \endlink.
-	virtual IQAItemInfo* GetQuestion(const wchar_t* questionID) = 0;
+	virtual IQAItemInfo* GetQuestion(const zchar_t* questionID) = 0;
 	
 	/// \brief Get a certain answer.
 	/// \param answerID Specifies the answer id.
 	/// \return A pointer to IAnswerItem. For more details, see \link IAnswerItem \endlink.
-	virtual IAnswerItem* GetAnswer(const wchar_t* answerID) = 0;
+	virtual IAnswerItem* GetAnswer(const zchar_t* answerID) = 0;
 	
 	/// \brief Vote up or revoke voting up the question.
 	/// \param questionID Specifies the question id.
 	/// \param bVokeup TRUE indicates to vote up, FALSE indicates to revoke voting up.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError VoteupQuestion(const wchar_t* questionID, bool bVokeup) = 0;
+	virtual SDKError VoteupQuestion(const zchar_t* questionID, bool bVokeup) = 0;
 
 	/// \brief Determine whether the legal notice for QA is available
 	/// \return True indicates the legal notice for QA is available. Otherwise False.
 	virtual bool IsQALegalNoticeAvailable() = 0;
 
 	/// Get the QA legal notices prompt.
-	virtual const wchar_t* getQALegalNoticesPrompt() = 0;
+	virtual const zchar_t* getQALegalNoticesPrompt() = 0;
 
 	/// Get the QA legal notices explained.
-	virtual const wchar_t* getQALegalNoticesExplained() = 0;
+	virtual const zchar_t* getQALegalNoticesExplained() = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE

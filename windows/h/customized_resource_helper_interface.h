@@ -44,7 +44,7 @@ public:
 	///\param key_ Resource ID corresponding to the custom resource.
 	///\param absolute_resource_path The location of the customized resource file must be an absolute path and include the file name with suffix.
 	/// \remarks You must call the function first before calling ZOOM_SDK_NAMESPACE::InitSDK(), or no, it won't work.
-	virtual SDKError AddCustomizedPictureResource(const wchar_t* key_, const wchar_t* absolute_resource_path) = 0;
+	virtual SDKError AddCustomizedPictureResource(const zchar_t* key_, const zchar_t* absolute_resource_path) = 0;
 	/// \brief Use the custom string to replace the specified string item.
 	/// \param customizedType Specify the string item type. For more information, see \link SDKCustomizedStringType \endlink enum.
 	/// \param customizedString Specify the custom string.
@@ -52,7 +52,7 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks If customizedString is NULL or is not NULL but with length zero(0), the return value is SDKERR_INVALID_PARAMETER.
 	/// \remarks You must call the function first before calling ZOOM_SDK_NAMESPACE::InitSDK(), or no, it won't work.
-	virtual SDKError AddCustomizedStringResource(SDKCustomizedStringType customizedType, const wchar_t* customizedString) = 0;
+	virtual SDKError AddCustomizedStringResource(SDKCustomizedStringType customizedType, const zchar_t* customizedString) = 0;
 	/// \brief Use the custom URL to replace the specified URL.
 	/// \param customizedType Specify the URL type. For more information, see \link SDKCustomizedURLType \endlink enum.
 	/// \param customizedUrl Specify the custom URL. 
@@ -60,7 +60,7 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks If customizedUrl is NULL or is not NULL but with length zero(0), the return value is SDKERR_INVALID_PARAMETER.
 	/// \remarks You must call the function first before calling ZOOM_SDK_NAMESPACE::InitSDK(), or no, it won't work.
-	virtual SDKError AddCustomizedURLResource(SDKCustomizedURLType customizedType, const wchar_t* customizedUrl) = 0;
+	virtual SDKError AddCustomizedURLResource(SDKCustomizedURLType customizedType, const zchar_t* customizedUrl) = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

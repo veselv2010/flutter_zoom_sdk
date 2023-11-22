@@ -6,7 +6,9 @@
 #ifndef _MEETING_VIDEO_INTERFACE_H_
 #define _MEETING_VIDEO_INTERFACE_H_
 #include "zoom_sdk_def.h"
+#if defined(WIN32)
 #include "zoom_sdk_util_define.h"
+#endif
 BEGIN_ZOOM_SDK_NAMESPACE
 
 /*! \enum VideoStatus
@@ -121,7 +123,6 @@ public:
 	/// \param userId The user ID whose video quality changes
 	/// \param quality New video quality. For more details, see \link VideoConnectionQuality \endlink enum.
 	virtual void onUserVideoQualityChanged(VideoConnectionQuality quality, unsigned int userid) = 0;
-
 };
 
 enum PinResult
@@ -170,6 +171,100 @@ public:
 	/// \remarks Valid for both Zoom style and customize user interface mode.
 	virtual SDKError UnmuteVideo() = 0;
 
+	/// \brief Determine if it is able to spotlight the video of the specified user in the meeting. 
+	/// \param userid Specifies the user ID to be determined.
+	/// \param [out] result Indicates if it is able to spotlight. It validates only when the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for both Zoom style and customize user interface mode.
+	virtual SDKError CanSpotlight(unsigned int userid, SpotlightResult& result) = 0;
+	
+	/// \brief Determine if it is able to unspotlight the video of the specified user in the meeting. 
+	/// \param userid Specifies the user ID to be determined.
+	/// \param [out] result Indicates if it is able to unspotlight. It validates only when the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for both Zoom style and customize user interface mode.
+	virtual SDKError CanUnSpotlight(unsigned int userid, SpotlightResult& result) = 0;
+
+	/// \brief Spotlight the video of the assigned user to the first view.
+	/// \param userid Specifies the user ID to be spotlighted.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for both Zoom style and customize user interface mode.
+	virtual SDKError SpotlightVideo(unsigned int userid) = 0;
+
+	/// \brief Unspotlight the video of the assigned user to the first view.
+	/// \param userid Specifies the user ID to be unspotlighted.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for both Zoom style and customize user interface mode.
+	virtual SDKError UnSpotlightVideo(unsigned int userid) = 0;
+
+	/// \brief Unpin all the videos from the first view.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for both Zoom style and customize user interface mode.
+	virtual SDKError UnSpotlightAllVideos() = 0;
+
+	/// \brief Get the list of all the spotlighted user in the meeting.
+	/// \return If the function succeeds, the return value is the list of the spotlighted user in the meeting.
+	///Otherwise failed, the return value is NULL.
+	/// \remarks Valid for both Zoom style and customize user interface mode.
+	virtual IList<unsigned int >* GetSpotlightedUserList() = 0;
+
+	/// \brief Query if it is able to demand the specified user to turn on the video.
+	/// \param userid Specifies the user ID to query.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for both Zoom style and customize user interface mode.
+	virtual SDKError CanAskAttendeeToStartVideo(unsigned int userid) = 0;
+
+	/// \brief Demand the assigned user to turn on the video.
+	/// \param userid Specifies the user ID to demand.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for both Zoom style and customize user interface mode.
+	virtual SDKError AskAttendeeToStartVideo(unsigned int userid) = 0;
+
+	/// \brief Query if it is able to demand the specified user to turn off the video.
+	/// \param userid Specifies the user ID to query.  
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for both Zoom style and customize user interface mode.
+	virtual SDKError CanStopAttendeeVideo(unsigned int userid) = 0;
+
+	/// \brief Turn off the video of the assigned user.
+	/// \param userid Specifies the user ID to turn off.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for both Zoom style and customize user interface mode.
+	virtual SDKError StopAttendeeVideo(unsigned int userid) = 0;
+
+	/// \brief Determine if the following host video order feature is supported.
+	/// \return TRUE indicates to support the following host video order feature.
+	virtual bool IsSupportFollowHostVideoOrder() = 0;
+
+	/// \brief Enable or disable follow host video order mode.
+	/// \param bEnable TRUE indicates to set to enable the follow host video order mode.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableFollowHostVideoOrder(bool bEnable) = 0;
+
+	/// \brief Determine if the follow host video mode is enabled.
+	/// \return TRUE indicates to enable the mode. 
+	virtual bool IsFollowHostVideoOrderOn() = 0;
+
+	/// \brief Get the video order list.
+	/// \return If the function succeeds, the return value the is video order list.
+	///Otherwise failed, returns NULL.
+	virtual IList<unsigned int >* GetVideoOrderList() = 0;
+
+
+	/// \brief Determine if the incoming video is stopped.
+	/// \return TRUE indicates that the incoming video is stopped. 
+	virtual bool IsIncomingVideoStoped() = 0;
+#if defined(WIN32)
 	/// \brief Determine if it is able to pin the video of the specified user to the first view. 
 	/// \param userid Specifies the user ID to be determined.
 	/// \param [out] result Indicates if it is able to pin. It validates only when the return value is SDKErr_Success.
@@ -232,48 +327,6 @@ public:
 	/// \remarks Valid only for Zoom style user interface mode.
 	virtual IList<unsigned int >* GetPinnedUserListFromSecondView() = 0;
 
-	/// \brief Determine if it is able to spotlight the video of the specified user in the meeting. 
-	/// \param userid Specifies the user ID to be determined.
-	/// \param [out] result Indicates if it is able to spotlight. It validates only when the return value is SDKErr_Success.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both Zoom style and customize user interface mode.
-	virtual SDKError CanSpotlight(unsigned int userid, SpotlightResult& result) = 0;
-	
-	/// \brief Determine if it is able to unspotlight the video of the specified user in the meeting. 
-	/// \param userid Specifies the user ID to be determined.
-	/// \param [out] result Indicates if it is able to unspotlight. It validates only when the return value is SDKErr_Success.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both Zoom style and customize user interface mode.
-	virtual SDKError CanUnSpotlight(unsigned int userid, SpotlightResult& result) = 0;
-
-	/// \brief Spotlight the video of the assigned user to the first view.
-	/// \param userid Specifies the user ID to be spotlighted.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both Zoom style and customize user interface mode.
-	virtual SDKError SpotlightVideo(unsigned int userid) = 0;
-
-	/// \brief Unspotlight the video of the assigned user to the first view.
-	/// \param userid Specifies the user ID to be unspotlighted.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both Zoom style and customize user interface mode.
-	virtual SDKError UnSpotlightVideo(unsigned int userid) = 0;
-
-	/// \brief Unpin all the videos from the first view.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both Zoom style and customize user interface mode.
-	virtual SDKError UnSpotlightAllVideos() = 0;
-
-	/// \brief Get the list of all the spotlighted user in the meeting.
-	/// \return If the function succeeds, the return value is the list of the spotlighted user in the meeting.
-	///Otherwise failed, the return value is NULL.
-	/// \remarks Valid for both Zoom style and customize user interface mode.
-	virtual IList<unsigned int >* GetSpotlightedUserList() = 0;
-
 	/// \brief Display or not the user who does not turn on the video in the video all mode.
 	/// \return TRUE indicates to hide, FALSE show.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
@@ -286,53 +339,6 @@ public:
 	/// \remarks Valid only for Zoom style user interface mode.
 	virtual SDKError HideOrShowSelfView(bool bHide) = 0;
 
-	/// \brief Query if it is able to demand the specified user to turn on the video.
-	/// \param userid Specifies the user ID to query.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both Zoom style and customize user interface mode.
-	virtual SDKError CanAskAttendeeToStartVideo(unsigned int userid) = 0;
-
-	/// \brief Demand the assigned user to turn on the video.
-	/// \param userid Specifies the user ID to demand.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both Zoom style and customize user interface mode.
-	virtual SDKError AskAttendeeToStartVideo(unsigned int userid) = 0;
-
-	/// \brief Query if it is able to demand the specified user to turn off the video.
-	/// \param userid Specifies the user ID to query.  
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both Zoom style and customize user interface mode.
-	virtual SDKError CanStopAttendeeVideo(unsigned int userid) = 0;
-
-	/// \brief Turn off the video of the assigned user.
-	/// \param userid Specifies the user ID to turn off.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both Zoom style and customize user interface mode.
-	virtual SDKError StopAttendeeVideo(unsigned int userid) = 0;
-
-	/// \brief Determine if the following host video order feature is supported.
-	/// \return TRUE indicates to support the following host video order feature.
-	virtual bool IsSupportFollowHostVideoOrder() = 0;
-
-	/// \brief Enable or disable follow host video order mode.
-	/// \param bEnable TRUE indicates to set to enable the follow host video order mode.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableFollowHostVideoOrder(bool bEnable) = 0;
-
-	/// \brief Determine if the follow host video mode is enabled.
-	/// \return TRUE indicates to enable the mode. 
-	virtual bool IsFollowHostVideoOrderOn() = 0;
-
-	/// \brief Get the video order list.
-	/// \return If the function succeeds, the return value the is video order list.
-	///Otherwise failed, returns NULL.
-	virtual IList<unsigned int >* GetVideoOrderList() = 0;
-
 	/// \brief Get set video order helper interface.
 	/// \return If the function succeeds, the return value is a pointer to ISetVideoOrderHelper. Otherwise returns NULL.
 	virtual ISetVideoOrderHelper* GetSetVideoOrderHelper() = 0;
@@ -340,17 +346,13 @@ public:
 	/// \brief Get camera controller interface.
 	/// \return If the function succeeds, the return value is a pointer to ICameraController. Otherwise returns NULL.
 	virtual ICameraController* GetMyCameraController() = 0;
-
+	
 	/// \brief Stop the incoming video.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise the function fails and returns an error. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid for both Zoom style and customize user interface mode.
 	virtual SDKError StopIncomingVideo(bool bStop) = 0;
-
-	/// \brief Determine if the incoming video is stopped.
-	/// \return TRUE indicates that the incoming video is stopped. 
-	virtual bool IsIncomingVideoStoped() = 0;
-
+	
 	/// \brief Determine if show the last used avatar in the meeting.
 	/// \param bShow TRUE indicates to show the last used avatar.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -360,6 +362,7 @@ public:
 	/// \brief Determine if the meeting is showing the avatar.
 	/// \return TRUE indicates the meeting is showing the avatar.
 	virtual bool IsShowAvatar() = 0;
+#endif
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

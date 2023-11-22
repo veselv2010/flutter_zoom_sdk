@@ -6,8 +6,9 @@
 #ifndef _MEETING_SERVICE_INTERFACE_H_
 #define _MEETING_SERVICE_INTERFACE_H_
 #include "zoom_sdk_def.h"
+#if defined(WIN32)
 class IZoomRealNameAuthMeetingHelper;
-
+#endif
 BEGIN_ZOOM_SDK_NAMESPACE
 /*! \enum MeetingStatus
     \brief Meeting status.
@@ -70,9 +71,10 @@ enum MeetingFailCode
 	MEETING_FAIL_WRITE_CONFIG_FILE			= 50,	///<Disabled to write the configure file.
 	MEETING_FAIL_FORBID_TO_JOIN_INTERNAL_MEETING = 60, ///<Forbidden to join the internal meeting.
 	CONF_FAIL_REMOVED_BY_HOST = 61, ///<Removed by the host. 
-	MEETING_FAIL_HOST_DISALLOW_OUTSIDE_USER_JOIN = 62,   //Forbidden to join meeting
-	MEETING_FAIL_APP_PRIVILEGE_TOKEN_ERROR = 500,  //App join token error.
-	MEETING_FAIL_JMAK_USER_EMAIL_NOT_MATCH = 1143, //Jmak user email not match
+	MEETING_FAIL_HOST_DISALLOW_OUTSIDE_USER_JOIN = 62,   ///<Forbidden to join meeting
+	MEETING_FAIL_UNABLE_TO_JOIN_EXTERNAL_MEETING = 63,  ///<To join a meeting hosted by an external Zoom account, your SDK app has to be published on Zoom Marketplace. You can refer to Section 6.1 of Zoom's API License Terms of Use.
+	MEETING_FAIL_APP_PRIVILEGE_TOKEN_ERROR = 500,  ///<App join token error.
+	MEETING_FAIL_JMAK_USER_EMAIL_NOT_MATCH = 1143, ///<Jmak user email not match
 	MEETING_FAIL_UNKNOWN = 0xffff,
 
 };  
@@ -132,19 +134,22 @@ enum SDKUserType
 typedef struct tagJoinParam4WithoutLogin
 {
 	UINT64		   meetingNumber;///< Meeting number.
-	const wchar_t* vanityID;///<Meeting vanity ID
-	const wchar_t* userName;///<Username when logged in the meeting.
-	const wchar_t* psw;///<Meeting password.
-	const wchar_t* app_privilege_token; ///<app_privilege_token.
-	HWND		   hDirectShareAppWnd;///<The window handle of the direct Sharing application.
-	const wchar_t* userZAK;///<ZOOM access token.
-	const wchar_t* customer_key;///<The customer key that need the app intergrated with sdk to specify. The SDK will set this value when the associated settings are turned on.
-	const wchar_t* webinarToken;///<Webinar token.
-	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
+	const zchar_t* vanityID;///<Meeting vanity ID
+	const zchar_t* userName;///<Username when logged in the meeting.
+	const zchar_t* psw;///<Meeting password.
+	const zchar_t* app_privilege_token; ///<app_privilege_token.
+	const zchar_t* userZAK;///<ZOOM access token.
+	const zchar_t* customer_key;///<The customer key that need the app intergrated with sdk to specify. The SDK will set this value when the associated settings are turned on. The max length of customer_key is 35.
+	const zchar_t* webinarToken;///<Webinar token.
 	bool		   isVideoOff;///<Turn off the video of not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool		   isAudioOff;///<Turn off the audio or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
-	const wchar_t* join_token;///<Join token.
+	const zchar_t* join_token;///<Join token.
 	bool           isMyVoiceInMix; ///<Is my voice in the mixed audio raw data?
+#if defined(WIN32)
+	HWND		   hDirectShareAppWnd;///<The window handle of the direct Sharing application.
+	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
+#endif
+	bool           isAudioRawDataStereo; ///<Is audio raw data stereo? The default is mono.
 }JoinParam4WithoutLogin;
 
 /*! \struct tagJoinParam4NormalUser
@@ -154,18 +159,21 @@ typedef struct tagJoinParam4WithoutLogin
 typedef struct tagJoinParam4NormalUser
 {
 	UINT64		   meetingNumber;///<Meeting number.
-	const wchar_t* vanityID;///<Meeting vanity ID.
-	const wchar_t* userName;///<Username when logged in the meeting.
-	const wchar_t* psw;///<Meeting password.
-	const wchar_t* app_privilege_token; ///<app_privilege_token.
-	HWND		   hDirectShareAppWnd;///<The window handle of the direct sharing application.
-	const wchar_t* customer_key;///<The customer key that need the app intergrated with sdk to specify. The SDK will set this value when the associated settings are turned on.
-	const wchar_t* webinarToken;///<Webinar token.
+	const zchar_t* vanityID;///<Meeting vanity ID.
+	const zchar_t* userName;///<Username when logged in the meeting.
+	const zchar_t* psw;///<Meeting password.
+	const zchar_t* app_privilege_token; ///<app_privilege_token.
+	const zchar_t* customer_key;///<The customer key that need the app intergrated with sdk to specify. The SDK will set this value when the associated settings are turned on. The max length of customer_key is 35.
+	const zchar_t* webinarToken;///<Webinar token.
 	bool		   isVideoOff;///<Turn off the video or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool		   isAudioOff;///<Turn off the audio or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
-	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
-	const wchar_t* join_token;///<Join token.
+	const zchar_t* join_token;///<Join token.
 	bool           isMyVoiceInMix; ///<Is my voice in the mixed audio raw data?
+#if defined(WIN32)
+	HWND		   hDirectShareAppWnd;///<The window handle of the direct sharing application.
+	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
+#endif
+	bool           isAudioRawDataStereo; ///<Is audio raw data stereo? The default is mono.
 }JoinParam4NormalUser;
 
 /*! \struct tagJoinParam
@@ -183,7 +191,7 @@ typedef struct tagJoinParam
 	tagJoinParam()
 	{
 		userType = SDK_UT_WITHOUT_LOGIN;
-		memset(&param, 0, sizeof(param));  //checked safe
+		memset(&param, 0, sizeof(param));  
 	}
 }JoinParam;
 
@@ -208,17 +216,20 @@ enum ZoomUserType
 */
 typedef struct tagStartParam4WithoutLogin
 {
-	const wchar_t* userZAK;///<ZOOM access token.
-	const wchar_t* userName;///<Username when logged in the meeting.
+	const zchar_t* userZAK;///<ZOOM access token.
+	const zchar_t* userName;///<Username when logged in the meeting.
 	ZoomUserType   zoomuserType;///<User type.
 	UINT64		   meetingNumber;///<Meeting number.
-	const wchar_t* vanityID;///< Meeting vanity ID
-	HWND		   hDirectShareAppWnd;///<The window handle of the direct sharing application.
-	const wchar_t* customer_key;///<The customer key that need the app intergrated with sdk to specify. The SDK will set this value when the associated settings are turned on.
-	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to share.
+	const zchar_t* vanityID;///< Meeting vanity ID
+	const zchar_t* customer_key;///<The customer key that need the app intergrated with sdk to specify. The SDK will set this value when the associated settings are turned on. The max length of customer_key is 35.
 	bool		   isVideoOff;///<Turn off the video or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool		   isAudioOff;///<Turn off the audio or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool           isMyVoiceInMix; ///<Is my voice in the mixed audio raw data?
+#if defined(WIN32)
+	HWND		   hDirectShareAppWnd;///<The window handle of the direct sharing application.
+	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to share.
+#endif
+	bool           isAudioRawDataStereo; ///<Is audio raw data stereo? The default is mono.
 }StartParam4WithoutLogin;
 
 /*! \struct tagStartParam4NormalUser
@@ -228,13 +239,16 @@ typedef struct tagStartParam4WithoutLogin
 typedef struct tagStartParam4NormalUser
 {
 	UINT64			meetingNumber;///<Meeting number.
-	const wchar_t*  vanityID;///<Meeting vanity ID. Generate a ZOOM access token via REST API.
-	HWND			hDirectShareAppWnd;///<The window handle of the direct sharing application.
-	const wchar_t*  customer_key;///<The customer key that need the app intergrated with sdk to specify. The SDK will set this value when the associated settings are turned on.
+	const zchar_t*  vanityID;///<Meeting vanity ID. Generate a ZOOM access token via REST API.
+	const zchar_t*  customer_key;///<The customer key that need the app intergrated with sdk to specify. The SDK will set this value when the associated settings are turned on. The max length of customer_key is 35.
 	bool		    isVideoOff;///<Turn off video or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool		    isAudioOff;///<Turn off audio or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
-	bool		    isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
 	bool            isMyVoiceInMix; ///<Is my voice in the mixed audio raw data?
+#if defined(WIN32)
+	HWND			hDirectShareAppWnd;///<The window handle of the direct sharing application.
+	bool		    isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
+#endif
+	bool            isAudioRawDataStereo; ///<Is audio raw data stereo? The default is mono.
 }StartParam4NormalUser;
 
 
@@ -245,7 +259,7 @@ typedef struct tagStartParam4NormalUser
 typedef struct tagStartParam
 {
 	SDKUserType userType;///<User type.
-	const wchar_t* inviteContactId;
+	const zchar_t* inviteContactId;
 	union 
 	{
 		StartParam4NormalUser normaluserStart;///<The parameter for ordinary user when starts the meeting.
@@ -255,7 +269,7 @@ typedef struct tagStartParam
 	{
 		userType = SDK_UT_WITHOUT_LOGIN;
 		inviteContactId = NULL;
-		memset(&param, 0, sizeof(param));  //checked safe
+		memset(&param, 0, sizeof(param));  
 	}
 }StartParam;
 
@@ -273,7 +287,7 @@ enum ConnectionQuality
 	Conn_Quality_Good,///<The connection quality is good.
 	Conn_Quality_Excellent,///<The connection quality is excellent.
 };
-
+#if defined(WIN32)
 /*! \enum SDKViewType
     \brief SDK View Type, primary displayer and secondary displayer.
     Here are more detailed structural descriptions.
@@ -297,7 +311,7 @@ enum SDKShareViewZoomRatio
 	SDK_ShareViewZoomRatio_200,
 	SDK_ShareViewZoomRatio_300
 };
-
+#endif
 /*! \enum InMeetingSupportAudioType
 	\brief meeting supported audio type.
 	Here are more detailed structural descriptions.
@@ -332,15 +346,15 @@ public:
 
 	/// \brief Get the current meeting ID.
 	/// \return If the function succeeds, the return value is the current meeting ID. Otherwise returns an empty string of length ZERO(0).
-	virtual const wchar_t* GetMeetingID() = 0;
+	virtual const zchar_t* GetMeetingID() = 0;
 	
 	/// \brief Get the meeting topic.
 	/// \return If the function succeeds, the return value is the current meeting topic. Otherwise returns an empty string of length ZERO(0)
-	virtual const wchar_t* GetMeetingTopic() = 0;
+	virtual const zchar_t* GetMeetingTopic() = 0;
 
 	/// \brief Get the meeting password.
 	/// \return If the function succeeds, the return value is the current meeting password. Otherwise returns an empty string of length ZERO(0)
-	virtual const wchar_t* GetMeetingPassword() = 0;
+	virtual const zchar_t* GetMeetingPassword() = 0;
 
 	/// \brief Get the meeting type.
 	/// \return If the function succeeds, the return value is the current meeting type. To get extended error information, see \link MeetingType \endlink enum.
@@ -348,19 +362,19 @@ public:
 
 	/// \brief Get the email invitation template for the current meeting.
 	/// \return If the function succeeds, the return value is the email invitation template. Otherwise returns NULL.
-	virtual const wchar_t* GetInviteEmailTeamplate() = 0;
+	virtual const zchar_t* GetInviteEmailTeamplate() = 0;
 
 	/// \brief Get the meeting title in the email invitation template.
 	/// \return If the function succeeds, the return value is the meeting title. Otherwise returns NULL.
-	virtual const wchar_t* GetInviteEmailTitle() = 0;
+	virtual const zchar_t* GetInviteEmailTitle() = 0;
 
 	/// \brief Get the URL of invitation to join the meeting.
 	/// \return If the function succeeds, the return value is the URL of invitation. Otherwise returns NULL.
-	virtual const wchar_t* GetJoinMeetingUrl() = 0;
+	virtual const zchar_t* GetJoinMeetingUrl() = 0;
 
 	/// \brief Get the host tag of the current meeting.
 	/// \return If the function succeeds, the return value is the host tag. Otherwise returns NULL.
-	virtual const wchar_t* GetMeetingHostTag() = 0;
+	virtual const zchar_t* GetMeetingHostTag() = 0;
 
 	/// \brief Determine whether the current meeting is internal or not.
 	/// \return TRUE indicates that the current meeting is internal.
@@ -388,8 +402,8 @@ typedef struct tagMeetingParameter
 	bool is_auto_recording_local;///<Auto local recording or not. True indicates to auto local recording.
 	bool is_auto_recording_cloud;///<Auto cloud recording or not. True indicates to auto cloud recording.
 	UINT64 meeting_number;///<Meeting number.
-	const wchar_t* meeting_topic;///<Meeting topic.
-	const wchar_t* meeting_host;///<Meeting host.
+	const zchar_t* meeting_topic;///<Meeting topic.
+	const zchar_t* meeting_host;///<Meeting host.
 	tagMeetingParameter()
 	{
 		meeting_type = MEETING_TYPE_NONE;
@@ -427,17 +441,6 @@ enum StatisticsWarningType
 	Statistics_Warning_Busy_System,///<The system is busy.
 };
 
-/*! \enum OSSessionType
-    \brief OS session type.
-    Here are more detailed structural descriptions.
-*/
-enum OSSessionType
-{
-	OS_SessionType_NotHandle = 0,
-	OS_SessionType_Lock, ///<equals to WTS_SESSION_LOCK
-	OS_SessionType_Logoff,///<equals to WTS_SESSION_LOGOFF
-	OS_SessionType_Remote_DISCONNECT,///<equals to WTS_REMOTE_DISCONNECT
-};
 /// \brief Meeting service callback event.
 ///
 class IMeetingServiceEvent
@@ -463,34 +466,42 @@ public:
 
 	/// \brief Callback event when a meeting is suspended.
 	virtual void onSuspendParticipantsActivities() = 0;
-};
 
+	/// \brief Callback event for the AI Companion active status changed. 
+	/// \param active Specify whether the AI Companion active or not.
+	virtual void onAICompanionActiveChangeNotice(bool bActive) = 0;
+};
+#if defined(WIN32)
 class IAnnotationController;
-class IMeetingAudioController;
 class IMeetingBreakoutRoomsController;
-class IMeetingChatController;
-class IMeetingConfiguration;
 class IMeetingH323Helper;
-class IMeetingParticipantsController;
 class IMeetingPhoneHelper;
-class IMeetingRecordingController;
 class IMeetingRemoteController;
-class IMeetingShareController;
 class IMeetingUIController;
-class IMeetingVideoController;
-class IMeetingWaitingRoomController;
 class IMeetingLiveStreamController;
-class IMeetingWebinarController;
 class IClosedCaptionController;
 class IMeetingQAController;
-class IMeetingBOController;
 class IMeetingInterpretationController;
 class IMeetingSignInterpretationController;
 class IEmojiReactionController;
 class IMeetingAANController;
-class IMeetingRawArchivingController;
 class ICustomImmersiveController;
+#endif
+class IMeetingConfiguration;
+class IMeetingBOController;
+class IMeetingChatController;
+class IMeetingAudioController;
+class IMeetingParticipantsController;
+class IMeetingRecordingController;
+class IMeetingShareController;
+class IMeetingVideoController;
+class IMeetingWaitingRoomController;
+class IMeetingWebinarController;
+class IMeetingRawArchivingController;
 class IMeetingReminderController;
+class IMeetingWhiteboardController;
+class IMeetingSmartSummaryController;
+
 /// \brief Meeting Service Interface
 ///
 class IMeetingService
@@ -506,7 +517,7 @@ public:
 	/// \param protocol_action Specifies the web uri
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError HandleZoomWebUriProtocolAction(const wchar_t* protocol_action) = 0;
+	virtual SDKError HandleZoomWebUriProtocolAction(const zchar_t* protocol_action) = 0;
 
 	/// \brief Join the meeting.
 	/// \param joinParam The parameter is used to join meeting. For more details, see \link JoinParam \endlink structure. 
@@ -576,25 +587,9 @@ public:
 	/// \remarks If you are not in the meeting, the Conn_Quality_Unknow will be returned.
 	virtual ConnectionQuality GetAudioConnQuality(bool bSending = true) = 0;
 
-	/// \brief Get the meeting configuration interface.
-	/// \return If the function succeeds, the return value is the meeting configuration interface. Otherwise returns NULL.
-	virtual IMeetingConfiguration* GetMeetingConfiguration() = 0;
-
-	/// \brief Get the meeting UI controller interface.
-	/// \return If the function succeeds, the return value is a pointer to the IMeetingConfiguration. Otherwise returns NULL.
-	virtual IMeetingUIController* GetUIController() = 0;
-
-	/// \brief Get the annotation controller interface.
-	/// \return If the function succeeds, the return value is a pointer of IAnnotationController. Otherwise returns NULL.
-	virtual IAnnotationController* GetAnnotationController() = 0;
-
 	/// \brief Get video controller interface.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingVideoController. Otherwise returns NULL.
 	virtual IMeetingVideoController* GetMeetingVideoController() = 0;
-
-	/// \brief Get the remote controller interface.
-	/// \return If the function succeeds, the return value is a pointer of IMeetingVideoController. Otherwise returns NULL.
-	virtual IMeetingRemoteController* GetMeetingRemoteController() = 0;
 
 	/// \brief Get the sharing controller interface.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingVideoController. Otherwise returns NULL.
@@ -608,14 +603,56 @@ public:
 	/// \return If the function succeeds, the return value is a pointer to IMeetingRecordingController. Otherwise returns NULL.
 	virtual IMeetingRecordingController* GetMeetingRecordingController() = 0;
 
+	/// \brief Get the waiting room controller interface.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingWaitingRoomController. Otherwise returns NULL.
+	virtual IMeetingWaitingRoomController* GetMeetingWaitingRoomController() = 0;
+
+	/// \brief Get the participants controller interface.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingParticipantsController. Otherwise returns NULL.
+	virtual IMeetingParticipantsController* GetMeetingParticipantsController() = 0;
+
+	/// \brief Get the webinar controller interface.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingWebinarController. Otherwise returns NULL.
+	virtual IMeetingWebinarController* GetMeetingWebinarController() = 0;
+
+	/// \brief Get the Raw Archiving controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingRawArchivingController. Otherwise returns NULL.
+	virtual IMeetingRawArchivingController* GetMeetingRawArchivingController() = 0;
+
+	/// \brief Get the reminder controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingReminderController. Otherwise the function returns NULL.
+	virtual IMeetingReminderController* GetMeetingReminderController() = 0;
+	
+	/// \brief Get the smart summary controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingSmartSummaryController. Otherwise the function returns NULL.
+	virtual IMeetingSmartSummaryController* GetMeetingSmartSummaryController() = 0;
+
 	/// \brief Get the chat controller interface.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingChatController. Otherwise returns NULL.
 	virtual IMeetingChatController* GetMeetingChatController() = 0;
 
-	/// \brief Get the waiting room controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingWaitingRoomController. Otherwise returns NULL.
-	virtual IMeetingWaitingRoomController* GetMeetingWaitingRoomController() = 0;
+	/// \brief Get the Breakout Room controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingBOController. Otherwise returns NULL.
+	virtual IMeetingBOController* GetMeetingBOController() = 0;
+
+	/// \brief Get the meeting configuration interface.
+	/// \return If the function succeeds, the return value is the meeting configuration interface. Otherwise returns NULL.
+	virtual IMeetingConfiguration* GetMeetingConfiguration() = 0;
 	
+#if defined(WIN32)
+
+	/// \brief Get the meeting UI controller interface.
+	/// \return If the function succeeds, the return value is a pointer to the IMeetingConfiguration. Otherwise returns NULL.
+	virtual IMeetingUIController* GetUIController() = 0;
+
+	/// \brief Get the annotation controller interface.
+	/// \return If the function succeeds, the return value is a pointer of IAnnotationController. Otherwise returns NULL.
+	virtual IAnnotationController* GetAnnotationController() = 0;
+
+	/// \brief Get the remote controller interface.
+	/// \return If the function succeeds, the return value is a pointer of IMeetingVideoController. Otherwise returns NULL.
+	virtual IMeetingRemoteController* GetMeetingRemoteController() = 0;
+
 	/// \brief Get the meeting H.323 helper interface.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingH323Helper. Otherwise returns NULL.
 	virtual IMeetingH323Helper* GetH323Helper() = 0;
@@ -624,17 +661,9 @@ public:
 	/// \return If the function succeeds, the return value is a pointer of IMeetingPhoneHelper. Otherwise returns NULL.
 	virtual IMeetingPhoneHelper* GetMeetingPhoneHelper() = 0;
 
-	/// \brief Get the participants controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingParticipantsController. Otherwise returns NULL.
-	virtual IMeetingParticipantsController* GetMeetingParticipantsController() = 0;
-
 	/// \brief Get the live stream controller interface.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingLiveStreamController. Otherwise returns NULL.
 	virtual IMeetingLiveStreamController* GetMeetingLiveStreamController() = 0;
-
-	/// \brief Get the webinar controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingWebinarController. Otherwise returns NULL.
-	virtual IMeetingWebinarController* GetMeetingWebinarController() = 0;
 
 	/// \brief Get the Closed Caption controller interface.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingWebinarController. Otherwise returns NULL.
@@ -647,10 +676,6 @@ public:
 	/// \brief Get the Q&A controller.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingQAController. Otherwise returns NULL.
 	virtual IMeetingQAController* GetMeetingQAController() = 0;
-
-	/// \brief Get the Breakout Room controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingBOController. Otherwise returns NULL.
-	virtual IMeetingBOController* GetMeetingBOController() = 0;
 
 	/// \brief Get the Interpretation controller.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingInterpretationController. Otherwise returns NULL.
@@ -668,17 +693,14 @@ public:
 	/// \return If the function succeeds, the return value is a pointer to IMeetingAANController. Otherwise returns NULL.
 	virtual IMeetingAANController* GetMeetingAANController() = 0;
 
-	/// \brief Get the Raw Archiving controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingRawArchivingController. Otherwise returns NULL.
-	virtual IMeetingRawArchivingController* GetMeetingRawArchivingController() = 0;
-
 	/// \brief Get the immersive controller.
 	/// \return If the function succeeds, the return value is a pointer to ICustomImmersiveController. Otherwise the function returns NULL.
 	virtual ICustomImmersiveController* GetMeetingImmersiveController() = 0;
 
-	/// \brief Get the reminder controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingReminderController. Otherwise the function returns NULL.
-	virtual IMeetingReminderController* GetMeetingReminderController() = 0;
+	/// \brief Get the Whiteboard controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingWhiteboardController. Otherwise the function returns NULL.
+	virtual IMeetingWhiteboardController* GetMeetingWhiteboardController() = 0;
+#endif
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

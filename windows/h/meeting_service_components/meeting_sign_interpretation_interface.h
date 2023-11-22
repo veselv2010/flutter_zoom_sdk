@@ -26,8 +26,8 @@ class ISignInterpretationLanguageInfo
 {
 public:
 	virtual ~ISignInterpretationLanguageInfo() {}
-	virtual const wchar_t* GetSignLanguageID() = 0;
-	virtual const wchar_t* GetSignLanguageName() = 0;
+	virtual const zchar_t* GetSignLanguageID() = 0;
+	virtual const zchar_t* GetSignLanguageName() = 0;
 };
 
 /// \brief sign interpreter interface.
@@ -37,7 +37,7 @@ class ISignInterpreter
 public:
 	virtual ~ISignInterpreter() {}
 	virtual unsigned int GetUserID() = 0;
-	virtual const wchar_t* GetSignLanguageID() = 0;
+	virtual const zchar_t* GetSignLanguageID() = 0;
 	virtual bool IsAvailable() = 0;
 };
 
@@ -117,7 +117,7 @@ public:
 	/// \brief Get the sign interpretation language object of specified sign language ID.
 	/// \param signLanguageId Specify the sign language ID for which you want to get the information. 
 	/// \return If the function succeeds, the return value is a pointer to the IInterpretationLanguage, Otherwise failed, the return value is NULL.
-	virtual ISignInterpretationLanguageInfo* GetSignInterpretationLanguageInfoByID(const wchar_t* signLanguageId) = 0;
+	virtual ISignInterpretationLanguageInfo* GetSignInterpretationLanguageInfoByID(const zchar_t* signLanguageId) = 0;
 
 	/// \brief Get the available sign interpretation language list.
 	/// \return If the function succeeds, the return value is a pointer to the IList<ISignInterpretationLanguageInfo*>, Otherwise failed, the return value is NULL.
@@ -138,7 +138,7 @@ public:
 	/// \param userID Specify the user.
 	/// \param signLanguageId Specify the sign language.
 	/// \return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError AddSignInterpreter(unsigned int userID, const wchar_t* signLanguageId) = 0;
+	virtual SDKError AddSignInterpreter(unsigned int userID, const zchar_t* signLanguageId) = 0;
 
 	/// \brief Remove someone from the list of sign interpreters.
 	/// \param userID Specify the user.
@@ -149,7 +149,7 @@ public:
 	/// \param userID Specify the interpreter.
 	/// \param signLanguageId Specify the new sign language.
 	/// \return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError ModifySignInterpreterLanguage(unsigned int userID, const wchar_t* signLanguageId) = 0;
+	virtual SDKError ModifySignInterpreterLanguage(unsigned int userID, const zchar_t* signLanguageId) = 0;
 
 	/// \brief Determine if I can start the sign interpretation in the meeting.
 	/// \return If it can start the sign interpretation, the return value is SDKErr_Success.
@@ -178,14 +178,14 @@ public:
 	//Interpreter (only for interpreter)
 	/// \brief Get sign language id if myself is a sign interpreter.
 	/// \return If the function succeeds, the return value is the current assigned sign language id. Otherwise returns an empty string of length ZERO(0)
-	virtual const wchar_t* GetSignInterpreterAssignedLanID() = 0;
+	virtual const zchar_t* GetSignInterpreterAssignedLanID() = 0;
 
 	//Listener (for non interpreter)
 	/// \brief Join a sign language channel if myself is not a sign interpreter.
 	/// \param signLanguageId Specify the sign language channel ID.
 	/// \return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid only for Zoom style user interface mode. 
-	virtual SDKError JoinSignLanguageChannel(const wchar_t* signLanguageId) = 0;
+	virtual SDKError JoinSignLanguageChannel(const zchar_t* signLanguageId) = 0;
 
 	/// \brief Off sign language if myself is not a sign interpreter..
 	/// \return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.

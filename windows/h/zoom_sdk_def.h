@@ -5,7 +5,22 @@
 */
 #ifndef _ZOOM_SDK_DEF_H_
 #define _ZOOM_SDK_DEF_H_
+#if defined(WIN32)
 #include <tchar.h>
+typedef wchar_t zchar_t;
+#define TLS_KEY_DEF uint32_t
+#else
+#include <stdint.h>
+#include <unistd.h>
+#include <cstring>
+#include <float.h>
+typedef char zchar_t;
+typedef uint64_t UINT64;
+typedef int64_t INT64;
+typedef float  FLOAT;
+typedef void* HWND;
+#define TLS_KEY_DEF pthread_key_t
+#endif//#if defined(WIN32)
 #define PLATFORM_IMPORT	__declspec(dllimport)  
 #define PLATFORM_EXPORT	__declspec(dllexport)
 #ifdef ZOOM_SDK_DLL_EXPORT
@@ -89,6 +104,13 @@ enum SDK_LANGUAGE_ID
 	LANGUAGE_Dutch//<In Dutch.
 };
 
+enum ZoomSDKRawDataMemoryMode 
+{
+	ZoomSDKRawDataMemoryModeStack,
+	ZoomSDKRawDataMemoryModeHeap
+};
+
+#if (defined WIN32 )
 /*! \struct tagWndPosition
     \brief The position of the window. The coordinate of position is that of monitor when the parent window is null. If the the parent window is not null, the position coordinate is that of the parent window.
     Here are more detailed structural descriptions.
@@ -147,7 +169,7 @@ typedef struct tagConfigurableOptions
 {
 	CustomizedLanguageInfo customizedLang;///The custom resource information.
 	int optionalFeatures;///<Additional functional configuration. The function currently supports whether to use the custom UI mode only. When the value of the optionalFeatures&ENABLE_CUSTOMIZED_UI_FLAG is TRUE, it means the custom UI mode will be used. Otherwise the Zoom UI mode will be used.
-	const wchar_t* sdkPathPostfix;
+	const zchar_t* sdkPathPostfix;
 	tagConfigurableOptions()
 	{
 		optionalFeatures = 0;
@@ -164,12 +186,6 @@ enum SDK_APP_Locale
 {
 	SDK_APP_Locale_Default,
 	SDK_APP_Locale_CN,
-};
-
-enum ZoomSDKRawDataMemoryMode 
-{
-	ZoomSDKRawDataMemoryModeStack,
-	ZoomSDKRawDataMemoryModeHeap
 };
 
 enum ZoomSDKVideoRenderMode
@@ -210,7 +226,7 @@ typedef struct tagZoomSDKRenderOptions
 		videoCaptureMethod = ZoomSDKVideoCaptureMethod_Auto;
 	}
 }ZoomSDKRenderOptions;
-
+#endif
 typedef struct tagRawDataOptions
 {
 	bool enableRawdataIntermediateMode; ///<false -- YUV420data, true -- intermediate data
@@ -232,35 +248,41 @@ typedef struct tagRawDataOptions
 */
 typedef struct tagInitParam  
 {
-	const wchar_t* strWebDomain;///<Web domain.
-	const wchar_t* strBrandingName;///<Branding name.
-	const wchar_t* strSupportUrl;///<Support URL.
-	void* hResInstance;///<Resource module handle.
-	unsigned int uiWindowIconSmallID;///<The ID of the small icon on the window.
-	unsigned int uiWindowIconBigID;///<The ID of the big Icon on the window.
+	const zchar_t* strWebDomain;///<Web domain.
+	const zchar_t* strBrandingName;///<Branding name.
+	const zchar_t* strSupportUrl;///<Support URL.
 	SDK_LANGUAGE_ID emLanguageID;///<The ID of the SDK language.
 	bool enableGenerateDump; ///<Enable generate dump file if the app crashed.
 	bool enableLogByDefault;///<Enable log feature.
 	unsigned int uiLogFileSize; ///<Size of a log file in M(megabyte). The default size is 5M. There are 5 log files in total and the file size varies from 1M to 50M. 
+	RawDataOptions rawdataOpts;
+#if defined(WIN32)
+	void* hResInstance;///<Resource module handle.
+	unsigned int uiWindowIconSmallID;///<The ID of the small icon on the window.
+	unsigned int uiWindowIconBigID;///<The ID of the big Icon on the window.
 	ConfigurableOptions obConfigOpts;///<The configuration options of the SDK.
 	SDK_APP_Locale locale;
-	bool permonitor_awareness_mode;
 	ZoomSDKRenderOptions renderOpts;
-	RawDataOptions rawdataOpts;
+	bool permonitor_awareness_mode;
+#endif
+	int wrapperType;
 	tagInitParam()
 	{
 		strWebDomain = NULL;
 		strBrandingName = NULL;
 		strSupportUrl = NULL;
-		hResInstance = (void*)-1;
-		uiWindowIconSmallID = 0;
-		uiWindowIconBigID = 0;
 		emLanguageID = LANGUAGE_Unknow;
 		enableGenerateDump = false;
 		enableLogByDefault = false;
 		uiLogFileSize = 5;
+		wrapperType = 0;
+#if defined(WIN32)
+		hResInstance = (void*)-1;
+		uiWindowIconSmallID = 0;
+		uiWindowIconBigID = 0;
 		locale = SDK_APP_Locale_Default;
 		permonitor_awareness_mode = true;
+#endif
 	}
 }InitParam;
 
@@ -307,7 +329,7 @@ public:
 
 	/// \brief Get the description for the last error.
 	/// \return If the function succeeds, the error description will be returned. If there is no error, it will return an empty string of length zero(0).
-	virtual const wchar_t* GetErrorDescription() const = 0;
+	virtual const zchar_t* GetErrorDescription() const = 0;
 	virtual ~IZoomLastError(){};
 };
 template<class T>
@@ -318,13 +340,20 @@ public:
 	virtual int GetCount() = 0;
 	virtual T   GetItem(int index) = 0;
 };
+#if (defined WIN32)
 #define SDK_NULL_AUDIO_FILE_HANDLE (0xffffffff)
 const RECT _SDK_TEST_VIDEO_INIT_RECT = {0,0,0,0};
-
+#endif
 enum FrameDataFormat
 {
 	FrameDataFormat_I420_LIMITED,
 	FrameDataFormat_I420_FULL,
+};
+
+enum ZoomSDKAudioChannel
+{
+	ZoomSDKAudioChannel_Mono,
+	ZoomSDKAudioChannel_Stereo,
 };
 
 END_ZOOM_SDK_NAMESPACE

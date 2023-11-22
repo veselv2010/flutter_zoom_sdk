@@ -16,14 +16,16 @@ BEGIN_ZOOM_SDK_NAMESPACE
 struct InMeetingDeviceInfo
 {
 	int nIndex;///<index
-	const wchar_t* deviceName;///<device name
-	const wchar_t* meetingTopic;///<meeting topic
+	const zchar_t* deviceName;///<device name
+	const zchar_t* meetingTopic;///<meeting topic
+	const zchar_t* meetingId;///<meeting id
 	UINT64 meetingNumber;///<meeting number
 	InMeetingDeviceInfo()
 	{
 		nIndex = -1;
 		deviceName = NULL;
 		meetingTopic = NULL;
+		meetingId = NULL;
 		meetingNumber = 0;
 	}
 };

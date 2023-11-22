@@ -35,7 +35,7 @@ public:
 
 	virtual SDKError TryShareApplication(HWND hWnd, bool bShareSound = true, bool bOptimizeVideoClip = true) = 0;
 
-	virtual SDKError TryShareDesktop(const wchar_t* monitorId, bool bShareSound = true, bool bOptimizeVideoClip = true) = 0;
+	virtual SDKError TryShareDesktop(const zchar_t* monitorId, bool bShareSound = true, bool bOptimizeVideoClip = true) = 0;
 
 	virtual SDKError Cancel() = 0;
 };
@@ -57,7 +57,7 @@ public:
 	/// \param pairingCode Specifies the pairing code.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.	
-	virtual SDKError TryWithPairingCode(const wchar_t* pairingCode) = 0;
+	virtual SDKError TryWithPairingCode(const zchar_t* pairingCode) = 0;
 	
 	/// \brief Delete the present direct sharing.
 	/// \return If the function succeeds, the return value is SDKErr_Success.

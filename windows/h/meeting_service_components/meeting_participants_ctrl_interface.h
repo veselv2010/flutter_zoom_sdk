@@ -7,7 +7,9 @@
 #define _MEETING_ParticipantsCtrl_INTERFACE_H_
 #include "zoom_sdk_def.h"
 #include "meeting_service_components/meeting_recording_interface.h"
+#if defined(WIN32)
 #include "meeting_service_components/meeting_emoji_reaction_interface.h"
+#endif
 BEGIN_ZOOM_SDK_NAMESPACE
 /*! \enum UserRole
     \brief Role of user.
@@ -45,7 +47,7 @@ public:
 	/// \return If the function succeeds, the return value is the username.
 	///Otherwise failed, the return value is NULL.
 	/// \remarks Valid for both normal user and webinar attendee.
-	virtual const wchar_t* GetUserName() = 0;
+	virtual const zchar_t* GetUserName() = 0;
 
 	/// \brief Determine whether the member corresponding with the current information is the host or not.
 	/// \return TRUE indicates the host.
@@ -60,19 +62,19 @@ public:
 	/// \brief Get the avatar file path matched with the current user information.
 	/// \return If the function succeeds, the return value is the avatar file path.
 	///Otherwise failed, the return value is NULL.
-	virtual const wchar_t* GetAvatarPath() = 0;
+	virtual const zchar_t* GetAvatarPath() = 0;
 
 	/// \brief Get the user persistent id matched with the current user information.
 	/// \return If the function succeeds, the return value is the user persistent id.
 	///Otherwise failed, the return value is NULL.
-	virtual const wchar_t* GetPersistentId() = 0;
+	virtual const zchar_t* GetPersistentId() = 0;
 
 	/// \brief Get the customer_key matched with the current user information.
 	///If you assign a customer_key for a user in the start/join meeting parameter, the value you assigned will be returned.
 	///Otherwise a empty string will be returned.
 	/// \return If the function succeeds, the return value is the customer_key.
 	///Otherwise failed, the return value is NULL.
-	virtual const wchar_t* GetCustomerKey() = 0;
+	virtual const zchar_t* GetCustomerKey() = 0;
 
 	/// \brief Determine the video status of the user specified by the current information.
 	/// \return TRUE indicates that the video is turned on.
@@ -126,7 +128,7 @@ public:
 	/// \brief Get the webinar status of the user specified by the current information.
 	/// \return The status of the specified user. For more details, see \link WebinarAttendeeStatus \endlink structure.
 	virtual WebinarAttendeeStatus* GetWebinarAttendeeStauts() = 0;
-	
+#if defined(WIN32)
 	/// \brief Determine whether the user specified by the current information is a interpreter or not.
 	/// \return TRUE indicates that the specified user is a interpreter, otherwise not.
 	virtual bool IsInterpreter() = 0;
@@ -137,8 +139,12 @@ public:
 
 	/// \brief Get the active language, if the user is a interpreter.
 	/// \return If success, the return value is the active language abbreviation, Otherwise the return value is ZERO(0).
-	virtual const wchar_t* GetInterpreterActiveLanguage() = 0;
-	
+	virtual const zchar_t* GetInterpreterActiveLanguage() = 0;
+
+	/// \brief Get the emoji feedback type of the user.
+	/// \return The emoji feedback type of the user. For more details, see \link SDKEmojiFeedbackType \endlink enum.
+	virtual SDKEmojiFeedbackType GetEmojiFeedbackType() = 0;
+#endif
 	/// \brief Get the local recording status.
 	/// \return The status of the local recording status. For more details, see \link RecordingStatus \endlink structure
 	virtual RecordingStatus GetLocalRecordingStatus() = 0;
@@ -151,9 +157,9 @@ public:
 	/// \return TRUE indicates that the specified user has raw live stream privilege, otherwise false.
 	virtual bool HasRawLiveStreamPrivilege() = 0;
 
-	/// \brief Get the emoji feedback type of the user.
-	/// \return The emoji feedback type of the user. For more details, see \link SDKEmojiFeedbackType \endlink enum.
-	virtual SDKEmojiFeedbackType GetEmojiFeedbackType() = 0;
+	/// \brief Query if the participant has a camera.
+	/// \return TRUE means the user has a camera, otherwise false.
+	virtual bool HasCamera() = 0;
 
 	virtual ~IUserInfo(){};
 };
@@ -169,13 +175,13 @@ public:
 	/// \param lstUserID List of user IDs. 
 	/// \param strUserList List of users in JSON format. This function is currently invalid, hereby only for reservations.
 	/// \remarks Valid for both normal user and webinar attendee.
-	virtual void onUserJoin(IList<unsigned int >* lstUserID, const wchar_t* strUserList = NULL) = 0;
+	virtual void onUserJoin(IList<unsigned int >* lstUserID, const zchar_t* strUserList = NULL) = 0;
 
 	/// \brief Callback event of notification of user who leaves the meeting.
 	/// \param lstUserID List of the user ID who leaves the meeting.
 	/// \param strUserList List of the users in JSON format. This function is currently invalid, hereby only for reservations.
 	/// \remarks Valid for both normal user and webinar attendee.
-	virtual void onUserLeft(IList<unsigned int >* lstUserID, const wchar_t* strUserList = NULL) = 0;
+	virtual void onUserLeft(IList<unsigned int >* lstUserID, const zchar_t* strUserList = NULL) = 0;
 
 	/// \brief Callback event of notification of the new host. 
 	/// \param userId Specify the ID of the new host. 
@@ -230,6 +236,10 @@ public:
 	/// \brief Callback event that the user avatar path is updated in the meeting.
 	/// \param userID Specify the user ID whose avatar updated. 
 	virtual void onInMeetingUserAvatarPathUpdated(unsigned int userID) = 0;
+
+	/// \brief Callback event that participant profile status change.
+	/// \param bHide true means hide participant profile picture, false means show participant profile picture. 
+	virtual void onParticipantProfilePictureStatusChange(bool bHidden) = 0;
 };
 
 /// \brief Meeting waiting room controller interface
@@ -277,7 +287,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid for both ZOOM style and user custom interface mode..
-	virtual SDKError ChangeUserName(const unsigned int userid, const wchar_t* userName, bool bSaveUserName) = 0;
+	virtual SDKError ChangeUserName(const unsigned int userid, const zchar_t* userName, bool bSaveUserName) = 0;
 
 	/// \brief Cancel the hands raised of specified user.
 	/// \param userid Specify the user ID to put down the hands.
@@ -345,7 +355,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid for both ZOOM style and user custom interface mode..
-	virtual SDKError ReclaimHostByHostKey(const wchar_t* host_key) = 0;
+	virtual SDKError ReclaimHostByHostKey(const zchar_t* host_key) = 0;
 
 	virtual SDKError AllowParticipantsToRename(bool bAllow) = 0;
 
@@ -408,6 +418,21 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError AutoAllowLocalRecordingRequest(bool bAllow) = 0;
+
+	/// \brief Determine if the current user can hide participant profile pictures.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError CanHideParticipantProfilePictures() = 0;
+
+	/// \brief Check whether the current meeting hides participant pictures.
+	/// \return If participants profile pictures be hidden, the return value is true.
+	virtual bool IsParticipantProfilePicturesHidden() = 0;
+
+	/// \brief Hide/Show participant profile pictures.
+	/// \param bHide TRUE indicates Hide participant profile pictures. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError HideParticipantProfilePictures(bool bHide) = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

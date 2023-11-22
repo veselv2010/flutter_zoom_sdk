@@ -21,6 +21,66 @@ typedef enum
 	SDKChatMessageType_To_WaitingRoomUsers,///Chat message is send to waiting room user.
 }SDKChatMessageType;
 
+/**
+ * @brief Enumerations of the content rich text style type for chat message.
+ */
+typedef enum
+{
+	TextStyle_None, ///Chat message rich text style normal.
+	TextStyle_Bold, ///Chat message rich text style bold.
+	TextStyle_Italic, ///Chat message rich text style italic.
+	TextStyle_Strikethrough, ///Chat message rich text style strike through.
+	TextStyle_BulletedList, ///Chat message rich text style bulleted list.
+	TextStyle_NumberedList, ///Chat message rich text style numbered list.
+	TextStyle_Underline, ///Chat message rich text style underline.
+	TextStyle_FontSize, ///Chat message rich text style font size.
+	TextStyle_FontColor, ///Chat message rich text style font color.
+	TextStyle_BackgroundColor, ///Chat message rich text style background color.
+	TextStyle_Indent, ///Chat message rich text style indent.
+	TextStyle_Paragraph, ///Chat message rich text style paragraph.
+	TextStyle_Quote, ///Chat message rich text style quote.
+	TextStyle_InsertLink ///Chat message rich text style insert link.
+}RichTextStyle;
+
+/// \brief Chat message rich text style offset.
+///
+class IRichTextStyleOffset
+{
+public:
+	/// \brief Get a certain rich-text style’s start position.
+	/// \return If the function succeeds, the return value is the specified rich-text style’s start position.
+	///Otherwise the function fails, and the return value is -1.
+	virtual unsigned int GetPositionStart() = 0;
+
+	/// \brief Get the end position of a certain style in rich text.
+	/// \return If the function succeeds, the return value is the end position of a certain style in rich text.
+	///Otherwise failed, the return value is -1.
+	virtual unsigned int GetPositionEnd() = 0;
+
+	/// \brief Get a certain rich-text style’s supplementary information.
+	/// \return If the function succeeds, the return value is the specified rich-text style’s supplementary information.
+	/// If the style is TextStyle_FontSize, possible return values are FontSize_Small, FontSize_Medium, or FontSize_Large.
+	/// If the style is TextStyle_Paragraph, possible return values are Paragraph_H1, Paragraph_H2, or Paragraph_H3.
+	/// If the style is TextStyle_FontColor, or TextStyle_BackgroundColor, possible return values are hex string representing standard RGB data.
+	///Otherwise the function fails, and the return value is the string of length zero(0).
+	virtual const zchar_t* GetReserve() = 0;
+};
+
+/// \brief Chat message rich text item of a certain style.
+///
+class IRichTextStyleItem
+{
+public:
+	/// \brief Get the rich text type of a portion of the current message.
+	/// \return If the function succeeds, the return value is the  rich text type of the specified portion of the current message.
+	virtual RichTextStyle GetTextStyle() = 0;
+
+	/// \brief Get the current message’s rich text position info list of a certain style.
+	/// \return If the function succeeds, the return value is the rich text position info list of a certain style of the current message.
+	virtual IList<IRichTextStyleOffset*>* GetTextStyleOffsetList() = 0;
+};
+
+
 /// \brief Chat message interface.
 ///
 class IChatMsgInfo
@@ -29,7 +89,7 @@ public:
 	/// \brief Get the message ID of the current message.
 	/// \return If the function succeeds, the return value is the message ID of the current message.
 	///Otherwise failed, the return value is the string of length zero(0)
-	virtual const wchar_t* GetMessageID() = 0;
+	virtual const zchar_t* GetMessageID() = 0;
 
 	/// \brief Get the sender ID of the current message.
 	/// \return If the function succeeds, the return value is the sender ID of the current message.
@@ -40,7 +100,7 @@ public:
 	/// \return If the function succeeds, the return value is sender screen name of the current message.
 	///Otherwise failed, the return value is NULL.
 	/// \remarks If the message is sent to all or to all panelists, the return value will be NULL.
-	virtual const wchar_t* GetSenderDisplayName() = 0;
+	virtual const zchar_t* GetSenderDisplayName() = 0;
 
 	/// \brief Get the receiver ID of the current message.
 	/// \return If the function succeeds, the return value is the receiver ID of the current message.
@@ -52,12 +112,12 @@ public:
 	/// \brief Get the receiver screen name of the current message.
 	/// \return If the function succeeds, the return value is the receiver screen name of the current message.
 	///Otherwise failed, the return value is the string of length zero(0).
-	virtual const wchar_t* GetReceiverDisplayName() = 0;
+	virtual const zchar_t* GetReceiverDisplayName() = 0;
 
 	/// \brief Get the content of the current message.
 	/// \return If the function succeeds, the return value is the pointer to the content of the current message.
 	///Otherwise failed, the return value is NULL.
-	virtual const wchar_t* GetContent() = 0;
+	virtual const zchar_t* GetContent() = 0;
 
 	/// \brief Get the timestamps of the current message.
 	/// \return If the function succeeds, the return value is the timestamps of the current message. 
@@ -78,6 +138,23 @@ public:
 	/// \brief Get the chat message type of the current message.
 	/// \return If the function succeeds, the return value is the chat message type of the current message.
 	virtual SDKChatMessageType GetChatMessageType() = 0;
+
+	/// \brief Determine if the current message is a reply to another message. 
+	/// \return TRUE indicates that the current message is a reply to another message. 
+	/// Otherwise the function fails and the message is a standalone message. 
+	virtual bool IsComment() = 0;
+
+	/// \brief Determine if the current message is part of a message thread, and can be directly replied to. 
+	/// \return TRUE indicates that the current message is a part of a message thread. Otherwise, the function fails. 
+	virtual bool IsThread() = 0;
+
+	/// \brief Get the current message’s chat message font style list.
+	virtual IList<IRichTextStyleItem*>* GetTextStyleItemList() = 0;
+
+	/// \brief Get the current message’s thread ID.
+	/// \return If the function succeeds, the return value is the current message’s thread ID.
+	///Otherwise the function fails, and the return value is the string of length zero(0)
+	virtual const zchar_t* GetThreadID() = 0;
 
 	virtual ~IChatMsgInfo() {};
 };
@@ -176,7 +253,7 @@ public:
 	/// \brief Chat message callback. This function is used to inform the user once received the message sent by others.
 	/// \param chatMsg An object pointer to the chat message.
 	/// \param content A pointer to the chat message in json format. This parameter is currently invalid, hereby only for reservations. 
-	virtual void onChatMsgNotifcation(IChatMsgInfo* chatMsg, const wchar_t* content = NULL) = 0;
+	virtual void onChatMsgNotifcation(IChatMsgInfo* chatMsg, const zchar_t* content = NULL) = 0;
 
 	/// \brief The authority of chat changes callback. This function is used to inform the user when the authority of chat changes in the meeting or webinar.
 	/// \param status_ The chat status. For more details, see \link ChatStatus \endlink.
@@ -185,9 +262,48 @@ public:
 	/// \brief Chat message be deleted callback. This function is used to inform the user host/myself the message be deleted.
 	/// \param MsgID is the id of the deleted message.
 	/// \param deleteBy Indicates by whom the message was deleted.
-	virtual void onChatMsgDeleteNotification(const wchar_t* msgID, SDKChatMessageDeleteType deleteBy) = 0;
+	virtual void onChatMsgDeleteNotification(const zchar_t* msgID, SDKChatMessageDeleteType deleteBy) = 0;
 
 	virtual void onShareMeetingChatStatusChanged(bool isStart) = 0;
+};
+
+/// \brief Chat message builder to create ChatMsgInfo objects.
+///
+class IChatMsgInfoBuilder
+{
+public:
+	/// \brief Set chat message content.
+	/// \param content The chat message’s content. 
+	virtual IChatMsgInfoBuilder* SetContent(const zchar_t* content) = 0;
+
+	/// \brief Set who will receive the chat message.
+	/// \param receiver Specify the user ID to receive the chat message. The message is sent to all participants when the value is zero(0). 
+	virtual IChatMsgInfoBuilder* SetReceiver(unsigned int receiver) = 0;
+
+	/// \brief Set the ID of the thread where the message will be posted.
+	/// \param threadId Specify the thread ID. 
+	virtual IChatMsgInfoBuilder* SetThreadId(const zchar_t* threadId) = 0;
+
+	/// \brief Set the chat message type.
+	/// \param type The chat message’s type.
+	virtual IChatMsgInfoBuilder* SetMessageType(SDKChatMessageType type) = 0;
+
+	/// \brief Set the chat message content quote style and position.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	virtual IChatMsgInfoBuilder* SetQuotePosition(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear all set styles.
+	virtual IChatMsgInfoBuilder* ClearStyles() = 0;
+
+	/// \brief Clear all set properties.
+	virtual IChatMsgInfoBuilder* Clear() = 0;
+
+	/// \brief build chat message entity.
+	/// \return If the function succeeds, the return value is the message detail info.
+	virtual IChatMsgInfo* Build() = 0;
+
+	virtual ~IChatMsgInfoBuilder() {}
 };
 
 /// \brief Meeting chat controller interface
@@ -217,43 +333,56 @@ public:
 	/// \param receiver Specify the user ID who receives the chat message. The message will be sent to all when the value is zero(0). 
 	/// \param content The content of the chat message. 
 	/// \param type The type of the chat message
+	/// \param mapOffset the special style content offset of the chat message content
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SendChatMsgTo(wchar_t* content, unsigned int receiver, SDKChatMessageType type) = 0;
+	/// \deprecated This interface will be marked as deprecated, then it will be instead by SendChatMsgTo(IChatMsgInfo* msg), please stop using it.
+	virtual SDKError SendChatMsgTo(const zchar_t* content, unsigned int receiver, SDKChatMessageType type) = 0;
 
 	/// \brief Determine whether the legal notice for chat is available
 	/// \return True indicates the legal notice for chat is available. Otherwise False.
 	virtual bool IsMeetingChatLegalNoticeAvailable() = 0;
 
 	/// Get the chat legal notices prompt.
-	virtual const wchar_t* getChatLegalNoticesPrompt() = 0;
+	virtual const zchar_t* getChatLegalNoticesPrompt() = 0;
 
 	/// Get the chat legal notices explained.
-	virtual const wchar_t* getChatLegalNoticesExplained() = 0;
+	virtual const zchar_t* getChatLegalNoticesExplained() = 0;
 
 	/// \brief Determine whether the legal notice for sharing in meeting chat is available
 	/// \return True indicates the legal notice for chat is available. Otherwise False.
 	virtual bool IsShareMeetingChatLegalNoticeAvailable() = 0;
 
 	/// Get the sharing in meeting chat started legal notices content.
-	virtual const wchar_t* GetShareMeetingChatStartedLegalNoticeContent() = 0;
+	virtual const zchar_t* GetShareMeetingChatStartedLegalNoticeContent() = 0;
 
 	/// Get the sharing in meeting chat stopped legal notices content.
-	virtual const wchar_t* GetShareMeetingChatStoppedLegalNoticeContent() = 0;
+	virtual const zchar_t* GetShareMeetingChatStoppedLegalNoticeContent() = 0;
 
 	/// \brief Determine whether the message can be delete.
 	/// \param msgID is the message id.
 	/// \return True indicates the message can be delete. Otherwise False.	
-	virtual bool IsChatMessageCanBeDeleted(const wchar_t* msgID) = 0;
+	virtual bool IsChatMessageCanBeDeleted(const zchar_t* msgID) = 0;
 
-	/// Delete chat message by message id.	
+	/// Delete chat message by message id.	 
 	/// \param msgID is the message id.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError DeleteChatMessage(const wchar_t* msgID) = 0;
+	virtual SDKError DeleteChatMessage(const zchar_t* msgID) = 0;
 
 	/// Get all chat message id.	
-	virtual IList<const wchar_t*>* GetAllChatMessageID() = 0;
+	virtual IList<const zchar_t*>* GetAllChatMessageID() = 0;
+
+	/// Get chat message by message ID.	
+	/// \param msgID is the message ID.
+	virtual IChatMsgInfo* GetChatMessageById(const zchar_t* msgID) = 0;
+
+	/// Get the chat message builder which can help construct the message entity.
+	virtual IChatMsgInfoBuilder* GetChatMessageBuilder() = 0;
+
+	/// Send a chat message.
+	/// \param msg Specify the message detail info .
+	virtual SDKError SendChatMsgTo(IChatMsgInfo* msg) = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

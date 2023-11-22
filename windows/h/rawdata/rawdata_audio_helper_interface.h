@@ -11,6 +11,7 @@ public:
 	~IZoomSDKAudioRawDataDelegate(){}
 	virtual void onMixedAudioRawDataReceived(AudioRawData* data_) = 0;
 	virtual void onOneWayAudioRawDataReceived(AudioRawData* data_, uint32_t node_id) = 0;
+	virtual void onShareAudioRawDataReceived(AudioRawData* data_) = 0;
 };
 
 class IZoomSDKAudioRawDataSender
@@ -18,13 +19,15 @@ class IZoomSDKAudioRawDataSender
 public:
 	virtual ~IZoomSDKAudioRawDataSender() {}
 
-	/// \brief Send audio raw data, channel number must be mono, and sampling bits must be 16.
-	/// \param data, The address of audio data.
-	/// \param data_length, The length of audio data, it must be even numbers.
-	/// \param sample_rate, The sampling rate of audio data(8000/11025/32000/44100/48000/50000/50400/96000/192000/2822400).
+	/// \brief Send audio raw data. Audio sample must be 16-bit audio.
+	/// \param data the audio data¡¯s address.
+	/// \param data_length the audio data¡¯s length. Must be an even number.
+	/// \param sample_rate the audio data¡¯s sampling rate.
+	/// When the channel is mono, supported sample rates: 8000/11025/16000/32000/44100/48000/50000/50400/96000/192000/2822400
+	/// When the channel is stereo, supported sample rates: 8000/16000/32000/44100/48000/50000/50400/96000/192000
 	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError send(char* data, unsigned int data_length, int sample_rate) = 0;
+	///Otherwise the function fails and returns an error code. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError send(char* data, unsigned int data_length, int sample_rate, ZoomSDKAudioChannel channel = ZoomSDKAudioChannel_Mono) = 0;
 };
 
 class IZoomSDKVirtualAudioMicEvent

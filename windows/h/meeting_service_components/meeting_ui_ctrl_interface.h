@@ -293,7 +293,10 @@ public:
 	/// \remarks The function does not work if the window shows the first or last page. The return value is SDKErr_Success in this case.
 	virtual SDKError ShowPreOrNextPageVideo(bool bPageUp) = 0;
 
-	/// \brief Set the visibility of the green frame when sharing the desktop.	/// \param bShow TRUE indicates to display the frame. FALSE hide.	/// \return If the function succeeds, the return value is SDKErr_Success.	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \brief Set the visibility of the green frame when sharing the desktop.
+	/// \param bShow TRUE indicates to display the frame. FALSE hide.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError ShowSharingFrameWindows(bool bShow) = 0;
 
 	/// \brief Determines the minimize state of the first view.
@@ -342,32 +345,32 @@ public:
 	/// \param meetingtopic Specify the meeting topic in the meeting information page.
 	/// \return SDKErr_Success means success, otherwise not
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetMeetingTopic(const wchar_t* meetingtopic) = 0;
+	virtual SDKError SetMeetingTopic(const zchar_t* meetingtopic) = 0;
 
 	/// \brief Set the cloud recording manage url in the recording setting page. 
 	/// \param crmURL Specify the cloud recording manage url in the recording setting page.
 	/// \return SDKErr_Success means success, otherwise not
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetCustomizedCloudRecordingMgrUrl(const wchar_t* crmURL) = 0;
+	virtual SDKError SetCustomizedCloudRecordingMgrUrl(const zchar_t* crmURL) = 0;
 
 	/// \brief Set the invitation domain. 
 	/// \param invitation_domain Specify the invitation domain.
 	/// \return SDKErr_Success means success, otherwise not
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetCustomizedInvitationDomain(const wchar_t* invitation_domain) = 0;
+	virtual SDKError SetCustomizedInvitationDomain(const zchar_t* invitation_domain) = 0;
 
 	/// \brief Allowing the developer to customize the URL of create/edit the polling. 
 	/// \param URL customized URL.
 	/// \param bCreate When bCreate is true, it changes the URL of creating a polling. Otherwise, it changes the URL of editing a polling..
 	/// \return SDKErr_Success means success, otherwise not
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetCustomizedPollingUrl(const wchar_t* URL, bool bCreate) = 0;
+	virtual SDKError SetCustomizedPollingUrl(const zchar_t* URL, bool bCreate) = 0;
 
 	/// \brief Set the feedback url in the whiteboard page. 
 	/// \param feedbackURL Specify the feedback url in the the whiteboard page.
 	/// \return SDKErr_Success means success, otherwise not
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetCloudWhiteboardFeedbackUrl(const wchar_t* feedbackURL) = 0;
+	virtual SDKError SetCloudWhiteboardFeedbackUrl(const zchar_t* feedbackURL) = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE

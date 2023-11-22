@@ -24,7 +24,7 @@ extern "C"
 	SDK_API SDKError InitSDK(InitParam& initParam);
 
 
-	SDK_API SDKError SwitchDomain(const wchar_t* new_domain, bool bForce);
+	SDK_API SDKError SwitchDomain(const zchar_t* new_domain, bool bForce);
 	/// \brief Create meeting service interface.
 	/// \param ppMeetingService An object pointer to the IMeetingService*. 
 	/// \return If the function succeeds, the return value is SDKErr_Success while the value of ppMeetingService is not NULL.
@@ -80,7 +80,7 @@ extern "C"
 
 	/// \brief Get the version of ZOOM SDK.
 	/// \return The version of ZOOM SDK.
-	SDK_API const wchar_t* GetSDKVersion();
+	SDK_API const zchar_t* GetSDKVersion();
 
 	/// \brief Get ZOOM last error interface.
 	/// \return If the function succeeds, the return value is an interface of ZOOM last error.

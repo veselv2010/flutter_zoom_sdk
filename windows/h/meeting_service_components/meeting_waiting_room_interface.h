@@ -46,11 +46,13 @@ typedef struct CustomWaitingRoomData_s
 		description = NULL;
 		logo_path = NULL;
 		video_path = NULL;
+		image_path = NULL;
 	}
-	const wchar_t* title;
-	const wchar_t* description;
-	const wchar_t* logo_path;
-	const wchar_t* video_path;
+	const zchar_t* title;
+	const zchar_t* description;
+	const zchar_t* logo_path;
+	const zchar_t* video_path;
+	const zchar_t* image_path;
 	WaitingRoomLayoutType type;
 	CustomWaitingRoomDataStatus status;
 }CustomWaitingRoomData;
@@ -99,7 +101,11 @@ public:
 	/// \brief Callback indicating that the name of a user in the waiting room has changed.
 	/// \param userID The ID of the user whose user name have has changed.
 	/// \param userName The new user name.
-	virtual void onWaitingRoomUserNameChanged(unsigned int userID, const wchar_t* userName) = 0;
+	virtual void onWaitingRoomUserNameChanged(unsigned int userID, const zchar_t* userName) = 0;
+
+	/// \brief This callback event will be triggered when host or cohost enables or disables waiting room entrance.
+	/// \param bIsEnabled True enables waiting room entrance, false means disables waiting room entrance.
+	virtual void onWaitingRoomEntranceEnabled(bool bIsEnabled) = 0;
 };
 /// \brief Meeting waiting room controller interface.
 ///
@@ -169,7 +175,7 @@ public:
 	virtual SDKError RequestCustomWaitingRoomData() = 0;
 
 	/// \brief Determine if the host or cohost can rename users in the waiting room.
-	/// \param [out] bIsCan True means the host or cohost can rename users in the waiting room. Otherwise they can?¡¥t.
+	/// \param [out] bIsCan True means the host or cohost can rename users in the waiting room. Otherwise they can't.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError CanRenameUser(bool& bIsCan) = 0;
@@ -179,7 +185,7 @@ public:
 	/// \param userName The new user name.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError RenameUser(unsigned userid, const wchar_t* newName) = 0;
+	virtual SDKError RenameUser(unsigned userid, const zchar_t* newName) = 0;
 
 	/// \brief Determine if a host or cohost can expel user(s) in the waiting room.
 	/// \param [out] bIsCan True means that a host or cohost can expel user(s) in the waiting room. Otherwise they may not

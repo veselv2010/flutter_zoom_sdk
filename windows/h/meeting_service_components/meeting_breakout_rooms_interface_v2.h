@@ -83,14 +83,18 @@ public:
 	virtual ~IBOMeeting() {}
 
 	/// \brief Get BO ID.
-	virtual const wchar_t* GetBOID() = 0;
+	virtual const zchar_t* GetBOID() = 0;
 
 	/// \brief Get BO name.
-	virtual const wchar_t* GetBOName() = 0;
+	virtual const zchar_t* GetBOName() = 0;
 
 	/// \brief Get user ID list in the BO.
 	/// \return If the function succeeds, the return value is a pointer to IList object. For more details, see \link IList \endlink,
-	virtual IList<const wchar_t*>* GetBOUserList() = 0;
+	virtual IList<const zchar_t*>* GetBOUserList() = 0;
+
+	/// \brief Get user status by user ID. 
+	/// \return user status, For more details, see \link BO_CTRL_USER_STATUS \endlink,
+	virtual BO_CTRL_USER_STATUS GetBOUserStatus(const zchar_t* strUserID) = 0;
 };
 
 ////////////////////////////////////////// IBOCreator //////////////////////////////////////////
@@ -112,7 +116,7 @@ public:
 
 	/// \brief If CreateBO successfully, you will receive the event. Make sure you receive the event before start bo.
 	/// \param strBOID, to indicate which bo has been created successfully.
-	virtual void onBOCreateSuccess(const wchar_t* strBOID) = 0;
+	virtual void onBOCreateSuccess(const zchar_t* strBOID) = 0;
 
 	/// \brief When the pre-assigned data download status changes, you will receive the event.
 	/// \param status, download status, for more details, see \link PreAssignBODataStatus \endlink.
@@ -141,6 +145,12 @@ struct BOOption
 	bool IsTimerAutoStopBOEnabled; ///<true: if time is up, will stop BO auto. false: don't auto stop.
 	unsigned int nTimerDuration;   ///<seconds of BO timer duration, NOTE: when nTimerDuration is 0, it means that the BO duration is 30*60 seconds.
 
+	///  WebinarBo Available Only For Zoomui Mode
+	bool IsAttendeeContained;	///<Enable/Disable Webinar Attendee join Webinar BO, When it changes, the BO data will be reset.
+	bool IsPanelistCanChooseBO;	///<Enable/Disable that Panelist can choose breakout room.
+	bool IsAttendeeCanChooseBO;	///<Enable/Disable that Attendee can choose breakout room, invalid when attendee is not contained.
+	bool IsUserConfigMaxRoomUserLimitsEnabled = false;	///<Enable/Disable that max roomUser limits in BO room.
+	unsigned int  nUserConfigMaxRoomUserLimits;	///<numbers of max roomUser limits in BO room.
 	BOOption()
 	{
 		countdown_seconds = BO_STOP_COUNTDOWN_SECONDS_60;
@@ -150,6 +160,11 @@ struct BOOption
 		IsBOTimerEnabled = false;
 		IsTimerAutoStopBOEnabled = false;
 		nTimerDuration = 0;
+		IsPanelistCanChooseBO = false;
+		IsAttendeeCanChooseBO = false;
+		IsUserConfigMaxRoomUserLimitsEnabled = false;
+		nUserConfigMaxRoomUserLimits = 20;
+		IsAttendeeContained = false;
 	}
 };
 
@@ -169,7 +184,7 @@ public:
 	/// \return true if the BO name is added to the prepared list successfully.
 	/// \remarks The max number of the prepared list is 50. The max length of the BO room name is 32.
 	/// \Remark CreateBOTransactionBegin() must be called before this function is called. Otherwise false will be returned.
-	virtual bool AddNewBoToList(const wchar_t* strNewBOName) = 0;
+	virtual bool AddNewBoToList(const zchar_t* strNewBOName) = 0;
 
 	/// \brief Batch create BO rooms according to the prepare list.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -189,30 +204,30 @@ public:
 	/// \brief Create a BO.
 	/// \param strBOName, the BO name.
 	/// \return if success the return value is BO ID, otherwise NULL.
-	virtual const wchar_t* CreateBO(const wchar_t* strBOName) = 0;
+	virtual const zchar_t* CreateBO(const zchar_t* strBOName) = 0;
 	
 	/// \brief Update BO name.
 	/// \param strBOID, is the BO ID.
 	/// \param strNewBOName, is the new BO name.
 	/// \return if success the return value is true, otherwise false.
-	virtual bool UpdateBOName(const wchar_t* strBOID, const wchar_t* strNewBOName) = 0; 
+	virtual bool UpdateBOName(const zchar_t* strBOID, const zchar_t* strNewBOName) = 0; 
 	
 	/// \brief Remove a BO.
 	/// \param strBOID, is the BO ID.
 	/// \return if success the return value is true, otherwise false.
-	virtual bool RemoveBO(const wchar_t* strBOID) = 0;
+	virtual bool RemoveBO(const zchar_t* strBOID) = 0;
 	
 	/// \brief Assign a user to a BO.
 	/// \param strUserID, is the user ID.
 	/// \param strBOID, is the BO ID.
 	/// \return if success the return value is true, otherwise false.
-	virtual bool AssignUserToBO(const wchar_t* strUserID, const wchar_t* strBOID) = 0;
+	virtual bool AssignUserToBO(const zchar_t* strUserID, const zchar_t* strBOID) = 0;
 	
 	/// \brief Remove some user from a BO.
 	/// \param strUserID, is the user ID.
 	/// \param strBOID, is the BO ID.
 	/// \return if success the return value is true, otherwise false.
-	virtual bool RemoveUserFromBO(const wchar_t* strUserID, const wchar_t* strBOID) = 0;									
+	virtual bool RemoveUserFromBO(const zchar_t* strUserID, const zchar_t* strBOID) = 0;									
 
 	/// \brief Set BO option.
 	/// \param option, the option that you want to set.
@@ -240,6 +255,11 @@ public:
 	/// \brief Get the pre-assigned data download status.
 	/// \return The return value is a enum for download status. For more details, see \link PreAssignBODataStatus \endlink.
 	virtual PreAssignBODataStatus GetWebPreAssignBODataStatus() = 0;
+
+	/// \brief Create a Webinar BO, Available Only For Zoomui Mode.
+	/// \param strBOName, the BO name.
+	/// \return if success the return value is BO ID, otherwise NULL.
+	virtual bool CreateWebinarBo(const zchar_t* strBOName) = 0;
 };
 
 ////////////////////////////////////////// IBOAdmin //////////////////////////////////////////
@@ -265,7 +285,7 @@ public:
 
 	/// \brief when someone send the request help, notify it.
 	/// \param strUserID, is the user ID which send the request help.
-	virtual void onHelpRequestReceived(const wchar_t* strUserID) = 0;
+	virtual void onHelpRequestReceived(const zchar_t* strUserID) = 0;
 
 	/// \brief when StartBO fail, you will receive the event.
 	/// \param errCode, identify the specific error code for trouble shooting.
@@ -291,11 +311,11 @@ public:
 	
 	/// \brief To set a unassigned user to a BO, when BO is started.
 	/// \return true indicates success, otherwise fail.
-	virtual bool AssignNewUserToRunningBO(const wchar_t* strUserID, const wchar_t* strBOID) = 0;
+	virtual bool AssignNewUserToRunningBO(const zchar_t* strUserID, const zchar_t* strBOID) = 0;
 	
 	/// \brief To Switch user to other BO, when BO is started.
 	/// \return true indicates success, otherwise fail.
-	virtual bool SwitchAssignedUserToRunningBO(const wchar_t* strUserID, const wchar_t* strBOID) = 0;
+	virtual bool SwitchAssignedUserToRunningBO(const zchar_t* strUserID, const zchar_t* strBOID) = 0;
 	
 	/// \brief Determine if can start BO.
 	/// \return true indicates can, otherwise can not.
@@ -307,19 +327,19 @@ public:
 	
 	/// \brief To join the BO which request help is from.
 	/// \return true indicates success, otherwise fail.
-	virtual bool JoinBOByUserRequest(const wchar_t* strUserID) = 0;
+	virtual bool JoinBOByUserRequest(const zchar_t* strUserID) = 0;
 	
 	/// \brief To ignore the request help.
 	/// \return true indicates success, otherwise fail.
-	virtual bool IgnoreUserHelpRequest(const wchar_t* strUserID) = 0;
+	virtual bool IgnoreUserHelpRequest(const zchar_t* strUserID) = 0;
 
 	/// \brief To send the broadcast message.
 	/// \return true indicates success, otherwise fail.
-	virtual bool BroadcastMessage(const wchar_t* strMsg) = 0;
+	virtual bool BroadcastMessage(const zchar_t* strMsg) = 0;
 
 	/// \brief Host invite user return to main session, When BO is started and user is in BO.
 	/// \return true indicates success, otherwise fail.
-	virtual bool InviteBOUserReturnToMainSession(const wchar_t* strUserID) = 0;
+	virtual bool InviteBOUserReturnToMainSession(const zchar_t* strUserID) = 0;
 
 	/// \brief Query if the current meeting supports broadcasting host's voice to BO.
 	/// \return true means that the meeting supports thised, otherwise it's not supported.
@@ -344,7 +364,7 @@ class IBOAssistant
 public:
 	/// \brief Join BO by BO ID.
 	/// \return true indicates success, otherwise fail.
-	virtual bool JoinBO(const wchar_t* strBOID) = 0;
+	virtual bool JoinBO(const zchar_t* strBOID) = 0;
 	
 	/// \brief leave BO
 	/// \return true indicates success, otherwise fail.
@@ -385,7 +405,7 @@ public:
 	virtual bool LeaveBo() = 0;
 
 	/// \brief Get name of the BO that attendee is assigned to.
-	virtual const wchar_t* GetBoName() = 0;
+	virtual const zchar_t* GetBoName() = 0;
 
 	/// \brief Set attendee callback handler.
 	/// \param pEvent, A pointer to the IBOAttendeeEvent. For more details, see \link IBOAttendeeEvent \endlink.
@@ -415,7 +435,7 @@ public:
 
 	/// \brief To notify if some BO information is changed(user join/leave BO or BO name is modified)
 	/// \param strBOID, the BO ID which information is changed.
-	virtual void onBOInfoUpdated(const wchar_t* strBOID) = 0; 
+	virtual void onBOInfoUpdated(const zchar_t* strBOID) = 0; 
 	
 	/// \brief To notify if unassigned user join/leave master conference or name is modified.
 	/// once you receive the callback, you need call GetUnassginedUserList to update the unassigned user information.
@@ -438,33 +458,29 @@ public:
 	/// \brief Get the id list of all unassigned users. 
 	/// \return If the function succeeds, the return value is a pointer to IList object. For more details, see \link IList \endlink,
 	///Otherwise failed, the return value is NULL.
-	virtual IList<const wchar_t*>* GetUnassginedUserList() = 0;
+	virtual IList<const zchar_t*>* GetUnassginedUserList() = 0;
 
 	/// \brief Get the id list of all BOs. 
 	/// \return If the function succeeds, the return value is a pointer to IList object. For more details, see \link IList \endlink,
 	///Otherwise failed, the return value is NULL.
-	virtual IList<const wchar_t*>* GetBOMeetingIDList() = 0;
+	virtual IList<const zchar_t*>* GetBOMeetingIDList() = 0;
 	
 	/// \brief Get user name by user ID. 
 	/// \return user name
-	virtual const wchar_t* GetBOUserName(const wchar_t* strUserID) = 0;
-	
-	/// \brief Get user status by user ID. 
-	/// \return user status, For more details, see \link BO_CTRL_USER_STATUS \endlink,
-	virtual BO_CTRL_USER_STATUS GetBOUserStatus(const wchar_t* strUserID) = 0;
+	virtual const zchar_t* GetBOUserName(const zchar_t* strUserID) = 0;
 
 	/// \brief Determine if strUserID is myself.
 	/// \return true if strUserID is myself, otherwise false.
-	virtual bool IsBOUserMyself(const wchar_t* strUserID) = 0;
+	virtual bool IsBOUserMyself(const zchar_t* strUserID) = 0;
 
 	/// \brief Get BO object by BO ID.
 	/// \return If the function succeeds, the return value is a pointer to IBOMeeting object. For more details, see \link IBOMeeting \endlink,
 	///Otherwise failed, the return value is NULL.
-	virtual IBOMeeting* GetBOMeetingByID(const wchar_t* strBOID) = 0;
+	virtual IBOMeeting* GetBOMeetingByID(const zchar_t* strBOID) = 0;
 
 	/// \brief Get current BO name if you in a BO.
 	/// \return BO name
-	virtual const wchar_t* GetCurrentBoName() = 0;
+	virtual const zchar_t* GetCurrentBoName() = 0;
 };
 
 ////////////////////////////////////////// IMeetingBOController //////////////////////////////////////////
@@ -539,7 +555,7 @@ public:
 	/// \brief To notify that you receive a broadcast message. 
 	/// \param strMsg, the message content.
 	/// \param nSenderID, the SenderID.
-	virtual void onNewBroadcastMessageReceived(const wchar_t* strMsg, unsigned int nSenderID) = 0;
+	virtual void onNewBroadcastMessageReceived(const zchar_t* strMsg, unsigned int nSenderID, const zchar_t* strSenderName) = 0;
 
 	/// \brief When BOOption.countdown_seconds != BO_STOP_NOT_COUNTDOWN, host stop BO and all users receive the event.
 	/// \param nSeconds, the countdown seconds.
@@ -547,7 +563,7 @@ public:
 
 	/// \brief When you are in BO, host invite you return to main session, you will receive the event.
 	/// \param strName, the host name.
-	virtual void onHostInviteReturnToMainSession(const wchar_t* strName, IReturnToMainSessionHandler* handler) = 0;
+	virtual void onHostInviteReturnToMainSession(const zchar_t* strName, IReturnToMainSessionHandler* handler) = 0;
 
 	/// \brief When host change the BO status, all users receive the event.
 	/// \param eStatus, current status of BO.
@@ -556,7 +572,7 @@ public:
 	/// \brief Whenever the host switches you to another BO while you are assigned but haven't joined the BO, you will receive this event.
 	/// \param strNewBOName The new BO name.
 	/// \param strNewBOID The new BO ID. If the current user is IBOAttendee, then the 2nd parameter strNewBOID will return NULL.
-	virtual void onBOSwitchRequestReceived(const wchar_t* strNewBOName, const wchar_t* strNewBOID) = 0;
+	virtual void onBOSwitchRequestReceived(const zchar_t* strNewBOName, const zchar_t* strNewBOID) = 0;
 
 	/// \brief The status of broadcasting voice to BO has been changed.
 	/// \param bStart true for start and false for stop.
