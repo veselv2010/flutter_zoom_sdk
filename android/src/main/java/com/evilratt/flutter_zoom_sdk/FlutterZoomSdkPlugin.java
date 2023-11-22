@@ -585,6 +585,15 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
 
         this.activity.startActivity(myIntent);
 
+        ZoomSDK zoomSDK = getInitializedZoomInstance();
+
+        if (zoomSDK == null) {
+            result.success(Arrays.asList("SDK ERROR", "001"));
+            return;
+        }
+
+        zoomSDK.getZoomUIService().hideMiniMeetingWindow();
+
         result.success(true);
     }
 
