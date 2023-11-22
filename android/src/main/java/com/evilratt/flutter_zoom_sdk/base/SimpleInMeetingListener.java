@@ -312,4 +312,9 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     public void onRequestLocalRecordingPrivilegeChanged(LocalRecordingRequestPrivilegeStatus status) {
 
     }
+
+    @Override
+    public void onParticipantProfilePictureStatusChange(boolean hidden) {
+
+    }
 }
