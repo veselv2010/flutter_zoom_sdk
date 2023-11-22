@@ -52,7 +52,7 @@ public:
 	/// \param bAdd TRUE indicates to add.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError MonitorWnd(const wchar_t* classname, bool bAdd = true) = 0;
+	virtual SDKError MonitorWnd(const zchar_t* classname, bool bAdd = true) = 0;
 
 	/// \brief Start hooking. 
 	/// \return If the function succeeds, the return value is SDKErr_Success.

@@ -6,7 +6,9 @@
 #ifndef _SETTING_SERVICE_INTERFACE_H_
 #define _SETTING_SERVICE_INTERFACE_H_
 #include "zoom_sdk_def.h"
+#if defined(WIN32)
 #include "zoom_sdk_util_define.h"
+#endif
 
 BEGIN_ZOOM_SDK_NAMESPACE
 /// \brief Camera device information interface.
@@ -17,12 +19,12 @@ public:
 	/// \brief Get the camera device ID.
 	/// \return If the function succeeds, the return value is the camera device ID.
 	///Otherwise failed, returns NULL.
-	virtual const wchar_t* GetDeviceId() = 0;
+	virtual const zchar_t* GetDeviceId() = 0;
 
 	/// \brief Get the camera device name
 	/// \return If the function succeeds, the return value is the camera device name.
 	///Otherwise failed, returns NULL.
-	virtual const wchar_t* GetDeviceName() = 0;
+	virtual const zchar_t* GetDeviceName() = 0;
 
 	/// \brief Determine if the current device is selected to use.
 	/// \return TRUE indicates that the current device is selected.
@@ -39,12 +41,12 @@ public:
 	/// \brief Get the microphone device ID.
 	/// \return If the function succeeds, the return value is the camera device ID.
 	///Otherwise failed, returns NULL.
-	virtual const wchar_t* GetDeviceId() = 0;
+	virtual const zchar_t* GetDeviceId() = 0;
 
 	/// \brief Get the microphone device name.
 	/// \return If the function succeeds, the return value is the camera device name.
 	///Otherwise failed, returns NULL.
-	virtual const wchar_t* GetDeviceName() = 0;
+	virtual const zchar_t* GetDeviceName() = 0;
 
 	/// \brief Determine if the current device is selected to use.
 	/// \return TRUE indicates that the current device is selected.
@@ -61,12 +63,12 @@ public:
 	/// \brief Get the speaker device ID.
 	/// \return If the function succeeds, the return value is the camera device ID.
 	///Otherwise failed, returns NULL.
-	virtual const wchar_t* GetDeviceId() = 0;
+	virtual const zchar_t* GetDeviceId() = 0;
 
 	/// \brief Get the speaker device name.
 	/// \return If the function succeeds, the return value is speaker device name.
 	///Otherwise failed, returns NULL.
-	virtual const wchar_t* GetDeviceName() = 0;
+	virtual const zchar_t* GetDeviceName() = 0;
 
 	/// \brief Determine if the current device is selected to use.
 	/// \return TRUE indicates that the current device is selected.
@@ -82,12 +84,12 @@ public:
 	/// \brief Get the ring speaker device ID.
 	/// \return If the function succeeds, the return value is the ring speaker device ID.
 	///Otherwise failed, returns NULL.
-	virtual const wchar_t* GetDeviceId() = 0;
+	virtual const zchar_t* GetDeviceId() = 0;
 
 	/// \brief Get the ring speaker device name.
 	/// \return If the function succeeds, the return value is ring speaker device name.
 	///Otherwise failed, returns NULL.
-	virtual const wchar_t* GetDeviceName() = 0;
+	virtual const zchar_t* GetDeviceName() = 0;
 
 	/// \brief Determine if the current device is selected to use.
 	/// \return TRUE indicates that the current device is selected.
@@ -112,16 +114,8 @@ enum LimitFPSValue
 	limitfps_15_frame,///<15 frames per second.
 };
 
-/*! \enum SettingTabPage
-    \brief Specify the shown tab page at the top of the displayed setting dialog.
-    Here are more detailed enum descriptions.
-*/ 
-enum SettingTabPage
-{
-	SettingTabPage_General,///<General setting page.
-	SettingTabPage_Audio,///<Audio setting page.
-	SettingTabPage_Video,///<Video setting page.
-};
+
+#if defined(WIN32)
 /*! \enum ReactionSkinToneType
 	\brief Specify the skin tone type.
 	Here are more detailed enum descriptions.
@@ -143,6 +137,17 @@ enum WindowSizeType
 	WindowSize_FullScreen,  //Full screen when share
 	WindowSize_Maximize,    //Maximize window when share
 	WindowSize_CurrentSize  //Current size when share
+};
+
+/*! \enum SettingTabPage
+    \brief Specify the shown tab page at the top of the displayed setting dialog.
+    Here are more detailed enum descriptions.
+*/ 
+enum SettingTabPage
+{
+	SettingTabPage_General,///<General setting page.
+	SettingTabPage_Audio,///<Audio setting page.
+	SettingTabPage_Video,///<Video setting page.
 };
 
 enum ScreenCaptureMode
@@ -292,14 +297,6 @@ public:
 	virtual void OnSelectedAudioDeviceIsChanged() = 0;
 };
 
-enum Suppress_Background_Noise_Level
-{
-	Suppress_BGNoise_Level_None = 0,
-	Suppress_BGNoise_Level_Auto,
-	Suppress_BGNoise_Level_Low,
-	Suppress_BGNoise_Level_Medium,
-	Suppress_BGNoise_Level_High,
-};
 /// \brief Audio device test interface.
 ///
 class ITestAudioDeviceHelper
@@ -318,7 +315,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	///\remarks The function is disabled if no event handler is set.
-	virtual SDKError TestMicStartRecording(const wchar_t* deviceID = NULL) = 0;
+	virtual SDKError TestMicStartRecording(const zchar_t* deviceID = NULL) = 0;
 
 	/// \brief Stop the mic test. The SDK will return an error if there is no mic test.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -338,7 +335,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	///\remarks The function is disabled if no event handler is set.
-	virtual SDKError TestSpeakerStartPlaying(const wchar_t* deviceID = NULL) = 0;
+	virtual SDKError TestSpeakerStartPlaying(const zchar_t* deviceID = NULL) = 0;
 	
 	/// \brief Stop the speaker test. The SDK will return an error if there is no speaker test.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -354,12 +351,41 @@ public:
 	///\remarks This interface will stop the mic/speaker test(if there is). It is suggested to call it before audio test.
 	virtual SDKError SetTimerInterval(unsigned int timerInterval) = 0;
 };
+#endif
+enum Suppress_Background_Noise_Level
+{
+	Suppress_BGNoise_Level_None = 0,
+	Suppress_BGNoise_Level_Auto,
+	Suppress_BGNoise_Level_Low,
+	Suppress_BGNoise_Level_Medium,
+	Suppress_BGNoise_Level_High,
+};
 
 /// \brief General setting interface.
 ///
 class IGeneralSettingContext
 {
 public:
+	/// \brief Enable or disable to copy invite url automatically when meeting starts. 
+	/// \param bEnable TRUE indicates to copy invite url automatically.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableAutoCopyInviteLink(bool bEnable) = 0;
+
+	/// \brief Determine if it is able to automatically copy invite url when meeting starts is enabled.
+	/// \return TRUE indicates to show. FALSE not.
+	virtual bool IsAutoCopyInviteLinkEnabled() = 0;
+
+	/// \brief Enable or disable to stop user's video and audio when user's display is off or screen save begins. 
+	/// \param bEnable TRUE indicates to stop.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableMuteWhenLockScreen(bool bEnable) = 0;
+
+	/// \brief Determine if it is able to stop user's video and audio when user's display is off or screen save begins.
+	/// \return TRUE indicates to show. FALSE not.
+	virtual bool IsMuteWhenLockScreenEnabled() = 0;
+#if defined(WIN32)
 	/// \brief Enable or disable dual screen mode.
 	/// \param bEnable TRUE indicates to set to enable the dual screen mode.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -421,16 +447,6 @@ public:
 	/// \return TRUE indicates to show. FALSE not.
 	virtual bool IsShowMyMeetingElapseTimeEnabled() = 0;
 
-	/// \brief Enable or disable to copy invite url automatically when meeting starts. 
-	/// \param bEnable TRUE indicates to copy invite url automatically.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableAutoCopyInviteLink(bool bEnable) = 0;
-
-	/// \brief Determine if it is able to automatically copy invite url when meeting starts is enabled.
-	/// \return TRUE indicates to show. FALSE not.
-	virtual bool IsAutoCopyInviteLinkEnabled() = 0;
-
 	/// \brief Set the emoji reaction skin tone type.
 	/// \param skinTone Specifies the skin tone type.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -440,18 +456,9 @@ public:
 	/// \brief Get the emoji reaction skin tone type.
 	/// \return The return value is the emoji reaction skin tone type.
 	virtual ReactionSkinToneType GetReactionSkinTone() = 0;
-
-	/// \brief Enable or disable to stop user's video and audio when user's display is off or screen save begins. 
-	/// \param bEnable TRUE indicates to stop.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableMuteWhenLockScreen(bool bEnable) = 0;
-
-	/// \brief Determine if it is able to stop user's video and audio when user's display is off or screen save begins.
-	/// \return TRUE indicates to show. FALSE not.
-	virtual bool IsMuteWhenLockScreenEnabled() = 0;
+#endif
 };
-
+#if defined(WIN32)
 /*! \enum PREVIEW_VIDEO_ROTATION_ACTION
     \brief Notify to rotate the video preview based on the current view.
     Here are more detailed structural descriptions.
@@ -470,13 +477,6 @@ typedef enum
 	VIDEO_HARDWARE_ENCODE_SENDING,
 	VIDEO_HARDWARE_ENCODE_PROCESSING,
 }VIDEO_HARDWARE_ENCODE_TYPE;
-
-typedef enum 
-{
-	Light_Adaption_None = 0,
-	Light_Adaption_Auto,
-	Light_Adaption_Manual,
-}VIDEO_LIGHT_ADAPTION_TYPE;
 
 /// \brief Video Device test callback event.
 ///
@@ -521,7 +521,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks The function can not work if no event is set or no window handle is set.
-	virtual SDKError TestVideoStartPreview(const wchar_t* deviceID = NULL) = 0;
+	virtual SDKError TestVideoStartPreview(const zchar_t* deviceID = NULL) = 0;
 	
 	/// \brief Stop testing the camera.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -593,18 +593,22 @@ class I3DAvatarImageInfo
 {
 public:
 	/// \brief Determine if the current image is being used.
-	/// \return TRUE indicates that the current image is used as the video filter image.
+	/// \return TRUE indicates that the current image is used as the 3D avatar image.
 	virtual bool IsSelected() = 0;
+
+	/// \brief Determine if the current item is most recently used.
+	/// \return TRUE indicates that the current image is the most recently used as the 3D avatar image.
+	virtual bool IsLastUsed() = 0;
 
 	/// \brief Get the file path of the current image.
 	/// \return If the function succeeds, the return value is the file path of current image.
 	///Otherwise failed, the return value is NULL.
-	virtual const wchar_t* GetImageFilePath() = 0;
+	virtual const zchar_t* GetImageFilePath() = 0;
 
 	/// \brief Get the name of the current image.
 	/// \return If the function succeeds, the return value is the name of the current image.
 	///Otherwise failed, the return value is NULL.
-	virtual const wchar_t* GetImageName() = 0;
+	virtual const zchar_t* GetImageName() = 0;
 
 	/// \brief Get the index of the current image.
 	/// \return If the function succeeds, the return value is the index of current image.
@@ -681,6 +685,15 @@ public:
 	virtual ILipSyncAvatarPreviewHelper* GetLipSyncAvatarPreviewHelper() = 0;
 };
 
+#endif
+typedef enum 
+{
+	Light_Adaption_None = 0,
+	Light_Adaption_Auto,
+	Light_Adaption_Manual,
+}VIDEO_LIGHT_ADAPTION_TYPE;
+
+
 /// \brief Video setting context callback event.
 class IVideoSettingContextEvent
 {
@@ -694,7 +707,7 @@ public:
 	/// \brief Notify the user that a camera device is selected.
 	/// \param deviceId Specify a device to be selected.
 	/// \param deviceName Specify the device name assigned by deviceId.
-	virtual void onDefaultCamDeviceChanged(const wchar_t* deviceId, const wchar_t* deviceName) = 0;
+	virtual void onDefaultCamDeviceChanged(const zchar_t* deviceId, const zchar_t* deviceName) = 0;
 };
 
 enum AutoFramingMode
@@ -738,17 +751,7 @@ public:
 	/// \param deviceId Specify a device to be selected.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SelectCamera(const wchar_t* deviceId) = 0;
-
-	/// \brief Enable or disable video mirror effect.
-	/// \param bEnable TRUE indicates to enable the video mirror effect.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableVideoMirrorEffect(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable/disable the video mirror effect.
-	/// \return Enabled or disabled.
-	virtual bool IsVideoMirrorEffectEnabled() = 0;
+	virtual SDKError SelectCamera(const zchar_t* deviceId) = 0;
 
 	/// \brief Enable or disable the video facial beauty effect.
 	/// \param bEnable TRUE indicates to enable the video facial beauty effect.
@@ -840,74 +843,6 @@ public:
 	/// \return Enabled or disabled.
 	virtual bool IsAutoTurnOffVideoWhenJoinMeetingEnabled() = 0;
 
-	/// \brief Enable or disable to spotlight the video.
-	/// \param bEnable TRUE indicates to enable to spotlight the video.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableSpotlightSelf(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable/disable to spotlight video.
-	/// \return Enabled or disabled.
-	virtual bool IsSpotlightSelfEnabled() = 0;
-
-	/// \brief Enable or disable the hardware acceleration.
-	/// \param bEnable TRUE indicates to enable the hardware acceleration.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableHardwareEncode(bool bEnable, VIDEO_HARDWARE_ENCODE_TYPE encodeType) = 0;
-
-	/// \brief Get the flag to enable/disable the hardware acceleration.
-	/// \return Enabled or disabled.
-	virtual bool IsHardwareEncodeEnabled(VIDEO_HARDWARE_ENCODE_TYPE encodeType) = 0;
-
-	/// \brief Enable or disable to show the participants in Gallery View up to 49 per screen.
-	/// \param bEnable TRUE indicates to show the participants in Gallery View up to 49 per screen.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError Enable49VideoesInGallaryView(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable/disable to show the participants in Gallery View up to 49 per screen.
-	/// \return Enabled or disabled.
-	virtual bool Is49VideoesInGallaryViewEnabled() = 0;
-
-	/// \brief Enable or disable to hide the non-video participants.
-	/// \param bEnable TRUE indicates to hide the non-video Participants.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableHideNoVideoUsersOnWallView(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable/disable to hide non-video participants.
-	/// \return Enabled or disabled.
-	virtual bool IsHideNoVideoUsersOnWallViewEnabled() = 0;
-
-	/// \brief Enable or disable to hide the userself's view.
-	/// \param bEnable TRUE indicates to enable to hide the userself's view.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid only for Zoom style user interface mode.
-	virtual SDKError EnableHideSelfView(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable/disable to hide userself's view.
-	/// \return Enabled or disabled.
-	/// \remarks Valid only for Zoom style user interface mode.
-	virtual SDKError IsHideSelfViewEnabled(bool& bEnabled) = 0;
-
-	/// \brief Enable or disable to stop incoming video.
-	/// \param bEnable TRUE indicates to enable to stop incoming video.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise the function fails and returns an error. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableStopIncomingVideo(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable/disable to stop in coming video.
-	/// \return Enabled or disabled.
-	virtual bool IsStopIncomingVideoEnabled() = 0;
-
-	/// \brief Get the pointer to ITestVideoDeviceHelper which is used to test camera device.
-	/// \return If the function succeeds, the return value is the pointer to ITestVideoDeviceHelper.
-	///Otherwise failed, returns NULL.
-	///For more details, see \link ITestVideoDeviceHelper \endlink.
-	virtual ITestVideoDeviceHelper* GetTestVideoDeviceHelper() = 0;
-
 	/// \brief Video device monitor callback event. 
 	/// \param pEvent A pointer to the IVideoSettingContextEvent. 
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -915,40 +850,6 @@ public:
 	///For more details, see \link IVideoSettingContextEvent \endlink.
 	/// \remarks You must call the function if you want to monitor the video device plugged in/out.
 	virtual SDKError SetVideoDeviceEvent(IVideoSettingContextEvent* pEvent) = 0;
-
-	/// \brief Enable or disable to show the video preview dialog when join meeting
-	/// \param bEnable TRUE indicates to enable to show the video preview dialog when join meeting
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableVideoPreviewDialog(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable to show the video preview dialog when join meeting.
-	/// \return Enabled or disabled.
-	virtual bool IsVideoPreviewDialogEnabled() = 0;
-
-	/// \brief Determine whether to show audio-only avatar when the user's video feature is supported by the meeting.
-	/// \return true indicates enabled. False not.
-	/// \deprecated This interface is marked as deprecated. The return value will not be expected, always return false.
-	virtual bool IsSupportLipSyncAvatar() = 0;
-
-	/// \brief Enable or disable audio-only 3d avatar when the user's video is off.
-	/// \param bEnable TRUE indicates to show audio-only 3d avatar when the user's video is off.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise the function fails and return an error. To get extended error information, see \link SDKError \endlink enum.
-	/// \deprecated This interface is marked as deprecated. The return value will not be expected, always return SDKERR_WRONG_USAGE.
-	virtual SDKError EnableLipSyncAvatarWhenVideoOff(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable or disable audio-only 3d avatar when the user's video is off.
-	/// \return Enabled or disabled.
-	/// \deprecated This interface is marked as deprecated. The return value will not be expected, always return false.
-	virtual bool IsLipSyncAvatarWhenVideoOffEnabled() = 0;
-
-	/// \brief Get the pointer to ILipSyncAvatarSettingContext which is used to set lip sync avatar.
-	/// \return If the function succeeds, the return value is the pointer to ILipSyncAvatarSettingContext.
-	///Otherwise the function fails, and returns NULL.
-	///For more details, see \link ILipSyncAvatarSettingContext \endlink.
-	/// \deprecated This interface is marked as deprecated.
-	virtual ILipSyncAvatarSettingContext* GetLipSyncAvatarSettingContext() = 0;
 
 	/// \brief Enable my video auto-framing.
 	/// \param mode the auto-framing mode.
@@ -1013,6 +914,119 @@ public:
 	/// \brief Determine if optimizing received video quality is supported.
 	/// \return true indicates that it is supported, false means that it isn't.
 	virtual bool IsOptimizeVideoQualitySupported() = 0;
+#if defined(WIN32)
+	/// \brief Enable or disable video mirror effect.
+	/// \param bEnable TRUE indicates to enable the video mirror effect.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableVideoMirrorEffect(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable/disable the video mirror effect.
+	/// \return Enabled or disabled.
+	virtual bool IsVideoMirrorEffectEnabled() = 0;
+
+	/// \brief Enable or disable to spotlight the video.
+	/// \param bEnable TRUE indicates to enable to spotlight the video.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableSpotlightSelf(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable/disable to spotlight video.
+	/// \return Enabled or disabled.
+	virtual bool IsSpotlightSelfEnabled() = 0;
+
+	/// \brief Enable or disable the hardware acceleration.
+	/// \param bEnable TRUE indicates to enable the hardware acceleration.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableHardwareEncode(bool bEnable, VIDEO_HARDWARE_ENCODE_TYPE encodeType) = 0;
+
+	/// \brief Get the flag to enable/disable the hardware acceleration.
+	/// \return Enabled or disabled.
+	virtual bool IsHardwareEncodeEnabled(VIDEO_HARDWARE_ENCODE_TYPE encodeType) = 0;
+
+	/// \brief Enable or disable to show the participants in Gallery View up to 49 per screen.
+	/// \param bEnable TRUE indicates to show the participants in Gallery View up to 49 per screen.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError Enable49VideoesInGallaryView(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable/disable to show the participants in Gallery View up to 49 per screen.
+	/// \return Enabled or disabled.
+	virtual bool Is49VideoesInGallaryViewEnabled() = 0;
+	
+	/// \brief Enable or disable to hide the non-video participants.
+	/// \param bEnable TRUE indicates to hide the non-video Participants.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableHideNoVideoUsersOnWallView(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable/disable to hide non-video participants.
+	/// \return Enabled or disabled.
+	virtual bool IsHideNoVideoUsersOnWallViewEnabled() = 0;
+
+	/// \brief Enable or disable to show the video preview dialog when join meeting
+	/// \param bEnable TRUE indicates to enable to show the video preview dialog when join meeting
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableVideoPreviewDialog(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable to show the video preview dialog when join meeting.
+	/// \return Enabled or disabled.
+	virtual bool IsVideoPreviewDialogEnabled() = 0;
+
+	/// \brief Enable or disable to stop incoming video.
+	/// \param bEnable TRUE indicates to enable to stop incoming video.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and returns an error. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableStopIncomingVideo(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable/disable to stop in coming video.
+	/// \return Enabled or disabled.
+	virtual bool IsStopIncomingVideoEnabled() = 0;
+
+	/// \brief Enable or disable to hide the userself's view.
+	/// \param bEnable TRUE indicates to enable to hide the userself's view.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid only for Zoom style user interface mode.
+	virtual SDKError EnableHideSelfView(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable/disable to hide userself's view.
+	/// \return Enabled or disabled.
+	/// \remarks Valid only for Zoom style user interface mode.
+	virtual SDKError IsHideSelfViewEnabled(bool& bEnabled) = 0;
+
+	/// \brief Determine whether to show audio-only avatar when the user's video feature is supported by the meeting.
+	/// \return true indicates enabled. False not.
+	/// \deprecated This interface is marked as deprecated. The return value will not be expected, always return false.
+	virtual bool IsSupportLipSyncAvatar() = 0;
+
+	/// \brief Enable or disable audio-only 3d avatar when the user's video is off.
+	/// \param bEnable TRUE indicates to show audio-only 3d avatar when the user's video is off.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and return an error. To get extended error information, see \link SDKError \endlink enum.
+	/// \deprecated This interface is marked as deprecated. The return value will not be expected, always return SDKERR_WRONG_USAGE.
+	virtual SDKError EnableLipSyncAvatarWhenVideoOff(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable or disable audio-only 3d avatar when the user's video is off.
+	/// \return Enabled or disabled.
+	/// \deprecated This interface is marked as deprecated. The return value will not be expected, always return false.
+	virtual bool IsLipSyncAvatarWhenVideoOffEnabled() = 0;
+	
+	/// \brief Get the pointer to ITestVideoDeviceHelper which is used to test camera device.
+	/// \return If the function succeeds, the return value is the pointer to ITestVideoDeviceHelper.
+	///Otherwise failed, returns NULL.
+	///For more details, see \link ITestVideoDeviceHelper \endlink.
+	virtual ITestVideoDeviceHelper* GetTestVideoDeviceHelper() = 0;
+
+	/// \brief Get the pointer to ILipSyncAvatarSettingContext which is used to set lip sync avatar.
+	/// \return If the function succeeds, the return value is the pointer to ILipSyncAvatarSettingContext.
+	///Otherwise the function fails, and returns NULL.
+	///For more details, see \link ILipSyncAvatarSettingContext \endlink.
+	/// \deprecated This interface is marked as deprecated.
+	virtual ILipSyncAvatarSettingContext* GetLipSyncAvatarSettingContext() = 0;
+#endif
 };
 
 /// \brief Audio setting context callback event.
@@ -1032,12 +1046,12 @@ public:
 	/// \brief Notify the user that a microphone device is selected.
 	/// \param deviceId Specify a device to be selected.
 	/// \param deviceName Specify the device name assigned by deviceId.
-	virtual void onDefaultMicDeviceChanged(const wchar_t* deviceId, const wchar_t* deviceName) = 0;
+	virtual void onDefaultMicDeviceChanged(const zchar_t* deviceId, const zchar_t* deviceName) = 0;
 
 	/// \brief Notify the user that a speaker device is selected.
 	/// \param deviceId Specify a device to be selected.
 	/// \param deviceName Specify the device name assigned by deviceId.
-	virtual void onDefaultSpeakerDeviceChanged(const wchar_t* deviceId, const wchar_t* deviceName) = 0;
+	virtual void onDefaultSpeakerDeviceChanged(const zchar_t* deviceId, const zchar_t* deviceName) = 0;
 };
 
 typedef enum
@@ -1067,7 +1081,7 @@ public:
 	/// \param deviceName Specify the device name assigned by deviceId.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SelectMic(const wchar_t* deviceId, const wchar_t* deviceName) = 0;
+	virtual SDKError SelectMic(const zchar_t* deviceId, const zchar_t* deviceName) = 0;
 
 	/// \brief Get the speaker device list.
 	/// \return If the function succeeds, the return value is the camera device list.
@@ -1079,7 +1093,7 @@ public:
 	/// \param deviceName Specify the device the device name assigned by deviceId.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SelectSpeaker(const wchar_t* deviceId, const wchar_t* deviceName) = 0;
+	virtual SDKError SelectSpeaker(const zchar_t* deviceId, const zchar_t* deviceName) = 0;
 
 	/// \brief Enable or disable the audio automatically when join meeting.
 	/// \param bEnable TRUE indicates to enable the audio automatically when join meeting.
@@ -1101,37 +1115,6 @@ public:
 	/// \return Enabled or disabled.
 	virtual bool IsAutoAdjustMicEnabled() = 0;
 
-	/// \brief Enable or disable the stereo audio.
-	/// \param bEnable TRUE indicates to enable the stereo audio.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// remarks This function is valid only if mic original input is enabled, otherwise invalid.
-	virtual SDKError EnableStereoAudio(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable/disable the stereo audio.
-	/// \return Enabled or disabled.
-	virtual bool IsStereoAudioEnable() = 0;
-
-	/// \brief Enable or disable the original input of mic.
-	/// \param bEnable TRUE indicates to enable the original input of mic.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableMicOriginalInput(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable/disable the original input of mic.
-	/// \return Enabled or disabled.
-	virtual bool IsMicOriginalInputEnable() = 0;
-	
- 	/// \brief Enable or disable to press and hold the Space-bar to speak when muted.
-	/// \param bEnable TRUE indicates to press and hold the Space-bar to speak. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableHoldSpaceKeyToSpeak(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable/disable to press and hold the Space-bar to speak.
-	/// \return Enabled or disabled.
-	virtual bool IsHoldSpaceKeyToSpeakEnabled() = 0;
-
 	/// \brief Enable or disable to mute always the mic when join the meeting by VoiP.
 	/// \param bEnable TRUE indicates to enable to mute always the mic when join the meeting by VoiP.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -1152,12 +1135,6 @@ public:
 	/// \return Enabled or disabled.
 	virtual bool IsSuppressAudioNotifyEnabled() = 0;
 
-	/// \brief Get the pointer to ITestAudioDeviceHelper which is used to test audio devices.
-	/// \return If the function succeeds, the return value is the pointer to ITestAudioDeviceHelper.
-	///Otherwise failed, returns NULL.
-	///For more details, see \link ITestAudioDeviceHelper \endlink.
-	virtual ITestAudioDeviceHelper* GetTestAudioDeviceHelper() = 0;
-	
 	/// \brief Set the volume of the selected mic.
 	/// \param value Specify the volume of the mic that varies between 0 and 255.
 	///The SDK will enable the default mic if there is no mic selected via SelectMic().
@@ -1204,16 +1181,6 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SetSuppressBackgroundNoiseLevel(Suppress_Background_Noise_Level level) = 0;
 
-	/// \brief Set whether to enable the function of sync buttons on headset or not. 
-	/// \param bEnable True means to enable the function, FALSE not.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableSyncButtonsOnHeadset(bool bEnable) = 0;
-
-	/// \brief Check whether the sync buttons on headset is enabled or not.
-	/// \return If it is TRUE, it means the sync buttons on headset is enabled
-	virtual bool IsSyncButtonsOnHeadsetEnabled() = 0;
-
 	/// \brief Get the audio device raw mode type.
 	/// \return The audio device raw mode type.
 	virtual SDK_AUDIO_DEVICE_RAW_MODE_TYPE GetAudioSignalProcessType() = 0;
@@ -1235,6 +1202,65 @@ public:
 	/// \return If it is TRUE, it means the echo cancellation is disabled
 	virtual bool IsEchoCancellationDisabled() = 0;
 
+	virtual IList<IRingSpeakerInfo* >* GetRingSpkList() = 0;
+
+	virtual SDKError GetRingSpkVolume(FLOAT& fValue) = 0;
+
+	virtual SDKError SetRingSpkVolume(FLOAT fValue) = 0;
+
+	virtual SDKError SetRingSpkDevice(const zchar_t* spk_id) = 0;
+
+	virtual SDKError UseDefaultSystemMic() = 0;
+
+	virtual SDKError UseDefaultSystemSpeaker() = 0;
+#if defined(WIN32)
+	/// \brief Enable or disable the stereo audio.
+	/// \param bEnable TRUE indicates to enable the stereo audio.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// remarks This function is valid only if mic original input is enabled, otherwise invalid.
+	virtual SDKError EnableStereoAudio(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable/disable the stereo audio.
+	/// \return Enabled or disabled.
+	virtual bool IsStereoAudioEnable() = 0;
+
+	/// \brief Enable or disable the original input of mic.
+	/// \param bEnable TRUE indicates to enable the original input of mic.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableMicOriginalInput(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable/disable the original input of mic.
+	/// \return Enabled or disabled.
+	virtual bool IsMicOriginalInputEnable() = 0;
+	
+ 	/// \brief Enable or disable to press and hold the Space-bar to speak when muted.
+	/// \param bEnable TRUE indicates to press and hold the Space-bar to speak. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableHoldSpaceKeyToSpeak(bool bEnable) = 0;
+
+	/// \brief Get the flag to enable/disable to press and hold the Space-bar to speak.
+	/// \return Enabled or disabled.
+	virtual bool IsHoldSpaceKeyToSpeakEnabled() = 0;
+
+	/// \brief Get the pointer to ITestAudioDeviceHelper which is used to test audio devices.
+	/// \return If the function succeeds, the return value is the pointer to ITestAudioDeviceHelper.
+	///Otherwise failed, returns NULL.
+	///For more details, see \link ITestAudioDeviceHelper \endlink.
+	virtual ITestAudioDeviceHelper* GetTestAudioDeviceHelper() = 0;
+
+	/// \brief Set whether to enable the function of sync buttons on headset or not. 
+	/// \param bEnable True means to enable the function, FALSE not.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableSyncButtonsOnHeadset(bool bEnable) = 0;
+
+	/// \brief Check whether the sync buttons on headset is enabled or not.
+	/// \return If it is TRUE, it means the sync buttons on headset is enabled
+	virtual bool IsSyncButtonsOnHeadsetEnabled() = 0;
+
 	/// \brief Set whether to enable the function of high fidelity music mode or not. 
 	/// \param bEnable True means to enable the function, FALSE not.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -1246,23 +1272,12 @@ public:
 	/// \return If it is TRUE, it means the echo cancellation is enabled
 	virtual bool IsHighFidelityMusicModeDisabled() = 0;
 
-	virtual IList<IRingSpeakerInfo* >* GetRingSpkList() = 0;
-
-	virtual SDKError GetRingSpkVolume(FLOAT& fValue) = 0;
-
-	virtual SDKError SetRingSpkVolume(FLOAT fValue) = 0;
-
-	virtual SDKError SetRingSpkDevice(const wchar_t* spk_id) = 0;
-
 	virtual SDKError EnableAlwaysUseSeparateRingSpk(bool bEnable) = 0;
 
 	virtual bool IsAlwaysUseSeparateRingSpk() = 0;
 
 	virtual bool isSupportPromptJoinAudioDialogWhenUse3rdPartyAudio() = 0;
-
-	virtual SDKError UseDefaultSystemMic() = 0;
-
-	virtual SDKError UseDefaultSystemSpeaker() = 0;
+#endif
 };
 
 /// \brief Recording setting context callback event.
@@ -1287,11 +1302,11 @@ public:
 	/// \param szPath Specify the path to save the recording file.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetRecordingPath(const wchar_t* szPath) = 0;
+	virtual SDKError SetRecordingPath(const zchar_t* szPath) = 0;
 
 	/// \brief Get the path to save the recording file.
 	/// \return The path to save the recording file.
-	virtual const wchar_t* GetRecordingPath() = 0;
+	virtual const zchar_t* GetRecordingPath() = 0;
 	
 	/// \brief Set the event of recording settings.
 	/// \param pEvent The event of recording settings.
@@ -1311,24 +1326,14 @@ public:
 
 	/// \brief Get the recording management URL. It returns the real url only after you retrieve the callback IRecordingSettingContextEvent.onCloudRecordingStorageInfo().
 	/// \return TRUE indicates enabled. FALSE not.
-	virtual const wchar_t* GetRecordingManagementURL() = 0;
+	virtual const zchar_t* GetRecordingManagementURL() = 0;
 	
 	/// \brief Set if it is able to get recording management URL.
 	/// \param [out]bEnable TRUE means the recording management URL can be retrieved. FALSE not. It validates only when the return value is SDKErr_Success.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError CanGetRecordingManagementURL(bool& bEnable) = 0;
-	
-	/// \brief Set whether to enable the function of selecting the path to save the recording file after meeting.
-	/// \param bEnable TRUE means to enable, FALSE not.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableSelectRecordFileLocationAfterMeeting(bool bEnable) = 0;
-	
-	/// \brief Check if the function of selecting storage path for recording file is enabled.
-	/// \return TRUE indicates enabled. FALSE not.
-	virtual bool IsSelectRecordFileLocationAfterMeetingEnabled() = 0;
-	
+
 	/// \brief Enable/Disable multi-audio stream recording.
 	/// \param bEnable TRUE indicates enabled. FALSE not.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -1378,6 +1383,17 @@ public:
 	/// \brief Determine if placing video next to the shared content in recording file is enabled.
 	/// \return TRUE indicates enabled. FALSE not.
 	virtual bool IsPlaceVideoNextToShareInRecordEnabled() = 0;
+#if defined(WIN32)	
+	/// \brief Set whether to enable the function of selecting the path to save the recording file after meeting.
+	/// \param bEnable TRUE means to enable, FALSE not.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableSelectRecordFileLocationAfterMeeting(bool bEnable) = 0;
+	
+	/// \brief Check if the function of selecting storage path for recording file is enabled.
+	/// \return TRUE indicates enabled. FALSE not.
+	virtual bool IsSelectRecordFileLocationAfterMeetingEnabled() = 0;
+#endif
 	
 };
 
@@ -1415,7 +1431,7 @@ typedef struct tagOverallStatisticInfo
 {
 	SettingsNetWorkType net_work_type_;///<Network type.
 	SettingConnectionType connection_type_;///<Connection type
-	const wchar_t* proxy_addr_;///<Proxy address.
+	const zchar_t* proxy_addr_;///<Proxy address.
 	tagOverallStatisticInfo()
 	{
 		net_work_type_ = SETTINGS_NETWORK_UNKNOWN;
@@ -1441,7 +1457,7 @@ typedef struct tagAudioSessionStatisticInfo
 
 	tagAudioSessionStatisticInfo()
 	{
-		memset(this, 0, sizeof(tagAudioSessionStatisticInfo)); //checked safe
+		memset(this, 0, sizeof(tagAudioSessionStatisticInfo)); 
 	}
 }AudioSessionStatisticInfo;
 
@@ -1465,7 +1481,7 @@ typedef struct tagASVSessionStatisticInfo
 	int fps_recv_;///<Frame per second receiving.
 	tagASVSessionStatisticInfo()
 	{
-		memset(this, 0, sizeof(tagASVSessionStatisticInfo));   //checked safe
+		memset(this, 0, sizeof(tagASVSessionStatisticInfo));   
 	}
 }ASVSessionStatisticInfo;
 
@@ -1503,7 +1519,7 @@ public:
 	///For more details, see \link ASVSessionStatisticInfo \endlink.
 	virtual SDKError QueryShareStatisticInfo(ASVSessionStatisticInfo& info_) = 0;
 };
-
+#if defined(WIN32)	
 /// \brief Accessibility setting interface.
 ///
 class IAccessibilitySettingContext
@@ -1561,12 +1577,12 @@ public:
 	/// \brief Get the file path of current image.
 	/// \return If the function succeeds, the return value is the file path of current image.
 	///Otherwise failed, the return value is NULL.
-	virtual const wchar_t* GetImageFilePath() = 0;
+	virtual const zchar_t* GetImageFilePath() = 0;
 
 	/// \brief Get the name of current image.
 	/// \return If the function succeeds, the return value is the name of current image.
 	///Otherwise failed, the return value is NULL.
-	virtual const wchar_t* GetImageName() = 0;
+	virtual const zchar_t* GetImageName() = 0;
 
 	virtual ~IVirtualBGImageInfo() {};
 };
@@ -1600,17 +1616,17 @@ public:
 
 	/// \brief Callback event of notification that creating the thumb of a virtual background video is success.
 	/// \param file_path The file name with full path which you can use to generate your thumb for the virtual background video.
-	virtual void OnVideoThumbReady(const wchar_t* file_path) = 0;
+	virtual void OnVideoThumbReady(const zchar_t* file_path) = 0;
 
 	/// \brief Callback event of notification that creating the thumb of a virtual background video is failed.
 	/// \param file_path The file name with full path which sdk generates from the virtual background video.
 	/// \param error The fail reason.
-	virtual void OnVideoThumbError(const wchar_t* file_path, VBVideoError error) = 0;
+	virtual void OnVideoThumbError(const zchar_t* file_path, VBVideoError error) = 0;
 
 	/// \brief Callback event of notification that playing a virtual background video is failed.
 	/// \param file_path The file name with full path which sdk generates from the virtual background video.
 	/// \param error The fail reason.
-	virtual void OnVideoPlayError(const wchar_t* file_path, VBVideoError error) = 0;
+	virtual void OnVideoPlayError(const zchar_t* file_path, VBVideoError error) = 0;
 };
 
 /// \brief Virtual background setting interface.
@@ -1655,7 +1671,7 @@ public:
 	/// \param file_path Specify the file name of the image. It must be the full path with the file name.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError AddBGImage(const wchar_t* file_path) = 0;
+	virtual SDKError AddBGImage(const zchar_t* file_path) = 0;
 
 	/// \brief Remove an image from the virtual background image list.
 	/// \param pRemoveImage Specify the image to remove. To get extended error information, see \link IVirtualBGImageInfo \endlink enum.
@@ -1688,7 +1704,7 @@ public:
 	/// \param file_path Specify the file name of the video. It must be the full path with the file name.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError AddBGVideo(const wchar_t* file_path) = 0;
+	virtual SDKError AddBGVideo(const zchar_t* file_path) = 0;
 
 	/// \brief Remove a video from the virtual background video list.
 	/// \param pRemoveVideo Specify the video to remove. To get extended error information, see \link IVirtualBGImageInfo \endlink enum.
@@ -1736,12 +1752,12 @@ public:
 	/// \brief Get the file path of current image.
 	/// \return If the function succeeds, the return value is the file path of current image.
 	///Otherwise failed, the return value is NULL.
-	virtual const wchar_t* GetImageFilePath() = 0;
+	virtual const zchar_t* GetImageFilePath() = 0;
 
 	/// \brief Get the name of current image.
 	/// \return If the function succeeds, the return value is the name of current image.
 	///Otherwise failed, the return value is NULL.
-	virtual const wchar_t* GetImageName() = 0;
+	virtual const zchar_t* GetImageName() = 0;
 
 	/// \brief Get the type of current image.
 	/// \return If the function succeeds, the return value is the type of current image. 
@@ -1876,18 +1892,28 @@ public:
 	/// \return TRUE indicates the video filter feature is enabled.
 	virtual bool Is3DAvatarEnabled() = 0;
 
-	/// \brief Get the list of the video filter images.
+	/// \brief Enable/Disable the selected 3D avatar effect always used by the future meeting.
+	/// \param bEnable TRUE indicates enabled. FALSE not.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails and returns an error. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError Enable3DAvatarEffectForAllMeeting(bool bEnable) = 0;
+
+	/// \brief Determine if the selected 3D avatar effect is always used by the future meetings.
+	/// \return TRUE indicates that the selected 3D avatar effect still applies to future meetings.
+	virtual bool Is3DAvatarEffectForAllMeetingEnabled() = 0;
+
+	/// \brief Get the list of the 3D avatar images.
 	/// \return If there are images in the list, the return value is a list of the pointers to I3DAvatarImageInfo.
 	///Otherwise return NULL. To get extended information, see \link IVideoFilterImageInfo \endlink enum.
 	virtual IList<I3DAvatarImageInfo* >* Get3DAvatarImageList() = 0;
 
-	/// \brief Specify an image to be the video filter image.
+	/// \brief Specify an image to be the the 3D avatar image.
 	/// \param pImage Specify the image to use. To get extended information, see \link I3DAvatarImageInfo \endlink enum.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError Set3DAvatarImage(I3DAvatarImageInfo* pImage) = 0;
 
-	/// \brief Get the pointer to ITestVideoDeviceHelper which is used to preview the video with 3d avatar image.
+	/// \brief Get the pointer to ITestVideoDeviceHelper which is used to preview the video with 3D avatar image.
 	/// \return If the function succeeds, the return value is the pointer to ITestVideoDeviceHelper.
 	///Otherwise failed, returns NULL.
 	///For more details, see \link ITestVideoDeviceHelper \endlink.
@@ -1923,12 +1949,12 @@ public:
 	/// \brief Get the file path of the current image.
 	/// \return If the function succeeds, the return value is the file path of current image.
 	///Otherwise the function fails and the return value is NULL.
-	virtual const wchar_t* GetImageFilePath() = 0;
+	virtual const zchar_t* GetImageFilePath() = 0;
 
 	/// \brief Get the name of the current image.
 	/// \return If the function succeeds, the return value is the name of the current image.
 	///Otherwise the function fails and the return value is NULL.
-	virtual const wchar_t* GetImageName() = 0;
+	virtual const zchar_t* GetImageName() = 0;
 
 	/// \brief Get the index of the current face makeup.
 	/// \return If the function succeeds, the return value is the index of the current image.
@@ -2029,7 +2055,7 @@ public:
 	///For more details, see \link ITestVideoDeviceHelper \endlink.
 	virtual ITestVideoDeviceHelper* GetTestVideoDeviceHelper() = 0;
 };
-
+#endif
 
 /// \brief Share setting interface.
 ///
@@ -2046,15 +2072,6 @@ public:
 	/// \brief Determine if it is able to auto-fit the ZOOM window when viewing the shared content.
 	/// \return TRUE indicates to resize automatically.
 	virtual bool IsAutoFitToWindowWhenViewSharingEnabled() = 0;
-
-	/// \brief Set the window size type when viewing the sharing.
-	/// \param eType Specifies the window size type. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetWindowSizeTypeWhenViewShare(WindowSizeType eType) = 0;
-
-	/// \brief Get the window size type when view share.
-	virtual WindowSizeType GetWindowSizeTypeWhenViewShare() = 0;
 
 	/// \brief Enable or disable TCP connecting when sharing.
 	/// \param bEnable TRUE indicates to use TCP connecting when sharing.
@@ -2081,16 +2098,6 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError IsAccelerateGPUWhenShareEnabled(bool& bEnable) = 0;
-
-	/// \brief Enable/disable remote control of all applications.
-	/// \param bEnable TRUE indicates to enable the remote control. FALSE not.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableRemoteControlAllApplications(bool bEnable) = 0;
-
-	/// \brief Determine if remote control of all applications is enabled.
-	/// \return TRUE indicates enabled. FALSE not.
-	virtual bool IsRemoteControlAllApplicationsEnabled() = 0;
 
 	/// \brief Set the visibility of the green border when sharing the application.
 	/// \param bShow TRUE indicates to display the frame. FALSE hide.
@@ -2121,18 +2128,6 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SetLimitFPSValueWhenShare(LimitFPSValue value) = 0;
 
-	/// \brief set the screen capture mode.
-	/// \param capture_mode Specifies the screen capture mode.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetScreenCaptureMode(ScreenCaptureMode capture_mode) = 0;
-
-	/// \brief Get the screen capture mode.
-	/// \param [out] capture_mode Specifies the screen capture mode.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError GetScreenCaptureMode(ScreenCaptureMode& capture_mode) = 0;
-
 	/// \brief Enable/Disable to show the userself's app window when shares.
 	/// \param bEnable TRUE indicates to enable to show the window. FALSE not.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -2147,7 +2142,61 @@ public:
 	/// \return true indicates to support.
 	virtual bool IsSupportShowMyAppWindowWhenShare() = 0;
 
-	/// \brief Get the share option in meeting.
+
+	/// \brief Determine if it is silence system notification when sharing on.
+	/// \return true indicates to silence system notification when sharing on.
+	virtual bool IsDoNotDisturbInSharingOn() = 0;
+
+	/// \brief Enable/Disable to silence system notification when sharing on.
+	/// \param bEnable TRUE indicates to silence system notification when sharing on. FALSE not.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableDoNotDisturbInSharing(bool bEnable) = 0;
+
+	/// \brief Enable/Disable the GPU acceleration when a user adds annotations on a shared screen or whiteboard.
+	/// \param bEnable TRUE indicates to enable acceleration. FALSE indicates to not enable acceleration.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableHardwareAcceleratedAnnotation(bool bEnable) = 0;
+
+	/// \brief Determine if GPU acceleration is enabled when user use annotations on a shared screen or whiteboard.
+	/// \param [out]bEnable TRUE indicates the GPU acceleration is enabled. FALSE not. It validates only when the return value is SDKErr_Success. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise it fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError IsAnnotationHardwareAccelerated(bool& bEnable) = 0;
+
+	/// \brief Enable/Disable the GPU acceleration when user shares video.
+	/// \param bEnable TRUE indicates to enable the acceleration. FALSE indicates to not enable acceleration.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise it fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableHardwareAcceleratedVideoSharing(bool bEnable) = 0;
+
+	/// \brief Determine if GPU acceleration is enabled when a user shares video.
+	/// \param [out]bEnable TRUE indicates the GPU acceleration is enabled. FALSE indicates the GPU acceleration is not. It validates only when the return value is SDKErr_Success. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise it fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError IsVideoSharingHardwareAccelerated(bool& bEnable) = 0;
+#if defined(WIN32)
+	/// \brief Set the window size type when viewing the sharing.
+	/// \param eType Specifies the window size type. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetWindowSizeTypeWhenViewShare(WindowSizeType eType) = 0;
+
+	/// \brief Get the window size type when view share.
+	virtual WindowSizeType GetWindowSizeTypeWhenViewShare() = 0;
+
+	/// \brief Enable/disable remote control of all applications.
+	/// \param bEnable TRUE indicates to enable the remote control. FALSE not.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableRemoteControlAllApplications(bool bEnable) = 0;
+
+	/// \brief Determine if remote control of all applications is enabled.
+	/// \return TRUE indicates enabled. FALSE not.
+	virtual bool IsRemoteControlAllApplicationsEnabled() = 0;
+
+		/// \brief Get the share option in meeting.
 	/// \param [out] shareOption Specifies the share option in meeting.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
@@ -2183,39 +2232,18 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SetShareOptionwWhenShareInDirectShare(ShareOptionToRoom share_option) = 0;
 
-	/// \brief Determine if it is silence system notification when sharing on.
-	/// \return true indicates to silence system notification when sharing on.
-	virtual bool IsDoNotDisturbInSharingOn() = 0;
-
-	/// \brief Enable/Disable to silence system notification when sharing on.
-	/// \param bEnable TRUE indicates to silence system notification when sharing on. FALSE not.
+	/// \brief set the screen capture mode.
+	/// \param capture_mode Specifies the screen capture mode.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableDoNotDisturbInSharing(bool bEnable) = 0;
+	virtual SDKError SetScreenCaptureMode(ScreenCaptureMode capture_mode) = 0;
 
-	/// \brief Enable/Disable the GPU acceleration when a user adds annotations on a shared screen or whiteboard.
-	/// \param bEnable TRUE indicates to enable acceleration. FALSE indicates to not enable acceleration.
+	/// \brief Get the screen capture mode.
+	/// \param [out] capture_mode Specifies the screen capture mode.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableHardwareAcceleratedAnnotation(bool bEnable) = 0;
-
-	/// \brief Determine if GPU acceleration is enabled when user use annotations on a shared screen or whiteboard.
-	/// \param [out]bEnable TRUE indicates the GPU acceleration is enabled. FALSE not. It validates only when the return value is SDKErr_Success. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise it fails. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError IsAnnotationHardwareAccelerated(bool& bEnable) = 0;
-
-	/// \brief Enable/Disable the GPU acceleration when user shares video.
-	/// \param bEnable TRUE indicates to enable the acceleration. FALSE indicates to not enable acceleration.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise it fails. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableHardwareAcceleratedVideoSharing(bool bEnable) = 0;
-
-	/// \brief Determine if GPU acceleration is enabled when a user shares video.
-	/// \param [out]bEnable TRUE indicates the GPU acceleration is enabled. FALSE indicates the GPU acceleration is not. It validates only when the return value is SDKErr_Success. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise it fails. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError IsVideoSharingHardwareAccelerated(bool& bEnable) = 0;
+	virtual SDKError GetScreenCaptureMode(ScreenCaptureMode& capture_mode) = 0;
+#endif
 };
 
 /// \brief Meeting setting interface.
@@ -2223,19 +2251,6 @@ public:
 class ISettingService
 {
 public:
-
-	/// \brief Display Meeting Setting dialog.
-	/// \param param Specify to display the Meeting Setting dialog. For more details, see \link ShowSettingDlgParam \endlink structure.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid only for ZOOM style user interface mode.
-	virtual SDKError ShowSettingDlg(ShowSettingDlgParam& param) = 0;
-
-	/// \brief Hide meeting setting dialog.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid only for ZOOM style user interface mode.
-	virtual SDKError HideSettingDlg() = 0;
 
 	/// \brief Get general setting interface.
 	/// \return If the function succeeds, the return value is an object pointer to IGeneralSettingContext.
@@ -2266,6 +2281,26 @@ public:
 	///Otherwise failed, returns NULL.
 	///For more details, see \link IStatisticSettingContext \endlink.
 	virtual IStatisticSettingContext* GetStatisticSettings() = 0;
+
+	/// \brief Get share settings interface.
+	/// \return If the function succeeds, the return value is an object pointer to IShareSettingContext.
+	///Otherwise failed, returns NULL.
+	///For more details, see \link IShareSettingContext \endlink.
+	virtual IShareSettingContext* GetShareSettings() = 0;
+
+#if defined(WIN32)
+	/// \brief Display Meeting Setting dialog.
+	/// \param param Specify to display the Meeting Setting dialog. For more details, see \link ShowSettingDlgParam \endlink structure.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid only for ZOOM style user interface mode.
+	virtual SDKError ShowSettingDlg(ShowSettingDlgParam& param) = 0;
+
+	/// \brief Hide meeting setting dialog.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid only for ZOOM style user interface mode.
+	virtual SDKError HideSettingDlg() = 0;
 
 	/// \brief Get Accessibility settings interface.
 	/// \return If the function succeeds, the return value is an object pointer to IAccessibilitySettingContext.
@@ -2302,12 +2337,7 @@ public:
 	///Otherwise failed, returns NULL.
 	///For more details, see \link IFaceMakeupSettingContext \endlink.
 	virtual IFaceMakeupSettingContext* GetFaceMakeupSettings() = 0;
-
-	/// \brief Get share settings interface.
-	/// \return If the function succeeds, the return value is an object pointer to IShareSettingContext.
-	///Otherwise failed, returns NULL.
-	///For more details, see \link IShareSettingContext \endlink.
-	virtual IShareSettingContext* GetShareSettings() = 0;
+#endif
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

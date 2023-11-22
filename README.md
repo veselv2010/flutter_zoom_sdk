@@ -1,6 +1,6 @@
 # Current versions of the Zoom Meeting SDK
 
-Windows: v5.15.2.18146
+Windows: v5.16.10.26236
 
 Android: v5.16.6.17198
 

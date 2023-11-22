@@ -23,6 +23,12 @@ enum MeetingReminderType
 	TYPE_ARCHIVE_DISCLAIMER,///<Reminder type of archive disclaimer.
 	TYPE_WEBINAR_AS_PANELIST_JOIN,///<Reminder type of join webinar as panelist.
 	TYPE_TERMS_OF_SERVICE, ///Reminder type of Terms of service or privacy statement changed.
+	TYPE_SMART_SUMMARY_DISCLAIMER, ///<Reminder type of smart summary disclaimer.
+	TYPE_SMART_SUMMARY_ENABLE_REQUEST_REMINDER, ///<reminder type of smart summary enable request.
+	TYPE_QUERY_DISCLAIMER, ///<reminder type of query disclaimer.
+	TYPE_QUERY_ENABLE_REQUEST_REMINDER, ///<reminder type of query enable request.
+	TYPE_ENABLE_SMART_SUMMARY_REMINDER,///<reminder type of enable smart summary.
+	TYPE_WEBINAR_ATTENDEE_PROMOTE_REMINDER,///<reminder type of webinar promote attendee.
 };
 
 /// \brief the interface of reminder dialog content.
@@ -33,9 +39,9 @@ public:
 	/// \brief Get the type of the reminder.
 	virtual MeetingReminderType  GetType() = 0;
 	/// \brief Get the title of the reminder dialog content.
-	virtual const wchar_t* GetTitle() = 0;
+	virtual const zchar_t* GetTitle() = 0;
 	/// \brief Get the detail content of the reminder dialog content.
-	virtual const wchar_t* GetContent() = 0;
+	virtual const zchar_t* GetContent() = 0;
 	/// \brief Determine whether block the user join or stay in the meeting
 	/// \return True indicates block the user join or stay in the meeting. Otherwise False.
 	virtual bool  IsBlocking() = 0;

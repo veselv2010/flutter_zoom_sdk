@@ -49,9 +49,9 @@ enum AnnotationToolType
 */
 enum AnnotationClearType
 {
-	ANNOCLEAR_ALL,///<Clear all annotations.
-	ANNOCLEAR_SELF,///<Clear only your own annotations.
-	ANNOCLEAR_OTHER,///<Clear only the others' annotations.
+	ANNOCLEAR_ALL,///<Clear all annotations. Hosts, managers and shared meeting owners can use.
+	ANNOCLEAR_SELF,///<Clear only your own annotations. Everyone can use.
+	ANNOCLEAR_OTHER,///<Clear only the others' annotations. Only shared meeting owners can use.
 };
 
 /// \brief Callback interface that viewer's annotation status changes.
@@ -103,6 +103,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	///  \remarks Valid only for ZOOM style user interface mode.
+	/// The tool type ANNOTOOL_PICKER and ANNOTOOL_SPOTLIGHT are not support for viewer.
 	virtual SDKError SetTool(SDKViewType viewtype, AnnotationToolType type) = 0;
 
 	/// \brief Clear present annotations. 
@@ -183,10 +184,10 @@ public:
 	virtual bool IsAnnotationLegalNoticeAvailable() = 0;
 
 	/// Get the annotation legal notices prompt.
-	virtual const wchar_t* getAnnotationLegalNoticesPrompt() = 0;
+	virtual const zchar_t* getAnnotationLegalNoticesPrompt() = 0;
 
 	/// Get the annotation legal notices explained.
-	virtual const wchar_t* getAnnotationLegalNoticesExplained() = 0;
+	virtual const zchar_t* getAnnotationLegalNoticesExplained() = 0;
 
 };
 END_ZOOM_SDK_NAMESPACE

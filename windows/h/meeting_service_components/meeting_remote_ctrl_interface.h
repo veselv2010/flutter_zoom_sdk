@@ -23,6 +23,7 @@ enum RemoteControlStatus
 	Remote_Control_Who_Control_Me,///<The status of remote control. I am controlled by whom. 
 	Remote_Control_I_Recv_Decline_Msg,///<Remote control information. I have received a refused information of remote control.
 	Remote_Control_I_Recv_Request_Msg,///<Remote control information. I have received an information of request for remote control.
+	Remote_Control_Who_Can_Control_Me,///<The status of remote control. I can be controlled by whom.
 };
 
 /// \brief Meeting remote control callback event.

@@ -76,11 +76,11 @@ class IH323Device
 {
 public:
 	///<Virtual function definition.
-	virtual const wchar_t* GetName() = 0;
+	virtual const zchar_t* GetName() = 0;
 	///<Virtual function definition.
-	virtual const wchar_t* GetIP() = 0;
+	virtual const zchar_t* GetIP() = 0;
 	///<Virtual function definition.
-	virtual const wchar_t* GetE164Num() = 0;
+	virtual const zchar_t* GetE164Num() = 0;
 	///<Virtual function definition.
 	virtual H323DeviceType GetDeviceType() = 0;
 	virtual bool IsCustomizedH323Device() = 0;
@@ -97,35 +97,35 @@ public:
 		_type = H323DeviceType_Unknown;
 	}
 
-	virtual void SetName(const wchar_t* name_)
+	virtual void SetName(const zchar_t* name_)
 	{
 		if (name_)
 			_name = name_;
 	}
 
-	virtual const wchar_t* GetName()
+	virtual const zchar_t* GetName()
 	{
 		return _name.c_str();
 	}
 
-	virtual void SetIP(const wchar_t* ip_)
+	virtual void SetIP(const zchar_t* ip_)
 	{
 		if (ip_)
 			_ip = ip_;
 	}
 
-	virtual const wchar_t* GetIP()
+	virtual const zchar_t* GetIP()
 	{
 		return _ip.c_str();
 	}
 
-	virtual void SetE164Num(const wchar_t* e164num_)
+	virtual void SetE164Num(const zchar_t* e164num_)
 	{
 		if (e164num_)
 			_e164num = e164num_;
 	}
 
-	virtual const wchar_t* GetE164Num()
+	virtual const zchar_t* GetE164Num()
 	{
 		return _e164num.c_str();
 	}
@@ -163,11 +163,11 @@ public:
 
 	/// \brief Get the list of H.323 call-in number supported by the current meeting.
 	/// \return If the function succeeds, the return value is the pointer to the list of the call-in number. Otherwise failed, the return value is NULL.
-	virtual IList<const wchar_t* >* GetH323Address() = 0;
+	virtual IList<const zchar_t* >* GetH323Address() = 0;
 
 	/// \brief Get the H.323 password for the current meeting.
 	/// \return If the function succeeds, the return value is the H.323 meeting connect password. Otherwise failed, the return value is the length of zero(0). 
-	virtual const wchar_t* GetH323Password() = 0;
+	virtual const zchar_t* GetH323Password() = 0;
 
 	/// \brief Determine if it is enabled to pair the meeting.
 	/// \param meetingNum TRUE Specifies the meeting number.
@@ -181,7 +181,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks If the function succeeds, the IMeetingH323HelperEvent::onParingH323Result() will be triggered once received the response of the H.323 device. 
-	virtual SDKError SendMeetingParingCode(UINT64 meetingNum, wchar_t* paringCode) = 0;
+	virtual SDKError SendMeetingParingCode(UINT64 meetingNum, zchar_t* paringCode) = 0;
 
 	/// \brief Get the list of the call-out devices supported by the current meeting.
 	/// \return If the function succeeds, the return value is the pointer to the list of devices. 

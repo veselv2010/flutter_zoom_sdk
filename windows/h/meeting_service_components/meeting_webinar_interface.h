@@ -6,7 +6,7 @@
 
 #ifndef _MEETING_WEBINAR_INTERFACE_H_
 #define _MEETING_WEBINAR_INTERFACE_H_
-
+#include "zoom_sdk_def.h"
 BEGIN_ZOOM_SDK_NAMESPACE
 
 /// \brief Webinar callback event.
@@ -100,7 +100,7 @@ enum SDKPanelistChatPrivilege
 	SDKPanelistChatPrivilege_PanelistOnly = 1,	/// Allow panelists only to chat with each other.
 	SDKPanelistChatPrivilege_All = 2			/// Allow panelist to chat with everyone.
 };
-
+#if defined(WIN32)
 /**
  * @brief Enumerations of the attendee view display mode.
  */
@@ -121,10 +121,10 @@ enum  SDKAttendeeViewMode
 */
 typedef struct tagWebinarLegalNoticesExplainedInfo
 {
-	const wchar_t* explained_content;
-	const wchar_t* url_register_account_owner;
-	const wchar_t* url_register_terms;
-	const wchar_t* url_register_privacy_policy;
+	const zchar_t* explained_content;
+	const zchar_t* url_register_account_owner;
+	const zchar_t* url_register_terms;
+	const zchar_t* url_register_privacy_policy;
 	tagWebinarLegalNoticesExplainedInfo()
 	{
 		Reset();
@@ -138,7 +138,7 @@ typedef struct tagWebinarLegalNoticesExplainedInfo
 		url_register_privacy_policy = nullptr;
 	}
 }WebinarLegalNoticesExplainedInfo;
-
+#endif
 /// \brief Webinar controller interface
 ///
 class IMeetingWebinarController
@@ -235,16 +235,6 @@ public:
     /// \return The count of participant.
 	virtual int GetParticipantCount() = 0;
 
-	/// \brief Set the view mode of the attendee. Available only for zoom ui.
-    /// \param mode The view mode of the attendee.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS..
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetAttendeeViewMode(SDKAttendeeViewMode mode) = 0;
-
-	/// \brief Get the view mode of the attendee.Available only for zoom ui.
-    /// \return If the function succeeds, it will return the attendee's view mode. For more details, see \link ZoomSDKAttendeeViewMode \endlink.
-	virtual SDKAttendeeViewMode GetAttendeeViewMode() = 0;
-
 	/// \brief Get the webinar status.
 	/// \return The status of webinar. For more details, see \link WebinarMeetingStatus \endlink.
 	virtual WebinarMeetingStatus* GetWebinarMeetingStatus() = 0;
@@ -261,13 +251,25 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError GetPanelistChatPrivilege(SDKPanelistChatPrivilege& privilege) = 0;
 
+#if defined(WIN32)
+	/// \brief Set the view mode of the attendee. Available only for zoom ui.
+    /// \param mode The view mode of the attendee.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS..
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetAttendeeViewMode(SDKAttendeeViewMode mode) = 0;
+
+	/// \brief Get the view mode of the attendee.Available only for zoom ui.
+    /// \return If the function succeeds, it will return the attendee's view mode. For more details, see \link ZoomSDKAttendeeViewMode \endlink.
+	virtual SDKAttendeeViewMode GetAttendeeViewMode() = 0;
+
 	/// \brief Get the webinar legal notices prompt.
 	/// \return The webinar legal notices prompt.
-	virtual const wchar_t* getWebinarLegalNoticesPrompt() = 0;
-
+	virtual const zchar_t* getWebinarLegalNoticesPrompt() = 0;
+	
 	/// \brief Get the webinar legal notices explained.
 	/// \return The webinar legal notices explained.
 	virtual bool getWebinarLegalNoticesExplained(WebinarLegalNoticesExplainedInfo& explained_info) = 0;
+#endif
 };
 
 END_ZOOM_SDK_NAMESPACE

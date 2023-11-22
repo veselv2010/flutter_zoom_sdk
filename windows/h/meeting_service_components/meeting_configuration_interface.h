@@ -6,8 +6,9 @@
 #ifndef _MEETING_Configuration_INTERFACE_H_
 #define _MEETING_Configuration_INTERFACE_H_
 #include "zoom_sdk_def.h"
+#if defined(WIN32)
 #include "customized_resource_helper_interface.h"
-
+#endif
 BEGIN_ZOOM_SDK_NAMESPACE
 /// \brief Meeting screen name and password handler.
 /// \remarks If the user information is not completed, the SDK will take the instance of this class as a reference to remind the user to complete the information via IMeetingConfigurationEvent::onInputMeetingPasswordAndScreenNameNotification()callback.
@@ -34,15 +35,15 @@ public:
  
 	/// \brief Complete the password and screen name information.
 	/// \remarks The SDK will destroy the object instance after calling this function. Supplement with the correct information.
-	virtual bool InputMeetingPasswordAndScreenName(const wchar_t* meetingPassword, const wchar_t* screenName) = 0;
+	virtual bool InputMeetingPasswordAndScreenName(const zchar_t* meetingPassword, const zchar_t* screenName) = 0;
 
 	/// \brief Complete the meeting id and screen name information.
 	/// \remarks The SDK will destroy the object instance after calling this function. Supplement with the correct information.
-	virtual bool InputMeetingIDAndScreenName(const wchar_t* meetingID, const wchar_t* screenName) = 0;
+	virtual bool InputMeetingIDAndScreenName(const zchar_t* meetingID, const zchar_t* screenName) = 0;
 
 	/// \brief Complete the screen name.
 	/// \remarks The SDK will destroy this object instance after calling this function. Complete the information by the correct function.
-	virtual bool InputMeetingScreenName(const wchar_t* screenName) = 0;
+	virtual bool InputMeetingScreenName(const zchar_t* screenName) = 0;
 
 	/// \brief Ignore the prompt of completing the information.
 	/// \remarks The SDK will destroy this object instance after calling this function. 
@@ -78,7 +79,7 @@ class IWebinarNeedRegisterHandlerByUrl : public IWebinarNeedRegisterHandler
 public:
 	/// \brief Get the URL to register webinar.
 	/// \return If the function succeeds, the return value is an URL.
-	virtual const wchar_t* GetWebinarRegisterUrl() = 0;
+	virtual const zchar_t* GetWebinarRegisterUrl() = 0;
 
 	/// \brief Release object.
 	virtual void Release() = 0;
@@ -92,7 +93,7 @@ class IWebinarNeedRegisterHandlerByEmail : public IWebinarNeedRegisterHandler
 public:
 	/// \brief Configure the information of email and screen name.
 	/// \remarks The SDK will destroy this object instance after calling this function. Supplement with the correct information.
-	virtual SDKError InputWebinarRegisterEmailAndScreenName(const wchar_t* email, const wchar_t* screenName) = 0;
+	virtual SDKError InputWebinarRegisterEmailAndScreenName(const zchar_t* email, const zchar_t* screenName) = 0;
 
 	/// \brief Ignore the prompt of the register.
 	/// \remarks The SDK will destroy this object instance after calling this function.
@@ -116,18 +117,6 @@ public:
 	virtual ~IEndOtherMeetingToJoinMeetingHandler() {};
 };
 
-enum SDKInviteDlgTabPage
-{
-	SDK_INVITEDLG_TAB_EMAILCONTACT = 0, ///<'Invite by Email' tab page
-	SDK_INVITEDLG_TAB_PHONECONTACT, ///<'Invite by Phone' tab pag
-	SDK_INVITEDLG_TAB_ROOMSYSTEM, ///<'Invite a Room System' tab page
-};
-
-enum SDKH323TabPage
-{
-	SDK_INVITEDLG_H323_DIALIN = 0, ///<'Dial In' sub-tab page under Room System invitation tab page
-	SDK_INVITEDLG_H323_CALLOUT, ///<'Call Out' sub-tab page under Room System invitation tab page
-};
 /// \brief Free meeting event handler.
 ///
 class IMeetingConfigurationFreeMeetingEvent
@@ -154,7 +143,7 @@ public:
 	/// \brief The callback of upgrading the free meeting.
 	/// \param type_ Type of upgrading the free meeting, see \link FreeMeetingNeedUpgradeType \endlink enum.
 	/// \param gift_url Upgrade the free meeting by the gift link. When and only when the value of type_ is FreeMeetingNeedUpgradeType_BY_GIFTURL, this parameter is meaningful.
-	virtual void onFreeMeetingNeedToUpgrade(FreeMeetingNeedUpgradeType type_, const wchar_t* gift_url) =0;
+	virtual void onFreeMeetingNeedToUpgrade(FreeMeetingNeedUpgradeType type_, const zchar_t* gift_url) =0;
 	
 	/// \brief Callback function of starting to upgrade the free meeting by the gift link.
 	virtual void onFreeMeetingUpgradeToGiftFreeTrialStart() = 0;
@@ -183,6 +172,19 @@ public:
 	/// \brief The user will receive this callback event if the user wants to join the new meeting while the ongoing meeting is not ended.
 	/// \param handler_ An object pointer used by user to complete all the related operations. For more details, see \link IEndOtherMeetingToJoinMeetingHandler \endlink.
 	virtual void onEndOtherMeetingToJoinMeetingNotification(IEndOtherMeetingToJoinMeetingHandler* handler_) = 0;
+};
+#if defined(WIN32)
+enum SDKInviteDlgTabPage
+{
+	SDK_INVITEDLG_TAB_EMAILCONTACT = 0, ///<'Invite by Email' tab page
+	SDK_INVITEDLG_TAB_PHONECONTACT, ///<'Invite by Phone' tab pag
+	SDK_INVITEDLG_TAB_ROOMSYSTEM, ///<'Invite a Room System' tab page
+};
+
+enum SDKH323TabPage
+{
+	SDK_INVITEDLG_H323_DIALIN = 0, ///<'Dial In' sub-tab page under Room System invitation tab page
+	SDK_INVITEDLG_H323_CALLOUT, ///<'Call Out' sub-tab page under Room System invitation tab page
 };
 
 /*! \struct tagRedirectWarningMsgOption
@@ -239,7 +241,9 @@ public:
 	/// \param pos Specify the position of the primary view meeting window. The coordinates of the window are those of the screen.
 	virtual void SetMeetingUIPos(WndPosition pos) = 0;
 
-	/// \brief Set the position of the floating video window when sharing. 	/// \param pos Specify the position of the floating video window when sharing.	/// \remarks The value shall be set before the sharing begins. If you set the value during the process of share, the function will not be valid until the next share.
+	/// \brief Set the position of the floating video window when sharing. 
+	/// \param pos Specify the position of the floating video window when sharing.
+	/// \remarks The value shall be set before the sharing begins. If you set the value during the process of share, the function will not be valid until the next share.
 	virtual void SetFloatVideoPos(WndPosition pos) = 0;
 
 	/// \brief Set the visibility of the sharing toolbar. Default value: TRUE. 
@@ -261,7 +265,8 @@ public:
 	///If it is FALSE, the user can deal with this request in the IMeetingRemoteCtrlEvent::onRemoteControlStatus() callback event sent by SDK when receiving the decline request of the remote control and then exists the sharing status at the end of callback event.
 	virtual void EnableDeclineRemoteControlResponseDlg(bool bEnable) = 0;
 
-	/// \brief Set the visibility of the LEAVE MEETING button on the pop-up dialogue box when the host leaves the meeting. Default value: TRUE.	/// \param bEnable TRUE indicates to display the button. Otherwise not.
+	/// \brief Set the visibility of the LEAVE MEETING button on the pop-up dialogue box when the host leaves the meeting. Default value: TRUE.
+	/// \param bEnable TRUE indicates to display the button. Otherwise not.
 	virtual void EnableLeaveMeetingOptionForHost(bool bEnable) = 0;
 
 	/// \brief Set the visibility of the INVITE button in the panelist action bar during the meeting. Default value: TRUE.
@@ -505,12 +510,37 @@ public:
 	/// \param [in] bHide TRUE means hiding, otherwise not.
 	virtual void HideRequestRecordPrivilegeDialog(bool bHide) = 0;
 };
-
+#endif
 /// \brief Meeting connect configuration Interface
 ///
 class IJoinMeetingBehaviorConfiguration
 {
 public:
+
+	/// \brief Set if it is able to end automatically another ongoing meeting when joining a new meeting. Default: FALSE.
+	/// \param bEnable TRUE indicates to end the other ongoing meetings. FALSE not.
+	virtual void EnableAutoEndOtherMeetingWhenStartMeeting(bool bEnable) = 0;
+
+	/// \brief Set if it is able to handle the webinar register process with user's own program in the meeting. Default: FALSE.
+	/// \param bRedirect TRUE indicates to redirect. FALSE not. 
+	/// \remarks If it is true, the SDK will trigger the IMeetingConfigurationEvent::onWebinarNeedRegisterNotification()callback event. For more details, see \link IMeetingConfigurationEvent::onWebinarNeedRegisterNotification() \endlink.
+	virtual void RedirectWebinarNeedRegister(bool bRedirect) = 0;
+
+	/// \brief Set if it is able to redirect the process to end another meeting by user's own program. Default: FALSE. 
+	/// \param bRedirect TRUE indicates to redirect. FALSE not. If it is TRUE, the SDK will trigger the  IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification().
+	/// \remarks This function doesn't work if the IJoinMeetingBehaviorConfiguration::EnableAutoEndOtherMeetingWhenStartMeeting(true) is also called. If redirect successfully, the SDK will trigger the IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification() callback event. For more details, see \link IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification() \endlink.
+	virtual void RedirectEndOtherMeeting(bool bRedirect) = 0;
+	
+	/// \brief Set if it is able to force to turn on the video when join meeting. Default: FALSE.
+	/// \param bEnable TRUE indicates to force to start video.
+	/// \remarks The default behavior depends on the configuration of the meeting.
+	virtual void EnableForceAutoStartMyVideoWhenJoinMeeting(bool bEnable) = 0;
+
+	/// \brief Set if it is able to force turn off video when joining the meeting. Default: FALSE.
+	/// \param bEnable TRUE indicates to force to turn off the video.
+	/// \remarks The default behavior depends on the configuration of the meeting.
+	virtual void EnableForceAutoStopMyVideoWhenJoinMeeting(bool bEnable) = 0;
+#if defined(WIN32)
 	/// \brief Set the visibility of the dialog box if the password is wrong when join the meeting. Default: FALSE.
 	/// \param bDisable TRUE indicates to hide the dialog box of wrong password.
 	/// \remarks If it is disabled to display the dialog box of wrong password, the system will directly exit the state of trying to join the meeting.
@@ -519,10 +549,6 @@ public:
 	/// \brief Set the visibility of the dialog box of waiting for the host after joining the meeting. Only invalidate when the host is not in the meeting. Default: FALSE.
 	/// \param bDisable TRUE indicates to hide the dialog box. FALSE not.
 	virtual void DisableWaitingForHostDialog(bool bDisable) = 0;
-
-	/// \brief Set if it is able to end automatically another ongoing meeting when joining a new meeting. Default: FALSE.
-	/// \param bEnable TRUE indicates to end the other ongoing meetings. FALSE not.
-	virtual void EnableAutoEndOtherMeetingWhenStartMeeting(bool bEnable) = 0;
 
 	/// \brief Set the visibility of the dialog box to input the password. Default: TRUE.
 	/// \param bEnable TRUE indicates to display the dialog box to input password. FALSE not.
@@ -534,26 +560,10 @@ public:
 	/// \remarks If it is false, the SDK will trigger IMeetingConfigurationEvent::onInputMeetingPasswordAndScreenNameNotification()callback event when the user is asked to re-enter the screen name, then the user shall deal with the subsequent logic. For more details, see \link IMeetingConfigurationEvent::onInputMeetingPasswordAndScreenNameNotification() \endlink.
 	virtual void EnableInputMeetingScreenNameDlg(bool bEnable) = 0;
 
-	/// \brief Set if it is able to handle the webinar register process with user's own program in the meeting. Default: FALSE.
-	/// \param bRedirect TRUE indicates to redirect. FALSE not. 
-	/// \remarks If it is true, the SDK will trigger the IMeetingConfigurationEvent::onWebinarNeedRegisterNotification()callback event. For more details, see \link IMeetingConfigurationEvent::onWebinarNeedRegisterNotification() \endlink.
-	virtual void RedirectWebinarNeedRegister(bool bRedirect) = 0;
-
 	/// \brief Pre-set email and username information before joining the webinar.
 	/// \param email Configure the default email.
 	/// \param username Configure default username.
-	virtual void PrePopulateWebinarRegistrationInfo(const wchar_t* email, const wchar_t* username) = 0;
-
-	/// \brief Set if it is able to redirect the process to end another meeting by user's own program. Default: FALSE. 
-	/// \param bRedirect TRUE indicates to redirect. FALSE not. If it is TRUE, the SDK will trigger the  IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification().
-	/// \remarks This function doesn't work if the IJoinMeetingBehaviorConfiguration::EnableAutoEndOtherMeetingWhenStartMeeting(true) is also called. If redirect successfully, the SDK will trigger the IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification() callback event. For more details, see \link IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification() \endlink.
-	virtual void RedirectEndOtherMeeting(bool bRedirect) = 0;
-	
-	/// \brief Set if it is able to force to turn on the video when join meeting. Default: FALSE.	/// \param bEnable TRUE indicates to force to start video.	/// \remarks The default behavior depends on the configuration of the meeting.
-	virtual void EnableForceAutoStartMyVideoWhenJoinMeeting(bool bEnable) = 0;
-
-	/// \brief Set if it is able to force turn off video when joining the meeting. Default: FALSE.	/// \param bEnable TRUE indicates to force to turn off the video.	/// \remarks The default behavior depends on the configuration of the meeting.
-	virtual void EnableForceAutoStopMyVideoWhenJoinMeeting(bool bEnable) = 0;
+	virtual void PrePopulateWebinarRegistrationInfo(const zchar_t* email, const zchar_t* username) = 0;
 
 	/// \brief Set the visibility of the dialog  SELECT JOIN AUDIO when joining meeting. Default: FALSE.
 	/// \param bDisable TRUE indicates to hide the dialog box.
@@ -562,12 +572,15 @@ public:
 	/// \brief Set the visibility of the dialog box of joining a meeting. Default: FALSE.
 	/// \param bDisable TRUE indicates to hide the dialog box. FALSE not.
 	virtual void DisableShowJoinMeetingWnd(bool bDisable) = 0;
+#endif
 };
 
 /// \brief Meeting configuration interface.
 ///
 class IMeetingConfiguration : 
+#if defined(WIN32)
 public IMeetingUIElemConfiguration, 
+#endif
 public IJoinMeetingBehaviorConfiguration
 {
 public:
@@ -578,10 +591,6 @@ public:
 	/// \brief Reset the meeting configuration and back to the default state.
 	virtual void Reset() = 0;
 
-	/// \brief Set the shared device ID when sharing directly.
-	/// \param monitorID Specify the device ID to be shared. You may get the device ID by the system API EnumDisplayMonitors().
-	virtual void SetDirectShareMonitorID(const wchar_t* monitorID) = 0;
-
 	/// \brief Set if it is able to auto-adjust the volume of the speaker when joining the meeting. Default: TRUE.
 	/// \param bEnable TRUE indicates to auto-adjust the volume of the speaker. FALSE not.
 	/// \remarks If it is TRUE, the SDK will adjust the speaker volume automatically. It will unmute if the speaker was muted.
@@ -591,6 +600,14 @@ public:
 	/// \param bEnable TRUE indicates to auto-adjust the volume of the mic. FALSE not.
 	/// \remarks If it is TRUE, the SDK will adjust the mic volume automatically. It will unmute if the mic was muted.
 	virtual void EnableAutoAdjustMicVolumeWhenJoinAudio(bool bEnable) = 0;
+
+	/// \brief Set the maximum duration of the meeting when there is no attendee in the meeting. Default: 24*60.
+	/// \param nDuration Specify the maximum duration in minutes.
+	virtual void SetMaxDurationForOnlyHostInMeeting(int nDuration) = 0;
+#if defined(WIN32)
+	/// \brief Set the shared device ID when sharing directly.
+	/// \param monitorID Specify the device ID to be shared. You may get the device ID by the system API EnumDisplayMonitors().
+	virtual void SetDirectShareMonitorID(const zchar_t* monitorID) = 0;
 
 	/// \brief Configure DSCP(Differential services code point) values.  
 	/// \param dscpAudio Configure DSCP value for audio.
@@ -616,10 +633,7 @@ public:
 	/// \brief Set whether to forbid multi-share. Default: FALSE.
 	/// \param bDisable TRUE indicates to forbid multi-share. FALSE not.
 	virtual void ForceDisableMultiShare(bool bDisable) = 0;
-
-	/// \brief Set the maximum duration of the meeting when there is no attendee in the meeting. Default: 24*60.
-	/// \param nDuration Specify the maximum duration in minutes.
-	virtual void SetMaxDurationForOnlyHostInMeeting(int nDuration) = 0;
+#endif
 };
 
 END_ZOOM_SDK_NAMESPACE

@@ -15,13 +15,13 @@ public:
 	virtual ~IMeetingPhoneSupportCountryInfo(){}
 	/// \brief Get the country ID of the current information. 
 	/// \return The country ID.
-	virtual const wchar_t* GetCountryID() = 0;
+	virtual const zchar_t* GetCountryID() = 0;
 	/// \brief Get the country name of the current information.
 	/// \return The country name.
-	virtual const wchar_t* GetCountryName() = 0;
+	virtual const zchar_t* GetCountryName() = 0;
 	/// \brief Get the country code of the current information.
 	/// \return The country code.
-	virtual const wchar_t* GetCountryCode() = 0;
+	virtual const zchar_t* GetCountryCode() = 0;
 };
 
 /*! \enum CALLINNUMTYPE
@@ -43,19 +43,19 @@ public:
 	virtual ~IMeetingCallInPhoneNumberInfo(){}
 	/// \brief Get the current call-in number's country ID.
 	/// \return The country ID.	
-	virtual const wchar_t* GetID() = 0;
+	virtual const zchar_t* GetID() = 0;
 	/// \brief Get the current call-in number's country code.
 	/// \return The country code.	
-	virtual const wchar_t* GetCode() = 0;
+	virtual const zchar_t* GetCode() = 0;
 	/// \brief Get the current call-in number's country name.
 	/// \return The country name.
-	virtual const wchar_t* GetName() = 0;
+	virtual const zchar_t* GetName() = 0;
 	/// \brief Get the current call-in number's telephone number.
 	/// \return The telephone number.
-	virtual const wchar_t* GetNumber() = 0;
+	virtual const zchar_t* GetNumber() = 0;
 	/// \brief Get the current call-in number's display number. 
 	/// \return The display number.
-	virtual const wchar_t* GetDisplayNumber() = 0;
+	virtual const zchar_t* GetDisplayNumber() = 0;
 	/// \brief Get the current call-in number's call type.
 	/// \return Call type. For more details, see \link CALLINNUMTYPE \endlink.
 	virtual CALLINNUMTYPE  GetType() = 0;
@@ -132,19 +132,19 @@ public:
 	virtual IList<IMeetingPhoneSupportCountryInfo* >* GetSupportCountryInfo() = 0;
 
 	/// \brief Invite the specified user to join the meeting by calling out.
-	/// \param countryCode The specified user?．s country code must be in the support list. 
-	/// \param phoneNumber The specified user?．s phone number.
-	/// \param name The specified user?．s screen name in the meeting.
+	/// \param countryCode The specified users' country code must be in the support list.
+	/// \param phoneNumber The specified users' phone number.
+	/// \param name The specified users' screen name in the meeting.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError InviteCallOutUser(const wchar_t* countryCode, const wchar_t* phoneNumber, const wchar_t* name) = 0;
+	virtual SDKError InviteCallOutUser(const zchar_t* countryCode, const zchar_t* phoneNumber, const zchar_t* name) = 0;
 
 	/// \brief Cancel the invitation that is being called out by phone.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError CancelCallOut() = 0;
 
-	/// \brief Get the invited user?．s status by calling out.
+	/// \brief Get the invited users' status by calling out.
 	/// \return If the function succeeds, the return value is the current call-out process. To get extended error information, see \link PhoneStatus \endlink enum
 	virtual PhoneStatus GetInviteCalloutUserStatus() = 0;
 
@@ -153,7 +153,7 @@ public:
 	/// \param phoneNumber The specified phone number.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError CallMe(const wchar_t* countryCode, const wchar_t* phoneNumber) = 0;
+	virtual SDKError CallMe(const zchar_t* countryCode, const zchar_t* phoneNumber) = 0;
 
 	/// \brief Cancel the current invitation by CALL ME.
 	/// \return If the function succeeds, the return value is SDKErr_Success.

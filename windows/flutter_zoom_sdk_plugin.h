@@ -91,6 +91,8 @@ namespace flutter_zoom_sdk {
 		void onZoomAuthIdentityExpired();
 
 		void onNotificationServiceStatus(ZOOM_SDK_NAMESPACE::SDKNotificationServiceStatus status);
+
+		void onNotificationServiceStatus(ZOOM_SDK_NAMESPACE::SDKNotificationServiceStatus status, ZOOM_SDK_NAMESPACE::SDKNotificationServiceError error);
 	};
 
 	class MeetingServiceEvent : public ZOOM_SDK_NAMESPACE::IMeetingServiceEvent {
@@ -107,6 +109,8 @@ namespace flutter_zoom_sdk {
 		void onMeetingParameterNotification(const ZOOM_SDK_NAMESPACE::MeetingParameter* meeting_param);
 
 		void onSuspendParticipantsActivities();
+
+		void onAICompanionActiveChangeNotice(bool bActive);
 	};
 
 }  // namespace flutter_zoom_sdk

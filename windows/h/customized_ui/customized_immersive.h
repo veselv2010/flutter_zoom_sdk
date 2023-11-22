@@ -41,6 +41,22 @@ struct CustomImmersiveLayoutData
 	RECT position;			///<The seat position.
 };
 
+/// \brief Immersive template data object interface.
+///
+class ICustomImmersiveTemplateData
+{
+public:
+	/// \brief Get the size of this template.
+	/// \return If the function succeeds, the return value is the size of this template.
+	virtual SIZE getCanvasSize() = 0;
+
+	/// \brief Get the list of template seats.
+	/// \return The list of template seats. ZERO(0) indicates that there are no seats in the template.
+	virtual IList<SeatPlacementInfo>* getSeatList() = 0;
+
+	virtual ~ICustomImmersiveTemplateData() {}
+};
+
 /// \brief Immersive template object interface.
 ///
 class ICustomImmersiveTemplate
@@ -48,7 +64,7 @@ class ICustomImmersiveTemplate
 public:
 	/// \brief Get the name of this template.
 	/// \return If the function succeeds, the return value is the name of this template.
-	virtual const wchar_t* getTemplateName() = 0;
+	virtual const zchar_t* getTemplateName() = 0;
 
 	/// \brief Get the bitmap of the thumbnail.
 	/// \return If the function succeeds, the return value is the bitmap of this thumbnail.
@@ -68,15 +84,25 @@ public:
 
 	/// \brief Get the size of this template.
 	/// \return If the function succeeds, the return value is the size of this template.
+	/// \deprecated This interface will be marked as deprecated, then it will be instead by ICustomImmersiveTemplateData::getCanvasSize(), please stop using it.
 	virtual SIZE getCanvasSize() = 0;
 
 	/// \brief Get the list of template seats.
 	/// \return The list of template seats. ZERO(0) indicates that there are no seats in the template.
+	/// \deprecated This interface will be marked as deprecated, then it will be instead by ICustomImmersiveTemplateData::getSeatList(), please stop using it.
 	virtual IList<SeatPlacementInfo>* getSeatList() = 0;
 
 	/// \brief Get the type of this template.
 	/// \return If the function succeeds, the return value is the type of this template. For more details, see \link CustomImmersiveTemplateType \endlink enum.
 	virtual CustomImmersiveTemplateType getType() = 0;
+
+	/// \brief Get the template data of immersive when in share mode
+	/// \return If the function succeeds, the return value is the template data of immersive when in share mode. For more details, see \link ICustomImmersiveTemplateData \endlink enum.
+	virtual ICustomImmersiveTemplateData* getShareTemplateData() = 0;
+
+	/// \brief Get the template data of immersive when in default mode
+	/// \return If the function succeeds, the return value is the template data of immersive when in default mode. For more details, see \link ICustomImmersiveTemplateData \endlink enum.
+	virtual ICustomImmersiveTemplateData* getVideoTemplateData() = 0;
 
 	virtual ~ICustomImmersiveTemplate() {}
 };
@@ -277,7 +303,7 @@ public:
 	/// \param [out] immersiveTemplate The object of custom template. For more details, see \link ICustomImmersiveTemplate \endlink.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError addCustomImageTemplate(const wchar_t* filePath, ICustomImmersiveTemplate** immersiveTemplate) = 0;
+	virtual SDKError addCustomImageTemplate(const zchar_t* filePath, ICustomImmersiveTemplate** immersiveTemplate) = 0;
 
 	/// \brief Remove custom image template. 
 	/// \param immersiveTemplate The custom image template that want to remove. For more details, see \link ICustomImmersiveTemplate \endlink.
@@ -285,6 +311,23 @@ public:
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError removeCustomImageTemplate(ICustomImmersiveTemplate* immersiveTemplate) = 0;
 
+	/// \brief Determine if displaying sharing contents in immersive mode.
+	/// \param [out] bInShare True means displaying sharing contents in immersive mode, false means that they are not. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError isInImmersiveShareMode(bool& bInShare) = 0;
+
+	/// \brief Update the user id to view share, available only for host.
+	/// \param userID The sepecified user id.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError viewShare(unsigned int userID) = 0;
+
+	/// \brief Query the user id when viewing share in immersive mode, available only for host.
+	/// \param [out] userID The sepecified user id.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError getViewingShareUser(unsigned int& userID) = 0;
 
 	virtual ~ICustomImmersiveController() {}
 };

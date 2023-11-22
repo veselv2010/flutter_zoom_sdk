@@ -48,7 +48,7 @@ public:
 	virtual ~IRequestLocalRecordingPrivilegeHandler() {};
 	/// \brief Get the request ID.
 	/// \return If the function succeeds, the return value is the request ID.
-	virtual const wchar_t* GetRequestId() = 0;
+	virtual const zchar_t* GetRequestId() = 0;
 
 	/// \brief Get the user ID who requested privilege.
 	/// \return If the function succeeds, the return value is the user ID. Otherwise, this returns 0.
@@ -56,7 +56,7 @@ public:
 
 	/// \brief Get the user name who requested privileges.
 	/// \return If the function succeeds, the return value is the user name.
-	virtual const wchar_t* GetRequesterName() = 0;
+	virtual const zchar_t* GetRequesterName() = 0;
 
 	/// \brief Allows the user to start local recording and finally self-destroy.
 	virtual SDKError GrantLocalRecordingPrivilege() = 0;
@@ -64,26 +64,15 @@ public:
 	/// \brief Denies the user permission to start local recording and finally self-destroy.
 	virtual SDKError DenyLocalRecordingPrivilege() = 0;
 };
-
+#if defined(WIN32)
 class ICustomizedLocalRecordingLayoutHelper;
+#endif
 /// \brief Meeting recording callback event.
 ///
 class IMeetingRecordingCtrlEvent
 {
 public:
 	virtual ~IMeetingRecordingCtrlEvent() {}
-
-	/// \brief Callback event of ending the conversion to MP4 format.
-	/// \param bsuccess TRUE indicates to convert successfully. FALSE not.
-	/// \param iResult This value is used to save the error code only when the convert fails.
-	/// \param szPath If the conversion is successful, this value is used to save the path of the recording file. 
-	/// \remarks In order to trigger this callback correctly, you need call IMeetingConfiguration.EnableLocalRecordingConvertProgressBarDialog(false) before you start a meeting.
-	virtual void onRecording2MP4Done(bool bsuccess, int iResult, const wchar_t* szPath) = 0;
-
-	/// \brief Callback event of the process of the conversion to MP4 format.
-	/// \param iPercentage Percentage of conversion process. Range from ZERO(0) to ONE HUNDREAD(100).
-	/// \remarks In order to trigger this callback correctly, you need call IMeetingConfiguration.EnableLocalRecordingConvertProgressBarDialog(false) before you start a meeting.
-	virtual void onRecording2MP4Processing(int iPercentage) = 0;
 
 	/// \brief Callback event that the status of my local recording changes.
 	/// \param status Value of recording status. For more details, see \link RecordingStatus \endlink enum.
@@ -101,14 +90,29 @@ public:
 	/// \param status Value of request local recording privilege status. For more details, see \link RequestLocalRecordingStatus \endlink enum.
 	virtual void onLocalRecordingPrivilegeRequestStatus(RequestLocalRecordingStatus status) = 0;
 
+	
+	/// \brief Callback event when a user requests local recording privilege.
+	/// \param handler A pointer to the IRequestLocalRecordingPrivilegeHandler. For more details, see \link IRequestLocalRecordingPrivilegeHandler \endlink.
+	virtual void onLocalRecordingPrivilegeRequested(IRequestLocalRecordingPrivilegeHandler* handler) = 0;
+	
+#if defined(WIN32)
+	/// \brief Callback event of ending the conversion to MP4 format.
+	/// \param bsuccess TRUE indicates to convert successfully. FALSE not.
+	/// \param iResult This value is used to save the error code only when the convert fails.
+	/// \param szPath If the conversion is successful, this value is used to save the path of the recording file. 
+	/// \remarks In order to trigger this callback correctly, you need call IMeetingConfiguration.EnableLocalRecordingConvertProgressBarDialog(false) before you start a meeting.
+	virtual void onRecording2MP4Done(bool bsuccess, int iResult, const zchar_t* szPath) = 0;
+
+	/// \brief Callback event of the process of the conversion to MP4 format.
+	/// \param iPercentage Percentage of conversion process. Range from ZERO(0) to ONE HUNDREAD(100).
+	/// \remarks In order to trigger this callback correctly, you need call IMeetingConfiguration.EnableLocalRecordingConvertProgressBarDialog(false) before you start a meeting.
+	virtual void onRecording2MP4Processing(int iPercentage) = 0;
+
 	/// \brief Callback event that the local recording source changes in the custom user interface mode.
 	/// \param layout_helper An object pointer to ICustomizedLocalRecordingLayoutHelper. For more details, see \link ICustomizedLocalRecordingLayoutHelper \endlink.
 	///The layout_helper won't be released till the call ends. The user needs to complete the related layout before the call ends. 
 	virtual void onCustomizedLocalRecordingSourceNotification(ICustomizedLocalRecordingLayoutHelper* layout_helper) = 0;
-
-	/// \brief Callback event when a user requests local recording privilege.
-	/// \param handler A pointer to the IRequestLocalRecordingPrivilegeHandler. For more details, see \link IRequestLocalRecordingPrivilegeHandler \endlink.
-	virtual void onLocalRecordingPrivilegeRequested(IRequestLocalRecordingPrivilegeHandler* handler) = 0;
+#endif
 };
 
 /// \brief Meeting recording controller interface.
@@ -184,13 +188,13 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError DisAllowLocalRecording(unsigned int userid) = 0;
-
+#if defined(WIN32)
 	/// \brief Send a request to enable the SDK to call IMeetingRecordingCtrlEvent::onCustomizedLocalRecordingSourceNotification().
 	/// \return If the function succeeds, the return value is SDKErr_Success, and you will receive the onCustomizedLocalRecordingSourcenNotification callback event.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid only for custom style user interface mode only when recording.
 	virtual SDKError RequestCustomizedLocalRecordingSource() = 0;
-
+#endif
 	/// \brief Pause recording.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
@@ -210,6 +214,12 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError ResumeCloudRecording() = 0;
+
+
+	/// \brief Determine if the specified user is enabled to start raw recording.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError CanStartRawRecording() = 0;
 
 	/// \brief Start rawdata recording.
 	/// \return If the function succeeds, the return value is SDKErr_Success.

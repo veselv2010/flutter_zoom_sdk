@@ -38,7 +38,7 @@ class ILiveTranscriptionLanguage
 {
 public:
 	virtual int GetLTTLanguageID() = 0;
-	virtual const wchar_t* GetLTTLanguageName() = 0;
+	virtual const zchar_t* GetLTTLanguageName() = 0;
 	virtual ~ILiveTranscriptionLanguage() {};
 };
 
@@ -50,7 +50,7 @@ public:
 	/// \brief Get the message ID of the current message.
 	/// \return If the function succeeds, the return value is the message ID of the current message.
 	///Otherwise it fails, and the return value is the string of length zero(0)
-	virtual const wchar_t* GetMessageID() = 0;
+	virtual const zchar_t* GetMessageID() = 0;
 
 	/// \brief Get the speaker's ID.
 	/// \return The user object's speaker ID.
@@ -58,11 +58,11 @@ public:
 
 	/// \brief Get the speaker's name.
 	/// \return The user object's speaker name.
-	virtual const wchar_t* GetSpeakerName() = 0;
+	virtual const zchar_t* GetSpeakerName() = 0;
 
 	/// \brief Get the content of the current message.
 	/// \return The current message's content.
-	virtual const wchar_t* GetMessageContent() = 0;
+	virtual const zchar_t* GetMessageContent() = 0;
 
 	/// \brief Get the timestamp of the current message.
 	/// \return The current message's timestamp.
@@ -91,7 +91,7 @@ public:
 	/// \param ccMsg: an object pointer to the closed caption message content. 
 	/// \param sender_id: the sender id of a closed caption message. 
 	/// \param time: the time when a caption message was sent.
-	virtual void onClosedCaptionMsgReceived(const wchar_t* ccMsg, unsigned int sender_id, time_t time) = 0;
+	virtual void onClosedCaptionMsgReceived(const zchar_t* ccMsg, unsigned int sender_id, time_t time) = 0;
 
 	/// \brief live transcription status changed callback.
 	/// \param status: the live transcription status. For more details, see \link SDKLiveTranscriptionStatus \endlink.
@@ -102,7 +102,7 @@ public:
 	/// \param ltSpearkId: the speaker id of the live transcription message. 
 	/// \param type: the live transcription operation type. For more details, see \link SDKLiveTranscriptionOperationType \endlink.
 	/// \deprecated This interface will be marked as deprecated, then it will be instead by onLiveTranscriptionMsgInfoReceived, please stop using it.
-	virtual void onLiveTranscriptionMsgReceived(const wchar_t* ltMsg, unsigned int speaker_id, SDKLiveTranscriptionOperationType type) = 0;
+	virtual void onLiveTranscriptionMsgReceived(const zchar_t* ltMsg, unsigned int speaker_id, SDKLiveTranscriptionOperationType type) = 0;
 
 	/// \brief original language message received callback.
 	/// \param messageInfo The spoken language message, see \link ILiveTranscriptionMessageInfo \endlink.
@@ -155,7 +155,7 @@ public:
 	virtual bool CanSendClosedCaption() = 0;
 
 	/// Send the CC message.
-	virtual SDKError SendClosedCaption(const wchar_t* ccMsg) = 0;
+	virtual SDKError SendClosedCaption(const zchar_t* ccMsg) = 0;
 
 	/// Determine if it is enabled to save CC.
 	virtual bool IsSaveCCEnabled() = 0;
@@ -164,10 +164,10 @@ public:
 	virtual SDKError SaveCCHistory() = 0;
 
 	/// Get the path of saving CC.
-	virtual const wchar_t* GetClosedCaptionHistorySavedPath() = 0;
+	virtual const zchar_t* GetClosedCaptionHistorySavedPath() = 0;
 
 	/// Get the CC URL used by the third party service.
-	virtual const wchar_t* GetClosedCaptionUrlFor3rdParty() = 0;
+	virtual const zchar_t* GetClosedCaptionUrlFor3rdParty() = 0;
 
 	/// brief Enable or disable manual captions for the meeting.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -205,10 +205,10 @@ public:
 	virtual bool IsReceiveSpokenLanguageContentEnabled() = 0;
 
 	/// Get the CC legal notices prompt.
-	virtual const wchar_t* getLiveTranscriptLegalNoticesPrompt() = 0;
+	virtual const zchar_t* getLiveTranscriptLegalNoticesPrompt() = 0;
 
 	/// Get the CC legal notices explained.
-	virtual const wchar_t* getLiveTranscriptLegalNoticesExplained() = 0;
+	virtual const zchar_t* getLiveTranscriptLegalNoticesExplained() = 0;
 
 	/// brief Determine whether the live transcription feature is enabled.
 	virtual bool IsLiveTranscriptionFeatureEnabled() = 0;

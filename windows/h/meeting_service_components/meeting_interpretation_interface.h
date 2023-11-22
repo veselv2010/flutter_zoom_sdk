@@ -15,8 +15,8 @@ class IInterpretationLanguage
 public:
 	virtual ~IInterpretationLanguage() {}
 	virtual int GetLanguageID() = 0;
-	virtual const wchar_t* GetLanguageAbbreviations() = 0;
-	virtual const wchar_t* GetLanguageName() = 0;
+	virtual const zchar_t* GetLanguageAbbreviations() = 0;
+	virtual const zchar_t* GetLanguageName() = 0;
 };
 
 /// \brief interpreter interface.
