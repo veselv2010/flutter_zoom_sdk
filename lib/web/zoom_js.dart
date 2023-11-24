@@ -89,6 +89,11 @@ class LeaveParams {
 class MuteParams {
   external factory MuteParams({userId, mute});
 }
+@JS()
+@anonymous
+class UserParams {
+  external factory UserParams({success});
+}
 
 /// Basic Zoom SDK Web Functions helper
 @JS()
@@ -104,6 +109,8 @@ class ZoomMtg {
 
   @JS('getAttendeeslist')
   external static dynamic getAttendeeslist();
+
+  external static dynamic getCurrentUser(UserParams params);
 
   external static void showJoinAudioFunction(ShowJoinAudioParams params);
   external static void leaveMeeting(LeaveParams params);

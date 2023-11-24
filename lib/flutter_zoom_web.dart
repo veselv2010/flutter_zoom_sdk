@@ -82,8 +82,43 @@ class ZoomViewWeb extends ZoomPlatform {
     return null;
   }
 
+  Future<bool> _connectAudio() async {
+    final button = _getJoinButton();
+
+    if (button != null) {
+      final res =
+          await Future.delayed(const Duration(seconds: 1), _joinAudioAuto);
+
+      await Future.delayed(const Duration(seconds: 1), _clickOnAudioButton);
+
+      return res;
+    } else {
+      await Future.delayed(const Duration(seconds: 1), _openJoinAudio);
+
+      return Future.delayed(const Duration(seconds: 1), _joinAudioAuto);
+    }
+  }
+
+  Future<void> _openJoinAudio() async {
+    final button = _getAudioButton();
+    final joinDialog = document.getElementsByClassName("join-dialog");
+
+    if (button != null && joinDialog.isEmpty) {
+      button.click();
+    }
+  }
+
   ButtonElement? _getJoinButton() {
     final btn = document.getElementsByClassName('join-audio-by-voip__join-btn');
+    if (btn.isNotEmpty) {
+      return btn[0] as ButtonElement;
+    }
+
+    return null;
+  }
+
+  ButtonElement? _getAudioButton() {
+    final btn = document.getElementsByClassName('join-audio-container__btn');
     if (btn.isNotEmpty) {
       return btn[0] as ButtonElement;
     }
@@ -101,6 +136,14 @@ class ZoomViewWeb extends ZoomPlatform {
     }
 
     return false;
+  }
+
+  void _clickOnAudioButton() {
+    final button = _getAudioButton();
+
+    if (button != null) {
+      button.click();
+    }
   }
 
   /// Start Meeting Function for Zoom Web
@@ -134,13 +177,38 @@ class ZoomViewWeb extends ZoomPlatform {
         signature: options.signature!,
         sdkKey: options.sdkKey!,
         passWord: options.meetingPassword,
-        success: allowInterop((var res) {
+        success: allowInterop((var res) async {
           if (autoAudioJoin) {
-            int counter = 0;
-            Future.doWhile(() async {
-              await Future.delayed(const Duration(seconds: 1), _joinAudioAuto);
-              counter++;
-              return counter < 15;
+            bool continueLoop = true;
+
+            await Future.doWhile(() async {
+              await _connectAudio();
+              await Future.delayed(const Duration(seconds: 1));
+              ZoomMtg.getCurrentUser(
+                UserParams(
+                  success: allowInterop((var res) {
+                    final isCurUserMuted = res.result.currentUser.muted;
+                    final curUserAudio = res.result.currentUser.audio;
+
+                    if (isCurUserMuted == true) {
+                      _clickOnAudioButton();
+                    }
+
+                    if (curUserAudio != null && curUserAudio != '') {
+                      continueLoop = false;
+                    }
+                  }),
+                ),
+              );
+
+              // int counter = 0;
+              // Future.doWhile(() async {
+              //   await Future.delayed(const Duration(seconds: 1), _joinAudioAuto);
+              //   counter++;
+              //   return counter < 15;
+              // });
+
+              return continueLoop;
             });
           }
           return;
