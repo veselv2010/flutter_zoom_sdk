@@ -26,7 +26,6 @@ class InitParams {
       isSupportPolling,
       isSupportBreakout,
       screenShare,
-      rwcBackup,
       videoDrag,
       sharingMode,
       videoHeader,

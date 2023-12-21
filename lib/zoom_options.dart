@@ -23,7 +23,6 @@ class ZoomOptions {
   final bool? isSupportPolling; //--for web
   final bool? isSupportBreakout; //--for web
   final bool? screenShare; //--for web
-  final String? rwcBackup; //--for web
   final bool? videoDrag; //--for web
   final String? sharingMode; //--for web
   final bool? videoHeader; //--for web
@@ -60,7 +59,6 @@ class ZoomOptions {
     this.isSupportPolling = true,
     this.isSupportBreakout = true,
     this.screenShare = true,
-    this.rwcBackup = '',
     this.videoDrag = true,
     this.sharingMode = 'both',
     this.videoHeader = true,
