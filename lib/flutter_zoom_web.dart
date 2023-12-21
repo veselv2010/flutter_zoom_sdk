@@ -33,7 +33,6 @@ class ZoomViewWeb extends ZoomPlatform {
 
     ZoomMtg.preLoadWasm();
     ZoomMtg.prepareWebSDK();
-    ZoomMtg.i18n.load(options.language);
     ZoomMtg.init(InitParams(
         debug: options.debug ?? kDebugMode,
         helper: options.helper,
@@ -86,11 +85,18 @@ class ZoomViewWeb extends ZoomPlatform {
   Future<bool> _connectAudio() async {
     final button = _getJoinButton();
 
-    if (button == null) {
-      await Future.delayed(const Duration(seconds: 1), _openJoinAudio);
-    }
+    if (button != null) {
+      final res =
+          await Future.delayed(const Duration(seconds: 1), _joinAudioAuto);
 
-    return Future.delayed(const Duration(seconds: 1), _joinAudioAuto);
+      await Future.delayed(const Duration(seconds: 1), _clickOnAudioButton);
+
+      return res;
+    } else {
+      await Future.delayed(const Duration(seconds: 1), _openJoinAudio);
+
+      return Future.delayed(const Duration(seconds: 1), _joinAudioAuto);
+    }
   }
 
   Future<void> _openJoinAudio() async {
