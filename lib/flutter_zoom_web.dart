@@ -51,7 +51,6 @@ class ZoomViewWeb extends ZoomPlatform {
         isSupportPolling: options.isSupportPolling,
         isSupportBreakout: options.isSupportBreakout,
         screenShare: options.screenShare,
-        rwcBackup: options.rwcBackup,
         videoDrag: options.videoDrag,
         sharingMode: options.sharingMode,
         videoHeader: options.videoHeader,
@@ -171,7 +170,7 @@ class ZoomViewWeb extends ZoomPlatform {
         signature: options.signature!,
         sdkKey: options.sdkKey!,
         passWord: options.meetingPassword,
-        success: allowInterop((var res) async {
+        success: allowInterop(() async {
           if (autoAudioJoin) {
             bool continueLoop = true;
 
