@@ -98,7 +98,7 @@ class UserParams {
 @JS()
 class ZoomMtg {
   external static void setZoomJSLib(String path, String dir);
-  external static final i18n;
+  external static ZoomMtgLang i18n;
   external static void preLoadWasm();
   external static void prepareWebSDK();
   external static void prepareJssdk();
@@ -117,4 +117,10 @@ class ZoomMtg {
   external static dynamic checkFeatureRequirements();
   external static void inMeetingServiceListener(
       String event, Function(MeetingStatus?) callback);
+}
+
+@JS()
+class ZoomMtgLang {
+  external String getCurrentLang();
+  external dynamic load(String lang);
 }
