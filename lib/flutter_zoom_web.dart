@@ -33,7 +33,10 @@ class ZoomViewWeb extends ZoomPlatform {
 
     ZoomMtg.preLoadWasm();
     ZoomMtg.prepareWebSDK();
-    ZoomMtg.i18n.load(options.language);
+
+    ZoomMtg.i18n.load(options.language ?? 'en-US');
+    debugPrint('Current language of Zoom - ${ZoomMtg.i18n.getCurrentLang()}');
+
     ZoomMtg.init(InitParams(
         debug: options.debug ?? kDebugMode,
         helper: options.helper,
