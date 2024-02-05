@@ -91,7 +91,26 @@ class MuteParams {
 @JS()
 @anonymous
 class UserParams {
-  external factory UserParams({success});
+  external factory UserParams({Function(UserSuccessParams res) success, error});
+}
+
+@JS()
+@anonymous
+class UserSuccessParams {
+  external UserSuccessResultParams result;
+}
+
+@JS()
+@anonymous
+class UserSuccessResultParams {
+  external CurrentUserParams currentUser;
+}
+
+@JS()
+@anonymous
+class CurrentUserParams {
+  external bool? muted;
+  external String? audio;
 }
 
 /// Basic Zoom SDK Web Functions helper
