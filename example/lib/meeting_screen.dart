@@ -18,8 +18,8 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   late final ZoomPlatform zoom;
   late Timer timer;
 
-  static const String sdkKey = 'YsfM9h1qciOPpigVHeG5eiFn3bHJmsYxMn7G';
-  static const String sdkSecret = 'XHNfOZmKo14TAtPiajtu26zjiYBJGIMXph0c';
+  static const String sdkKey = '';
+  static const String sdkSecret = '';
 
   @override
   void initState() {
@@ -197,7 +197,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       final signature = zoom.generateSignature(
         sdkKey,
         sdkSecret,
-        '5571753000',
+        '',
         0,
       );
 
@@ -233,10 +233,10 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         sdkKey: sdkKey,
 
         /// pass meeting id for join meeting only
-        meetingId: '5571753000',
+        meetingId: '',
 
         /// pass meeting id for join meeting only
-        meetingPassword: 'ELr7gV',
+        meetingPassword: '',
         disableTitlebar: 'false',
         viewOptions: 'true',
         signature: signature,
