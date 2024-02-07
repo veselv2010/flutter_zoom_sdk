@@ -197,7 +197,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       final signature = zoom.generateSignature(
         sdkKey,
         sdkSecret,
-        '',
+        meetingIdController.text,
         0,
       );
 
@@ -233,10 +233,10 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         sdkKey: sdkKey,
 
         /// pass meeting id for join meeting only
-        meetingId: '',
+        meetingId: meetingIdController.text,
 
         /// pass meeting id for join meeting only
-        meetingPassword: '',
+        meetingPassword: meetingPasswordController.text,
         disableTitlebar: 'false',
         viewOptions: 'true',
         signature: signature,
