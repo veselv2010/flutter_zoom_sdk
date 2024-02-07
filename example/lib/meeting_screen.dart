@@ -203,10 +203,27 @@ class _MeetingWidgetState extends State<MeetingWidget> {
 
       final zoomOptions = ZoomOptions(
         domain: 'zoom.us',
-        appKey: sdkKey, //API KEY FROM ZOOM
-        appSecret: sdkSecret, //API SECRET FROM ZOOM
+        appKey: sdkKey,
+        //API KEY FROM ZOOM
+        appSecret: sdkSecret,
+        //API SECRET FROM ZOOM
         disablePreview: true,
         jwtToken: signature,
+        showMeetingHeader: false,
+        disableJoinAudio: false,
+        disableVOIP: false,
+        disableInvite: true,
+        screenShare: false,
+        disableCallOut: false,
+        disableRecord: false,
+        disableReport: true,
+        isSupportAV: true,
+        isSupportChat: true,
+        isSupportQA: true,
+        isSupportCC: true,
+        isSupportPolling: true,
+        meetingInfo: [],
+        isLockBottom: false,
       );
       final meetingOptions = ZoomMeetingOptions(
         userId: 'userId',
@@ -218,18 +235,18 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         /// pass meeting id for join meeting only
         meetingId: meetingIdController.text,
 
-        /// pass meeting password for join meeting only
+        /// pass meeting id for join meeting only
         meetingPassword: meetingPasswordController.text,
+        disableTitlebar: 'false',
+        viewOptions: 'true',
+        signature: signature,
         disableDialIn: 'true',
         disableDrive: 'true',
         disableInvite: 'true',
         disableShare: 'true',
-        disableTitlebar: 'false',
-        viewOptions: 'true',
         noAudio: 'false',
         noVideo: 'false',
-        noDisconnectAudio: 'false',
-        signature: signature,
+        noDisconnectAudio: 'true',
       );
 
       if (!kIsWeb) {
@@ -325,8 +342,10 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       appSecret: sdkSecret, //API SECRET FROM ZOOM -- SDK SECRET
     );
     var meetingOptions = ZoomMeetingOptions(
-        userId: 'user@gmail.com', //pass host email for zoom
-        userPassword: 'userPsw', //pass host password for zoom
+        userId: 'user@gmail.com',
+        //pass host email for zoom
+        userPassword: 'userPsw',
+        //pass host password for zoom
         disableDialIn: 'false',
         disableDrive: 'false',
         disableInvite: 'false',
@@ -418,8 +437,10 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       appSecret: sdkSecret, //API SECRET FROM ZOOM -- SDK SECRET
     );
     var meetingOptions = ZoomMeetingOptions(
-        userId: 'user@gmail.com', //pass host email for zoom
-        userPassword: 'userPsw', //pass host password for zoom
+        userId: 'user@gmail.com',
+        //pass host email for zoom
+        userPassword: 'userPsw',
+        //pass host password for zoom
         meetingId: meetingIdController.text,
         disableDialIn: 'false',
         disableDrive: 'false',
