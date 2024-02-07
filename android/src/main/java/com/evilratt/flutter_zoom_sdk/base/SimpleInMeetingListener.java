@@ -13,6 +13,7 @@ import us.zoom.sdk.InMeetingServiceListener;
 //import us.zoom.sdk.LocalRecordingRequestPrivilegeStatus;
 import us.zoom.sdk.VideoQuality;
 import us.zoom.sdk.LocalRecordingRequestPrivilegeStatus;
+import us.zoom.sdk.MobileRTCFocusModeShareType;
 
 public class SimpleInMeetingListener implements InMeetingServiceListener {
 
@@ -315,6 +316,31 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onParticipantProfilePictureStatusChange(boolean hidden) {
+
+    }
+
+    @Override
+    public void onCloudRecordingStorageFull(long gracePeriodDate) {
+
+    }
+
+    @Override
+    public void onUVCCameraStatusChange(java.lang.String cameraId, InMeetingServiceListener.UVCCameraStatus status) {
+
+    }
+
+    @Override
+    public void onFocusModeStateChanged(boolean on) {
+
+    }
+
+    @Override
+    public void onFocusModeShareTypeChanged(MobileRTCFocusModeShareType shareType) {
+
+    }
+
+    @Override
+    public void onVideoAlphaChannelStatusChanged(boolean isAlphaModeOn) {
 
     }
 }

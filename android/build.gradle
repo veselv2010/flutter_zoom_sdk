@@ -82,9 +82,12 @@ android {
         implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
         implementation "org.greenrobot:eventbus:3.1.1"
         implementation "com.davemorrissey.labs:subsampling-scale-image-view:3.10.0"
+        implementation "androidx.core:core-splashscreen:1.0.1"
+        implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+        implementation "androidx.databinding:viewbinding:7.1.2"
         implementation "androidx.webkit:webkit:1.6.0"
 
-        implementation "online.studyrooms:commonlib:1.0.0"
+        /// implementation "online.studyrooms:commonlib:1.0.0"
         implementation "online.studyrooms:mobilertc:1.0.0"
 //    implementation project(':commonlib')
 //    implementation project(':mobilertc')
@@ -94,6 +97,6 @@ android {
 }
 
 task deployAllToMavenLocal {
-    dependsOn('commonlib:publishToMavenLocal')
+    /// dependsOn('commonlib:publishToMavenLocal')
     dependsOn('mobilertc:publishToMavenLocal')
 }

@@ -10,10 +10,44 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.evilratt.flutter_zoom_sdk.base.SimpleInMeetingBOControllerListener;
+
+import us.zoom.sdk.BOStatus;
 import us.zoom.sdk.NewMeetingActivity;
+import us.zoom.sdk.ReturnToMainSessionHandler;
 import us.zoom.sdk.ZoomSDK;
 
 public class MyMeetingActivity extends NewMeetingActivity {
+    SimpleInMeetingBOControllerListener mBOControllerListener = new SimpleInMeetingBOControllerListener() {
+        @Override
+        public void onBOStatusChanged(BOStatus boStatus) {
+            showMeetingActivity();
+
+            super.onBOStatusChanged(boStatus);
+        }
+
+        @Override
+        public void onHostInviteReturnToMainSession(String name, ReturnToMainSessionHandler handler) {
+            handler.returnToMainSession();
+
+            super.onHostInviteReturnToMainSession(name, handler);
+        }
+    };
+
+    BroadcastReceiver myBroadcast = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String extra = intent.getStringExtra("broadcast");
+
+            if (extra != null) {
+                if (extra.equalsIgnoreCase("finishMyMeetingActivity")) {
+                    finish();
+                }
+            }
+        }
+    };
+
+
     @Override
     protected int getLayout() {
         return R.layout.my_meeting_layout;
@@ -29,19 +63,6 @@ public class MyMeetingActivity extends NewMeetingActivity {
         return false;
     }
 
-    BroadcastReceiver myBroadcast = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String extra = intent.getStringExtra("broadcast");
-
-            if (extra != null) {
-                if (extra.equalsIgnoreCase("finishMyMeetingActivity")) {
-                    finish();
-                }
-            }
-        }
-    };
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -53,7 +74,9 @@ public class MyMeetingActivity extends NewMeetingActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!ZoomSDK.getInstance().isInitialized()) {
+        ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+        if (!zoomSDK.isInitialized()) {
             finish();
             return;
         }
@@ -98,5 +121,17 @@ public class MyMeetingActivity extends NewMeetingActivity {
         super.onDestroy();
 
         unregisterReceiver(myBroadcast);
+    }
+
+    public void showMeetingActivity() {
+        Intent myIntent = getIntent();
+
+        this.startActivity(myIntent);
+
+        ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+        if (zoomSDK.isInitialized()) {
+            zoomSDK.getZoomUIService().hideMiniMeetingWindow();
+        }
     }
 }
