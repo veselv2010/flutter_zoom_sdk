@@ -123,6 +123,10 @@ public:
 	/// \param userId The user ID whose video quality changes
 	/// \param quality New video quality. For more details, see \link VideoConnectionQuality \endlink enum.
 	virtual void onUserVideoQualityChanged(VideoConnectionQuality quality, unsigned int userid) = 0;
+
+	/// \brief Callback event of video alpha channel mode changes.
+	/// \param isAlphaModeOn true means it's in alpha channel mode. Otherwise, it's not.
+	virtual void onVideoAlphaChannelStatusChanged(bool isAlphaModeOn) = 0;
 };
 
 enum PinResult
@@ -363,6 +367,20 @@ public:
 	/// \return TRUE indicates the meeting is showing the avatar.
 	virtual bool IsShowAvatar() = 0;
 #endif
+
+	/// \brief Determine if alpha channel mode can be enabled. 
+	/// \return true means it can be enabled. Otherwise false.
+	virtual bool CanEnableAlphaChannelMode() = 0;
+
+	/// \brief Enable or disable video alpha channel mode.
+	/// \param enable True indicates to enable alpha channel mode. Otherwise, disable it.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableAlphaChannelMode(bool enable) = 0;
+
+	/// \brief Determine if alpha channel mode is enabled.
+	/// \return True indicates alpha channel mode is enabled. Otherwise false.
+	virtual bool IsAlphaChannelModeEnabled() = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

@@ -212,6 +212,14 @@ public:
 
 	/// \brief Callback event of refreshing q&a data.
 	virtual void OnRefreshQAData() = 0;
+
+	/// \brief Callback event of meeting QA feature status changes
+	/// \param bEnabled True means meeting QA feature is on, otherwise not.
+	virtual void onMeetingQAStatusChanged(bool bEnabled) = 0;
+
+	/// \brief Notify host/cohost has changed the status of ask question.
+	/// \param bEnabled Can ask question or not.
+	virtual void onAllowAskQuestionStatus(bool bEnabled) = 0;
 };
 
 /// \brief Meeting q&a controller interface class.
@@ -404,6 +412,26 @@ public:
 
 	/// Get the QA legal notices explained.
 	virtual const zchar_t* getQALegalNoticesExplained() = 0;
+
+	/// \brief Set to enable/disable meeting QA.
+	/// \param bEnable True means enabled, false means disabled.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableMeetingQAFeature(bool bEnable) = 0;
+
+	/// \brief Determine if meeting QA is enabled in current meeting.
+	/// \return True means enabled, otherwise not.
+	virtual bool IsMeetingQAFeatureOn() = 0;
+
+	/// \brief Set attendee can ask question.
+	/// \param bEnable True means attendee can ask question, otherwise not.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableAskQuestion(bool bEnable) = 0;
+
+	/// \brief Determine if the ask question is allowed by the host/co-host.
+	/// \return True means can ask question, otherwise not.
+	virtual bool IsAskQuestionEnabled() = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE

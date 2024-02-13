@@ -17,9 +17,10 @@ enum RecordingStatus
 {
 	Recording_Start,///Start recording on local computer or on cloud.
 	Recording_Stop,///Stop recording on local computer or on cloud.
-	Recording_DiskFull,///There is no space to store for both local and cloud recording.
+	Recording_DiskFull,///There is no more space to store both local and cloud recording.
 	Recording_Pause,///Pause recording on local or on cloud.
 	Recording_Connecting,///Connecting, only for cloud recording.
+	Recording_Fail,///Saving the recording failed.
 };
 
 /*! \enum RequestLocalRecordingStatus
@@ -113,6 +114,10 @@ public:
 	///The layout_helper won't be released till the call ends. The user needs to complete the related layout before the call ends. 
 	virtual void onCustomizedLocalRecordingSourceNotification(ICustomizedLocalRecordingLayoutHelper* layout_helper) = 0;
 #endif
+	
+	 /// \brief Callback event that the cloud recording storage is full.
+	 /// \param gracePeriodDate a point in time, in milliseconds, in UTC. You can use the cloud recording storage until the gracePeriodDate.
+	virtual void onCloudRecordingStorageFull(time_t gracePeriodDate) = 0;
 };
 
 /// \brief Meeting recording controller interface.

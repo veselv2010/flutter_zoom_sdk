@@ -77,6 +77,7 @@ enum SDKError
 	SDKERR_NOT_IN_MEETING,
 	SDKERR_NOT_JOIN_AUDIO,
 	SDKERR_HARDWARE_DONT_SUPPORT, ///<The current device doesn't support the feature.
+	SDKERR_DOMAIN_DONT_SUPPORT,
 };
 
 /*! \enum SDK_LANGUAGE_ID

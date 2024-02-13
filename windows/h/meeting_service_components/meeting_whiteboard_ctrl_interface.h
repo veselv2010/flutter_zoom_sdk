@@ -78,10 +78,42 @@ public:
 	virtual bool IsSupportWhiteBoard() = 0;
 
 	/// \brief Show the dashboard web view window.
+	/// \param x: The horizontal coordinate value. 
+	/// \param y: The vertical coordinate value. 
+	/// \remarks If x == -1 and y = -1, the window position will be in the center of the screen where the owner window is located.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid only for custom user interface mode.
-	virtual SDKError ShowDashboardView() = 0;
+	virtual SDKError ShowDashboardView(int x = -1, int y = -1) = 0;
+
+	/// \brief Set the dashboard web view window size.
+	/// \param height Specify the height of the window. 
+	/// \param width Specify the width of the window. 
+	/// \remarks If height == -1 and width == -1, the window size will be default.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid only for custom user interface mode.
+	virtual SDKError SetDashboardViewSize(int width = -1, int  height = -1) = 0;
+
+	/// \brief Set the whiteboard web view window position.
+	/// \param x: The horizontal coordinate value. 
+	/// \param y: The vertical coordinate value.
+	/// \remarks If x == -1 and y = -1, the window position will be in the center of the screen where the owner window is located.
+	/// \remarks If you don't call this function, the window position will be in the center of the screen where the owner window is located.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid only for custom user interface mode.
+	virtual SDKError SetWhiteboardViewPos(int x = -1, int y = -1) = 0;
+
+	/// \brief Set the whiteboard web view window size.
+	/// \param height Specify the height of the window. 
+	/// \param width Specify the width of the window. 
+	/// \remarks If height == -1 and width == -1, the window size will be default.
+	/// \remarks If you don't call this function, the window size will be default.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid only for custom user interface mode.
+	virtual SDKError SetWhiteboardViewSize(int width = -1, int height = -1) = 0;
 
 	/// \brief Set the option for who can share a whiteboard.
 	/// \param [in] option New setting for who can share a whiteboard, see \link SDKWhiteboardShareOption \endlink enum.

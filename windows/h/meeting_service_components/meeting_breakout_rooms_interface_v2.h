@@ -109,6 +109,7 @@ enum PreAssignBODataStatus
 	PreAssignBODataStatus_download_fail      ///<download fail
 };
 
+struct BOOption;
 class IBOCreatorEvent 
 {
 public:
@@ -121,6 +122,9 @@ public:
 	/// \brief When the pre-assigned data download status changes, you will receive the event.
 	/// \param status, download status, for more details, see \link PreAssignBODataStatus \endlink.
 	virtual void OnWebPreAssignBODataDownloadStatusChanged(PreAssignBODataStatus status) = 0;
+
+	/// \brief You will receive the event when the option changes
+	virtual void OnBOOptionChanged(const BOOption& newOption) = 0;
 };
 
 /// \brief enum for BO stop countdown
@@ -633,6 +637,10 @@ public:
 	/// \brief Query if the host is broadcasting voice to BO.
 	/// \return true means that the host is broadcasting, otherwise it's not broadcasting.
 	virtual bool IsBroadcastingVoiceToBO() = 0;
+
+	/// \brief Get the name of the BO you are going to.
+	///        When you enter a BO or are switched to another BO by the host, maybe you need the BO name to display on transfer UI.
+	virtual const zchar_t* GetJoiningBOName() = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE
