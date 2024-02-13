@@ -38,6 +38,17 @@ typedef struct tagWebinarAttendeeStatus
 	}
 }WebinarAttendeeStatus;
 
+/*! \enum FocusModeShareType
+	\brief Type of focus mode.
+	Here are more detailed structural descriptions.
+*/
+enum FocusModeShareType
+{
+	FocusModeShareType_None,
+	FocusModeShareType_HostOnly,
+	FocusModeShareType_AllParticipants,
+};
+
 /// \brief User information interface.
 ///
 class IUserInfo
@@ -240,6 +251,14 @@ public:
 	/// \brief Callback event that participant profile status change.
 	/// \param bHide true means hide participant profile picture, false means show participant profile picture. 
 	virtual void onParticipantProfilePictureStatusChange(bool bHidden) = 0;
+
+	/// \brief Callback event that focus mode changed by host or co-host.
+	/// \param bEnabled True means the focus mode change to on. Otherwise off.
+	virtual void onFocusModeStateChanged(bool bEnabled) = 0;
+
+	/// \brief Callback event that that focus mode share type changed by host or co-host.
+	/// \param type Share type change.
+	virtual void onFocusModeShareTypeChanged(FocusModeShareType type) = 0;
 };
 
 /// \brief Meeting waiting room controller interface
@@ -433,6 +452,30 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError HideParticipantProfilePictures(bool bHide) = 0;
+
+	/// \brief Determine if the focus mode enabled or not by web portal.
+	/// \return True means focus mode enabled. Otherwise not.
+	virtual bool IsFocusModeEnabled() = 0;
+
+	/// \brief Determine if the focus mode on or off.
+	/// \return True means focus mode on. Otherwise off.
+	virtual bool IsFocusModeOn() = 0;
+
+	/// \brief Turn focus mode on or off. Focus mode on means Participants will only be able to see hosts' videos and shared content, and videos of spotlighted participants.
+	/// \param turnOn True means to turen on, false means to turn off.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError TurnFocusModeOn(bool turnOn) = 0;
+
+	/// \brief Get focus mode share type indicating who can see the shared content which is controlled by host or co-host.
+	/// \return The current focus mode share type.
+	virtual FocusModeShareType GetFocusModeShareType() = 0;
+
+	/// \brief Set the focus mode type indicating who can see the shared content which is controlled by host or co-host.
+	/// \param shareType The type of focus mode share type.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetFocusModeShareType(FocusModeShareType shareType) = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

@@ -73,6 +73,8 @@ enum MeetingFailCode
 	CONF_FAIL_REMOVED_BY_HOST = 61, ///<Removed by the host. 
 	MEETING_FAIL_HOST_DISALLOW_OUTSIDE_USER_JOIN = 62,   ///<Forbidden to join meeting
 	MEETING_FAIL_UNABLE_TO_JOIN_EXTERNAL_MEETING = 63,  ///<To join a meeting hosted by an external Zoom account, your SDK app has to be published on Zoom Marketplace. You can refer to Section 6.1 of Zoom's API License Terms of Use.
+	MEETING_FAIL_BLOCKED_BY_ACCOUNT_ADMIN = 64,  ///<Join failed because this Meeting SDK key is blocked by the host's account admin.
+	MEETING_FAIL_NEED_SIGN_IN_FOR_PRIVATE_MEETING = 82,  ///<Need sign in using the same account as the meeting organizer.
 	MEETING_FAIL_APP_PRIVILEGE_TOKEN_ERROR = 500,  ///<App join token error.
 	MEETING_FAIL_JMAK_USER_EMAIL_NOT_MATCH = 1143, ///<Jmak user email not match
 	MEETING_FAIL_UNKNOWN = 0xffff,
@@ -486,6 +488,7 @@ class IMeetingSignInterpretationController;
 class IEmojiReactionController;
 class IMeetingAANController;
 class ICustomImmersiveController;
+class IMeetingPollingController;
 #endif
 class IMeetingConfiguration;
 class IMeetingBOController;
@@ -501,7 +504,8 @@ class IMeetingRawArchivingController;
 class IMeetingReminderController;
 class IMeetingWhiteboardController;
 class IMeetingSmartSummaryController;
-
+class IMeetingEncryptionController;
+class IMeetingRemoteSupportController;
 /// \brief Meeting Service Interface
 ///
 class IMeetingService
@@ -700,7 +704,22 @@ public:
 	/// \brief Get the Whiteboard controller.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingWhiteboardController. Otherwise the function returns NULL.
 	virtual IMeetingWhiteboardController* GetMeetingWhiteboardController() = 0;
+	
+	/// \brief Get the Polling controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingPollingController. Otherwise the function returns NULL.
+	virtual IMeetingPollingController* GetMeetingPollingController() = 0;
+
+	/// \brief Get the remote support controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingRemoteSupportController. Otherwise the function returns NULL.
+	virtual IMeetingRemoteSupportController* GetMeetingRemoteSupportController() = 0;
 #endif
+
+	/// \brief Get data center information
+	virtual const zchar_t* GetInMeetingDataCenterInfo() = 0;
+
+	/// \brief Get the encryption controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingEncryptionController. Otherwise returns NULL.
+	virtual IMeetingEncryptionController* GetInMeetingEncryptionController() = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

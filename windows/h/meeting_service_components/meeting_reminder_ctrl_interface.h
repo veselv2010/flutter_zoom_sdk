@@ -29,6 +29,18 @@ enum MeetingReminderType
 	TYPE_QUERY_ENABLE_REQUEST_REMINDER, ///<reminder type of query enable request.
 	TYPE_ENABLE_SMART_SUMMARY_REMINDER,///<reminder type of enable smart summary.
 	TYPE_WEBINAR_ATTENDEE_PROMOTE_REMINDER,///<reminder type of webinar promote attendee.
+	TYPE_JOIN_PRIVATE_MODE_MEETING_REMINDER,///<Reminder type of joining a meeting with private mode.
+};
+
+/*! \enum ActionType
+	\brief The type of the action which user should take.
+	Here are more detailed structural descriptions.
+*/
+enum ActionType
+{
+	ACTION_TYPE_NONE,///<Need no more action.
+	ACTION_TYPE_NEED_SIGN_IN,///<Need to sign in.
+	ACTION_TYPE_NEED_SWITCH_ACCOUNT,///<Need to switch account.
 };
 
 /// \brief the interface of reminder dialog content.
@@ -45,6 +57,8 @@ public:
 	/// \brief Determine whether block the user join or stay in the meeting
 	/// \return True indicates block the user join or stay in the meeting. Otherwise False.
 	virtual bool  IsBlocking() = 0;
+	/// \brief Get the type of the action which user should take after receiving this reminder content.
+	virtual ActionType GetActionType() = 0;
 };
 
 /// \brief the interface to handle the reminder dialog.

@@ -207,6 +207,10 @@ public:
 	/// \remarks If the function succeeds, the user will receive the IMeetingWebinarCtrlEvent::onAllowWebinarReactionStatusChanged(bool) callback event. Available only for the host.
 	virtual SDKError DisallowWebinarEmojiReaction() = 0;
 
+	/// \brief Determine if current webinar support emoji reaction.
+	/// \return True means the current webinar supports emoji reactions. Otherwise false.
+	virtual bool IsWebinarEmojiReactionSupported() = 0;
+
 	/// \brief The attendee is permitted to use the raise hand.
 	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.

@@ -198,6 +198,10 @@ public:
 	/// /// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError ExpelUser(unsigned int userid) = 0;
+
+	/// \brief Determine if the enable waiting room on entry feature is locked, see \link EnableWaitingRoomOnEntry \endlink
+	/// \return True indicates locked, otherwise not.
+	virtual bool IsWaitingRoomOnEntryLocked() = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

@@ -35,6 +35,10 @@ public:
 	/// \param status The value of remote control status. For more details, see \link RemoteControlStatus \endlink enum.
 	/// \param userId The remote control user ID. For more details, see \link RemoteControlStatus \endlink enum.
 	virtual void onRemoteControlStatus(RemoteControlStatus status, unsigned int userId) = 0;
+
+	/// \brief Callback event when the request of remote control is forbidden for guest user. 
+	/// \param userId The remote control user ID.
+	virtual void onUserRemoteControlForbidden(unsigned int userId) = 0;
 };
 
 /// \brief Meeting remote control interface.

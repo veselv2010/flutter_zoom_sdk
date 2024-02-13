@@ -340,7 +340,7 @@ public:
 	/// \return Enable or disable to start sharing.
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
 	virtual bool CanStartShare() = 0;
-	
+
 	/// \brief Determine if it is able to share desktop in the current meeting.
 	/// \return True indicates it is able to share desktop in the current meeting. False not.
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
