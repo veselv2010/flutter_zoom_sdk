@@ -20,6 +20,11 @@ class ZoomViewWeb extends ZoomPlatform {
     ZoomPlatform.instance = ZoomViewWeb();
   }
 
+  @override
+  void prepareWebZoomSDK() {
+    ZoomMtg.prepareWebSDK();
+  }
+
   /// Initialize Zoom SDK For Web
   @override
   Future<List> initZoom(ZoomOptions options) async {
@@ -32,7 +37,7 @@ class ZoomViewWeb extends ZoomPlatform {
     }
 
     ZoomMtg.preLoadWasm();
-    ZoomMtg.prepareWebSDK();
+    prepareWebZoomSDK();
 
     ZoomMtg.i18n.load(options.language ?? 'en-US');
     debugPrint('Current language of Zoom - ${ZoomMtg.i18n.getCurrentLang()}');

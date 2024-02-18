@@ -23,6 +23,11 @@ abstract class ZoomPlatform extends PlatformInterface {
     _instance = instance;
   }
 
+  /// Flutter prepare Zoom SDK function only for web
+  void prepareWebZoomSDK() {
+    throw UnimplementedError('prepareWebZoomSDK() has not been implemented.');
+  }
+
   /// Flutter Zoom SDK Initialization function
   Future<List> initZoom(ZoomOptions options) async {
     throw UnimplementedError('initZoom() has not been implemented.');
