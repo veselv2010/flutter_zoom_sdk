@@ -25,6 +25,7 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    namespace "com.evilratt.flutter_zoom_sdk_example"
     compileSdkVersion 33
 
     lintOptions {

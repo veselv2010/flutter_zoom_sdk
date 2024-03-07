@@ -2,6 +2,8 @@ group 'com.evilratt.flutter_zoom_sdk'
 version '1.0'
 
 buildscript {
+    ext.zoomSdkVersion = '5.17.6.19119'
+
     repositories {
         google()
         mavenCentral()
@@ -10,7 +12,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.2.2'
     }
 }
 
@@ -24,6 +26,7 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 33
@@ -33,7 +36,7 @@ android {
         targetSdkVersion 33
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-        consumerProguardFiles 'proguard.txt'
+        consumerProguardFiles 'proguard-rules.pro'
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -87,16 +90,56 @@ android {
         implementation "androidx.databinding:viewbinding:7.1.2"
         implementation "androidx.webkit:webkit:1.6.0"
 
-        /// implementation "online.studyrooms:commonlib:1.0.0"
-        implementation "online.studyrooms:mobilertc:1.0.0"
-//    implementation project(':commonlib')
-//    implementation project(':mobilertc')
+        implementation "us.zoom.meetingsdk:mobilertc:$zoomSdkVersion"
     }
 
     namespace 'com.evilratt.flutter_zoom_sdk'
 }
 
-task deployAllToMavenLocal {
-    /// dependsOn('commonlib:publishToMavenLocal')
-    dependsOn('mobilertc:publishToMavenLocal')
+publishing {
+    publications {
+        mobilertc(MavenPublication) {
+            groupId = 'us.zoom.meetingsdk'
+            artifactId = 'mobilertc'
+            version = zoomSdkVersion
+            artifact file("$projectDir/libs/mobilertc.aar")
+        }
+    }
+    
+    repositories {
+        mavenLocal()
+    }
 }
+
+tasks.register('downloadZoomSdk', Copy) {
+    def zipFileName = "zoom-sdk-android-${zoomSdkVersion}.zip"
+    def url = "https://zoommeetingsdk.blob.core.windows.net/android/${zipFileName}"
+
+    def libsDir = file('libs')
+    def zipFile = file("${libsDir}/${zipFileName}")
+
+    into(libsDir) {
+        include '*.aar'
+        eachFile { file -> file.delete() }
+    }
+    if (!zipFile.exists()) {
+        libsDir.mkdirs()
+
+        zipFile.withOutputStream { outputStream ->
+            new URL(url).withInputStream { inputStream ->
+                outputStream << inputStream
+            }
+        }
+    }
+
+    from(zipTree(zipFile)) {
+        include '**/*.aar'
+        eachFile { file -> file.path = file.name }
+    }
+    into libsDir
+    includeEmptyDirs false
+    duplicatesStrategy DuplicatesStrategy.INCLUDE
+}
+
+publishMobilertcPublicationToMavenLocalRepository.dependsOn(downloadZoomSdk)
+preBuild.dependsOn(publish)

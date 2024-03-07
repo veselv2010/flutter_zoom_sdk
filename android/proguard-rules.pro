@@ -1,0 +1,14 @@
+-dontwarn com.android.billingclient.**
+-dontwarn com.davemorrissey.labs.subscaleview.**
+-dontwarn com.google.android.gms.**
+-dontwarn com.google.firebase.**
+-dontwarn com.google.i18n.phonenumbers.**
+-dontwarn com.google.zxing.**
+-dontwarn com.microsoft.intune.**
+-dontwarn com.zipow.cnthirdparty.cnlogin.model.**
+-dontwarn io.reactivex.**
+-dontwarn org.greenrobot.eventbus.**
+-dontwarn us.zoom.intunelib.**
+-dontwarn us.zoom.thirdparty.login.**
+-dontwarn kotlinx.parcelize.Parcelize
+-dontwarn javax.lang.model.element.Element
