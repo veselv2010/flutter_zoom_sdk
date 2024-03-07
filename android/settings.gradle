@@ -1,2 +1,1 @@
-include ':mobilertc'
 rootProject.name = 'flutter_zoom_sdk'

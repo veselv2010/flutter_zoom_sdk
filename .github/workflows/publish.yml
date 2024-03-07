@@ -1,0 +1,19 @@
+name: Publish
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.9'
+          channel: 'stable'
+      - run: dart pub publish --dry-run --server ${{ env.PUB_FEED }}
+        env:
+          PUB_FEED: ${{secrets.PUB_FEED}}
+          PUB_FEED_ACCESS_TOKEN: ${{secrets.PUB_FEED_ACCESS_TOKEN}}

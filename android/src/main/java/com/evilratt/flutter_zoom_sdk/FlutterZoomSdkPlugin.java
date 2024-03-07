@@ -232,9 +232,6 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
         // Set custom Notification fro android
         final CustomizedNotificationData data = new CustomizedNotificationData();
         data.setContentTitleId(R.string.app_name_zoom_local);
-        data.setLargeIconId(R.drawable.zm_mm_type_emoji);
-        data.setSmallIconId(R.drawable.zm_mm_type_emoji);
-        data.setSmallIconForLorLaterId(R.drawable.zm_mm_type_emoji);
 
         ZoomSDKInitializeListener listener = new ZoomSDKInitializeListener() {
             /**
