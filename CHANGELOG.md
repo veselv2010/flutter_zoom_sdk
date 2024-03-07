@@ -1,3 +1,9 @@
+## 1.2.0+7
+
+- Update zoom android sdk to 5.17.6
+- Update zoom windows to v5.17.6
+- Update zoom web to v3.1.6
+
 ## 0.0.6
 
 - Start meeting for login user
