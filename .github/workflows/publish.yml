@@ -4,6 +4,10 @@ on:
   push:
     branches: [ "master" ]
 
+env:
+  PUB_FEED: ${{ secrets.PUB_FEED }}
+  PUB_FEED_ACCESS_TOKEN: ${{ secrets.PUB_FEED_ACCESS_TOKEN }}
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -13,7 +17,5 @@ jobs:
         with:
           flutter-version: '3.13.9'
           channel: 'stable'
-      - run: dart pub publish --dry-run --server ${{ env.PUB_FEED }}
-        env:
-          PUB_FEED: ${{secrets.PUB_FEED}}
-          PUB_FEED_ACCESS_TOKEN: ${{secrets.PUB_FEED_ACCESS_TOKEN}}
+      - run: echo $PUB_FEED_ACCESS_TOKEN | dart pub token add $PUB_FEED
+      - run: dart pub publish --force --server $PUB_FEED
