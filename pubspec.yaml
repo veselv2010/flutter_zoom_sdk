@@ -6,7 +6,7 @@ repository: https://github.com/evilrat/flutter_zoom_sdk
 issue_tracker: https://github.com/evilrat/flutter_zoom_sdk/issues
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
