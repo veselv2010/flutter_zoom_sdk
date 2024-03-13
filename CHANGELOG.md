@@ -1,3 +1,7 @@
+## 1.2.0+8
+
+- fix(ios): switch to jwt token
+
 ## 1.2.0+7
 
 - Update zoom android sdk to 5.17.6
