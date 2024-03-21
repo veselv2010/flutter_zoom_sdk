@@ -17,7 +17,7 @@ class ZoomView extends ZoomPlatform {
 
   /// The event channel used to interact with the native platform init function
   @override
-  Future<List> initZoom(ZoomOptions options) async {
+  Future<List> initZoom(ZoomOptions options, {bool alreadyInit = false}) async {
     var optionMap = <String, String?>{};
 
     if (options.appKey != null) {
