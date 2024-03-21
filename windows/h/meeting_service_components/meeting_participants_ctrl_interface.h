@@ -244,6 +244,10 @@ public:
 	/// \param status Value of request local recording privilege status. For more details, see \link LocalRecordingRequestPrivilegeStatus \endlink enum.
 	virtual void onRequestLocalRecordingPrivilegeChanged(LocalRecordingRequestPrivilegeStatus status) = 0;
 
+	/// \brief Callback event that lets participants request that the host starts cloud recording.
+	/// \param bAllow True allow. If false, disallow.
+	virtual void onAllowParticipantsRequestCloudRecording(bool bAllow) = 0;
+
 	/// \brief Callback event that the user avatar path is updated in the meeting.
 	/// \param userID Specify the user ID whose avatar updated. 
 	virtual void onInMeetingUserAvatarPathUpdated(unsigned int userID) = 0;
@@ -419,7 +423,7 @@ public:
 	virtual bool IsParticipantAllowedToChat() = 0;
 
 	/// \brief Check whether the current meeting allows participants to send local recording privilege request, it can only be used in regular meeetings(no webinar or bo).
-	/// \return If allows participants to share whiteboard, the return value is true.
+	/// \return If allows participants to send request, the return value is true.
 	virtual bool IsParticipantRequestLocalRecordingAllowed() = 0;
 
 	/// \brief Allowing the regular attendees to send local recording privilege request, it can only be used in regular meeetings(no bo).
@@ -476,6 +480,20 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SetFocusModeShareType(FocusModeShareType shareType) = 0;
+
+	/// \brief Determine if the current user can enable participant request clould recording.
+	/// \return true means the current user can enable participant request clould recording.
+	virtual bool CanEnableParticipantRequestCloudRecording() = 0;
+
+	/// \brief Check whether the current meeting allows participants to send cloud recording privilege request, This can only be used in regular meeetings and webinar(no breakout rooms).
+	/// \return If allows participants to send request, the return value is true.
+	virtual bool IsParticipantRequestCloudRecordingAllowed() = 0;
+
+	/// \brief Toggle whether attendees can requests for the host to start a cloud recording. This can only be used in regular meeetings and webinar(no breakout rooms).
+	/// \param bAllow TRUE indicates that participants are allowed to send cloud recording privilege requests. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError AllowParticipantsToRequestCloudRecording(bool bAllow) = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif
