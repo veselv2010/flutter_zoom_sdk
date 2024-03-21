@@ -78,6 +78,7 @@ enum SDKError
 	SDKERR_NOT_JOIN_AUDIO,
 	SDKERR_HARDWARE_DONT_SUPPORT, ///<The current device doesn't support the feature.
 	SDKERR_DOMAIN_DONT_SUPPORT,
+	SDKERR_MEETING_REMOTE_CONTROL_IS_OFF, ///<Remote control is disabled.
 };
 
 /*! \enum SDK_LANGUAGE_ID
@@ -102,7 +103,8 @@ enum SDK_LANGUAGE_ID
 	LANGUAGE_Polish,///<In Polish.
 	LANGUAGE_Turkish,///<In Turkish.
 	LANGUAGE_Indonesian,//<In Indonesian.
-	LANGUAGE_Dutch//<In Dutch.
+	LANGUAGE_Dutch,//<In Dutch.
+	LANGUAGE_Swedish///<In Swedish.
 };
 
 enum ZoomSDKRawDataMemoryMode 
