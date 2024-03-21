@@ -57,6 +57,7 @@ public:
 
 	/// \brief Determine if it is able to ask for controlling the specified user by long-distance.
 	/// \param userId Specify the user ID to check.
+	/// \remarks For custom style mode, this interface is only valid after subscribing the sharing content from the specified user by calling ICustomizedShareRender::SetUserID(unsigned int userid) successfully.
 	/// \return If it is able to request to control the specified user by long-distance, the return value is SDKErr_Success. 
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError CanRequestControl(unsigned int userId) = 0;

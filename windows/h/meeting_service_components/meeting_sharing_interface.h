@@ -56,8 +56,8 @@ enum AudioShareMode
 typedef struct tagViewableShareSource
 {
 	unsigned int userid;///<User ID.
-	bool isShowingInFirstView;///<Display or not on the primary view.
-	bool isShowingInSecondView;///<Display or not on the secondary view. 
+	bool isShowingInFirstView;///<Display or not on the primary view. Valid for ZOOM style only.
+	bool isShowingInSecondView;///<Display or not on the secondary view. Valid for ZOOM style only.
 	bool isCanBeRemoteControl;///<Enable or disable the remote control.
 	tagViewableShareSource()
 	{
@@ -333,7 +333,8 @@ public:
 	/// \param [out] shareSource Store the viewable sharing information. For more details, see \link ViewableShareSource \endlink structure.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	/// \remarks Valid for both ZOOM style and user custom interface mode. 
+	/// For custom interface mode, this interface is only valid after subscribing the sharing content from the specified user by calling ICustomizedShareRender::SetUserID(unsigned int userid) successfully.
 	virtual SDKError GetViewableShareSourceByUserID(unsigned int userid, ViewableShareSource& shareSource) = 0;
 
 	/// \brief Determine if it is able to share. 
