@@ -24,14 +24,12 @@ enum MeetingReminderType
 	TYPE_WEBINAR_AS_PANELIST_JOIN,///<Reminder type of join webinar as panelist.
 	TYPE_TERMS_OF_SERVICE, ///Reminder type of Terms of service or privacy statement changed.
 	TYPE_SMART_SUMMARY_DISCLAIMER, ///<Reminder type of smart summary disclaimer.
-	TYPE_SMART_SUMMARY_ENABLE_REQUEST_REMINDER, ///<Reminder type of smart summary enable request.
-	TYPE_QUERY_DISCLAIMER, ///<Reminder type of query disclaimer.
-	TYPE_QUERY_ENABLE_REQUEST_REMINDER, ///<Reminder type of query enable request.
-	TYPE_ENABLE_SMART_SUMMARY_REMINDER,///<Reminder type of enable smart summary.
-	TYPE_WEBINAR_ATTENDEE_PROMOTE_REMINDER,///<Reminder type of webinar promote attendee.
+	TYPE_SMART_SUMMARY_ENABLE_REQUEST_REMINDER, ///<reminder type of smart summary enable request.
+	TYPE_QUERY_DISCLAIMER, ///<reminder type of query disclaimer.
+	TYPE_QUERY_ENABLE_REQUEST_REMINDER, ///<reminder type of query enable request.
+	TYPE_ENABLE_SMART_SUMMARY_REMINDER,///<reminder type of enable smart summary.
+	TYPE_WEBINAR_ATTENDEE_PROMOTE_REMINDER,///<reminder type of webinar promote attendee.
 	TYPE_JOIN_PRIVATE_MODE_MEETING_REMINDER,///<Reminder type of joining a meeting with private mode.
-	TYPE_SMART_RECORDING_ENABLE_REQUEST_REMINDER,///<Reminder type to enable smart recording request.
-	TYPE_ENABLE_SMART_RECORDING_REMINDER,///<Reminder type to enable smart recording.
 };
 
 /*! \enum ActionType
@@ -76,44 +74,7 @@ public:
 	virtual void  Decline() = 0;
 };
 
-/*! \enum FeatureEnableOption
-	\brief The option for meeting feature.
-*/
-enum FeatureEnableOption
-{
-	EnableOption_None,///do not enable.
-	EnableOption_Once,///enable for this meeting.
-	EnableOption_Always,///enable for this and all future meetings on this account.
-};
-
-/// \brief if the current user can control web setting, they will get this handler when an attendee requests to start the smart recording feature or start feature by itself.
-class IMeetingEnableReminderHandler
-{
-public:
-	virtual ~IMeetingEnableReminderHandler() {};
-
-	/// \brief Set the option indicating which meetings smart recording will be enabled for.
-	/// \param option Specify the option. 	
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetEnableOption(FeatureEnableOption option) = 0;
-
-	/// \brief Start the smart recording feature.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError Start() = 0;
-
-	/// \brief Decline the reminder.
-	/// \param bDeclineAll TRUE means decline all reminders,and participants cannot send requests again until the host changes the setting. FALSE means that the host declines only this specific request, not all requests.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError Decline(bool bDeclineAll) = 0;
-
-	/// \brief Ignore the reminder.
-	virtual SDKError Ignore() = 0;
-};
-
-/// \brief Callback event to enable showing the reminder dialog.
+/// \brief Meeting reminder helper callback event.
 class IMeetingReminderEvent
 {
 public:
@@ -123,11 +84,6 @@ public:
 	/// \param content The detail content in the reminder dialog. For more details, see \link IMeetingReminderContent \endlink enum.
 	/// \param handle A pointer to the IMeetingReminderHandler. For more details, see \link IMeetingReminderHandler \endlink.
 	virtual void onReminderNotify(IMeetingReminderContent* content, IMeetingReminderHandler* handle) = 0;
-
-	/// \brief Callback event of the enable reminder dialog show.
-	/// \param content The detail content in the reminder dialog. For more details, see \link IMeetingEnableReminderHandler \endlink enum.
-	/// \param handle A pointer to the IMeetingReminderHandler. For more details, see \link IMeetingEnableReminderHandler \endlink.
-	virtual void onEnableReminderNotify(IMeetingReminderContent* content, IMeetingEnableReminderHandler* handle) = 0;
 };
 /// \brief Meeting reminder dialog interface.
 ///
