@@ -26,8 +26,9 @@ class ZoomViewWeb extends ZoomPlatform {
   }
 
   /// Initialize Zoom SDK For Web
+  /// alreadyInit when method prepareWebZoomSDK was called earlier
   @override
-  Future<List> initZoom(ZoomOptions options) async {
+  Future<List> initZoom(ZoomOptions options, {bool alreadyInit = false}) async {
     final Completer<List> completer = Completer();
     var sus = ZoomMtg.checkFeatureRequirements();
     var susmap = convertToDart(sus);
@@ -37,7 +38,10 @@ class ZoomViewWeb extends ZoomPlatform {
     }
 
     ZoomMtg.preLoadWasm();
-    prepareWebZoomSDK();
+
+    if (!alreadyInit) {
+      prepareWebZoomSDK();
+    }
 
     ZoomMtg.i18n.load(options.language ?? 'en-US');
     debugPrint('Current language of Zoom - ${ZoomMtg.i18n.getCurrentLang()}');
