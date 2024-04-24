@@ -171,11 +171,6 @@ public:
 #if defined(WIN32)
 	/// \brief Notification service status changed callback.
 	/// \param status The value of transfer meeting service. For more details, see \link SDKNotificationServiceStatus \endlink.
-	/// \deprecated This interface will be marked as deprecated, then it will be instead by onLiveTranscriptionMsgInfoReceived, please stop using it.
-	virtual void onNotificationServiceStatus(SDKNotificationServiceStatus status) = 0;
-
-	/// \brief Notification service status changed callback.
-	/// \param status The value of transfer meeting service. For more details, see \link SDKNotificationServiceStatus \endlink.
 	/// \param error Connection Notification service fail error code.For more details, see \link SDKNotificationServiceError \endlink enum.
 	virtual void onNotificationServiceStatus(SDKNotificationServiceStatus status, SDKNotificationServiceError error) = 0;
 #endif

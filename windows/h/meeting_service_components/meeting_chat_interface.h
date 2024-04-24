@@ -329,16 +329,6 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SetParticipantsChatPrivilege(SDKChatPrivilege privilege) = 0;
 
-	/// \brief Send chat message in the normal meeting.
-	/// \param receiver Specify the user ID who receives the chat message. The message will be sent to all when the value is zero(0). 
-	/// \param content The content of the chat message. 
-	/// \param type The type of the chat message
-	/// \param mapOffset the special style content offset of the chat message content
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \deprecated This interface will be marked as deprecated, then it will be instead by SendChatMsgTo(IChatMsgInfo* msg), please stop using it.
-	virtual SDKError SendChatMsgTo(const zchar_t* content, unsigned int receiver, SDKChatMessageType type) = 0;
-
 	/// \brief Determine whether the legal notice for chat is available
 	/// \return True indicates the legal notice for chat is available. Otherwise False.
 	virtual bool IsMeetingChatLegalNoticeAvailable() = 0;

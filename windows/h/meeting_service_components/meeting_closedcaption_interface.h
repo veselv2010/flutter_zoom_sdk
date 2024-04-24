@@ -97,13 +97,6 @@ public:
 	/// \param status: the live transcription status. For more details, see \link SDKLiveTranscriptionStatus \endlink.
 	virtual void onLiveTranscriptionStatus(SDKLiveTranscriptionStatus status) = 0;
 
-	/// \brief live transcription message received callback.
-	/// \param ltMsg: an object pointer to the live transcription message content. 
-	/// \param ltSpearkId: the speaker id of the live transcription message. 
-	/// \param type: the live transcription operation type. For more details, see \link SDKLiveTranscriptionOperationType \endlink.
-	/// \deprecated This interface will be marked as deprecated, then it will be instead by onLiveTranscriptionMsgInfoReceived, please stop using it.
-	virtual void onLiveTranscriptionMsgReceived(const zchar_t* ltMsg, unsigned int speaker_id, SDKLiveTranscriptionOperationType type) = 0;
-
 	/// \brief original language message received callback.
 	/// \param messageInfo The spoken language message, see \link ILiveTranscriptionMessageInfo \endlink.
 	virtual void onOriginalLanguageMsgReceived(ILiveTranscriptionMessageInfo* messageInfo) = 0;

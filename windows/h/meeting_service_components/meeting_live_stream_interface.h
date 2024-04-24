@@ -174,24 +174,10 @@ public:
 
 	/// \brief Send a request to enable the SDK to start a raw live stream.
 	/// \param broadcastURL The broadcast URL of the live-stream.
-	/// \return If the function succeeds, the return value is SDKErr_Success and the SDK will send the request.
-	///Otherwise it fails and the request will not be sent. To get extended error information, see \link SDKError \endlink enum.
-	/// \deprecated This interface will be marked as deprecated, then it will be instead by RequestRawLiveStreaming, please stop using it.
-	virtual SDKError RequestRawLiveStream(const zchar_t* broadcastURL) = 0;
-
-	/// \brief Send a request to enable the SDK to start a raw live stream.
-	/// \param broadcastURL The broadcast URL of the live-stream.
 	/// \param broadcastName The broadcast name of the live-stream.
 	/// \return If the function succeeds, the return value is SDKErr_Success and the SDK will send the request.
 	///Otherwise it fails and the request will not be sent. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError RequestRawLiveStreaming(const zchar_t* broadcastURL, const zchar_t* broadcastName) = 0;
-
-	/// \brief Start raw live streaming.
-	/// \param broadcastURL The broadcast URL of the live-stream.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \deprecated This interface will be marked as deprecated, then it will be instead by StartRawLiveStreaming, please stop using it.
-	virtual SDKError StartRawLiveStream(const zchar_t* broadcastURL) = 0;
 
 	/// \brief Start raw live streaming.
 	/// \param broadcastURL The broadcast URL of the live-stream.

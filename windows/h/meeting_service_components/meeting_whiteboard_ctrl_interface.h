@@ -77,6 +77,11 @@ public:
 	/// \return True indicates to support.
 	virtual bool IsSupportWhiteBoard() = 0;
 
+	/// \brief Determine whether the current meeting can start sharing the whiteboard. 
+	/// \param [out] reason The reason that no one can start sharing the whiteboard. See \link CannotShareReasonType \endlink enum.
+	/// \return True indicates you can start sharing the whiteboard.
+	virtual bool CanStartShareWhiteboard(CannotShareReasonType& reason) = 0;
+
 	/// \brief Show the dashboard web view window.
 	/// \param x: The horizontal coordinate value. 
 	/// \param y: The vertical coordinate value. 
