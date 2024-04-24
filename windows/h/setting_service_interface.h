@@ -131,6 +131,21 @@ typedef enum tagReactionSkinToneType
 	ReactionSkinTone_Dark,         //dark skin tone 
 }ReactionSkinToneType;
 
+enum ZoomSDKUITheme
+{
+	ZoomSDKUITheme_Bloom,
+	ZoomSDKUITheme_Rose,
+	ZoomSDKUITheme_Agave,
+	ZoomSDKUITheme_Classic,
+};
+
+enum ZoomSDKUIAppearance
+{
+	ZoomSDKUIAppearance_Light = 1,
+	ZoomSDKUIAppearance_Dark,
+	ZoomSDKUIAppearance_System,
+};
+
 enum WindowSizeType
 {
 	WindowSize_None = 0,
@@ -217,8 +232,8 @@ typedef struct tagSettingDlgShowTabPageOption
 	bool bShowShareScreen; ///<True indicates to show share screen page
 	bool bShowVirtualBackGround;///<True indicates to show virtual background page
 	bool bSHowRecording;///<True indicates to show recording page
-	bool bShowAdvancedFeature;///<True indicates to show advance feature page
-	bool bShowStatistics;///<True indicates to show staticstics page
+	bool bShowAdvancedFeature;///<True indicates to show profile page
+	bool bShowStatistics;///<True indicates to show statistics page
 	bool bShowFeedback;///<True indicates to show feed back page
 	bool bShowKeyboardShortcuts;///<True indicates to show keyboard shortcuts page
 	bool bShowAccessibility;///<True indicates to show accessibility page
@@ -456,6 +471,35 @@ public:
 	/// \brief Get the emoji reaction skin tone type.
 	/// \return The return value is the emoji reaction skin tone type.
 	virtual ReactionSkinToneType GetReactionSkinTone() = 0;
+
+	/// \brief Determine if support set UI theme.
+	/// \return TRUE indicates to support. FALSE not.
+	virtual bool IsSupportSetUITheme() = 0;
+
+	/// \brief Set the UI skin theme type.
+	/// \param theme Specifies the skin theme type. For more details, see \link ZoomSDKUITheme \endlink.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetUITheme(ZoomSDKUITheme theme) = 0;
+
+	/// \brief Get the UI skin theme type.
+	/// \return The return value is the UI skin theme type.
+	virtual ZoomSDKUITheme GetUITheme() = 0;
+
+	/// \brief Determine if support set UI appearance.
+	/// \return TRUE indicates to support. FALSE not.
+	virtual bool IsSupportSetUIAppearance() = 0;
+
+	/// \brief Set the UI appearance type.
+	/// \param theme Specifies the UI appearance type. For more details, see \link ZoomSDKUIAppearance \endlink.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetUIAppearance(ZoomSDKUIAppearance appearance) = 0;
+
+	/// \brief Get the UI appearance type.
+	/// \return The return value is the UI appearance type.
+	virtual ZoomSDKUIAppearance GetUIAppearance() = 0;
+
 #endif
 };
 #if defined(WIN32)
@@ -616,73 +660,6 @@ public:
 	virtual int GetIndex() = 0;
 
 	virtual ~I3DAvatarImageInfo() {};
-};
-
-/// \brief lip sync avatar context Callback Event.
-/// \deprecated This class is marked as deprecated.
-class ILipSyncAvatarSettingContextEvent
-{
-public:
-	virtual ~ILipSyncAvatarSettingContextEvent() {}
-
-	/// \brief Callback event of notification that the thumbnails of all lip sync avatar items have been downloaded.
-	/// \deprecated This interface is marked as deprecated, and is replaced by on3DAvatarItemThumbnailsDownloaded.
-	virtual void onLipSyncAvatarItemThumbnailsDownloaded() = 0;
-
-	/// \brief Callback event notifying that the selected lip sync avatar item is downloading.
-	/// \param index The index of the selected lip-sync avatar item. 
-	/// \deprecated This interface is marked as deprecated, and is replaced by on3DAvatarItemDataDownloading.
-	virtual void onLipSyncAvatarItemDataDownloading(int index) = 0;
-
-	/// \brief Callback event notifying that the selected lip-sync avatar item has been downloaded successfully.
-	/// \param index The index of the selected lip sync avatar item. 
-	/// \param bSuccess TRUE indicates the selected lip-sync avatar item has been downloaded successfully.
-	/// \deprecated This interface is marked as deprecated, and is replaced by on3DAvatarItemDataDownloaded.
-	virtual void onLipSyncAvatarItemDataDownloaded(bool bSuccess, int index) = 0;
-};
-
-/// \brief Lip sync avatar setting interface.
-/// \deprecated This class be marked as deprecated.
-class ILipSyncAvatarSettingContext
-{
-public:
-	/// \brief Lip sync avatar callback handler. 
-	/// \param pEvent A pointer to the ILipSyncAvatarSettingContextEvent that receives lip sync avatar event. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise the function fails and returns an error. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Call the function before using any other interface of the same class.
-	/// \deprecated This interface is marked as deprecated, and is replaced by I3DAvatarSettingContext.SetEvent .
-	virtual SDKError SetEvent(ILipSyncAvatarSettingContextEvent* pEvent) = 0;
-
-	/// \brief Determine if the lip-sync avatar feature is supported by video device.
-	/// \return TRUE indicates that the video device supports the 3D avatar feature.
-	/// \deprecated This interface is marked as deprecated, and is replaced by I3DAvatarSettingContext.Is3DAvatarSupportedByDevice.
-	virtual bool Is3DAvatarSupportedByDevice() = 0;
-
-	/// \brief Determine if the lip-sync avatar feature is enabled.
-	/// \return TRUE indicates the lip-sync feature is enabled.
-	/// \deprecated This interface is marked as deprecated, and is replaced by Is3DAvatarEnabled.
-	virtual bool IsLipSyncAvatarEnabled() = 0;
-
-	/// \brief Get the list of the lip-sync avatar images.
-	/// \return If there are images in the list, the return value is a list of the pointers to I3DAvatarImageInfo.
-	///Otherwise the function returns NULL. To get extended information, see \link IVideoFilterImageInfo \endlink enum.
-	/// \deprecated This interface is marked as deprecated, and is replaced by Get3DAvatarImageList
-	virtual IList<I3DAvatarImageInfo* >* GetLipSyncAvatarImageList() = 0;
-
-	/// \brief Specify an image to be the lip sync avatar image.
-	/// \param pImage Specify the image to use. To get extended information, see \link I3DAvatarImageInfo \endlink enum.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise the function fails and returns an error. To get extended error information, see \link SDKError \endlink enum.
-	/// \deprecated This interface is marked as deprecated, and is replaced instead by Set3DAvatarImage
-	virtual SDKError SetLipSyncAvatarImage(I3DAvatarImageInfo* pImage) = 0;
-
-	/// \brief Get the pointer to ILipSyncAvatarPreviewHelper which is used to preview the lip-sync avatar.
-	/// \return If the function succeeds, the return value is the pointer to ILipSyncAvatarPreviewHelper.
-	///Otherwise the function fails, and returns NULL.
-	///For more details, see \link ILipSyncAvatarPreviewHelper \endlink.
-	/// \deprecated This interface is marked as deprecated, and is replaced by I3DAvatarSettingContext.GetLipSyncAvatarPreviewHelper .
-	virtual ILipSyncAvatarPreviewHelper* GetLipSyncAvatarPreviewHelper() = 0;
 };
 
 #endif
@@ -1019,13 +996,6 @@ public:
 	///Otherwise failed, returns NULL.
 	///For more details, see \link ITestVideoDeviceHelper \endlink.
 	virtual ITestVideoDeviceHelper* GetTestVideoDeviceHelper() = 0;
-
-	/// \brief Get the pointer to ILipSyncAvatarSettingContext which is used to set lip sync avatar.
-	/// \return If the function succeeds, the return value is the pointer to ILipSyncAvatarSettingContext.
-	///Otherwise the function fails, and returns NULL.
-	///For more details, see \link ILipSyncAvatarSettingContext \endlink.
-	/// \deprecated This interface is marked as deprecated.
-	virtual ILipSyncAvatarSettingContext* GetLipSyncAvatarSettingContext() = 0;
 #endif
 };
 
@@ -1548,6 +1518,7 @@ public:
 
 	/// \brief Hide the Account Setting page or not.
 	/// \param bDisable TRUE indicates to hide the account setting page.
+	/// \deprecated This interface is marked as deprecated, and is replaced by ConfSettingDialogShownTabPage.
 	virtual void DisableAccountSettingTabPage(bool bDisable) = 0;
 
 	/// \brief Custom the tab page show or hide
@@ -1777,25 +1748,6 @@ public:
 class IVideoFilterSettingContextEvent
 {
 public:
-	/// \brief Callback event of notification that the thumbnail of the video filter item has been download
-	/// \param type The type of the video filter item.
-	/// \param index The index of the video filter item.
-	/// this interface be marked as deprecated, then it will be instead by onVideoFilterItemThumnailsDownloaded
-	virtual void onVideoFilterItemDataDownloaded(ZoomSDKVideoEffectType type, int index) = 0;
-
-	/// \brief Callback event of notification that the selected video filter item needs to download.
-	/// \param type The type of the selected video filter item.
-	/// \param index The index of the selected video filter item. 
-	/// this interface be marked as deprecated, then it will be instead by onVideoFilterItemDataDownloading
-	virtual void onVideoFilterItemDataNeedPrepare(ZoomSDKVideoEffectType type, int index) = 0;
-
-	/// \brief Callback event of notification that the selected video filter item whether has been downloaded successfully.
-	/// \param type The type of the selected video filter item.
-	/// \param index The index of the selected video filter item. 
-	/// \param bSuccess TRUE indicates the selected video filter item has been downloaded successfully.
-	/// this interface be marked as deprecated, then it will be instead by onVideoFilterItemDataDownloaded
-	virtual void onVideoFilterItemDataReady(bool bSuccess, ZoomSDKVideoEffectType type, int index) = 0;
-
 	/// \brief Callback event of notification that the thumbnails of all video filter items have been downloaded
 	virtual void onVideoFilterItemThumnailsDownloaded() = 0;
 

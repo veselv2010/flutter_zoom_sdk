@@ -126,6 +126,10 @@ public:
 	/// \brief Determine whether the meeting supports to join by the phone or not.
 	/// \return TRUE indicates to support to join by phone. FALSE not.
 	virtual bool IsSupportPhoneFeature() = 0;
+	
+	/// \brief Query if it is able to dial out in the current meeting.
+	/// \return return true means able to dial out. Otherwise return false.
+	virtual bool IsDialoutSupported() = 0;
 
 	/// \brief Get the list of the country information where the meeting supports to join by telephone.
 	/// \return List of the country information returns if the meeting supports to join by telephone. Otherwise NULL.

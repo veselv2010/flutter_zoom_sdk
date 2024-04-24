@@ -102,6 +102,27 @@ public:
 	virtual ~IWebinarNeedRegisterHandlerByEmail() {};
 };
 
+/// \brief Webinar input screen name handler.
+///
+class IWebinarInputScreenNameHandler
+{
+public:
+	/// \brief Input screen name to join webinar.
+	/// \param screenName The display name for the webinar.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks The SDK will destroy this object instance after calling this function. Supplement with the correct information.
+	virtual SDKError InputName(const zchar_t* screenName) = 0;
+
+	/// \brief Cancel to join webinar.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks The SDK will destroy this object instance after calling this function.
+	virtual SDKError Cancel() = 0;
+
+	virtual ~IWebinarInputScreenNameHandler() {};
+};
+
 /// \brief End other meeting to join the new meeting Handler.
 ///
 class IEndOtherMeetingToJoinMeetingHandler
@@ -172,6 +193,10 @@ public:
 	/// \brief The user will receive this callback event if the user wants to join the new meeting while the ongoing meeting is not ended.
 	/// \param handler_ An object pointer used by user to complete all the related operations. For more details, see \link IEndOtherMeetingToJoinMeetingHandler \endlink.
 	virtual void onEndOtherMeetingToJoinMeetingNotification(IEndOtherMeetingToJoinMeetingHandler* handler_) = 0;
+
+	/// \brief When joining the webinar, this callback is triggered if the user needs to input a username.
+	/// \param pHandler An object pointer used by user to complete all the related operations. For more details, see \link IWebinarInputScreenNameHandler \endlink.
+	virtual void onWebinarNeedInputScreenName(IWebinarInputScreenNameHandler* pHandler) = 0;
 };
 #if defined(WIN32)
 enum SDKInviteDlgTabPage
@@ -526,6 +551,11 @@ public:
 	/// \remarks If it is true, the SDK will trigger the IMeetingConfigurationEvent::onWebinarNeedRegisterNotification()callback event. For more details, see \link IMeetingConfigurationEvent::onWebinarNeedRegisterNotification() \endlink.
 	virtual void RedirectWebinarNeedRegister(bool bRedirect) = 0;
 
+	/// \brief Set if it is able to handle the webinar username input dlg with user's own program in the meeting. Default: FALSE.
+	/// \param bRedirect TRUE indicates to redirect. FALSE not. 
+	/// \remarks If it is true, the SDK will trigger the IMeetingConfigurationEvent::onWebinarNeedInputScreenName()callback event. For more details, see \link IMeetingConfigurationEvent::onWebinarNeedInputScreenName() \endlink.
+	virtual void RedirectWebinarNameInputDialog(bool bRedirect) = 0;
+
 	/// \brief Set if it is able to redirect the process to end another meeting by user's own program. Default: FALSE. 
 	/// \param bRedirect TRUE indicates to redirect. FALSE not. If it is TRUE, the SDK will trigger the  IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification().
 	/// \remarks This function doesn't work if the IJoinMeetingBehaviorConfiguration::EnableAutoEndOtherMeetingWhenStartMeeting(true) is also called. If redirect successfully, the SDK will trigger the IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification() callback event. For more details, see \link IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification() \endlink.
@@ -594,11 +624,13 @@ public:
 	/// \brief Set if it is able to auto-adjust the volume of the speaker when joining the meeting. Default: TRUE.
 	/// \param bEnable TRUE indicates to auto-adjust the volume of the speaker. FALSE not.
 	/// \remarks If it is TRUE, the SDK will adjust the speaker volume automatically. It will unmute if the speaker was muted.
+	/// \deprecated This interface is marked as deprecated.
 	virtual void EnableAutoAdjustSpeakerVolumeWhenJoinAudio(bool bEnable) = 0;
 
 	/// \brief Set if it is able to auto-adjust the volume of the mic when joining the meeting. Default: TRUE.
 	/// \param bEnable TRUE indicates to auto-adjust the volume of the mic. FALSE not.
 	/// \remarks If it is TRUE, the SDK will adjust the mic volume automatically. It will unmute if the mic was muted.
+	/// \deprecated This interface is marked as deprecated.
 	virtual void EnableAutoAdjustMicVolumeWhenJoinAudio(bool bEnable) = 0;
 
 	/// \brief Set the maximum duration of the meeting when there is no attendee in the meeting. Default: 24*60.

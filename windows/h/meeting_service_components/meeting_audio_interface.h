@@ -86,6 +86,10 @@ public:
 	/// \param handler_ A pointer to the IRequestStartAudioHandler. For more details, see \link IRequestStartAudioHandler \endlink.
 	virtual void onHostRequestStartAudio(IRequestStartAudioHandler* handler_) = 0;
 
+	/// \brief Callback event that requests to join third party telephony audio.
+	/// \param audioInfo Instruction on how to join the meeting with third party audio.
+	virtual void onJoin3rdPartyTelephonyAudio(const zchar_t* audioInfo) = 0;
+
 	virtual ~IMeetingAudioCtrlEvent() {}
 };
 
@@ -155,6 +159,10 @@ public:
 	/// \brief Determine if the incoming audio is stopped.
 	/// \return TRUE indicates that the incoming audio is stopped. 
 	virtual bool IsIncomingAudioStopped() = 0;
+
+	/// \brief Determine if the meeting has third party telephony audio enabled.
+	/// \return TRUE means enabled, otherwise it is not enabled. 
+	virtual bool Is3rdPartyTelephonyAudioOn() = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

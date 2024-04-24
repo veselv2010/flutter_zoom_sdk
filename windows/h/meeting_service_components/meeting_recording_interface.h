@@ -35,7 +35,7 @@ enum RequestLocalRecordingStatus
 };
 
 /*! \enum RequestStartCloudRecordingStatus
-	\brief Request host to start cloud recording status.	
+	\brief Request host to start cloud recording status.
 */
 enum RequestStartCloudRecordingStatus
 {

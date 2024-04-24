@@ -85,10 +85,6 @@ public:
 	/// \brief Callback event of the requirement to unmute the audio.
 	/// \param handler_ A pointer to the IRequestSignInterpreterToTalkHandler. For more details, see \link IRequestSignInterpreterToTalkHandler \endlink.
 	virtual void OnRequestSignInterpreterToTalk(IRequestSignInterpreterToTalkHandler* handler) = 0;
-
-	/// \brief Callback event for the host to disallow the sign interpreter to talk.
-	/// this interface be marked as deprecated, then it will be instead by OnTalkPrivilegeChanged
-	virtual void OnDisallowSignInterpreterToTalk() = 0;
 };
 
 /// \brief Meeting interpretation controller interface

@@ -32,6 +32,9 @@ enum MeetingReminderType
 	TYPE_JOIN_PRIVATE_MODE_MEETING_REMINDER,///<Reminder type of joining a meeting with private mode.
 	TYPE_SMART_RECORDING_ENABLE_REQUEST_REMINDER,///<Reminder type to enable smart recording request.
 	TYPE_ENABLE_SMART_RECORDING_REMINDER,///<Reminder type to enable smart recording.
+	TYPE_AI_COMPANION_PLUS_DISCLAIMER,///<Reminder type of AICompanionPlus disclaimer.
+	TYPE_CLOSED_CAPTION_DISCLAIMER,///<Reminder type of Close Caption disclaimer.
+	TYPE_MULTI_DISCLAIMER,///<Reminder type of disclaimers combination. 
 };
 
 /*! \enum ActionType
@@ -61,6 +64,10 @@ public:
 	virtual bool  IsBlocking() = 0;
 	/// \brief Get the type of the action which user should take after receiving this reminder content.
 	virtual ActionType GetActionType() = 0;
+	/// \brief Get a List of reminder's type.
+	/// \return List of the reminder's type. 
+	virtual IList<MeetingReminderType >* GetMultiReminderTypes() = 0;
+
 };
 
 /// \brief the interface to handle the reminder dialog.
@@ -92,13 +99,13 @@ class IMeetingEnableReminderHandler
 public:
 	virtual ~IMeetingEnableReminderHandler() {};
 
-	/// \brief Set the option indicating which meetings smart recording will be enabled for.
+	/// \brief Set the option indicating which meetings feature will be enabled for.
 	/// \param option Specify the option. 	
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SetEnableOption(FeatureEnableOption option) = 0;
 
-	/// \brief Start the smart recording feature.
+	/// \brief Start the feature.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError Start() = 0;

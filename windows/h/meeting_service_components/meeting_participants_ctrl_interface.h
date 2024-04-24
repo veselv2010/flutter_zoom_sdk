@@ -490,7 +490,7 @@ public:
 	virtual bool IsParticipantRequestCloudRecordingAllowed() = 0;
 
 	/// \brief Toggle whether attendees can requests for the host to start a cloud recording. This can only be used in regular meeetings and webinar(no breakout rooms).
-	/// \param bAllow TRUE indicates that participants are allowed to send cloud recording privilege requests. 
+	/// \param bAllow TRUE indicates that participants are allowed to send cloud recording privilege requests.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError AllowParticipantsToRequestCloudRecording(bool bAllow) = 0;

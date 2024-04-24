@@ -82,16 +82,6 @@ public:
 	/// \return TRUE indicates that the user can be put to free seat in this template.
 	virtual bool isSupportFreeSeat() = 0;
 
-	/// \brief Get the size of this template.
-	/// \return If the function succeeds, the return value is the size of this template.
-	/// \deprecated This interface will be marked as deprecated, then it will be instead by ICustomImmersiveTemplateData::getCanvasSize(), please stop using it.
-	virtual SIZE getCanvasSize() = 0;
-
-	/// \brief Get the list of template seats.
-	/// \return The list of template seats. ZERO(0) indicates that there are no seats in the template.
-	/// \deprecated This interface will be marked as deprecated, then it will be instead by ICustomImmersiveTemplateData::getSeatList(), please stop using it.
-	virtual IList<SeatPlacementInfo>* getSeatList() = 0;
-
 	/// \brief Get the type of this template.
 	/// \return If the function succeeds, the return value is the type of this template. For more details, see \link CustomImmersiveTemplateType \endlink enum.
 	virtual CustomImmersiveTemplateType getType() = 0;

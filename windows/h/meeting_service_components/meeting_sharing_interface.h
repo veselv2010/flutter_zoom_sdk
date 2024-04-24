@@ -49,6 +49,22 @@ enum AudioShareMode
 	AudioShareMode_Stereo		///Stereo mode
 };
 
+enum CannotShareReasonType
+{
+	CannotShareReasonType_None,
+	CannotShareReasonType_Locked,		                   ///<Only the host can share.
+	CannotShareReasonType_Disabled,                        ///<Sharing is disabled.
+	CannotShareReasonType_Other_Screen_Sharing,		       ///<Another is sharing their screen.
+	CannotShareReasonType_Other_WB_Sharing,                ///<Another is sharing their whiteboard.
+	CannotShareReasonType_Need_Grab_Myself_Screen_Sharing, ///<The user is sharing their screen, and can grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
+	CannotShareReasonType_Need_Grab_Other_Screen_Sharing,  ///<Another is sharing their screen, and can grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
+	CannotShareReasonType_Need_Grab_Audio_Sharing,         ///<Another is sharing pure computer audio, and can grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
+	CannotShareReasonType_Need_Grap_WB_Sharing,            ///<Other or myself is sharing whiteboard, and can Grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
+	CannotShareReasonType_Reach_Maximum,                   ///<The meeting has reached the maximum allowed screen share sessions.
+	CannotShareReasonType_Have_Share_From_Mainsession,     ///<Other share screen in main session.
+	CannotShareReasonType_UnKnown,
+};
+
 /*! \struct tagViewableShareSource
     \brief Visible shared source information.
     Here are more detailed structural descriptions..
@@ -340,7 +356,13 @@ public:
 	/// \brief Determine if it is able to share. 
 	/// \return Enable or disable to start sharing.
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	/// \deprecated This interface is marked as deprecated, and is replaced by CanStartShare(CannotShareReasonType& reason).
 	virtual bool CanStartShare() = 0;
+
+	/// \brief Determine whether the current meeting can start sharing. 
+	/// \param [out] reason The reason that no one can start sharing. See \link CannotShareReasonType \endlink enum.
+	/// \return True indicates you can start sharing.
+	virtual bool CanStartShare(CannotShareReasonType& reason) = 0;
 
 	/// \brief Determine if it is able to share desktop in the current meeting.
 	/// \return True indicates it is able to share desktop in the current meeting. False not.
