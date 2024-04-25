@@ -10,10 +10,9 @@ import us.zoom.sdk.InMeetingChatController;
 import us.zoom.sdk.InMeetingChatMessage;
 import us.zoom.sdk.InMeetingEventHandler;
 import us.zoom.sdk.InMeetingServiceListener;
-//import us.zoom.sdk.LocalRecordingRequestPrivilegeStatus;
-import us.zoom.sdk.VideoQuality;
 import us.zoom.sdk.LocalRecordingRequestPrivilegeStatus;
 import us.zoom.sdk.MobileRTCFocusModeShareType;
+import us.zoom.sdk.VideoQuality;
 
 public class SimpleInMeetingListener implements InMeetingServiceListener {
 
@@ -73,11 +72,6 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     }
 
     @Override
-    public void onMeetingCoHostChanged(long l) {
-
-    }
-
-    @Override
     public void onMeetingCoHostChange(long l, boolean b) {
 
     }
@@ -103,22 +97,12 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     }
 
     @Override
-    public void onSpotlightVideoChanged(boolean b) {
-
-    }
-
-    @Override
     public void onSpotlightVideoChanged(List<Long> list) {
 
     }
 
     @Override
     public void onUserVideoStatusChanged(long l, VideoStatus videoStatus) {
-
-    }
-
-    @Override
-    public void onUserNetworkQualityChanged(long l) {
 
     }
 
@@ -208,11 +192,6 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     }
 
     @Override
-    public void onUserNameChanged(long l, String s) {
-
-    }
-
-    @Override
     public void onUserNamesChanged(List<Long> list) {
 
     }
@@ -291,14 +270,17 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     public void onAllowParticipantsRenameNotification(boolean allow) {
 
     }
+
     @Override
     public void onAllowParticipantsUnmuteSelfNotification(boolean allow) {
 
     }
+
     @Override
     public void onAllowParticipantsShareWhiteBoardNotification(boolean allow) {
 
     }
+
     @Override
     public void onAICompanionActiveChangeNotice(boolean active) {
 
@@ -346,6 +328,16 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onAllowParticipantsRequestCloudRecording(boolean bAllow) {
+
+    }
+
+    @Override
+    public void onSinkJoin3rdPartyTelephonyAudio(java.lang.String audioInfo) {
+
+    }
+
+    @Override
+    public void onWebinarNeedInputScreenName(InMeetingEventHandler handler) {
 
     }
 }
