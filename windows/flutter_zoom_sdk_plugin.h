@@ -64,6 +64,8 @@ namespace flutter_zoom_sdk {
 
 		void createSettingService();
 
+		bool startMeeting();
+
 		bool leaveMeeting();
 
 		bool hideMeeting();

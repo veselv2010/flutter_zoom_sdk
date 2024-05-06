@@ -101,6 +101,20 @@ namespace flutter_zoom_sdk {
 
 			result->Success(EncodableValue(res));
 		}
+        else if (method_call.method_name().compare("init") == 0) {
+            EncodableMap ZoomInitOptions = get<EncodableMap>(arguments->find(EncodableValue("initOptions"))->second);
+
+            bool res = FlutterZoomSdkPlugin::AuthorizeSDK(ZoomInitOptions);
+
+            result->Success(EncodableValue(res));
+        }
+        else if (method_call.method_name().compare("login") == 0) {
+            FlutterZoomSdkPlugin::ZoomMeetingOptions = get<EncodableMap>(arguments->find(EncodableValue("meetingOptions"))->second);
+
+            bool res = FlutterZoomSdkPlugin::startMeeting();
+
+            result->Success(EncodableValue(res));
+        }
 		else if (method_call.method_name().compare("leave_meeting") == 0) {
 			bool res = FlutterZoomSdkPlugin::leaveMeeting();
 
@@ -174,6 +188,77 @@ namespace flutter_zoom_sdk {
 
 		return false;
 	}
+
+    bool FlutterZoomSdkPlugin::startMeeting() {
+        auto ZoomMeetingOptions = FlutterZoomSdkPlugin::ZoomMeetingOptions;
+
+        if (ZoomMeetingOptions.empty()) {
+            return false;
+        }
+
+        FlutterZoomSdkPlugin::createMeetingService();
+        FlutterZoomSdkPlugin::createSettingService();
+
+        // Join meeting for non-login user with StartParam object
+        ZOOM_SDK_NAMESPACE::StartParam startMeetingParam = ZOOM_SDK_NAMESPACE::StartParam();
+
+        // Provide meeting credentials for API user using StartParam4WithoutLogin
+        ZOOM_SDK_NAMESPACE::StartParam4WithoutLogin startMeetingWithoutLoginParam;
+
+        startMeetingParam.userType = ZOOM_SDK_NAMESPACE::SDK_UT_WITHOUT_LOGIN;
+
+        string meetingNumberStr = get<string>(ZoomMeetingOptions.find(EncodableValue("meetingId"))->second);
+        string userZAKStr = get<string>(ZoomMeetingOptions.find(EncodableValue("zoomAccessToken"))->second);
+        string userNameStr = get<string>(ZoomMeetingOptions.find(EncodableValue("userId"))->second);
+        string noAudioStr = get<string>(ZoomMeetingOptions.find(EncodableValue("noAudio"))->second);
+        string noVideoStr = get<string>(ZoomMeetingOptions.find(EncodableValue("noVideo"))->second);
+
+        wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> convert;
+        wstring userZAKWstr = convert.from_bytes(userZAKStr);
+        wstring userNameWstr = convert.from_bytes(userNameStr);
+
+        startMeetingWithoutLoginParam.zoomuserType = ZOOM_SDK_NAMESPACE::ZoomUserType_APIUSER;
+        startMeetingWithoutLoginParam.meetingNumber = stoull(meetingNumberStr);
+        startMeetingWithoutLoginParam.userZAK = userZAKWstr.c_str();
+        startMeetingWithoutLoginParam.userName = userNameWstr.c_str();
+
+        startMeetingParam.param.withoutloginStart = startMeetingWithoutLoginParam;
+
+        if (FlutterZoomSdkPlugin::SettingService != NULL)
+        {
+            ZOOM_SDK_NAMESPACE::IAudioSettingContext* pAudioContext = FlutterZoomSdkPlugin::SettingService->GetAudioSettings();
+
+            if (pAudioContext)
+            {
+                pAudioContext->EnableAutoJoinAudio(true);
+            }
+
+            ZOOM_SDK_NAMESPACE::IShareSettingContext* pShareContext = FlutterZoomSdkPlugin::SettingService->GetShareSettings();
+
+            if (pShareContext)
+            {
+                pShareContext->EnableAutoFitToWindowWhenViewSharing(false);
+            }
+        }
+
+        ZOOM_SDK_NAMESPACE::IMeetingConfiguration* meetingConfiguration = FlutterZoomSdkPlugin::MeetingService->GetMeetingConfiguration();
+
+        if (meetingConfiguration)
+        {
+            meetingConfiguration->HideMeetingInfoOnMeetingUI(true);
+        }
+
+        if (FlutterZoomSdkPlugin::MeetingService) {
+            ZOOM_SDK_NAMESPACE::SDKError startMeetingReturnValue = FlutterZoomSdkPlugin::MeetingService->Start(startMeetingParam);
+
+            if (startMeetingReturnValue == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
+                _cputts(L"Start meeting call succeeded\n");
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 	void FlutterZoomSdkPlugin::joinMeeting() {
 		auto ZoomMeetingOptions = FlutterZoomSdkPlugin::ZoomMeetingOptions;
@@ -364,9 +449,9 @@ namespace flutter_zoom_sdk {
 	AuthEvent::~AuthEvent() {}
 
 	void AuthEvent::onAuthenticationReturn(ZOOM_SDK_NAMESPACE::AuthResult ret) {
-		if (ret == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
-			plagin->joinMeeting();
-		}
+//		if (ret == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
+//			plagin->joinMeeting();
+//		}
 	}
 
 	void AuthEvent::onLoginReturnWithReason(ZOOM_SDK_NAMESPACE::LOGINSTATUS ret, ZOOM_SDK_NAMESPACE::IAccountInfo* pAccountInfo, ZOOM_SDK_NAMESPACE::LoginFailReason reason) {}

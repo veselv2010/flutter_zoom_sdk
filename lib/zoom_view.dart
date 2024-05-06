@@ -1,6 +1,6 @@
 import 'dart:async';
+
 import 'package:flutter/services.dart';
-import 'package:flutter_zoom_sdk/models/audio_types.dart';
 import 'package:flutter_zoom_sdk/zoom_platform_view.dart';
 
 class ZoomView extends ZoomPlatform {
@@ -37,6 +37,24 @@ class ZoomView extends ZoomPlatform {
     return await channel
         .invokeMethod<List>('init', optionMap)
         .then<List>((List? value) => value ?? List.empty());
+  }
+
+  @override
+  Future<bool> initZoomWindows(ZoomOptions options) async {
+    var optionsMap = <String, Map>{};
+    var initOptionsMap = <String, String?>{};
+
+    initOptionsMap.putIfAbsent("appKey", () => options.appKey);
+    initOptionsMap.putIfAbsent("appSecret", () => options.appSecret);
+    initOptionsMap.putIfAbsent("returnBtnMsg", () => options.returnBtnMsg);
+    initOptionsMap.putIfAbsent("jwtToken", () => options.jwtToken);
+    initOptionsMap.putIfAbsent("domain", () => options.domain);
+
+    optionsMap.putIfAbsent('initOptions', () => initOptionsMap);
+
+    return await channel
+        .invokeMethod<bool>('init', optionsMap)
+        .then<bool>((bool? value) => value ?? false);
   }
 
   /// The event channel used to interact with windows init and join functions
