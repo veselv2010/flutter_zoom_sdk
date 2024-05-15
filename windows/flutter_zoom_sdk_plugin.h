@@ -43,6 +43,8 @@ namespace flutter_zoom_sdk {
 
 		void joinMeeting();
 
+		bool startMeeting();
+
 	private:
 		ZOOM_SDK_NAMESPACE::IAuthService* AuthService;
 		ZOOM_SDK_NAMESPACE::IMeetingService* MeetingService;
@@ -64,8 +66,6 @@ namespace flutter_zoom_sdk {
 
 		void createSettingService();
 
-		bool startMeeting();
-
 		bool leaveMeeting();
 
 		bool hideMeeting();
@@ -77,11 +77,13 @@ namespace flutter_zoom_sdk {
 
 	class AuthEvent : public ZOOM_SDK_NAMESPACE::IAuthServiceEvent {
 	public:
-		AuthEvent();
+		AuthEvent(const EncodableMap& zoomMeetingOptions);
 
 		virtual ~AuthEvent();
 
 	private:
+		EncodableMap zoomMeetingOptions_;
+
 		void onAuthenticationReturn(ZOOM_SDK_NAMESPACE::AuthResult ret);
 
 		void onLoginReturnWithReason(ZOOM_SDK_NAMESPACE::LOGINSTATUS ret, ZOOM_SDK_NAMESPACE::IAccountInfo* pAccountInfo, ZOOM_SDK_NAMESPACE::LoginFailReason reason);

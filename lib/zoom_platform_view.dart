@@ -48,6 +48,14 @@ abstract class ZoomPlatform extends PlatformInterface {
         'initZoomAndJoinMeeting() has not been implemented.');
   }
 
+  Future<bool> initZoomAndStartMeeting(
+    ZoomOptions zoomOptions,
+    ZoomMeetingOptions meetingOptions,
+  ) async {
+    throw UnimplementedError(
+        'initZoomAndStartMeeting() has not been implemented.');
+  }
+
   /// Flutter Zoom SDK Generate Signature for Web and native platforms
   String generateSignature(
     String sdkKey,
@@ -91,6 +99,10 @@ abstract class ZoomPlatform extends PlatformInterface {
   /// Flutter Zoom SDK Start Meeting with Custom Meeting ID function
   Future<List> startMeetingNormal(ZoomMeetingOptions options) async {
     throw UnimplementedError('startMeetingNormal() has not been implemented.');
+  }
+
+  Future<bool> startMeetingWindows(ZoomMeetingOptions options) async {
+    throw UnimplementedError('startMeetingWindows() has not been implemented.');
   }
 
   /// Flutter Zoom SDK Join Meeting function

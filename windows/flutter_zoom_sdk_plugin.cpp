@@ -101,6 +101,14 @@ namespace flutter_zoom_sdk {
 
 			result->Success(EncodableValue(res));
 		}
+		else if (method_call.method_name().compare("init_and_start") == 0) {
+			EncodableMap ZoomInitOptions = get<EncodableMap>(arguments->find(EncodableValue("initOptions"))->second);
+			FlutterZoomSdkPlugin::ZoomMeetingOptions = get<EncodableMap>(arguments->find(EncodableValue("meetingOptions"))->second);
+
+			bool res = FlutterZoomSdkPlugin::AuthorizeSDK(ZoomInitOptions);
+
+			result->Success(EncodableValue(res));
+		}
         else if (method_call.method_name().compare("init") == 0) {
             EncodableMap ZoomInitOptions = get<EncodableMap>(arguments->find(EncodableValue("initOptions"))->second);
 
@@ -164,7 +172,7 @@ namespace flutter_zoom_sdk {
 				AuthEvent* authListener;
 
 				// Call SetEvent to assign your IAuthServiceEvent listener
-				authListener = new AuthEvent();
+				authListener = new AuthEvent(ZoomMeetingOptions);
 				FlutterZoomSdkPlugin::AuthService->SetEvent(authListener);
 
 				ZOOM_SDK_NAMESPACE::SDKError authCallReturnValue(ZOOM_SDK_NAMESPACE::SDKERR_UNAUTHENTICATION);
@@ -221,6 +229,12 @@ namespace flutter_zoom_sdk {
         startMeetingWithoutLoginParam.meetingNumber = stoull(meetingNumberStr);
         startMeetingWithoutLoginParam.userZAK = userZAKWstr.c_str();
         startMeetingWithoutLoginParam.userName = userNameWstr.c_str();
+		startMeetingWithoutLoginParam.customer_key = NULL;
+		startMeetingWithoutLoginParam.vanityID = NULL;
+		startMeetingWithoutLoginParam.hDirectShareAppWnd = NULL;
+		startMeetingWithoutLoginParam.isDirectShareDesktop = false;
+		startMeetingWithoutLoginParam.isAudioOff = (noAudioStr == "true");
+		startMeetingWithoutLoginParam.isVideoOff = (noVideoStr == "true");
 
         startMeetingParam.param.withoutloginStart = startMeetingWithoutLoginParam;
 
@@ -444,14 +458,23 @@ namespace flutter_zoom_sdk {
 	}
 
 	// class AuthEvent 
-	AuthEvent::AuthEvent() {}
+	AuthEvent::AuthEvent(const EncodableMap& zoomMeetingOptions) : zoomMeetingOptions_(zoomMeetingOptions) {}
 
 	AuthEvent::~AuthEvent() {}
 
 	void AuthEvent::onAuthenticationReturn(ZOOM_SDK_NAMESPACE::AuthResult ret) {
-//		if (ret == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
-//			plagin->joinMeeting();
-//		}
+		string isStartMeetingStr = get<string>(zoomMeetingOptions_.find(EncodableValue("isStartMeeting"))->second);
+		bool isStartMeeting = (isStartMeetingStr == "true");
+
+		if (ret == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
+			if (isStartMeeting) {
+			plagin->startMeeting();
+        } else {
+			plagin->joinMeeting();
+		}
+
+		_cputts(L"onAuthenticationReturn succeeded\n");
+		}
 	}
 
 	void AuthEvent::onLoginReturnWithReason(ZOOM_SDK_NAMESPACE::LOGINSTATUS ret, ZOOM_SDK_NAMESPACE::IAccountInfo* pAccountInfo, ZOOM_SDK_NAMESPACE::LoginFailReason reason) {}
