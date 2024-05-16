@@ -10,6 +10,8 @@ project 'Runner', {
   'Release' => :release,
 }
 
+zoom_sdk_version = '5.17.10.13930'
+
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
   unless File.exist?(generated_xcode_build_settings_path)
@@ -33,6 +35,8 @@ target 'Runner' do
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
+
+pod 'MobileRTC', :podspec => "https://github.com/rentready/zoom-ios-sdk-frameworks/raw/#{zoom_sdk_version}/MobileRTC.podspec"
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
