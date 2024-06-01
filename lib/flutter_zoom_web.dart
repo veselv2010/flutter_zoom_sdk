@@ -154,9 +154,11 @@ class ZoomViewWeb extends ZoomPlatform {
     ZoomMtg.join(JoinParams(
         meetingNumber: options.meetingId,
         userName: options.displayName ?? options.userId ?? 'user',
+        userEmail: options.userId,
         signature: options.signature!,
         sdkKey: options.sdkKey!,
         passWord: options.meetingPassword,
+        zak: options.zoomAccessToken,
         success: allowInterop((var res) {
           completer.complete(["MEETING STATUS", "SUCCESS"]);
         }),
@@ -175,6 +177,7 @@ class ZoomViewWeb extends ZoomPlatform {
       JoinParams(
         meetingNumber: options.meetingId,
         userName: options.displayName ?? options.userId,
+        userEmail: options.userId,
         signature: options.signature!,
         sdkKey: options.sdkKey!,
         passWord: options.meetingPassword,
