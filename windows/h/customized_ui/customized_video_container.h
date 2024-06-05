@@ -238,6 +238,12 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError Resize(RECT rc) = 0;
 
+	/// \brief Set the video container background color.
+	/// \param color Specify the color of the video container background in RGB format.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetBkColor(unsigned long color) = 0;
+
 	/// \brief Get the list of video render elements in the current container.
 	/// \return If the function succeeds, the return value is the list that stores the video render element.
 	///Otherwise failed, the return list is blank.

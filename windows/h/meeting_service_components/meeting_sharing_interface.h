@@ -8,24 +8,6 @@
 #include "zoom_sdk_def.h"
 
 BEGIN_ZOOM_SDK_NAMESPACE
-/*! \enum SharingStatus
-    \brief Sharing status.
-    Here are more detailed structural descriptions..
-*/
-enum SharingStatus
-{
-	Sharing_Self_Send_Begin,///<Begin to share by the user himself.
-	Sharing_Self_Send_End,///<Stop sharing by the user.
-	Sharing_Self_Send_Pure_Audio_Begin,///<Begin to share pure audio by the user himself.
-	Sharing_Self_Send_Pure_Audio_End,///<Stop sharing pure audio by the user.
-	Sharing_Other_Share_Begin,///<Others begin to share.
-	Sharing_Other_Share_End,///<Others stop sharing.
-	Sharing_Other_Share_Pure_Audio_Begin,///<Others begin to share pure audio.
-	Sharing_Other_Share_Pure_Audio_End,///<Others stop sharing pure audio.
-	Sharing_View_Other_Sharing,///<View the sharing of others.
-	Sharing_Pause,///<Pause sharing.
-	Sharing_Resume,///<Resume sharing.
-};
 /*! \enum ShareSettingType
 	\brief Share setting type.
 	Here are more detailed structural descriptions..
@@ -47,22 +29,6 @@ enum AudioShareMode
 {
 	AudioShareMode_Mono,		///Mono mode.
 	AudioShareMode_Stereo		///Stereo mode
-};
-
-enum CannotShareReasonType
-{
-	CannotShareReasonType_None,
-	CannotShareReasonType_Locked,		                   ///<Only the host can share.
-	CannotShareReasonType_Disabled,                        ///<Sharing is disabled.
-	CannotShareReasonType_Other_Screen_Sharing,		       ///<Another is sharing their screen.
-	CannotShareReasonType_Other_WB_Sharing,                ///<Another is sharing their whiteboard.
-	CannotShareReasonType_Need_Grab_Myself_Screen_Sharing, ///<The user is sharing their screen, and can grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
-	CannotShareReasonType_Need_Grab_Other_Screen_Sharing,  ///<Another is sharing their screen, and can grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
-	CannotShareReasonType_Need_Grab_Audio_Sharing,         ///<Another is sharing pure computer audio, and can grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
-	CannotShareReasonType_Need_Grap_WB_Sharing,            ///<Other or myself is sharing whiteboard, and can Grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
-	CannotShareReasonType_Reach_Maximum,                   ///<The meeting has reached the maximum allowed screen share sessions.
-	CannotShareReasonType_Have_Share_From_Mainsession,     ///<Other share screen in main session.
-	CannotShareReasonType_UnKnown,
 };
 
 /*! \struct tagViewableShareSource
@@ -139,7 +105,7 @@ public:
 	/// \brief Cancel to switch multi-share to single share. All sharing will be remained.
 	virtual SDKError Cancel() = 0;
 
-	/// \brief Switch multi-share to single share. All sharing will be remained.
+	/// \brief Switch multi-share to single share. All sharing will be stopped.
 	virtual SDKError Confirm() = 0;
 
 	virtual ~IShareSwitchMultiToSingleConfirmHandler() {};
@@ -273,6 +239,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid only for ZOOM style user interface mode.
+	/// \deprecated This interface is marked as deprecated
 	virtual SDKError ViewShare(unsigned int userid, SDKViewType type) = 0;
 
 	/// \brief Start sharing with White board.
@@ -456,7 +423,28 @@ public:
 	/// \brief Determine whether the user can share video files.
 	/// \return True indicates that the user can share video files. Otherwise False.
 	virtual bool CanShareVideoFile() = 0;
+
 #if defined(WIN32)
+	/// \brief Determine whether the user can share to the breakout room.
+	/// \return True indicates that the user can share to the breakout room.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for user custom interface mode only.	
+	virtual SDKError CanEnableShareToBO(bool& bCan) = 0;
+
+	/// \brief Set to enable sharing to the breakout room. 
+	/// \param bEnable TRUE indicates to enable. FALSE indicates that sharing to the breakout room is not enabled.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for user custom interface mode only.	
+	virtual SDKError EnableShareToBO(bool bEnable) = 0;
+
+	/// \brief Determine if sharing to the breakout room is enabled. 
+	/// \param bEnabled TRUE indicates that the sharing is locked. 
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Valid for user custom interface mode only.	
+	virtual SDKError IsShareToBOEnabled(bool& bEnabled) = 0;
+
 	/// \brief Share the video file.
 	/// \param filePath Specify the video file path. Only supports mov, mp4, or avi format.
 	/// \return If the function succeeds, the return value is SDKErr_Success.

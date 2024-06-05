@@ -1,35 +1,12 @@
 #ifndef _MEETING_SMART_SUMMARY_INTERFACE_H_
 #define _MEETING_SMART_SUMMARY_INTERFACE_H_
 #include "zoom_sdk_def.h"
+#include "meeting_ai_companion_interface.h"
 
 BEGIN_ZOOM_SDK_NAMESPACE
 
-
-/*! \class ISmartSummaryStartRequestHandler
-	\brief Interface to handle start smart summary request
-*/
-class ISmartSummaryPrivilegeHandler
-{
-public:
-	virtual ~ISmartSummaryPrivilegeHandler() {};
-
-	/// \brief Agree the start smart summary request.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError Accept() = 0;
-
-	/// \brief Decline the start smart summary request.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError Decline() = 0;
-
-	/// \brief Ignore the start smart summary request.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError Ignore() = 0;
-};
 /// \brief Meeting smart summary callback event.
-///
+/// \deprecated This class is marked as deprecated, and is replaced by class IMeetingSmartSummaryHelperEvent.
 class IMeetingSmartSummaryControllerEvent
 {
 public:
@@ -56,8 +33,8 @@ public:
 };
 
 /// \brief Meeting smart summary controller interface.
-///
-class IMeetingSmartSummaryController
+/// \deprecated This class is marked as deprecated, and is replaced by class IMeetingSmartSummaryHelper.
+class IMeetingSmartSummaryController : public IMeetingSmartSummaryHelper
 {
 public:
 	virtual ~IMeetingSmartSummaryController() {}
@@ -65,63 +42,6 @@ public:
 	/// \brief Set the smart summary callback event handler.
 	/// \param event A pointer to the IMeetingSmartSummaryControllerEvent that receives the smart summary event. 
 	virtual void SetEvent(IMeetingSmartSummaryControllerEvent* event) = 0;
-
-	/// \brief Determine if current meeting support smart summary feature.
-	/// \return True means the current meeting support smart summary feature, False means not supported.
-	virtual bool IsSmartSummarySupported() = 0;
-
-	/// \brief Determine if smart summary feature is enabled in the meeting.
-	/// \return True means smart summary feature is enabled.
-	virtual bool IsSmartSummaryEnabled() = 0;
-
-	/// \brief Whether the current user can enable the smart summary feature for the account.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError CanEnableSmartSummaryFeature() = 0;
-
-	/// \brief Enable the smart summary feature for the account.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableSmartSummaryFeature() = 0;
-
-	/// \brief Whether the current user is able to start smart summary.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError CanStartSmartSummary() = 0;
-
-	/// \brief Start smart summary.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError StartSmartSummary() = 0;
-
-	/// \brief Stop smart summary.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError StopSmartSummary() = 0;
-
-	/// \brief Query whether smart summary is started.
-	/// \return True means smart summary is started, false means not.
-	virtual bool IsSmartSummaryStarted() = 0;
-
-	/// \brief Whether the current user can request the admin to enable the smart summary feature for the account.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError CanRequestEnableSmartSummaryFeature() = 0;
-
-	/// \brief Request the admin to enable the smart summary feature for the account.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError RequestEnableSmartSummaryFeature() = 0;
-
-	/// \brief Whether the current user can request host to start the smart summary for the current meeting.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError CanRequestStartSmartSummary() = 0;
-
-	/// \brief Request the host to start the smart summary for the current meeting.
-	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError RequestStartSmartSummary() = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE

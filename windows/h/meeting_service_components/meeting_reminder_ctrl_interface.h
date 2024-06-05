@@ -25,13 +25,13 @@ enum MeetingReminderType
 	TYPE_TERMS_OF_SERVICE, ///Reminder type of Terms of service or privacy statement changed.
 	TYPE_SMART_SUMMARY_DISCLAIMER, ///<Reminder type of smart summary disclaimer.
 	TYPE_SMART_SUMMARY_ENABLE_REQUEST_REMINDER, ///<Reminder type of smart summary enable request.
-	TYPE_QUERY_DISCLAIMER, ///<Reminder type of query disclaimer.
-	TYPE_QUERY_ENABLE_REQUEST_REMINDER, ///<Reminder type of query enable request.
+	TYPE_QUERY_DISCLAIMER, ///<Reminder type of query disclaimer. This type is marked as deprecated.
+	TYPE_QUERY_ENABLE_REQUEST_REMINDER, ///<Reminder type of query enable request. This type is marked as deprecated.
 	TYPE_ENABLE_SMART_SUMMARY_REMINDER,///<Reminder type of enable smart summary.
 	TYPE_WEBINAR_ATTENDEE_PROMOTE_REMINDER,///<Reminder type of webinar promote attendee.
 	TYPE_JOIN_PRIVATE_MODE_MEETING_REMINDER,///<Reminder type of joining a meeting with private mode.
-	TYPE_SMART_RECORDING_ENABLE_REQUEST_REMINDER,///<Reminder type to enable smart recording request.
-	TYPE_ENABLE_SMART_RECORDING_REMINDER,///<Reminder type to enable smart recording.
+	TYPE_SMART_RECORDING_ENABLE_REQUEST_REMINDER,///<Reminder type to enable smart recording request. This type is marked as deprecated.
+	TYPE_ENABLE_SMART_RECORDING_REMINDER,///<Reminder type to enable smart recording. This type is marked as deprecated.
 	TYPE_AI_COMPANION_PLUS_DISCLAIMER,///<Reminder type of AICompanionPlus disclaimer.
 	TYPE_CLOSED_CAPTION_DISCLAIMER,///<Reminder type of Close Caption disclaimer.
 	TYPE_MULTI_DISCLAIMER,///<Reminder type of disclaimers combination. 
@@ -76,11 +76,11 @@ class IMeetingReminderHandler
 public:
 	virtual ~IMeetingReminderHandler() {};
 	/// \brief Ignore the reminder.
-	virtual void  Ignore() = 0;
+	virtual SDKError  Ignore() = 0;
 	/// \brief Accept the reminder.
-	virtual void  Accept() = 0;
+	virtual SDKError  Accept() = 0;
 	/// \brief Decline the reminder.
-	virtual void  Decline() = 0;
+	virtual SDKError  Decline() = 0;
 };
 
 /*! \enum FeatureEnableOption

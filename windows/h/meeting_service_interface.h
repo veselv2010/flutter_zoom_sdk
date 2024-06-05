@@ -506,6 +506,7 @@ class IMeetingWhiteboardController;
 class IMeetingSmartSummaryController;
 class IMeetingEncryptionController;
 class IMeetingRemoteSupportController;
+class IMeetingAICompanionController;
 /// \brief Meeting Service Interface
 ///
 class IMeetingService
@@ -629,6 +630,7 @@ public:
 	
 	/// \brief Get the smart summary controller.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingSmartSummaryController. Otherwise the function returns NULL.
+	/// \deprecated This interface is marked as deprecated, and is replaced by GetMeetingSmartSummaryHelper() in class IMeetingAICompanionController.
 	virtual IMeetingSmartSummaryController* GetMeetingSmartSummaryController() = 0;
 
 	/// \brief Get the chat controller interface.
@@ -642,6 +644,10 @@ public:
 	/// \brief Get the meeting configuration interface.
 	/// \return If the function succeeds, the return value is the meeting configuration interface. Otherwise returns NULL.
 	virtual IMeetingConfiguration* GetMeetingConfiguration() = 0;
+
+	/// \brief Get the AI companion controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingAICompanionController. Otherwise the function returns NULL.
+	virtual IMeetingAICompanionController* GetMeetingAICompanionController() = 0;
 	
 #if defined(WIN32)
 
