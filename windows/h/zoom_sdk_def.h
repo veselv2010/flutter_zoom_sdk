@@ -359,6 +359,40 @@ enum ZoomSDKAudioChannel
 	ZoomSDKAudioChannel_Stereo,
 };
 
+enum CannotShareReasonType
+{
+	CannotShareReasonType_None,
+	CannotShareReasonType_Locked,		                   ///<Only the host can share.
+	CannotShareReasonType_Disabled,                        ///<Sharing is disabled.
+	CannotShareReasonType_Other_Screen_Sharing,		       ///<Another is sharing their screen.
+	CannotShareReasonType_Other_WB_Sharing,                ///<Another is sharing their whiteboard.
+	CannotShareReasonType_Need_Grab_Myself_Screen_Sharing, ///<The user is sharing their screen, and can grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
+	CannotShareReasonType_Need_Grab_Other_Screen_Sharing,  ///<Another is sharing their screen, and can grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
+	CannotShareReasonType_Need_Grab_Audio_Sharing,         ///<Another is sharing pure computer audio, and can grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
+	CannotShareReasonType_Need_Grap_WB_Sharing,            ///<Other or myself is sharing whiteboard, and can Grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
+	CannotShareReasonType_Reach_Maximum,                   ///<The meeting has reached the maximum allowed screen share sessions.
+	CannotShareReasonType_Have_Share_From_Mainsession,     ///<Other share screen in main session.
+	CannotShareReasonType_UnKnown,
+};
+
+/*! \enum SharingStatus
+	\brief Sharing status.
+	Here are more detailed structural descriptions..
+*/
+enum SharingStatus
+{
+	Sharing_Self_Send_Begin,///<Begin to share by the user himself.
+	Sharing_Self_Send_End,///<Stop sharing by the user.
+	Sharing_Self_Send_Pure_Audio_Begin,///<Begin to share pure audio by the user himself.
+	Sharing_Self_Send_Pure_Audio_End,///<Stop sharing pure audio by the user.
+	Sharing_Other_Share_Begin,///<Others begin to share.
+	Sharing_Other_Share_End,///<Others stop sharing.
+	Sharing_Other_Share_Pure_Audio_Begin,///<Others begin to share pure audio.
+	Sharing_Other_Share_Pure_Audio_End,///<Others stop sharing pure audio.
+	Sharing_View_Other_Sharing,///<View the sharing of others.
+	Sharing_Pause,///<Pause sharing.
+	Sharing_Resume,///<Resume sharing.
+};
 END_ZOOM_SDK_NAMESPACE
 
 #endif

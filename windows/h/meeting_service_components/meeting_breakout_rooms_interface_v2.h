@@ -57,6 +57,10 @@
 #define _MEETING_BREAKOUT_ROOMS_INTERFACE2_H_
 #include "zoom_sdk_def.h"
 
+#if defined(WIN32)
+#include "customized_ui/customized_share_render.h"
+#endif
+
 BEGIN_ZOOM_SDK_NAMESPACE
 
 typedef enum
@@ -581,6 +585,14 @@ public:
 	/// \brief The status of broadcasting voice to BO has been changed.
 	/// \param bStart true for start and false for stop.
 	virtual void onBroadcastBOVoiceStatus(bool bStart) = 0;
+#if defined(WIN32)
+	/// \brief You will receive this event when you are in a breakout room and someone shares from the main session to the breakout room.
+	/// \param iSharingID The sharing ID.
+	/// \param status The sharing status. For more details, see \link SharingStatus \endlink enum.
+	/// \param pShareAction The pointer of share action object. For more details, see \link IShareAction \endlink.
+	/// \remarks Valid for user custom interface mode only.
+	virtual void onShareFromMainSession(const unsigned int iSharingID, SharingStatus status, IShareAction* pShareAction) = 0;
+#endif
 };
 
 /// \brief Meeting breakout rooms controller interface
