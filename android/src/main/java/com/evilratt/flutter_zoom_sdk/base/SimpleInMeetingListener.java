@@ -2,8 +2,12 @@ package com.evilratt.flutter_zoom_sdk.base;
 
 import java.util.List;
 
+import us.zoom.sdk.CameraControlRequestType;
 import us.zoom.sdk.ChatMessageDeleteType;
 import us.zoom.sdk.FreeMeetingNeedUpgradeType;
+import us.zoom.sdk.ICameraControlRequestHandler;
+import us.zoom.sdk.IMeetingArchiveConfirmHandler;
+import us.zoom.sdk.IMeetingInputUserInfoHandler;
 import us.zoom.sdk.IRequestLocalRecordingPrivilegeHandler;
 import us.zoom.sdk.InMeetingAudioController;
 import us.zoom.sdk.InMeetingChatController;
@@ -23,6 +27,11 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onWebinarNeedRegister(String s) {
+
+    }
+
+    @Override
+    public void onJoinMeetingNeedUserInfo(IMeetingInputUserInfoHandler iMeetingInputUserInfoHandler) {
 
     }
 
@@ -337,7 +346,22 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     }
 
     @Override
+    public void onUserConfirmToStartArchive(IMeetingArchiveConfirmHandler iMeetingArchiveConfirmHandler) {
+
+    }
+
+    @Override
+    public void onCameraControlRequestReceived(long l, CameraControlRequestType cameraControlRequestType, ICameraControlRequestHandler iCameraControlRequestHandler) {
+
+    }
+
+    @Override
     public void onWebinarNeedInputScreenName(InMeetingEventHandler handler) {
+
+    }
+
+    @Override
+    public void onCameraControlRequestResult(long userId, boolean isApproved) {
 
     }
 }
