@@ -7,8 +7,10 @@ import us.zoom.sdk.IBOAssistant;
 import us.zoom.sdk.IBOAttendee;
 import us.zoom.sdk.IBOCreator;
 import us.zoom.sdk.IBOData;
+import us.zoom.sdk.IShareAction;
 import us.zoom.sdk.InMeetingBOControllerListener;
 import us.zoom.sdk.ReturnToMainSessionHandler;
+import us.zoom.sdk.SharingStatus;
 
 public abstract class SimpleInMeetingBOControllerListener implements InMeetingBOControllerListener {
     @Override
@@ -93,6 +95,11 @@ public abstract class SimpleInMeetingBOControllerListener implements InMeetingBO
 
     @Override
     public void onBOSwitchRequestReceived(String strNewBOName, String strNewBOID) {
+
+    }
+
+    @Override
+    public void onShareFromMainSession(long l, SharingStatus sharingStatus, IShareAction iShareAction) {
 
     }
 }
