@@ -262,11 +262,18 @@ class ZoomView extends ZoomPlatform {
     if (isWindows) {
       await channel.invokeMethod<bool>('show_meeting');
       await channel.invokeMethod<bool>('hide_meeting');
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
     }
 
     return await channel
         .invokeMethod<bool>('hide_meeting')
+        .then<bool>((bool? value) => value ?? false);
+  }
+
+  @override
+  Future<bool> disableWindowStyles() async {
+    return await channel
+        .invokeMethod<bool>('disable_window_styles')
         .then<bool>((bool? value) => value ?? false);
   }
 

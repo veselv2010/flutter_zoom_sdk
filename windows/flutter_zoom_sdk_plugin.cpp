@@ -5,10 +5,16 @@
 // This must be included before many other Windows headers.
 #include <windows.h>
 
+// This header contains the programming interfaces for various Windows controls, such as buttons,
+// combo boxes, date and time pickers, and toolbars.
+#include <commctrl.h>
+
 // For getPlatformVersion; remove unless needed for your plugin implementation.
 #include <VersionHelpers.h>
 
 #include <codecvt>
+
+#pragma comment(lib, "Comctl32.lib")
 
 namespace flutter_zoom_sdk {
 	FlutterZoomSdkPlugin* plagin;
@@ -135,6 +141,11 @@ namespace flutter_zoom_sdk {
 		}
 		else if (method_call.method_name().compare("hide_meeting") == 0) {
 			bool res = FlutterZoomSdkPlugin::hideMeeting();
+
+			result->Success(EncodableValue(res));
+		}
+		else if (method_call.method_name().compare("disable_window_styles") == 0) {
+			bool res = FlutterZoomSdkPlugin::disableWindowStyles();
 
 			result->Success(EncodableValue(res));
 		}
@@ -432,6 +443,15 @@ namespace flutter_zoom_sdk {
 		return false;
 	}
 
+	bool FlutterZoomSdkPlugin::disableWindowStyles() {
+	  if (FlutterZoomSdkPlugin::MeetingService) {
+		ZoomWindowHelper::SetupZoomWindow(FlutterZoomSdkPlugin::MeetingService);
+		return true;
+	  }
+
+	  return false;
+	}
+
 	void FlutterZoomSdkPlugin::pressWinAndDownKeys() {
 		INPUT inputs[4] = {};
 		ZeroMemory(inputs, sizeof(inputs));
@@ -457,7 +477,76 @@ namespace flutter_zoom_sdk {
 		}
 	}
 
-	// class AuthEvent 
+	LRESULT CALLBACK ZoomWindowHelper::CustomWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData) {
+		switch (uMsg) {
+			case WM_NCLBUTTONDBLCLK:
+				// Prevent double-click on title bar
+				return 0;
+			case WM_SYSCOMMAND:
+				// Prevent system commands like maximize and restore
+				if (wParam == SC_MAXIMIZE || wParam == SC_RESTORE) {
+					return 0;
+				}
+				break;
+			default:
+				break;
+		}
+
+		return DefSubclassProc(hwnd, uMsg, wParam, lParam);
+	}
+
+	void ZoomWindowHelper::DisableWindowControls(HWND hWnd) {
+		if (hWnd) {
+			// Remove minimize, maximize, and close buttons
+			LONG_PTR style = GetWindowLongPtr(hWnd, GWL_STYLE);
+			style &= ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU);
+			style |= WS_CAPTION;
+			SetWindowLongPtr(hWnd, GWL_STYLE, style);
+			SetWindowPos(hWnd, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+
+			// Subclass the window procedure to intercept messages
+			SetWindowSubclass(hWnd, CustomWindowProc, 0, 0);
+		}
+	}
+
+	void ZoomWindowHelper::SetWindowSizeAndPosition(HWND hWnd) {
+		if (hWnd) {
+			// Get the screen dimensions
+			RECT screenRect;
+			GetWindowRect(GetDesktopWindow(), &screenRect);
+			int screenWidth = screenRect.right;
+			int screenHeight = screenRect.bottom;
+
+			// Calculate the desired window dimensions and position
+			int windowWidth = screenWidth / 2;
+			int windowHeight = screenHeight;
+			int windowX = screenWidth / 2;
+			int windowY = 0;
+
+			// Set the window size and position
+			SetWindowPos(hWnd, NULL, windowX, windowY, windowWidth, windowHeight, SWP_NOZORDER | SWP_FRAMECHANGED);
+		}
+	}
+
+	void ZoomWindowHelper::SetupZoomWindow(ZOOM_SDK_NAMESPACE::IMeetingService* pMeetingService) {
+		if (pMeetingService) {
+			ZOOM_SDK_NAMESPACE::IMeetingUIController* pUIController = pMeetingService->GetUIController();
+
+			if (pUIController) {
+				HWND firstView = NULL;
+				HWND secondView = NULL;
+
+				pUIController->GetMeetingUIWnd(firstView, secondView);
+
+				if (firstView) {
+					DisableWindowControls(firstView);
+					SetWindowSizeAndPosition(firstView);
+				}
+			}
+		}
+	}
+
+	// class AuthEvent
 	AuthEvent::AuthEvent(const EncodableMap& zoomMeetingOptions) : zoomMeetingOptions_(zoomMeetingOptions) {}
 
 	AuthEvent::~AuthEvent() {}
@@ -490,7 +579,7 @@ namespace flutter_zoom_sdk {
 	void AuthEvent::onNotificationServiceStatus(ZOOM_SDK_NAMESPACE::SDKNotificationServiceStatus status, ZOOM_SDK_NAMESPACE::SDKNotificationServiceError error) {}
 
 
-	// class MeetingServiceEvent 
+	// class MeetingServiceEvent
 	MeetingServiceEvent::MeetingServiceEvent() {}
 
 	MeetingServiceEvent::~MeetingServiceEvent() {}
@@ -520,6 +609,6 @@ namespace flutter_zoom_sdk {
 
 	void MeetingServiceEvent::onSuspendParticipantsActivities(){}
 
-	void MeetingServiceEvent::onAICompanionActiveChangeNotice(bool bActive){}
+	void MeetingServiceEvent::onAICompanionActiveChangeNotice(bool bActive) {}
 
 }  // namespace flutter_zoom_sdk
