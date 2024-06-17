@@ -511,17 +511,17 @@ namespace flutter_zoom_sdk {
 
 	void ZoomWindowHelper::SetWindowSizeAndPosition(HWND hWnd) {
 		if (hWnd) {
-			// Get the screen dimensions
-			RECT screenRect;
-			GetWindowRect(GetDesktopWindow(), &screenRect);
-			int screenWidth = screenRect.right;
-			int screenHeight = screenRect.bottom;
+            // Get the work area dimensions (excluding taskbar)
+            RECT workAreaRect;
+            SystemParametersInfo(SPI_GETWORKAREA, 0, &workAreaRect, 0);
+            int workAreaWidth = workAreaRect.right - workAreaRect.left;
+            int workAreaHeight = workAreaRect.bottom - workAreaRect.top;
 
-			// Calculate the desired window dimensions and position
-			int windowWidth = screenWidth / 2;
-			int windowHeight = screenHeight;
-			int windowX = screenWidth / 2;
-			int windowY = 0;
+            // Calculate the desired window dimensions and position
+            int windowWidth = workAreaWidth / 2;
+            int windowHeight = workAreaHeight;
+            int windowX = workAreaWidth / 2;
+            int windowY = 0;
 
 			// Set the window size and position
 			SetWindowPos(hWnd, NULL, windowX, windowY, windowWidth, windowHeight, SWP_NOZORDER | SWP_FRAMECHANGED);
