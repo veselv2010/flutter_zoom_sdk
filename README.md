@@ -86,20 +86,14 @@ post_install do |installer|
 end
 ```
 
-**NOTE for testing on the iOS simulator**
+**Add MobileRTC from Rent Ready private repository.**
 
-If you want to use the iOS Simulator to test your app, you will need to ensure you have the iOS Dev Zoom SDK as a dependency.
-
-To use the Dev Zoom SDK, run the following
-```shell script
-flutter pub run flutter_zoom_sdk:unzip_zoom_sdk dev
-```
-
-To switch back to the normal Zoom SDK, simply run
-
-```shell script
-flutter pub run flutter_zoom_sdk:unzip_zoom_sdk
-```
+1. Choose compatible version number from [zoom-ios-sdk-frameworks repository](https://github.com/rentready/zoom-ios-sdk-frameworks).
+2. Specify that version in the `ios/Podfile`:
+    ```
+    zoom_sdk_version = 'your_version_number'
+    pod 'MobileRTC', :podspec => "https://github.com/rentready/zoom-ios-sdk-frameworks/raw/#{zoom_sdk_version}/MobileRTC.podspec"
+    ```
 
 ### Android
 
