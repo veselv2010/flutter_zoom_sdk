@@ -584,21 +584,103 @@ namespace flutter_zoom_sdk {
 
 	MeetingServiceEvent::~MeetingServiceEvent() {}
 
-	void MeetingServiceEvent::onMeetingStatusChanged(ZOOM_SDK_NAMESPACE::MeetingStatus status, int iResult) {
-		if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_INMEETING) {
+	void MeetingServiceEvent::onMeetingStatusChanged(ZOOM_SDK_NAMESPACE::MeetingStatus status,
+													 int iResult)
+	{
+		if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_IDLE) {
 			EncodableList results;
-
+			results.push_back(EncodableValue("MEETING_STATUS_IDLE"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_CONNECTING) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_CONNECTING"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_WAITINGFORHOST) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_WAITINGFORHOST"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_INMEETING) {
+			EncodableList results;
 			results.push_back(EncodableValue("MEETING_STATUS_INMEETING"));
 			results.push_back(EncodableValue(iResult));
-
 			plagin->meeting_event_sink_->Success(results);
 		}
 		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_DISCONNECTING) {
 			EncodableList results;
-
 			results.push_back(EncodableValue("MEETING_STATUS_DISCONNECTING"));
 			results.push_back(EncodableValue(iResult));
-
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_RECONNECTING) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_RECONNECTING"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_FAILED) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_FAILED"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_ENDED) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_ENDED"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_UNKNOW) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_UNKNOW"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_LOCKED) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_LOCKED"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_UNLOCKED) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_UNLOCKED"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_IN_WAITING_ROOM) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_IN_WAITING_ROOM"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_WEBINAR_PROMOTE) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_WEBINAR_PROMOTE"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_WEBINAR_DEPROMOTE) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_WEBINAR_DEPROMOTE"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_JOIN_BREAKOUT_ROOM) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_JOIN_BREAKOUT_ROOM"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_LEAVE_BREAKOUT_ROOM) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_LEAVE_BREAKOUT_ROOM"));
+			results.push_back(EncodableValue(iResult));
 			plagin->meeting_event_sink_->Success(results);
 		}
 	}
