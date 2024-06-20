@@ -13,6 +13,8 @@
 #include <sstream>
 #include <thread>
 #include <future>
+#include <vector>
+#include <string>
 
 #include <zoom_sdk.h>
 #include <meeting_service_interface.h>
@@ -20,12 +22,24 @@
 #include <setting_service_interface.h>
 #include <meeting_service_components/meeting_ui_ctrl_interface.h>
 #include <meeting_service_components/meeting_configuration_interface.h>
+#include <meeting_service_components/meeting_participants_ctrl_interface.h>
 
 namespace flutter_zoom_sdk {
 	using flutter::EncodableList;
 	using flutter::EncodableMap;
 	using flutter::EncodableValue;
 	using namespace std;
+
+	struct ParticipantInfo
+	{
+		std::wstring userName;
+		std::wstring customerKey;
+		bool isHost;
+		bool isVideoOn;
+		bool isAudioMuted;
+		bool isTalking;
+		bool hasCamera;
+	};
 
 	class FlutterZoomSdkPlugin : public flutter::Plugin {
 	public:
@@ -44,6 +58,8 @@ namespace flutter_zoom_sdk {
 		void joinMeeting();
 
 		bool startMeeting();
+
+		flutter::EncodableList getParticipants();
 
 	private:
 		ZOOM_SDK_NAMESPACE::IAuthService* AuthService;
@@ -93,6 +109,11 @@ namespace flutter_zoom_sdk {
 	  static void SetupZoomWindow(ZOOM_SDK_NAMESPACE::IMeetingService *pMeetingService);
 
 	  static void SetWindowSizeAndPosition(HWND hWnd);
+	};
+
+	class ZoomParticipantsHelper {
+	public:
+	  static std::vector <ParticipantInfo> GetParticipantsList(ZOOM_SDK_NAMESPACE::IMeetingService *pMeetingService);
 	};
 
 	class AuthEvent : public ZOOM_SDK_NAMESPACE::IAuthServiceEvent {
