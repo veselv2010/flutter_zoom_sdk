@@ -152,6 +152,7 @@ class ZoomViewWeb extends ZoomPlatform {
   Future<List> startMeeting(ZoomMeetingOptions options) async {
     final Completer<List> completer = Completer();
     ZoomMtg.join(JoinParams(
+        customerKey: options.customerKey,
         meetingNumber: options.meetingId,
         userName: options.displayName ?? options.userId ?? 'user',
         userEmail: options.userId,
@@ -175,6 +176,7 @@ class ZoomViewWeb extends ZoomPlatform {
     // final Completer<bool> completer = Completer();
     ZoomMtg.join(
       JoinParams(
+        customerKey: options.customerKey,
         meetingNumber: options.meetingId,
         userName: options.displayName ?? options.userId,
         userEmail: options.userId,
