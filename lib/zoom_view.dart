@@ -1,6 +1,6 @@
 import 'dart:async';
+
 import 'package:flutter/services.dart';
-import 'package:flutter_zoom_sdk/models/audio_types.dart';
 import 'package:flutter_zoom_sdk/zoom_platform_view.dart';
 
 class ZoomView extends ZoomPlatform {
@@ -39,6 +39,24 @@ class ZoomView extends ZoomPlatform {
         .then<List>((List? value) => value ?? List.empty());
   }
 
+  @override
+  Future<bool> initZoomWindows(ZoomOptions options) async {
+    var optionsMap = <String, Map>{};
+    var initOptionsMap = <String, String?>{};
+
+    initOptionsMap.putIfAbsent("appKey", () => options.appKey);
+    initOptionsMap.putIfAbsent("appSecret", () => options.appSecret);
+    initOptionsMap.putIfAbsent("returnBtnMsg", () => options.returnBtnMsg);
+    initOptionsMap.putIfAbsent("jwtToken", () => options.jwtToken);
+    initOptionsMap.putIfAbsent("domain", () => options.domain);
+
+    optionsMap.putIfAbsent('initOptions', () => initOptionsMap);
+
+    return await channel
+        .invokeMethod<bool>('init', optionsMap)
+        .then<bool>((bool? value) => value ?? false);
+  }
+
   /// The event channel used to interact with windows init and join functions
   @override
   Future<bool> initZoomAndJoinMeeting(
@@ -51,7 +69,6 @@ class ZoomView extends ZoomPlatform {
 
     initOptionsMap.putIfAbsent("jwtToken", () => zoomOptions.jwtToken);
     initOptionsMap.putIfAbsent("domain", () => zoomOptions.domain);
-
     meetingOptionsMap.putIfAbsent(
         "displayName", () => meetingOptions.displayName);
     meetingOptionsMap.putIfAbsent("meetingId", () => meetingOptions.meetingId);
@@ -59,12 +76,49 @@ class ZoomView extends ZoomPlatform {
         "meetingPassword", () => meetingOptions.meetingPassword);
     meetingOptionsMap.putIfAbsent("noAudio", () => meetingOptions.noAudio);
     meetingOptionsMap.putIfAbsent("noVideo", () => meetingOptions.noVideo);
+    meetingOptionsMap.putIfAbsent(
+        "zoomAccessToken", () => meetingOptions.zoomAccessToken);
+    meetingOptionsMap.putIfAbsent("userId", () => meetingOptions.userId);
+
+    meetingOptionsMap.putIfAbsent("isStartMeeting", () => 'false');
 
     optionsMap.putIfAbsent('initOptions', () => initOptionsMap);
     optionsMap.putIfAbsent('meetingOptions', () => meetingOptionsMap);
 
     return await channel
         .invokeMethod<bool>('init_and_join', optionsMap)
+        .then<bool>((bool? value) => value ?? false);
+  }
+
+  @override
+  Future<bool> initZoomAndStartMeeting(
+    ZoomOptions zoomOptions,
+    ZoomMeetingOptions meetingOptions,
+  ) async {
+    var optionsMap = <String, Map>{};
+    var initOptionsMap = <String, String?>{};
+    var meetingOptionsMap = <String, String?>{};
+
+    initOptionsMap.putIfAbsent("jwtToken", () => zoomOptions.jwtToken);
+    initOptionsMap.putIfAbsent("domain", () => zoomOptions.domain);
+    meetingOptionsMap.putIfAbsent(
+        "displayName", () => meetingOptions.displayName);
+    meetingOptionsMap.putIfAbsent("meetingId", () => meetingOptions.meetingId);
+    meetingOptionsMap.putIfAbsent(
+        "meetingPassword", () => meetingOptions.meetingPassword);
+    meetingOptionsMap.putIfAbsent("noAudio", () => meetingOptions.noAudio);
+    meetingOptionsMap.putIfAbsent("noVideo", () => meetingOptions.noVideo);
+    meetingOptionsMap.putIfAbsent(
+        "zoomAccessToken", () => meetingOptions.zoomAccessToken);
+    meetingOptionsMap.putIfAbsent("userId", () => meetingOptions.userId);
+
+    meetingOptionsMap.putIfAbsent("isStartMeeting", () => 'true');
+
+    optionsMap.putIfAbsent('initOptions', () => initOptionsMap);
+    optionsMap.putIfAbsent('meetingOptions', () => meetingOptionsMap);
+
+    return await channel
+        .invokeMethod<bool>('init_and_start', optionsMap)
         .then<bool>((bool? value) => value ?? false);
   }
 
@@ -135,6 +189,35 @@ class ZoomView extends ZoomPlatform {
         .then<List>((List? value) => value ?? List.empty());
   }
 
+  @override
+  Future<bool> startMeetingWindows(ZoomMeetingOptions options) async {
+    var optionsMap = <String, Map>{};
+    var meetingOptionsMap = <String, String?>{};
+
+    meetingOptionsMap.putIfAbsent("meetingId", () => options.meetingId);
+    meetingOptionsMap.putIfAbsent("userId", () => options.userId);
+    meetingOptionsMap.putIfAbsent("userPassword", () => options.userPassword);
+    meetingOptionsMap.putIfAbsent(
+        "zoomAccessToken", () => options.zoomAccessToken);
+    meetingOptionsMap.putIfAbsent("disableDialIn", () => options.disableDialIn);
+    meetingOptionsMap.putIfAbsent("disableDrive", () => options.disableDrive);
+    meetingOptionsMap.putIfAbsent("disableInvite", () => options.disableInvite);
+    meetingOptionsMap.putIfAbsent("disableShare", () => options.disableShare);
+    meetingOptionsMap.putIfAbsent(
+        "disableTitlebar", () => options.disableTitlebar);
+    meetingOptionsMap.putIfAbsent("viewOptions", () => options.viewOptions);
+    meetingOptionsMap.putIfAbsent(
+        "noDisconnectAudio", () => options.noDisconnectAudio);
+    meetingOptionsMap.putIfAbsent("noAudio", () => options.noAudio);
+    meetingOptionsMap.putIfAbsent("noVideo", () => options.noVideo);
+
+    optionsMap.putIfAbsent('meetingOptions', () => meetingOptionsMap);
+
+    return await channel
+        .invokeMethod<bool>('login', optionsMap)
+        .then<bool>((bool? value) => value ?? false);
+  }
+
   /// The event channel used to interact with the native platform meetingStatus function
   @override
   Future<List> meetingStatus(String meetingId) async {
@@ -179,11 +262,18 @@ class ZoomView extends ZoomPlatform {
     if (isWindows) {
       await channel.invokeMethod<bool>('show_meeting');
       await channel.invokeMethod<bool>('hide_meeting');
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
     }
 
     return await channel
         .invokeMethod<bool>('hide_meeting')
+        .then<bool>((bool? value) => value ?? false);
+  }
+
+  @override
+  Future<bool> disableWindowStyles() async {
+    return await channel
+        .invokeMethod<bool>('disable_window_styles')
         .then<bool>((bool? value) => value ?? false);
   }
 

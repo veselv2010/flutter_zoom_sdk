@@ -1,15 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_zoom_sdk/zoom_options.dart';
 import 'package:flutter_zoom_sdk/zoom_view.dart';
-import 'package:crypto/crypto.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'models/audio_types.dart';
-export 'zoom_options.dart';
+
 export 'models/audio_types.dart';
+export 'zoom_options.dart';
 
 abstract class ZoomPlatform extends PlatformInterface {
   ZoomPlatform() : super(token: _token);
@@ -33,6 +34,11 @@ abstract class ZoomPlatform extends PlatformInterface {
     throw UnimplementedError('initZoom() has not been implemented.');
   }
 
+  /// Flutter Zoom SDK Initialization function
+  Future<bool> initZoomWindows(ZoomOptions options) async {
+    throw UnimplementedError('initZoomWindows() has not been implemented.');
+  }
+
   /// Flutter Zoom SDK Initialization and Join Meeting function for desktop
   Future<bool> initZoomAndJoinMeeting(
     ZoomOptions zoomOptions,
@@ -40,6 +46,14 @@ abstract class ZoomPlatform extends PlatformInterface {
   ) async {
     throw UnimplementedError(
         'initZoomAndJoinMeeting() has not been implemented.');
+  }
+
+  Future<bool> initZoomAndStartMeeting(
+    ZoomOptions zoomOptions,
+    ZoomMeetingOptions meetingOptions,
+  ) async {
+    throw UnimplementedError(
+        'initZoomAndStartMeeting() has not been implemented.');
   }
 
   /// Flutter Zoom SDK Generate Signature for Web and native platforms
@@ -87,6 +101,10 @@ abstract class ZoomPlatform extends PlatformInterface {
     throw UnimplementedError('startMeetingNormal() has not been implemented.');
   }
 
+  Future<bool> startMeetingWindows(ZoomMeetingOptions options) async {
+    throw UnimplementedError('startMeetingWindows() has not been implemented.');
+  }
+
   /// Flutter Zoom SDK Join Meeting function
   Future<bool> joinMeeting(
     ZoomMeetingOptions options,
@@ -115,11 +133,15 @@ abstract class ZoomPlatform extends PlatformInterface {
   }
 
   Future<bool> showMeeting() async {
-    throw UnimplementedError('openZoomActivity() has not been implemented.');
+    throw UnimplementedError('showMeeting() has not been implemented.');
   }
 
   Future<bool> hideMeeting({bool isWindows = false}) async {
-    throw UnimplementedError('putToBgZoomActivity() has not been implemented.');
+    throw UnimplementedError('hideMeeting() has not been implemented.');
+  }
+
+  Future<bool> disableWindowStyles() async {
+    throw UnimplementedError('disableWindowStyles() has not been implemented.');
   }
 
   Future<bool> getMicStatus() {

@@ -5,10 +5,16 @@
 // This must be included before many other Windows headers.
 #include <windows.h>
 
+// This header contains the programming interfaces for various Windows controls, such as buttons,
+// combo boxes, date and time pickers, and toolbars.
+#include <commctrl.h>
+
 // For getPlatformVersion; remove unless needed for your plugin implementation.
 #include <VersionHelpers.h>
 
 #include <codecvt>
+
+#pragma comment(lib, "Comctl32.lib")
 
 namespace flutter_zoom_sdk {
 	FlutterZoomSdkPlugin* plagin;
@@ -101,6 +107,28 @@ namespace flutter_zoom_sdk {
 
 			result->Success(EncodableValue(res));
 		}
+		else if (method_call.method_name().compare("init_and_start") == 0) {
+			EncodableMap ZoomInitOptions = get<EncodableMap>(arguments->find(EncodableValue("initOptions"))->second);
+			FlutterZoomSdkPlugin::ZoomMeetingOptions = get<EncodableMap>(arguments->find(EncodableValue("meetingOptions"))->second);
+
+			bool res = FlutterZoomSdkPlugin::AuthorizeSDK(ZoomInitOptions);
+
+			result->Success(EncodableValue(res));
+		}
+        else if (method_call.method_name().compare("init") == 0) {
+            EncodableMap ZoomInitOptions = get<EncodableMap>(arguments->find(EncodableValue("initOptions"))->second);
+
+            bool res = FlutterZoomSdkPlugin::AuthorizeSDK(ZoomInitOptions);
+
+            result->Success(EncodableValue(res));
+        }
+        else if (method_call.method_name().compare("login") == 0) {
+            FlutterZoomSdkPlugin::ZoomMeetingOptions = get<EncodableMap>(arguments->find(EncodableValue("meetingOptions"))->second);
+
+            bool res = FlutterZoomSdkPlugin::startMeeting();
+
+            result->Success(EncodableValue(res));
+        }
 		else if (method_call.method_name().compare("leave_meeting") == 0) {
 			bool res = FlutterZoomSdkPlugin::leaveMeeting();
 
@@ -113,6 +141,11 @@ namespace flutter_zoom_sdk {
 		}
 		else if (method_call.method_name().compare("hide_meeting") == 0) {
 			bool res = FlutterZoomSdkPlugin::hideMeeting();
+
+			result->Success(EncodableValue(res));
+		}
+		else if (method_call.method_name().compare("disable_window_styles") == 0) {
+			bool res = FlutterZoomSdkPlugin::disableWindowStyles();
 
 			result->Success(EncodableValue(res));
 		}
@@ -150,7 +183,7 @@ namespace flutter_zoom_sdk {
 				AuthEvent* authListener;
 
 				// Call SetEvent to assign your IAuthServiceEvent listener
-				authListener = new AuthEvent();
+				authListener = new AuthEvent(ZoomMeetingOptions);
 				FlutterZoomSdkPlugin::AuthService->SetEvent(authListener);
 
 				ZOOM_SDK_NAMESPACE::SDKError authCallReturnValue(ZOOM_SDK_NAMESPACE::SDKERR_UNAUTHENTICATION);
@@ -174,6 +207,83 @@ namespace flutter_zoom_sdk {
 
 		return false;
 	}
+
+    bool FlutterZoomSdkPlugin::startMeeting() {
+        auto ZoomMeetingOptions = FlutterZoomSdkPlugin::ZoomMeetingOptions;
+
+        if (ZoomMeetingOptions.empty()) {
+            return false;
+        }
+
+        FlutterZoomSdkPlugin::createMeetingService();
+        FlutterZoomSdkPlugin::createSettingService();
+
+        // Join meeting for non-login user with StartParam object
+        ZOOM_SDK_NAMESPACE::StartParam startMeetingParam = ZOOM_SDK_NAMESPACE::StartParam();
+
+        // Provide meeting credentials for API user using StartParam4WithoutLogin
+        ZOOM_SDK_NAMESPACE::StartParam4WithoutLogin startMeetingWithoutLoginParam;
+
+        startMeetingParam.userType = ZOOM_SDK_NAMESPACE::SDK_UT_WITHOUT_LOGIN;
+
+        string meetingNumberStr = get<string>(ZoomMeetingOptions.find(EncodableValue("meetingId"))->second);
+        string userZAKStr = get<string>(ZoomMeetingOptions.find(EncodableValue("zoomAccessToken"))->second);
+        string userNameStr = get<string>(ZoomMeetingOptions.find(EncodableValue("userId"))->second);
+        string noAudioStr = get<string>(ZoomMeetingOptions.find(EncodableValue("noAudio"))->second);
+        string noVideoStr = get<string>(ZoomMeetingOptions.find(EncodableValue("noVideo"))->second);
+
+        wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> convert;
+        wstring userZAKWstr = convert.from_bytes(userZAKStr);
+        wstring userNameWstr = convert.from_bytes(userNameStr);
+
+        startMeetingWithoutLoginParam.zoomuserType = ZOOM_SDK_NAMESPACE::ZoomUserType_APIUSER;
+        startMeetingWithoutLoginParam.meetingNumber = stoull(meetingNumberStr);
+        startMeetingWithoutLoginParam.userZAK = userZAKWstr.c_str();
+        startMeetingWithoutLoginParam.userName = userNameWstr.c_str();
+		startMeetingWithoutLoginParam.customer_key = NULL;
+		startMeetingWithoutLoginParam.vanityID = NULL;
+		startMeetingWithoutLoginParam.hDirectShareAppWnd = NULL;
+		startMeetingWithoutLoginParam.isDirectShareDesktop = false;
+		startMeetingWithoutLoginParam.isAudioOff = (noAudioStr == "true");
+		startMeetingWithoutLoginParam.isVideoOff = (noVideoStr == "true");
+
+        startMeetingParam.param.withoutloginStart = startMeetingWithoutLoginParam;
+
+        if (FlutterZoomSdkPlugin::SettingService != NULL)
+        {
+            ZOOM_SDK_NAMESPACE::IAudioSettingContext* pAudioContext = FlutterZoomSdkPlugin::SettingService->GetAudioSettings();
+
+            if (pAudioContext)
+            {
+                pAudioContext->EnableAutoJoinAudio(true);
+            }
+
+            ZOOM_SDK_NAMESPACE::IShareSettingContext* pShareContext = FlutterZoomSdkPlugin::SettingService->GetShareSettings();
+
+            if (pShareContext)
+            {
+                pShareContext->EnableAutoFitToWindowWhenViewSharing(false);
+            }
+        }
+
+        ZOOM_SDK_NAMESPACE::IMeetingConfiguration* meetingConfiguration = FlutterZoomSdkPlugin::MeetingService->GetMeetingConfiguration();
+
+        if (meetingConfiguration)
+        {
+            meetingConfiguration->HideMeetingInfoOnMeetingUI(true);
+        }
+
+        if (FlutterZoomSdkPlugin::MeetingService) {
+            ZOOM_SDK_NAMESPACE::SDKError startMeetingReturnValue = FlutterZoomSdkPlugin::MeetingService->Start(startMeetingParam);
+
+            if (startMeetingReturnValue == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
+                _cputts(L"Start meeting call succeeded\n");
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 	void FlutterZoomSdkPlugin::joinMeeting() {
 		auto ZoomMeetingOptions = FlutterZoomSdkPlugin::ZoomMeetingOptions;
@@ -333,6 +443,15 @@ namespace flutter_zoom_sdk {
 		return false;
 	}
 
+	bool FlutterZoomSdkPlugin::disableWindowStyles() {
+	  if (FlutterZoomSdkPlugin::MeetingService) {
+		ZoomWindowHelper::SetupZoomWindow(FlutterZoomSdkPlugin::MeetingService);
+		return true;
+	  }
+
+	  return false;
+	}
+
 	void FlutterZoomSdkPlugin::pressWinAndDownKeys() {
 		INPUT inputs[4] = {};
 		ZeroMemory(inputs, sizeof(inputs));
@@ -358,14 +477,92 @@ namespace flutter_zoom_sdk {
 		}
 	}
 
-	// class AuthEvent 
-	AuthEvent::AuthEvent() {}
+	LRESULT CALLBACK ZoomWindowHelper::CustomWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData) {
+		switch (uMsg) {
+			case WM_NCLBUTTONDBLCLK:
+				// Prevent double-click on title bar
+				return 0;
+			case WM_SYSCOMMAND:
+				// Prevent system commands like maximize and restore
+				if (wParam == SC_MAXIMIZE || wParam == SC_RESTORE) {
+					return 0;
+				}
+				break;
+			default:
+				break;
+		}
+
+		return DefSubclassProc(hwnd, uMsg, wParam, lParam);
+	}
+
+	void ZoomWindowHelper::DisableWindowControls(HWND hWnd) {
+		if (hWnd) {
+			// Remove minimize, maximize, and close buttons
+			LONG_PTR style = GetWindowLongPtr(hWnd, GWL_STYLE);
+			style &= ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU);
+			style |= WS_CAPTION;
+			SetWindowLongPtr(hWnd, GWL_STYLE, style);
+			SetWindowPos(hWnd, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+
+			// Subclass the window procedure to intercept messages
+			SetWindowSubclass(hWnd, CustomWindowProc, 0, 0);
+		}
+	}
+
+	void ZoomWindowHelper::SetWindowSizeAndPosition(HWND hWnd) {
+		if (hWnd) {
+            // Get the work area dimensions (excluding taskbar)
+            RECT workAreaRect;
+            SystemParametersInfo(SPI_GETWORKAREA, 0, &workAreaRect, 0);
+            int workAreaWidth = workAreaRect.right - workAreaRect.left;
+            int workAreaHeight = workAreaRect.bottom - workAreaRect.top;
+
+            // Calculate the desired window dimensions and position
+            int windowWidth = workAreaWidth / 2;
+            int windowHeight = workAreaHeight;
+            int windowX = workAreaWidth / 2;
+            int windowY = 0;
+
+			// Set the window size and position
+			SetWindowPos(hWnd, NULL, windowX, windowY, windowWidth, windowHeight, SWP_NOZORDER | SWP_FRAMECHANGED);
+		}
+	}
+
+	void ZoomWindowHelper::SetupZoomWindow(ZOOM_SDK_NAMESPACE::IMeetingService* pMeetingService) {
+		if (pMeetingService) {
+			ZOOM_SDK_NAMESPACE::IMeetingUIController* pUIController = pMeetingService->GetUIController();
+
+			if (pUIController) {
+				HWND firstView = NULL;
+				HWND secondView = NULL;
+
+				pUIController->GetMeetingUIWnd(firstView, secondView);
+
+				if (firstView) {
+					DisableWindowControls(firstView);
+					SetWindowSizeAndPosition(firstView);
+				}
+			}
+		}
+	}
+
+	// class AuthEvent
+	AuthEvent::AuthEvent(const EncodableMap& zoomMeetingOptions) : zoomMeetingOptions_(zoomMeetingOptions) {}
 
 	AuthEvent::~AuthEvent() {}
 
 	void AuthEvent::onAuthenticationReturn(ZOOM_SDK_NAMESPACE::AuthResult ret) {
+		string isStartMeetingStr = get<string>(zoomMeetingOptions_.find(EncodableValue("isStartMeeting"))->second);
+		bool isStartMeeting = (isStartMeetingStr == "true");
+
 		if (ret == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
+			if (isStartMeeting) {
+			plagin->startMeeting();
+        } else {
 			plagin->joinMeeting();
+		}
+
+		_cputts(L"onAuthenticationReturn succeeded\n");
 		}
 	}
 
@@ -382,26 +579,108 @@ namespace flutter_zoom_sdk {
 	void AuthEvent::onNotificationServiceStatus(ZOOM_SDK_NAMESPACE::SDKNotificationServiceStatus status, ZOOM_SDK_NAMESPACE::SDKNotificationServiceError error) {}
 
 
-	// class MeetingServiceEvent 
+	// class MeetingServiceEvent
 	MeetingServiceEvent::MeetingServiceEvent() {}
 
 	MeetingServiceEvent::~MeetingServiceEvent() {}
 
-	void MeetingServiceEvent::onMeetingStatusChanged(ZOOM_SDK_NAMESPACE::MeetingStatus status, int iResult) {
-		if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_INMEETING) {
+	void MeetingServiceEvent::onMeetingStatusChanged(ZOOM_SDK_NAMESPACE::MeetingStatus status,
+													 int iResult)
+	{
+		if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_IDLE) {
 			EncodableList results;
-
+			results.push_back(EncodableValue("MEETING_STATUS_IDLE"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_CONNECTING) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_CONNECTING"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_WAITINGFORHOST) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_WAITINGFORHOST"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_INMEETING) {
+			EncodableList results;
 			results.push_back(EncodableValue("MEETING_STATUS_INMEETING"));
 			results.push_back(EncodableValue(iResult));
-
 			plagin->meeting_event_sink_->Success(results);
 		}
 		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_DISCONNECTING) {
 			EncodableList results;
-
 			results.push_back(EncodableValue("MEETING_STATUS_DISCONNECTING"));
 			results.push_back(EncodableValue(iResult));
-
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_RECONNECTING) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_RECONNECTING"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_FAILED) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_FAILED"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_ENDED) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_ENDED"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_UNKNOW) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_UNKNOW"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_LOCKED) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_LOCKED"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_UNLOCKED) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_UNLOCKED"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_IN_WAITING_ROOM) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_IN_WAITING_ROOM"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_WEBINAR_PROMOTE) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_WEBINAR_PROMOTE"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_WEBINAR_DEPROMOTE) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_WEBINAR_DEPROMOTE"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_JOIN_BREAKOUT_ROOM) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_JOIN_BREAKOUT_ROOM"));
+			results.push_back(EncodableValue(iResult));
+			plagin->meeting_event_sink_->Success(results);
+		}
+		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_LEAVE_BREAKOUT_ROOM) {
+			EncodableList results;
+			results.push_back(EncodableValue("MEETING_STATUS_LEAVE_BREAKOUT_ROOM"));
+			results.push_back(EncodableValue(iResult));
 			plagin->meeting_event_sink_->Success(results);
 		}
 	}
@@ -412,6 +691,6 @@ namespace flutter_zoom_sdk {
 
 	void MeetingServiceEvent::onSuspendParticipantsActivities(){}
 
-	void MeetingServiceEvent::onAICompanionActiveChangeNotice(bool bActive){}
+	void MeetingServiceEvent::onAICompanionActiveChangeNotice(bool bActive) {}
 
 }  // namespace flutter_zoom_sdk

@@ -50,7 +50,16 @@ class InitParams {
 /// needed along with factory constructor
 class JoinParams {
   external factory JoinParams(
-      {meetingNumber, userName, signature, sdkKey, passWord, success, error});
+      {customerKey,
+      meetingNumber,
+      userName,
+      userEmail,
+      signature,
+      sdkKey,
+      passWord,
+      zak,
+      success,
+      error});
 }
 
 /// Signature helper
@@ -88,6 +97,7 @@ class LeaveParams {
 class MuteParams {
   external factory MuteParams({userId, mute});
 }
+
 @JS()
 @anonymous
 class UserParams {

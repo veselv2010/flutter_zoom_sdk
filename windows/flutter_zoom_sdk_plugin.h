@@ -43,6 +43,8 @@ namespace flutter_zoom_sdk {
 
 		void joinMeeting();
 
+		bool startMeeting();
+
 	private:
 		ZOOM_SDK_NAMESPACE::IAuthService* AuthService;
 		ZOOM_SDK_NAMESPACE::IMeetingService* MeetingService;
@@ -70,16 +72,38 @@ namespace flutter_zoom_sdk {
 
 		bool showMeeting();
 
+		bool disableWindowStyles();
+
 		void pressWinAndDownKeys();
+	};
+
+	class ZoomWindowHelper {
+	 public:
+	  static LRESULT CALLBACK
+	  CustomWindowProc(HWND
+	  hwnd,
+	  UINT uMsg, WPARAM
+	  wParam,
+	  LPARAM lParam, UINT_PTR
+	  uIdSubclass,
+	  DWORD_PTR dwRefData
+	  );
+	  static void DisableWindowControls(HWND hWnd);
+
+	  static void SetupZoomWindow(ZOOM_SDK_NAMESPACE::IMeetingService *pMeetingService);
+
+	  static void SetWindowSizeAndPosition(HWND hWnd);
 	};
 
 	class AuthEvent : public ZOOM_SDK_NAMESPACE::IAuthServiceEvent {
 	public:
-		AuthEvent();
+		AuthEvent(const EncodableMap& zoomMeetingOptions);
 
 		virtual ~AuthEvent();
 
 	private:
+		EncodableMap zoomMeetingOptions_;
+
 		void onAuthenticationReturn(ZOOM_SDK_NAMESPACE::AuthResult ret);
 
 		void onLoginReturnWithReason(ZOOM_SDK_NAMESPACE::LOGINSTATUS ret, ZOOM_SDK_NAMESPACE::IAccountInfo* pAccountInfo, ZOOM_SDK_NAMESPACE::LoginFailReason reason);
