@@ -277,6 +277,15 @@ class ZoomView extends ZoomPlatform {
         .then<bool>((bool? value) => value ?? false);
   }
 
+  @override
+  Future<List<Map<String, dynamic>>> getParticipants() async {
+    final List<dynamic> participants =
+        await channel.invokeMethod('get_participants');
+    return participants.map((participant) {
+      return Map<String, dynamic>.from(participant);
+    }).toList();
+  }
+
   /// The event channel used to interact with the native platform leaveMeeting (Android & Windows) function
   @override
   Future<bool> leaveMeeting() async {

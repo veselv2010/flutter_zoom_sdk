@@ -144,6 +144,10 @@ abstract class ZoomPlatform extends PlatformInterface {
     throw UnimplementedError('disableWindowStyles() has not been implemented.');
   }
 
+  Future<List<Map<String, dynamic>>> getParticipants() {
+    throw UnimplementedError('getParticipants() has not been implemented.');
+  }
+
   Future<bool> getMicStatus() {
     throw UnimplementedError('getMicStatus() has not been implemented.');
   }

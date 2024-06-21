@@ -10,6 +10,7 @@
 #if defined(WIN32)
 #include "meeting_service_components/meeting_emoji_reaction_interface.h"
 #endif
+#include "meeting_service_components/meeting_audio_interface.h"
 BEGIN_ZOOM_SDK_NAMESPACE
 /*! \enum UserRole
     \brief Role of user.

@@ -19,6 +19,11 @@
 namespace flutter_zoom_sdk {
 	FlutterZoomSdkPlugin* plagin;
 
+	std::string wstring_to_string(const std::wstring& wstr) {
+		std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> convert;
+		return convert.to_bytes(wstr);
+	}
+
 	// static
 	void FlutterZoomSdkPlugin::RegisterWithRegistrar(
 		flutter::PluginRegistrarWindows* registrar) {
@@ -148,6 +153,10 @@ namespace flutter_zoom_sdk {
 			bool res = FlutterZoomSdkPlugin::disableWindowStyles();
 
 			result->Success(EncodableValue(res));
+		}
+		else if (method_call.method_name().compare("get_participants") == 0) {
+			auto participants_list = FlutterZoomSdkPlugin::getParticipants();
+			result->Success(flutter::EncodableValue(participants_list));
 		}
 		else {
 			result->NotImplemented();
@@ -477,6 +486,28 @@ namespace flutter_zoom_sdk {
 		}
 	}
 
+	flutter::EncodableList FlutterZoomSdkPlugin::getParticipants() {
+		flutter::EncodableList participants_list;
+
+		if (FlutterZoomSdkPlugin::MeetingService) {
+			auto participants = ZoomParticipantsHelper::GetParticipantsList(FlutterZoomSdkPlugin::MeetingService);
+
+			for (const auto &participant : participants) {
+				flutter::EncodableMap participant_map;
+				participant_map[flutter::EncodableValue("userName")] = flutter::EncodableValue(wstring_to_string(participant.userName));
+            	participant_map[flutter::EncodableValue("customerKey")] = flutter::EncodableValue(wstring_to_string(participant.customerKey));
+            	participant_map[flutter::EncodableValue("isHost")] = flutter::EncodableValue(participant.isHost);
+            	participant_map[flutter::EncodableValue("isVideoOn")] = flutter::EncodableValue(participant.isVideoOn);
+            	participant_map[flutter::EncodableValue("isAudioMuted")] = flutter::EncodableValue(participant.isAudioMuted);
+            	participant_map[flutter::EncodableValue("isTalking")] = flutter::EncodableValue(participant.isTalking);
+            	participant_map[flutter::EncodableValue("hasCamera")] = flutter::EncodableValue(participant.hasCamera);
+				participants_list.push_back(flutter::EncodableValue(participant_map));
+			}
+		}
+
+		return participants_list;
+	}
+
 	LRESULT CALLBACK ZoomWindowHelper::CustomWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData) {
 		switch (uMsg) {
 			case WM_NCLBUTTONDBLCLK:
@@ -544,6 +575,36 @@ namespace flutter_zoom_sdk {
 				}
 			}
 		}
+	}
+
+	std::vector<ParticipantInfo> ZoomParticipantsHelper::GetParticipantsList(ZOOM_SDK_NAMESPACE::IMeetingService* pMeetingService) {
+		std::vector<ParticipantInfo> participants;
+
+		if (pMeetingService) {
+			ZOOM_SDK_NAMESPACE::IMeetingParticipantsController* pParticipantsController = pMeetingService->GetMeetingParticipantsController();
+			if (pParticipantsController) {
+				ZOOM_SDK_NAMESPACE::IList<unsigned int>* lstUserID = pParticipantsController->GetParticipantsList();
+				if (lstUserID) {
+					for (int i = 0; i < lstUserID->GetCount(); ++i) {
+						unsigned int userId = lstUserID->GetItem(i);
+						ZOOM_SDK_NAMESPACE::IUserInfo* pUserInfo = pParticipantsController->GetUserByUserID(userId);
+						if (pUserInfo) {
+							ParticipantInfo info;
+							info.userName = pUserInfo->GetUserNameW();
+							info.customerKey = pUserInfo->GetCustomerKey();
+							info.isHost = pUserInfo->IsHost();
+							info.isVideoOn = pUserInfo->IsVideoOn();
+							info.isAudioMuted = pUserInfo->IsAudioMuted();
+							info.isTalking = pUserInfo->IsTalking();
+							info.hasCamera = pUserInfo->HasCamera();
+							participants.push_back(info);
+						}
+					}
+				}
+			}
+		}
+
+		return participants;
 	}
 
 	// class AuthEvent
