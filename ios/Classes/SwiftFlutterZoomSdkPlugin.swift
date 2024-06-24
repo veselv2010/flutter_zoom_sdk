@@ -167,6 +167,7 @@ public class SwiftFlutterZoomSdkPlugin: NSObject, FlutterPlugin,FlutterStreamHan
                 
                 //Setting up Custom Join Meeting parameter
                 joinMeetingParameters.userName = arguments["userId"]!!
+                joinMeetingParameters.customerKey = arguments["customerKey"]!!
                 joinMeetingParameters.meetingNumber = arguments["meetingId"]!!
 
                 let hasPassword = arguments["meetingPassword"]! != nil
