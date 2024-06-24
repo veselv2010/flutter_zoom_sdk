@@ -346,6 +346,7 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
         opts.no_dial_in_via_phone = parseBoolean(options, "disableDialIn");
         opts.no_disconnect_audio = parseBoolean(options, "noDisconnectAudio");
         opts.no_audio = parseBoolean(options, "noAudio");
+        opts.customer_key = options.get("customerKey");
         boolean view_options = parseBoolean(options, "viewOptions");
         if (view_options) {
             opts.meeting_views_options = MeetingViewsOptions.NO_TEXT_MEETING_ID + MeetingViewsOptions.NO_TEXT_PASSWORD;

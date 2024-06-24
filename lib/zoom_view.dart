@@ -163,6 +163,7 @@ class ZoomView extends ZoomPlatform {
     optionMap.putIfAbsent("viewOptions", () => options.viewOptions);
     optionMap.putIfAbsent("noAudio", () => options.noAudio);
     optionMap.putIfAbsent("noVideo", () => options.noVideo);
+    optionMap.putIfAbsent("customerKey", () => options.customerKey);
 
     return await channel
         .invokeMethod<bool>('join', optionMap)
