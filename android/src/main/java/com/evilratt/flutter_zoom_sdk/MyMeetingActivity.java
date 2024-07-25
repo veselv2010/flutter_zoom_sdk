@@ -84,7 +84,7 @@ public class MyMeetingActivity extends NewMeetingActivity {
         Intent myIntent = getIntent();
         String returnBtnMsg = myIntent.getStringExtra("returnBtnMsg");
 
-        registerReceiver(myBroadcast, new IntentFilter("my_meeting_activity_broadcast"));
+        registerReceiver(myBroadcast, new IntentFilter("my_meeting_activity_broadcast"), RECEIVER_NOT_EXPORTED);
 
         Button returnBtn = (Button) findViewById(R.id.returnBtn);
 
