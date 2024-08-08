@@ -112,34 +112,57 @@ publishing {
 }
 
 tasks.register('downloadZoomSdk', Copy) {
+    def logPrefix = 'flutter_zoom_sdk:downloadZoomSdk'
     def zipFileName = "zoom-sdk-android-${zoomSdkVersion}.zip"
     def url = "https://zoommeetingsdk.blob.core.windows.net/android/${zipFileName}"
 
     def libsDir = file('libs')
     def zipFile = file("${libsDir}/${zipFileName}")
+    def markerFile = file("${libsDir}/.${zipFileName}.downloaded")
+
+    println("${logPrefix}: url: ${url}")
+    println("${logPrefix}: zip file path: ${zipFile}")
 
     into(libsDir) {
         include '*.aar'
         eachFile { file -> file.delete() }
     }
-    if (!zipFile.exists()) {
-        libsDir.mkdirs()
 
-        zipFile.withOutputStream { outputStream ->
-            new URL(url).withInputStream { inputStream ->
-                outputStream << inputStream
+    if (!markerFile.exists()) {
+        if (zipFile.exists()) {
+            zipFile.delete()
+            println("${logPrefix}: the file ${zipFileName} was removed")
+        }
+
+        if (!zipFile.exists()) {
+            libsDir.mkdirs()
+
+            println("${logPrefix}: starting download of ${zipFileName}...")
+
+            zipFile.withOutputStream { outputStream ->
+                new URL(url).withInputStream { inputStream ->
+                    outputStream << inputStream
+                }
             }
         }
+
+        markerFile.createNewFile()
+        println("${logPrefix}: download of ${zipFileName} completed")
+    } else {
+        println("${logPrefix}: marker file already exist: ${markerFile}")
     }
 
+    // Extract the ZIP file
     from(zipTree(zipFile)) {
         include '**/*.aar'
         eachFile { file -> file.path = file.name }
     }
+
     into libsDir
     includeEmptyDirs false
     duplicatesStrategy DuplicatesStrategy.INCLUDE
 }
+
 
 publishMobilertcPublicationToMavenLocalRepository.dependsOn(downloadZoomSdk)
 preBuild.dependsOn(publish)
