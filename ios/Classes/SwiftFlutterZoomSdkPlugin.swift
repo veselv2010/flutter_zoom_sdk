@@ -35,13 +35,14 @@ public class SwiftFlutterZoomSdkPlugin: NSObject, FlutterPlugin,FlutterStreamHan
               self.meetingStatus(call: call, result: result)
           case "meeting_details":
               self.meetingDetails(call: call, result: result)
+          case "network_status":
+              self.networkStatus(call: call, result: result)
           default:
               result(FlutterMethodNotImplemented)
           }
   }
 
   public func onMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult) {
-
           switch call.method {
           case "init":
               self.initZoom(call: call, result: result)
@@ -55,6 +56,8 @@ public class SwiftFlutterZoomSdkPlugin: NSObject, FlutterPlugin,FlutterStreamHan
               self.meetingStatus(call: call, result: result)
           case "meeting_details":
               self.meetingDetails(call: call, result: result)
+          case "network_status":
+              self.networkStatus(call: call, result: result)
           default:
               result(FlutterMethodNotImplemented)
           }
@@ -270,6 +273,23 @@ public class SwiftFlutterZoomSdkPlugin: NSObject, FlutterPlugin,FlutterStreamHan
                 }
             } else {
                 result(["SDK ERROR", "001"])
+            }
+        }
+
+        public func networkStatus(call: FlutterMethodCall, result: FlutterResult) {
+            let meetingService = MobileRTC.shared().getMeetingService()
+
+            if meetingService != nil {
+                let audioSendingStatus = meetingService?.queryNetworkQuality(MobileRTCComponentType(rawValue: 3)!, withDataFlow: true)
+                let audioReceivingStatus = meetingService?.queryNetworkQuality(MobileRTCComponentType(rawValue: 3)!, withDataFlow: false)
+                let videoSendingStatus = meetingService?.queryNetworkQuality(MobileRTCComponentType(rawValue: 4)!, withDataFlow: true)
+                let videoReceivingStatus = meetingService?.queryNetworkQuality(MobileRTCComponentType(rawValue: 4)!, withDataFlow: false)
+                
+
+                result([audioSendingStatus?.rawValue, videoSendingStatus?.rawValue, audioReceivingStatus?.rawValue, videoReceivingStatus?.rawValue])
+
+            } else {
+                result([-1, -1, -1, -1])
             }
         }
 
