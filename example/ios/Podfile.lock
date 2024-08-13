@@ -2,21 +2,27 @@ PODS:
   - Flutter (1.0.0)
   - flutter_zoom_sdk (0.0.1):
     - Flutter
+    - MobileRTC
+  - MobileRTC (5.17.10.13930)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_zoom_sdk (from `.symlinks/plugins/flutter_zoom_sdk/ios`)
+  - MobileRTC (from `https://github.com/rentready/zoom-ios-sdk-frameworks/raw/5.17.10.13930/MobileRTC.podspec`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   flutter_zoom_sdk:
     :path: ".symlinks/plugins/flutter_zoom_sdk/ios"
+  MobileRTC:
+    :podspec: https://github.com/rentready/zoom-ios-sdk-frameworks/raw/5.17.10.13930/MobileRTC.podspec
 
 SPEC CHECKSUMS:
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  flutter_zoom_sdk: 62caf74a6f8822790a98b2251bf7f4a7e2590057
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_zoom_sdk: 0e5128185b53323d1187c8c18e87c3940c978258
+  MobileRTC: 7a768c0e6033ab464489664e344671fe21e9b03b
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: dceaa7a3df87e02e8e56918d433c1a95a1e8cd64
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.15.2
