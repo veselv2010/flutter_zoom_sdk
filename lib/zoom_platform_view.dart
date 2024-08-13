@@ -44,16 +44,14 @@ abstract class ZoomPlatform extends PlatformInterface {
     ZoomOptions zoomOptions,
     ZoomMeetingOptions meetingOptions,
   ) async {
-    throw UnimplementedError(
-        'initZoomAndJoinMeeting() has not been implemented.');
+    throw UnimplementedError('initZoomAndJoinMeeting() has not been implemented.');
   }
 
   Future<bool> initZoomAndStartMeeting(
     ZoomOptions zoomOptions,
     ZoomMeetingOptions meetingOptions,
   ) async {
-    throw UnimplementedError(
-        'initZoomAndStartMeeting() has not been implemented.');
+    throw UnimplementedError('initZoomAndStartMeeting() has not been implemented.');
   }
 
   /// Flutter Zoom SDK Generate Signature for Web and native platforms
@@ -77,9 +75,7 @@ abstract class ZoomPlatform extends PlatformInterface {
       'tokenExp': exp
     };
     if (kDebugMode) {
-      print(oPayload.entries
-          .map((entry) => '${entry.key}: ${entry.value.toString()}')
-          .join('\n'));
+      print(oPayload.entries.map((entry) => '${entry.key}: ${entry.value.toString()}').join('\n'));
     }
     final oHeader64 = base64Encode(utf8.encode(jsonEncode(oHeader)));
     final oPayload64 = base64Encode(utf8.encode(jsonEncode(oPayload)));
@@ -158,5 +154,9 @@ abstract class ZoomPlatform extends PlatformInterface {
 
   Stream<ZmAudioStatus> getMicStatusStream() {
     throw UnimplementedError('getMicStatusStream() has not been implemented.');
+  }
+
+  Future<List> networkStatus() async {
+    throw UnimplementedError('networkStatus() has not been implemented.');
   }
 }

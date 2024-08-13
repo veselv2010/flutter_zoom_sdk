@@ -7,13 +7,10 @@ class ZoomView extends ZoomPlatform {
   final MethodChannel channel = const MethodChannel('flutter_zoom_sdk');
 
   /// The event channel used to interact with the native platform.
-  final EventChannel eventChannel =
-      const EventChannel('flutter_zoom_sdk_event_stream');
+  final EventChannel eventChannel = const EventChannel('flutter_zoom_sdk_event_stream');
 
-  final MethodChannel micChannel =
-      const MethodChannel('flutter_zoom_sdk/microphone');
-  final EventChannel micChannelStream =
-      const EventChannel('flutter_zoom_sdk/microphone/stream');
+  final MethodChannel micChannel = const MethodChannel('flutter_zoom_sdk/microphone');
+  final EventChannel micChannelStream = const EventChannel('flutter_zoom_sdk/microphone/stream');
 
   /// The event channel used to interact with the native platform init function
   @override
@@ -34,9 +31,7 @@ class ZoomView extends ZoomPlatform {
     }
 
     optionMap.putIfAbsent("domain", () => options.domain);
-    return await channel
-        .invokeMethod<List>('init', optionMap)
-        .then<List>((List? value) => value ?? List.empty());
+    return await channel.invokeMethod<List>('init', optionMap).then<List>((List? value) => value ?? List.empty());
   }
 
   @override
@@ -52,9 +47,7 @@ class ZoomView extends ZoomPlatform {
 
     optionsMap.putIfAbsent('initOptions', () => initOptionsMap);
 
-    return await channel
-        .invokeMethod<bool>('init', optionsMap)
-        .then<bool>((bool? value) => value ?? false);
+    return await channel.invokeMethod<bool>('init', optionsMap).then<bool>((bool? value) => value ?? false);
   }
 
   /// The event channel used to interact with windows init and join functions
@@ -69,15 +62,12 @@ class ZoomView extends ZoomPlatform {
 
     initOptionsMap.putIfAbsent("jwtToken", () => zoomOptions.jwtToken);
     initOptionsMap.putIfAbsent("domain", () => zoomOptions.domain);
-    meetingOptionsMap.putIfAbsent(
-        "displayName", () => meetingOptions.displayName);
+    meetingOptionsMap.putIfAbsent("displayName", () => meetingOptions.displayName);
     meetingOptionsMap.putIfAbsent("meetingId", () => meetingOptions.meetingId);
-    meetingOptionsMap.putIfAbsent(
-        "meetingPassword", () => meetingOptions.meetingPassword);
+    meetingOptionsMap.putIfAbsent("meetingPassword", () => meetingOptions.meetingPassword);
     meetingOptionsMap.putIfAbsent("noAudio", () => meetingOptions.noAudio);
     meetingOptionsMap.putIfAbsent("noVideo", () => meetingOptions.noVideo);
-    meetingOptionsMap.putIfAbsent(
-        "zoomAccessToken", () => meetingOptions.zoomAccessToken);
+    meetingOptionsMap.putIfAbsent("zoomAccessToken", () => meetingOptions.zoomAccessToken);
     meetingOptionsMap.putIfAbsent("userId", () => meetingOptions.userId);
 
     meetingOptionsMap.putIfAbsent("isStartMeeting", () => 'false');
@@ -85,9 +75,7 @@ class ZoomView extends ZoomPlatform {
     optionsMap.putIfAbsent('initOptions', () => initOptionsMap);
     optionsMap.putIfAbsent('meetingOptions', () => meetingOptionsMap);
 
-    return await channel
-        .invokeMethod<bool>('init_and_join', optionsMap)
-        .then<bool>((bool? value) => value ?? false);
+    return await channel.invokeMethod<bool>('init_and_join', optionsMap).then<bool>((bool? value) => value ?? false);
   }
 
   @override
@@ -101,15 +89,12 @@ class ZoomView extends ZoomPlatform {
 
     initOptionsMap.putIfAbsent("jwtToken", () => zoomOptions.jwtToken);
     initOptionsMap.putIfAbsent("domain", () => zoomOptions.domain);
-    meetingOptionsMap.putIfAbsent(
-        "displayName", () => meetingOptions.displayName);
+    meetingOptionsMap.putIfAbsent("displayName", () => meetingOptions.displayName);
     meetingOptionsMap.putIfAbsent("meetingId", () => meetingOptions.meetingId);
-    meetingOptionsMap.putIfAbsent(
-        "meetingPassword", () => meetingOptions.meetingPassword);
+    meetingOptionsMap.putIfAbsent("meetingPassword", () => meetingOptions.meetingPassword);
     meetingOptionsMap.putIfAbsent("noAudio", () => meetingOptions.noAudio);
     meetingOptionsMap.putIfAbsent("noVideo", () => meetingOptions.noVideo);
-    meetingOptionsMap.putIfAbsent(
-        "zoomAccessToken", () => meetingOptions.zoomAccessToken);
+    meetingOptionsMap.putIfAbsent("zoomAccessToken", () => meetingOptions.zoomAccessToken);
     meetingOptionsMap.putIfAbsent("userId", () => meetingOptions.userId);
 
     meetingOptionsMap.putIfAbsent("isStartMeeting", () => 'true');
@@ -117,9 +102,7 @@ class ZoomView extends ZoomPlatform {
     optionsMap.putIfAbsent('initOptions', () => initOptionsMap);
     optionsMap.putIfAbsent('meetingOptions', () => meetingOptionsMap);
 
-    return await channel
-        .invokeMethod<bool>('init_and_start', optionsMap)
-        .then<bool>((bool? value) => value ?? false);
+    return await channel.invokeMethod<bool>('init_and_start', optionsMap).then<bool>((bool? value) => value ?? false);
   }
 
   /// The event channel used to interact with the native platform startMeetingNormal function
@@ -165,9 +148,7 @@ class ZoomView extends ZoomPlatform {
     optionMap.putIfAbsent("noVideo", () => options.noVideo);
     optionMap.putIfAbsent("customerKey", () => options.customerKey);
 
-    return await channel
-        .invokeMethod<bool>('join', optionMap)
-        .then<bool>((bool? value) => value ?? false);
+    return await channel.invokeMethod<bool>('join', optionMap).then<bool>((bool? value) => value ?? false);
   }
 
   /// The event channel used to interact with the native platform startMeeting(login on iOS & Android) function
@@ -185,9 +166,7 @@ class ZoomView extends ZoomPlatform {
     optionMap.putIfAbsent("noDisconnectAudio", () => options.noDisconnectAudio);
     optionMap.putIfAbsent("noAudio", () => options.noAudio);
 
-    return await channel
-        .invokeMethod<List>('login', optionMap)
-        .then<List>((List? value) => value ?? List.empty());
+    return await channel.invokeMethod<List>('login', optionMap).then<List>((List? value) => value ?? List.empty());
   }
 
   @override
@@ -198,25 +177,20 @@ class ZoomView extends ZoomPlatform {
     meetingOptionsMap.putIfAbsent("meetingId", () => options.meetingId);
     meetingOptionsMap.putIfAbsent("userId", () => options.userId);
     meetingOptionsMap.putIfAbsent("userPassword", () => options.userPassword);
-    meetingOptionsMap.putIfAbsent(
-        "zoomAccessToken", () => options.zoomAccessToken);
+    meetingOptionsMap.putIfAbsent("zoomAccessToken", () => options.zoomAccessToken);
     meetingOptionsMap.putIfAbsent("disableDialIn", () => options.disableDialIn);
     meetingOptionsMap.putIfAbsent("disableDrive", () => options.disableDrive);
     meetingOptionsMap.putIfAbsent("disableInvite", () => options.disableInvite);
     meetingOptionsMap.putIfAbsent("disableShare", () => options.disableShare);
-    meetingOptionsMap.putIfAbsent(
-        "disableTitlebar", () => options.disableTitlebar);
+    meetingOptionsMap.putIfAbsent("disableTitlebar", () => options.disableTitlebar);
     meetingOptionsMap.putIfAbsent("viewOptions", () => options.viewOptions);
-    meetingOptionsMap.putIfAbsent(
-        "noDisconnectAudio", () => options.noDisconnectAudio);
+    meetingOptionsMap.putIfAbsent("noDisconnectAudio", () => options.noDisconnectAudio);
     meetingOptionsMap.putIfAbsent("noAudio", () => options.noAudio);
     meetingOptionsMap.putIfAbsent("noVideo", () => options.noVideo);
 
     optionsMap.putIfAbsent('meetingOptions', () => meetingOptionsMap);
 
-    return await channel
-        .invokeMethod<bool>('login', optionsMap)
-        .then<bool>((bool? value) => value ?? false);
+    return await channel.invokeMethod<bool>('login', optionsMap).then<bool>((bool? value) => value ?? false);
   }
 
   /// The event channel used to interact with the native platform meetingStatus function
@@ -239,17 +213,13 @@ class ZoomView extends ZoomPlatform {
   /// The event channel used to interact with the native platform meetinDetails(iOS & Android) function
   @override
   Future<List> meetingDetails() async {
-    return await channel
-        .invokeMethod<List>('meeting_details')
-        .then<List>((List? value) => value ?? List.empty());
+    return await channel.invokeMethod<List>('meeting_details').then<List>((List? value) => value ?? List.empty());
   }
 
   /// The event channel used to interact with the native platform showMeeting (Android & Windows) function
   @override
   Future<bool> showMeeting() async {
-    return await channel
-        .invokeMethod<bool>('show_meeting')
-        .then<bool>((bool? value) => value ?? false);
+    return await channel.invokeMethod<bool>('show_meeting').then<bool>((bool? value) => value ?? false);
   }
 
   /// The event channel used to interact with the native platform hideMeeting (Android & Windows) function
@@ -266,22 +236,17 @@ class ZoomView extends ZoomPlatform {
       await Future.delayed(const Duration(milliseconds: 100));
     }
 
-    return await channel
-        .invokeMethod<bool>('hide_meeting')
-        .then<bool>((bool? value) => value ?? false);
+    return await channel.invokeMethod<bool>('hide_meeting').then<bool>((bool? value) => value ?? false);
   }
 
   @override
   Future<bool> disableWindowStyles() async {
-    return await channel
-        .invokeMethod<bool>('disable_window_styles')
-        .then<bool>((bool? value) => value ?? false);
+    return await channel.invokeMethod<bool>('disable_window_styles').then<bool>((bool? value) => value ?? false);
   }
 
   @override
   Future<List<Map<String, dynamic>>> getParticipants() async {
-    final List<dynamic> participants =
-        await channel.invokeMethod('get_participants');
+    final List<dynamic> participants = await channel.invokeMethod('get_participants');
     return participants.map((participant) {
       return Map<String, dynamic>.from(participant);
     }).toList();
@@ -290,29 +255,26 @@ class ZoomView extends ZoomPlatform {
   /// The event channel used to interact with the native platform leaveMeeting (Android & Windows) function
   @override
   Future<bool> leaveMeeting() async {
-    return await channel
-        .invokeMethod<bool>('leave_meeting')
-        .then<bool>((bool? value) => value ?? false);
+    return await channel.invokeMethod<bool>('leave_meeting').then<bool>((bool? value) => value ?? false);
   }
 
   @override
   Future<bool> getMicStatus() {
-    return micChannel
-        .invokeMethod<bool>('getMicStatus')
-        .then((value) => value ?? false);
+    return micChannel.invokeMethod<bool>('getMicStatus').then((value) => value ?? false);
   }
 
   @override
   Future<bool> muteMyAudio({bool isMuted = true}) {
-    return micChannel
-        .invokeMethod<bool>('muteMyAudio', isMuted)
-        .then((value) => value ?? false);
+    return micChannel.invokeMethod<bool>('muteMyAudio', isMuted).then((value) => value ?? false);
   }
 
   @override
   Stream<ZmAudioStatus> getMicStatusStream() {
-    return micChannelStream
-        .receiveBroadcastStream()
-        .map((event) => ZmAudioStatus.values[event]);
+    return micChannelStream.receiveBroadcastStream().map((event) => ZmAudioStatus.values[event]);
+  }
+
+  @override
+  Future<List> networkStatus() async {
+    return await channel.invokeMethod<List>('network_status').then<List>((List? value) => value ?? List.empty());
   }
 }
