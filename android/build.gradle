@@ -2,7 +2,7 @@ group 'com.evilratt.flutter_zoom_sdk'
 version '1.0'
 
 buildscript {
-    ext.zoomSdkVersion = '5.17.11.20433'
+    ext.zoomSdkVersion = '5.17.11.20434'
 
     repositories {
         google()
