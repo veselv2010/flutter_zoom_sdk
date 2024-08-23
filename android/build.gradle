@@ -2,7 +2,7 @@ group 'com.evilratt.flutter_zoom_sdk'
 version '1.0'
 
 buildscript {
-    ext.zoomSdkVersion = '5.17.11.20433'
+    ext.zoomSdkVersion = '5.17.11.20434'
 
     repositories {
         google()
@@ -57,7 +57,7 @@ android {
         implementation "androidx.appcompat:appcompat:1.3.1"
         implementation "androidx.constraintlayout:constraintlayout:2.1.0"
         implementation "com.google.android.material:material:1.8.0"
-        implementation "com.google.android:flexbox:2.0.1"
+        implementation "com.google.android.flexbox:flexbox:3.0.0"
         implementation "androidx.multidex:multidex:2.0.1"
         implementation "com.google.code.gson:gson:2.9.1"
         implementation "com.github.bumptech.glide:annotations:4.11.0"
@@ -112,34 +112,57 @@ publishing {
 }
 
 tasks.register('downloadZoomSdk', Copy) {
+    def logPrefix = 'flutter_zoom_sdk:downloadZoomSdk'
     def zipFileName = "zoom-sdk-android-${zoomSdkVersion}.zip"
     def url = "https://zoommeetingsdk.blob.core.windows.net/android/${zipFileName}"
 
     def libsDir = file('libs')
     def zipFile = file("${libsDir}/${zipFileName}")
+    def markerFile = file("${libsDir}/.${zipFileName}.downloaded")
+
+    println("${logPrefix}: url: ${url}")
+    println("${logPrefix}: zip file path: ${zipFile}")
 
     into(libsDir) {
         include '*.aar'
         eachFile { file -> file.delete() }
     }
-    if (!zipFile.exists()) {
-        libsDir.mkdirs()
 
-        zipFile.withOutputStream { outputStream ->
-            new URL(url).withInputStream { inputStream ->
-                outputStream << inputStream
+    if (!markerFile.exists()) {
+        if (zipFile.exists()) {
+            zipFile.delete()
+            println("${logPrefix}: the file ${zipFileName} was removed")
+        }
+
+        if (!zipFile.exists()) {
+            libsDir.mkdirs()
+
+            println("${logPrefix}: starting download of ${zipFileName}...")
+
+            zipFile.withOutputStream { outputStream ->
+                new URL(url).withInputStream { inputStream ->
+                    outputStream << inputStream
+                }
             }
         }
+
+        markerFile.createNewFile()
+        println("${logPrefix}: download of ${zipFileName} completed")
+    } else {
+        println("${logPrefix}: marker file already exist: ${markerFile}")
     }
 
+    // Extract the ZIP file
     from(zipTree(zipFile)) {
         include '**/*.aar'
         eachFile { file -> file.path = file.name }
     }
+
     into libsDir
     includeEmptyDirs false
     duplicatesStrategy DuplicatesStrategy.INCLUDE
 }
+
 
 publishMobilertcPublicationToMavenLocalRepository.dependsOn(downloadZoomSdk)
 preBuild.dependsOn(publish)
