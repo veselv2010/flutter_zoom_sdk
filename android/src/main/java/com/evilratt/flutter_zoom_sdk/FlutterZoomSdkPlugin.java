@@ -2,6 +2,9 @@ package com.evilratt.flutter_zoom_sdk;
 
 import static com.evilratt.flutter_zoom_sdk.utils.Utils.parseBoolean;
 
+import static us.zoom.sdk.EnumComponentType.EnumComponentType_AUDIO;
+import static us.zoom.sdk.EnumComponentType.EnumComponentType_VIDEO;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -127,6 +130,9 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
                 break;
             case "hide_meeting":
                 hideMeeting(methodCall, result);
+                break;
+            case "network_status":
+                networkStatus(methodCall, result);
                 break;
             default:
                 result.notImplemented();
@@ -602,6 +608,20 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
         this.activity.sendBroadcast(myIntent);
 
         result.success(true);
+    }
+
+    private void networkStatus(MethodCall methodCall, Result result) {
+        ZoomSDK zoomSDK = getInitializedZoomInstance();
+        assert zoomSDK != null;
+
+        InMeetingService service = ZoomSDK.getInstance().getInMeetingService();
+        int audioSendingStatus = service.querySessionNetworkStatus(EnumComponentType_AUDIO, true);
+        int audioReceivingStatus = service.querySessionNetworkStatus(EnumComponentType_AUDIO, false);
+        int videoSendingStatus = service.querySessionNetworkStatus(EnumComponentType_VIDEO, true);
+        int videoReceivingStatus = service.querySessionNetworkStatus(EnumComponentType_VIDEO, false);
+        List<Integer> response = Arrays.asList(audioSendingStatus, videoSendingStatus, audioReceivingStatus, videoReceivingStatus);
+
+        result.success(response);
     }
 
     public void connectAudioInMeeting() {

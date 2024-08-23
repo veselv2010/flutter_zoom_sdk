@@ -4,11 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.annotation.SuppressLint;
 
 import com.evilratt.flutter_zoom_sdk.base.SimpleInMeetingBOControllerListener;
 
@@ -70,6 +72,7 @@ public class MyMeetingActivity extends NewMeetingActivity {
         ZoomSDK.getInstance().getZoomUIService().showMiniMeetingWindow();
     }
 
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +87,11 @@ public class MyMeetingActivity extends NewMeetingActivity {
         Intent myIntent = getIntent();
         String returnBtnMsg = myIntent.getStringExtra("returnBtnMsg");
 
-        registerReceiver(myBroadcast, new IntentFilter("my_meeting_activity_broadcast"), RECEIVER_NOT_EXPORTED);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(myBroadcast, new IntentFilter("my_meeting_activity_broadcast"), RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(myBroadcast, new IntentFilter("my_meeting_activity_broadcast"));
+        }
 
         Button returnBtn = (Button) findViewById(R.id.returnBtn);
 
