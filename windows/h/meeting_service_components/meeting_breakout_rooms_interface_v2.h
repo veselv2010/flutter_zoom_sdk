@@ -360,7 +360,7 @@ public:
 	/// \brief Start or stop broadcasting voice to BO.
 	/// \param bStart True for start and false for stop.
 	/// \return true means that the invocation succeeds. Otherwise, it fails.
-	virtual bool BrodcastVoiceToBo(bool bStart) = 0;
+	virtual bool BroadcastVoiceToBo(bool bStart) = 0;
 };
 
 ////////////////////////////////////////// IBOAssistant //////////////////////////////////////////
@@ -446,7 +446,7 @@ public:
 	virtual void onBOInfoUpdated(const zchar_t* strBOID) = 0; 
 	
 	/// \brief To notify if unassigned user join/leave master conference or name is modified.
-	/// once you receive the callback, you need call GetUnassginedUserList to update the unassigned user information.
+	/// once you receive the callback, you need call GetUnassignedUserList to update the unassigned user information.
 	virtual void onUnAssignedUserUpdated() = 0; 
 
 	/// \brief Host/CoHost both can edit BO, Host edit BO->start BO->stop BO, 
@@ -466,7 +466,7 @@ public:
 	/// \brief Get the id list of all unassigned users. 
 	/// \return If the function succeeds, the return value is a pointer to IList object. For more details, see \link IList \endlink,
 	///Otherwise failed, the return value is NULL.
-	virtual IList<const zchar_t*>* GetUnassginedUserList() = 0;
+	virtual IList<const zchar_t*>* GetUnassignedUserList() = 0;
 
 	/// \brief Get the id list of all BOs. 
 	/// \return If the function succeeds, the return value is a pointer to IList object. For more details, see \link IList \endlink,

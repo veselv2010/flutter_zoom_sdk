@@ -24,7 +24,7 @@ class ICustomizedShareRenderEvent
 {
 public:
 	/// \brief Callback event the moment received the shared content.
-	virtual void onSharingContentStartRecving() = 0;
+	virtual void onSharingContentStartReceiving() = 0;
 
 	/// \brief Callback event of changed sender or the sharing closes when receiving the shared content.
 	/// \param userid The new sender or the sender of new sharing content.
@@ -118,7 +118,7 @@ class IShareActionEvent
 {
 public:
 	/// \brief Callback event the moment the user receives the shared content.
-	virtual void onSharingContentStartRecving() = 0;
+	virtual void onSharingContentStartReceiving() = 0;
 
 	/// \brief Callback event when the app receives the window messages from the sharer. This is a list of the window messages.
 	///WM_MOUSEMOVE

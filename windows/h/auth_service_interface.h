@@ -232,7 +232,7 @@ public:
 #if defined(WIN32)
 	/// \brief Get direct share service helper interface. 
 	/// \return If you logged in your account successfully, the return value is the object pointer IDirectShareServiceHelper. Otherwise is NULL.
-	virtual IDirectShareServiceHelper* GetDirectShareServiceHeler() = 0;
+	virtual IDirectShareServiceHelper* GetDirectShareServiceHelper() = 0;
 
 	/// \brief Enable or disable auto register notification service. This is enabled by default.
 	/// \param [in] bEnable True means enabled, otherwise not. 

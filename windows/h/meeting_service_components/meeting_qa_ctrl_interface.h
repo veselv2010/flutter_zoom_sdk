@@ -340,7 +340,7 @@ public:
 	/// \param bEnable TRUE indicates to enable to ask question anonymously.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableAnonnymousQuestion(bool bEnable) = 0;
+	virtual SDKError EnableAnonymousQuestion(bool bEnable) = 0;
 	
 	/// \brief Enable or disable the attendees to view all the questions.
 	/// \param bEnable TRUE indicates to enable the attendees to view all the questions.

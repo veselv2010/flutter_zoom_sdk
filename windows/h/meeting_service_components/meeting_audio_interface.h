@@ -31,7 +31,7 @@ enum AudioType
 	AUDIOTYPE_NONE,///<Normal audio type.
 	AUDIOTYPE_VOIP,///<In VoIP mode.
 	AUDIOTYPE_PHONE,///<In telephone mode.
-	AUDIOTYPE_UNKNOW,///<Unknown mode.
+	AUDIOTYPE_UNKNOWN,///<Unknown mode.
 };
 
 /// \brief Process after the user receives the requirement from the host to turn on the audio.
@@ -41,6 +41,7 @@ public:
 	virtual ~IRequestStartAudioHandler(){};
 	/// \brief Get the user ID who asks to turn on the audio.
 	/// \return If the function succeeds, the return value is the user ID. FALSE 0.
+	/// \deprecated This interface is marked as deprecated.
 	virtual unsigned int GetReqFromUserId() = 0;
 	/// \brief Instance to ignore the requirement, return nothing and finally self-destroy.
 	virtual SDKError Ignore() = 0;
@@ -90,6 +91,10 @@ public:
 	/// \param audioInfo Instruction on how to join the meeting with third party audio.
 	virtual void onJoin3rdPartyTelephonyAudio(const zchar_t* audioInfo) = 0;
 
+	/// \brief Callback event for the mute on entry status change. 
+	/// \param bEnabled Specify whether mute on entry is enabled or not.
+	virtual void onMuteOnEntryStatusChange(bool bEnabled) = 0;
+
 	virtual ~IMeetingAudioCtrlEvent() {}
 };
 
@@ -137,12 +142,21 @@ public:
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
 	virtual bool CanUnMuteBySelf() = 0;
 
+	/// \brief Check if the host or cohost can enable mute on entry.
+	/// \return TRUE indicates that the host or cohost can enable mute on entry. Otherwise not. 
+	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	virtual bool CanEnableMuteOnEntry() = 0;
+
 	/// \brief Mute or umute the user after joining the meeting. 
 	/// \param bEnable TRUE indicates to mute the user after joining the meeting.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	///Otherwise fails. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
 	virtual SDKError EnableMuteOnEntry(bool bEnable,bool allowUnmuteBySelf) = 0;
+
+	/// \brief Determine if mute on entry is enabled.
+	/// \return TRUE indicates that mute on entry is enabled. 
+	virtual bool IsMuteOnEntryEnabled() = 0;
 
 	/// \brief User joins or leaves the meeting in silence or no.
 	/// \param bEnable TRUE indicates to play chime when the user joins or leaves the meeting.

@@ -139,7 +139,7 @@ public:
 
 	/// Assign a user to send CC.
 	/// Zero(0) means to assign the current user himself.
-	virtual SDKError AssignCCPriviledge(unsigned int userid, bool bAssigned) = 0;
+	virtual SDKError AssignCCPrivilege(unsigned int userid, bool bAssigned) = 0;
 
 	/// Determine if the user can be assigned as a CC sender.
 	virtual bool CanBeAssignedToSendCC(unsigned int userid) = 0;
@@ -239,7 +239,7 @@ public:
 
 	/// \brief Determine whether the request to start live transcription is enabled.If the return value is true, it is enabled, if false, disabled.
 	/// \If the meeting allows multi-language transcription, the return value is false
-	virtual bool IsRequestToStartLiveTranscriptionEnalbed() = 0;
+	virtual bool IsRequestToStartLiveTranscriptionEnabled() = 0;
 
 	/// \brief Request the host to start live transcription.
 	/// \If the meeting allows multi-language transcription,the return value is SDKERR_WRONG_USAGE

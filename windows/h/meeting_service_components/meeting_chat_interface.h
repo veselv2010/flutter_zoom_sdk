@@ -21,6 +21,147 @@ typedef enum
 	SDKChatMessageType_To_WaitingRoomUsers,///Chat message is send to waiting room user.
 }SDKChatMessageType;
 
+/// \brief Bold attributes.
+struct BoldAttrs
+{
+	bool bBold = false; //If the value is true, the text style is Bold
+};
+
+// \brief Italic attributes.
+struct ItalicAttrs
+{
+	bool bItalic = false; //If the value is true, the text style is Italic.
+};
+
+// \brief Strikethrough attributes.
+struct StrikethroughAttrs
+{
+	bool bStrikethrough = false; //If the value is true, the text style is Strikethrough.
+};
+
+// \brief BulletedList attributes.
+struct BulletedListAttrs
+{
+	bool bBulletedList = false; //If the value is true, the text style is BulletedList.
+};
+
+// \brief NumberedList attributes.
+struct NumberedListAttrs
+{
+	bool bNumberedList = false; //If the value is true, the text style is Numbered.
+};
+
+// \brief Underline attributes.
+struct UnderlineAttrs
+{
+	bool bUnderline = false; //If the value is true, the text style is Underline.
+};
+
+// \brief Quote attributes.
+struct QuoteAttrs
+{
+	bool bQuote = false; //If the value is true, the text style is Quote.
+};
+
+// \brief InsertLink attributes.
+struct InsertLinkAttrs {
+    const zchar_t* insertLinkUrl = nullptr; //If insertLinkUrl is not empty, the text style has insert link url.
+};
+
+/* font size for TextStyle_FontSize*/
+#define RichTextStyle_FontSize_Small		_T("FontSize_Small")
+#define RichTextStyle_FontSize_Medium	    _T("FontSize_Medium")
+#define RichTextStyle_FontSize_Large		_T("FontSize_Large")
+
+/**
+ * Currently supported font size value.
+ */
+#define FontSize_Small 8
+#define FontSize_Medium 10
+#define FontSize_Large 12
+
+// \brief FontSize attributes.
+struct FontSizeAttrs {
+    int fontSize = 0; // Font size value.
+};
+
+/**
+ * Currently supported font color combinations.
+ * FontColor_Red, 235,24,7
+ * FontColor_Orange, 255,138,0
+ * FontColor_Yellow, 248,194,0
+ * FontColor_Green, 19,138,0
+ * FontColor_Blue, 0,111,250
+ * FontColor_Violet, 152,70,255
+ * FontColor_Rosered, 226,0,148
+ * FontColor_Black 34,34,48
+ */ 
+ // \brief FontColor attributes. The standard RGB color model has a value range of 0-255.
+struct FontColorAttrs {
+	unsigned int red = 0; // Font color R value.
+	unsigned int green = 0; // Font color G value.
+	unsigned int blue = 0; // Font color B value.
+};
+
+/**
+ * Currently supported background color combinations.
+ * BackgroundColor_Normal, 255,255,255
+ * BackgroundColor_Red, 255,67,67
+ * BackgroundColor_Orange, 255,138,0
+ * BackgroundColor_Yellow, 255,214,0
+ * BackgroundColor_Green, 73,214,30
+ * BackgroundColor_Blue, 47,139,255
+ * BackgroundColor_Violet, 171,104,255
+ * BackgroundColor_Rosered, 255,54,199
+ * BackgroundColor_White 255,255,255
+ */
+// \brief FontColor attributes. The standard RGB color model has a value range of 0-255.
+struct BackgroundColorAttrs {
+	unsigned int red = 0; // Background color R value.
+	unsigned int green = 0; // Background color G value.
+	unsigned int blue = 0; // Background color B value.
+};
+
+/**
+ * The attribute strParagraph can be set with value below.
+ * If need customized paragraph text style, define strParagraph as the name of the customized text style and it will be shown in IChatMsgInfo.
+ */
+#define RichTextStyle_Paragraph_H1		_T("Paragraph_H1")
+#define RichTextStyle_Paragraph_H2		_T("Paragraph_H2")
+#define RichTextStyle_Paragraph_H3		_T("Paragraph_H3")
+ 
+// \brief FontColor attributes.
+struct ParagraphAttrs {
+    const zchar_t* strParagraph = nullptr; //If strParagraph is not empty, the text style has Paragraph style.
+};
+
+// \brief Indent attributes.
+struct IndentAttrs {
+    unsigned int indent = 0; // The number of times the indentation style is applied.
+};
+
+/*! \struct SegmentDetails
+	\brief information of rich text with style attributes in a chat message content.
+	Here are more detailed structural descriptions..
+*/
+struct SegmentDetails {
+  const zchar_t* strContent = nullptr; // Segment content value.
+
+  BoldAttrs boldAttrs = {}; // Segment BoldAttrs value.
+  ItalicAttrs italicAttrs = {}; // Segment ItalicAttrs value.
+  StrikethroughAttrs strikethroughAttrs = {}; // StrikethroughAttrs content value.
+  BulletedListAttrs bulletedListAttrs = {}; // Segment BulletedListAttrs value.
+  NumberedListAttrs numberedListAttrs = {}; // Segment NumberedListAttrs value.
+  UnderlineAttrs underlineAttrs = {}; // Segment UnderlineAttrs value.
+  QuoteAttrs quoteAttrs = {}; // Segment QuoteAttrs value.
+  InsertLinkAttrs insertLinkAttrs = {}; // Segment InsertLinkAttrs value.
+  FontSizeAttrs fontSizeAttrs = {}; // Segment FontSizeAttrs value.
+  FontColorAttrs fontColorAttrs = {}; // Segment FontColorAttrs value.
+  BackgroundColorAttrs backgroundColorAttrs = {}; // Segment BackgroundColorAttrs value.
+  ParagraphAttrs paragraphAttrs = {}; // Segment ParagraphAttrs value.
+  IndentAttrs indentAttrs = {}; // Segment IndentAttrs value.
+};
+
 /**
  * @brief Enumerations of the content rich text style type for chat message.
  */
@@ -47,8 +188,8 @@ typedef enum
 class IRichTextStyleOffset
 {
 public:
-	/// \brief Get a certain rich-text style’s start position.
-	/// \return If the function succeeds, the return value is the specified rich-text style’s start position.
+	/// \brief Get a certain rich-text style's start position.
+	/// \return If the function succeeds, the return value is the specified rich-text style's start position.
 	///Otherwise the function fails, and the return value is -1.
 	virtual unsigned int GetPositionStart() = 0;
 
@@ -57,8 +198,8 @@ public:
 	///Otherwise failed, the return value is -1.
 	virtual unsigned int GetPositionEnd() = 0;
 
-	/// \brief Get a certain rich-text style’s supplementary information.
-	/// \return If the function succeeds, the return value is the specified rich-text style’s supplementary information.
+	/// \brief Get a certain rich-text style's supplementary information.
+	/// \return If the function succeeds, the return value is the specified rich-text style's supplementary information.
 	/// If the style is TextStyle_FontSize, possible return values are FontSize_Small, FontSize_Medium, or FontSize_Large.
 	/// If the style is TextStyle_Paragraph, possible return values are Paragraph_H1, Paragraph_H2, or Paragraph_H3.
 	/// If the style is TextStyle_FontColor, or TextStyle_BackgroundColor, possible return values are hex string representing standard RGB data.
@@ -75,7 +216,7 @@ public:
 	/// \return If the function succeeds, the return value is the  rich text type of the specified portion of the current message.
 	virtual RichTextStyle GetTextStyle() = 0;
 
-	/// \brief Get the current message’s rich text position info list of a certain style.
+	/// \brief Get the current message's rich text position info list of a certain style.
 	/// \return If the function succeeds, the return value is the rich text position info list of a certain style of the current message.
 	virtual IList<IRichTextStyleOffset*>* GetTextStyleOffsetList() = 0;
 };
@@ -148,11 +289,20 @@ public:
 	/// \return TRUE indicates that the current message is a part of a message thread. Otherwise, the function fails. 
 	virtual bool IsThread() = 0;
 
-	/// \brief Get the current message’s chat message font style list.
+	/// \brief Get the current message's chat message font style list.
+	/// \deprecated This class is marked as deprecated
 	virtual IList<IRichTextStyleItem*>* GetTextStyleItemList() = 0;
 
-	/// \brief Get the current message’s thread ID.
-	/// \return If the function succeeds, the return value is the current message’s thread ID.
+	/// \brief Get the chat message segment content and style detail of the current message.
+	/**
+	 * When receiving rich-text messages, a list of isolated paragraphs is included,
+	 * each formatted according to its style. Concatenating these paragraphs
+	 * together forms the complete message text.
+	 */
+	virtual IList<SegmentDetails>* GetSegmentDetails() = 0;
+
+	/// \brief Get the current message's thread ID.
+	/// \return If the function succeeds, the return value is the current message's thread ID.
 	///Otherwise the function fails, and the return value is the string of length zero(0)
 	virtual const zchar_t* GetThreadID() = 0;
 
@@ -163,13 +313,13 @@ public:
     \brief The authority to chat in the normal meeting.  
     Here are more detailed structural descriptions..
 */
-typedef struct tagNormalMeetingChatStaus
+typedef struct tagNormalMeetingChatStatus
 {
 	bool can_chat;///<TRUE indicates that the user owns the authority to send message to chat.
 	bool can_chat_to_all;///<TRUE indicates that the user owns the authority to send message to all.
 	bool can_chat_to_individual;///<TRUE indicates that the user owns the authority to send message to an individual attendee in the meeting.
 	bool is_only_can_chat_to_host;///<TRUE indicates that the user owns the authority to send message only to the host. 
-}NormalMeetingChatStaus;
+}NormalMeetingChatStatus;
 
 /*! \struct tagWebinarAttendeeChatStatus
     \brief The authority to chat for the normal attendee in the webinar.
@@ -201,7 +351,7 @@ typedef struct tagChatStatus
 {
 	union
 	{
-		NormalMeetingChatStaus normal_meeting_status;
+		NormalMeetingChatStatus normal_meeting_status;
 		WebinarAttendeeChatStatus webinar_attendee_status;
 		WebinarOtherUserRoleChatStatus webinar_other_status;
 	}ut;///<The ut value depends on the value of the other members in the structure. When the value of is_webinar_meeting is false, the ut value is the NormalMeetingChatStausnormal_meeting_status. When the values of the is_webinar_meeting and the is_webinar_attendee is true, the ut value is WebinarAttendeeChatStatus webinar_attendee_status. The value of is_webinar_meeting is true while the is_webinar_attendee is false, the ut value is WebinarOtherUserRoleChatStatus webinar_other_status.
@@ -216,7 +366,7 @@ typedef struct tagChatStatus
 
 	void Reset()
 	{
-		memset(this, 0, sizeof(tagChatStatus));  //checked safe
+		memset(this, 0, sizeof(tagChatStatus));  
 	}
 }ChatStatus;
 
@@ -243,6 +393,79 @@ typedef enum
 	SDK_CHAT_DELETE_BY_DLP,		/// delete by dlp when the message goes against the host organization's compliance policies.
 }SDKChatMessageDeleteType;
 
+
+typedef enum
+{
+	SDKFileTransferState_None = 0,         ///< The file transfer has no state.
+	SDKFileTransferState_ReadyToTransfer,  ///< The file transfer is ready to start.
+	SDKFileTransferState_Transfering,      ///< The file transfer is in progress.
+	SDKFileTransferState_TransferFailed,   ///< The file transfer failed.
+	SDKFileTransferState_TransferDone,     ///< The file transfer completed successfully.
+}SDKFileTransferStatus;
+
+/// \brief The basic information of transfer file
+typedef struct tagSDKFileTransferInfo
+{
+	const zchar_t* messageID;///<The message identify of transfer file.
+	SDKFileTransferStatus trans_status;///< he status of the file transfer.
+	time_t time_stamp;///<The time stamp of the file.
+	bool is_send_to_all;///<Is the file send to all user in meeting?
+	unsigned int file_size;///<The bytes of transfer file size.
+	const zchar_t* file_name;///<the file name of transfer file.
+	unsigned int complete_percentage;///<The percentage of the file transfer completed.
+	unsigned int complete_size;///<The size of the file transferred so far in bytes.
+	unsigned int bit_per_second;///<The speed of the file transfer in bits per second.
+	tagSDKFileTransferInfo()
+	{
+		Reset();
+	}
+
+	void Reset()
+	{
+		memset(this, 0, sizeof(tagSDKFileTransferInfo));  
+	}
+}SDKFileTransferInfo;
+
+class ISDKFileSender
+{
+public:
+	virtual SDKFileTransferInfo* GetTransferInfo() = 0;
+	/// \brief Get file receiver's user id.
+	/// \return The receiver user id. -1 specify the internel error of get user id. 0 specify the file send to all.
+	virtual unsigned int GetReceiver() = 0;
+
+	/// \brief Cancel the file send.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError CancelSend() = 0;
+
+	virtual ~ISDKFileSender() {};
+};
+
+class ISDKFileReceiver
+{
+public:
+	virtual SDKFileTransferInfo* GetTransferInfo() = 0;
+
+	/// \brief Get file sender's user id.
+	/// \return The receiver user id. -1 specify the internel error of get user id. 0 specify the file send to all.
+	virtual unsigned int GetSender() = 0;
+
+	/// \brief Cancel the file receive.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError CancelReceive() = 0;
+
+	/// \brief Start receive the file.
+	/// \param path The path to receive the file.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError StartReceive(const zchar_t* path) = 0;
+
+	virtual ~ISDKFileReceiver() {};
+};
+
+
 /// \brief Meeting chat callback event.
 ///
 class IMeetingChatCtrlEvent
@@ -253,7 +476,7 @@ public:
 	/// \brief Chat message callback. This function is used to inform the user once received the message sent by others.
 	/// \param chatMsg An object pointer to the chat message.
 	/// \param content A pointer to the chat message in json format. This parameter is currently invalid, hereby only for reservations. 
-	virtual void onChatMsgNotifcation(IChatMsgInfo* chatMsg, const zchar_t* content = NULL) = 0;
+	virtual void onChatMsgNotification(IChatMsgInfo* chatMsg, const zchar_t* content = NULL) = 0;
 
 	/// \brief The authority of chat changes callback. This function is used to inform the user when the authority of chat changes in the meeting or webinar.
 	/// \param status_ The chat status. For more details, see \link ChatStatus \endlink.
@@ -265,15 +488,29 @@ public:
 	virtual void onChatMsgDeleteNotification(const zchar_t* msgID, SDKChatMessageDeleteType deleteBy) = 0;
 
 	virtual void onShareMeetingChatStatusChanged(bool isStart) = 0;
+
+	/// \brief Invoked when start send file.
+	/// \param sender The class to send file object.
+	virtual void onFileSendStart(ISDKFileSender* sender) = 0;
+
+	/// \brief Invoked when receiving a file from another user.
+	/// \param receiver The class to receive the file object.
+	virtual void onFileReceived(ISDKFileReceiver* receiver) = 0;
+
+	/// \brief Invoked when send or receive file status change.
+	/// \param info The class to basic transfer information.
+	virtual void onFileTransferProgress(SDKFileTransferInfo* info) = 0;
+
 };
 
 /// \brief Chat message builder to create ChatMsgInfo objects.
+/// Tips: If there are duplicate styles, the final appearance is determined by the last applied setting.
 ///
 class IChatMsgInfoBuilder
 {
 public:
 	/// \brief Set chat message content.
-	/// \param content The chat message’s content. 
+	/// \param content The chat message's content. 
 	virtual IChatMsgInfoBuilder* SetContent(const zchar_t* content) = 0;
 
 	/// \brief Set who will receive the chat message.
@@ -285,13 +522,177 @@ public:
 	virtual IChatMsgInfoBuilder* SetThreadId(const zchar_t* threadId) = 0;
 
 	/// \brief Set the chat message type.
-	/// \param type The chat message’s type.
+	/// \param type The chat message's type.
 	virtual IChatMsgInfoBuilder* SetMessageType(SDKChatMessageType type) = 0;
 
 	/// \brief Set the chat message content quote style and position.
 	/// \param positionStart The segment start position.
 	/// \param positionEnd The segment end position.
 	virtual IChatMsgInfoBuilder* SetQuotePosition(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content quote style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetQuotePosition(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Set the chat message content insert link style.
+	/// \param insertLink The segment link url.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetInsertLink(InsertLinkAttrs insertLink, unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content insert link style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetInsertLink(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Set the chat message content font size style.
+	/// \param fontSize The segment font size.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetFontSize(FontSizeAttrs fontSize, unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content font size style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetFontSize(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Set the chat message content italic style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetItalic(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content italic style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetItalic(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Set the chat message content bold style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetBold(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content italic style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetBold(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Set the chat message content strikethrough style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetStrikethrough(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content strikethrough style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetStrikethrough(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Set the chat message content bulleted list style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetBulletedList(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content bulleted list style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetBulletedList(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Set the chat message content numbered list style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetNumberedList(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content numbered list style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetNumberedList(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Set the chat message content under line style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetUnderline(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content under line style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetUnderline(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Set the chat message content font color style.
+	/// \param color The segment color value.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetFontColor(FontColorAttrs color, unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content font color style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetFontColor(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Set the chat message content background color style.
+	/// \param color The segment color value.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetBackgroundColor(BackgroundColorAttrs color, unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content background color style.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetBackgroundColor(unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Increase the chat message content indent style.
+	/// \param indent The segment indent value.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* IncreaseIndent(IndentAttrs indent, unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Decrease the chat message content indent style.
+	/// /// \param indent The segment indent value.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* DecreaseIndent(IndentAttrs indent, unsigned int positionStart, unsigned int positionEnd) = 0;
+
+
+	/// \brief Set the chat message content paragraph style.
+	/// \param paragraph The segment paragraph value.
+	/// Tips: if paragraph.strParagraph is one of the three contents, bold and font size styles will be added internally.
+	/// Paragraph_H1 with bold and FontSize_Large
+	/// Paragraph_H2 with bold and FontSize_Medium
+	/// Paragraph_H3 with bold and FontSize_Small
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* SetParagraph(ParagraphAttrs paragraph, unsigned int positionStart, unsigned int positionEnd) = 0;
+
+	/// \brief Clear the chat message content paragraph style.
+	/// Tips: if paragraph.strParagraph is one of Paragraph_H1, Paragraph_H2, Paragraph_H3,
+	///	Bold and font size styles will be removed internally.
+	/// \param positionStart The segment start position.
+	/// \param positionEnd The segment end position.
+	/// \return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
+	virtual IChatMsgInfoBuilder* UnsetParagraph(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/// \brief Clear all set styles.
 	virtual IChatMsgInfoBuilder* ClearStyles() = 0;
@@ -373,6 +774,33 @@ public:
 	/// Send a chat message.
 	/// \param msg Specify the message detail info .
 	virtual SDKError SendChatMsgTo(IChatMsgInfo* msg) = 0;
+
+	/// \brief Determine whether file transfer is enabled.
+	/// \return True indicates file transfer is enabled, otherwise false.	
+	virtual bool IsFileTransferEnabled() = 0;
+
+	/// \brief Send file to specify user in current session.
+	/// \param filePath The absolute path of the file.
+	/// \param user Send the file to this user.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remark this interface is related to chat privilege, see \link SDKChatPrivilege \endlink enum.
+	virtual SDKError TransferFile(const zchar_t* filePath, unsigned int userid) = 0;
+
+	/// \brief Send file to all users in current session.
+	/// \param filePath The absolute path of the file.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remark this interface is related to chat privilege, see \link SDKChatPrivilege \endlink enum.
+	virtual SDKError TransferFileToAll(const zchar_t* filePath) = 0;
+
+	/// \brief Get the list of allowed file types in transfer.
+	/// \return The value of allowed file types in transfer, comma-separated if there are multiple values. Exe files are by default forbidden from being transferred.
+	virtual const zchar_t* GetTransferFileTypeAllowList() = 0;
+
+	/// \brief Get the maximum size for file transfer.
+	/// \return The maximum number of bytes for file transfer.
+	virtual unsigned long long GetMaxTransferFileSizeBytes() = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

@@ -24,7 +24,7 @@ enum MeetingStatus
 	MEETING_STATUS_RECONNECTING,///<Reconnecting meeting server status.
 	MEETING_STATUS_FAILED,///<Failed to connect the meeting server.
 	MEETING_STATUS_ENDED,///<Meeting ends.
-	MEETING_STATUS_UNKNOW,///<Unknown status.
+	MEETING_STATUS_UNKNOWN,///<Unknown status.
 	MEETING_STATUS_LOCKED,///<Meeting is locked to prevent the further participants to join the meeting.
 	MEETING_STATUS_UNLOCKED,///<Meeting is open and participants can join the meeting. 
 	MEETING_STATUS_IN_WAITING_ROOM,///<Participants who join the meeting before the start are in the waiting room.
@@ -129,6 +129,16 @@ enum SDKUserType
 	SDK_UT_WITHOUT_LOGIN,///<Start meeting without login.
 };
 
+/*! \enum AudioRawdataSamplingRate
+	\brief The sampling rate of raw audio data.
+	Here are more detailed structural descriptions.
+*/
+enum AudioRawdataSamplingRate
+{
+	AudioRawdataSamplingRate_32K, ///<The sampling rate of the acquired raw audio data is 32K.
+	AudioRawdataSamplingRate_48K, ///<The sampling rate of the acquired raw audio data is 48K.
+};
+
 /*! \struct tagJoinParam4WithoutLogin
     \brief The parameters of non-login user when joins the meeting.
     Here are more detailed structural descriptions.
@@ -152,6 +162,7 @@ typedef struct tagJoinParam4WithoutLogin
 	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
 #endif
 	bool           isAudioRawDataStereo; ///<Is audio raw data stereo? The default is mono.
+	AudioRawdataSamplingRate eAudioRawdataSamplingRate; ///<The sampling rate of the acquired raw audio data. The default is AudioRawdataSamplingRate_32K.
 }JoinParam4WithoutLogin;
 
 /*! \struct tagJoinParam4NormalUser
@@ -176,6 +187,7 @@ typedef struct tagJoinParam4NormalUser
 	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
 #endif
 	bool           isAudioRawDataStereo; ///<Is audio raw data stereo? The default is mono.
+	AudioRawdataSamplingRate eAudioRawdataSamplingRate; ///<The sampling rate of the acquired raw audio data. The default is AudioRawdataSamplingRate_32K.
 }JoinParam4NormalUser;
 
 /*! \struct tagJoinParam
@@ -232,6 +244,7 @@ typedef struct tagStartParam4WithoutLogin
 	bool		   isDirectShareDesktop;///<Share the desktop directly or not. True indicates to share.
 #endif
 	bool           isAudioRawDataStereo; ///<Is audio raw data stereo? The default is mono.
+	AudioRawdataSamplingRate eAudioRawdataSamplingRate; ///<The sampling rate of the acquired raw audio data. The default is AudioRawdataSamplingRate_32K.
 }StartParam4WithoutLogin;
 
 /*! \struct tagStartParam4NormalUser
@@ -251,6 +264,7 @@ typedef struct tagStartParam4NormalUser
 	bool		    isDirectShareDesktop;///<Share the desktop directly or not. True indicates to Share.
 #endif
 	bool            isAudioRawDataStereo; ///<Is audio raw data stereo? The default is mono.
+	AudioRawdataSamplingRate eAudioRawdataSamplingRate; ///<The sampling rate of the acquired raw audio data. The default is AudioRawdataSamplingRate_32K.
 }StartParam4NormalUser;
 
 
@@ -281,7 +295,7 @@ typedef struct tagStartParam
 */
 enum ConnectionQuality 
 {
-	Conn_Quality_Unknow,///<Unknown connection status
+	Conn_Quality_Unknown,///<Unknown connection status
 	Conn_Quality_Very_Bad,///<The connection quality is very poor.
 	Conn_Quality_Bad,///<The connection quality is poor. 
 	Conn_Quality_Not_Good,///<The connection quality is not good.
@@ -364,7 +378,7 @@ public:
 
 	/// \brief Get the email invitation template for the current meeting.
 	/// \return If the function succeeds, the return value is the email invitation template. Otherwise returns NULL.
-	virtual const zchar_t* GetInviteEmailTeamplate() = 0;
+	virtual const zchar_t* GetInviteEmailTemplate() = 0;
 
 	/// \brief Get the meeting title in the email invitation template.
 	/// \return If the function succeeds, the return value is the meeting title. Otherwise returns NULL.
@@ -377,10 +391,6 @@ public:
 	/// \brief Get the host tag of the current meeting.
 	/// \return If the function succeeds, the return value is the host tag. Otherwise returns NULL.
 	virtual const zchar_t* GetMeetingHostTag() = 0;
-
-	/// \brief Determine whether the current meeting is internal or not.
-	/// \return TRUE indicates that the current meeting is internal.
-	virtual bool IsInternalMeeting() = 0;
 
 	/// \brief Get the connection type of the current meeting.
 	/// \return The connection type. For more details, see \link MeetingConnType \endlink enum.
@@ -472,6 +482,10 @@ public:
 	/// \brief Callback event for the AI Companion active status changed. 
 	/// \param active Specify whether the AI Companion active or not.
 	virtual void onAICompanionActiveChangeNotice(bool bActive) = 0;
+
+	/// \brief Callback event for the meeting topic changed. 
+	/// \param sTopic The new meeting topic.
+	virtual void onMeetingTopicChanged(const zchar_t* sTopic) = 0;
 };
 #if defined(WIN32)
 class IAnnotationController;
@@ -489,6 +503,7 @@ class IEmojiReactionController;
 class IMeetingAANController;
 class ICustomImmersiveController;
 class IMeetingPollingController;
+class IMeetingIndicatorController;
 #endif
 class IMeetingConfiguration;
 class IMeetingBOController;
@@ -561,10 +576,20 @@ public:
 	/// \return TRUE indicates the meeting status is locked.
 	virtual bool IsMeetingLocked() = 0;
 
+	/// \brief Determine if the current user can change the meeting topic.
+	/// \return If it can change the meeting topic, the return value is true.
+	virtual bool CanSetMeetingTopic() = 0;
+
+	/// \brief Change the meeting topic.
+	/// \param sTopic The new meeting topic. 
+	/// \return If the function succeeds, the return value is the SDKERR_SUCCESS.
+	///Otherwise fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetMeetingTopic(const zchar_t* sTopic) = 0;
+
 	/// \brief Suspend all participant activities.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SuspendParticipantsActivites() = 0;
+	virtual SDKError SuspendParticipantsActivities() = 0;
 
 	/// \brief Determine if host/cohose can suspend participant activities.
 	/// \return If it can suspend participant activities, the return value is True.
@@ -577,19 +602,19 @@ public:
 	/// \brief Get the quality of Internet connection when sharing.
 	/// \param bSending TRUE indicates to get the connection quality of sending the sharing statistics. FALSE indicates to get the connection quality of receiving the sharing statistics.
 	/// \return If the function succeeds, the return is one of those enumerated in ConnectionQuality enum.
-	/// \remarks If you are not in the meeting, the Conn_Quality_Unknow will be returned.
+	/// \remarks If you are not in the meeting, the Conn_Quality_Unknown will be returned.
 	virtual ConnectionQuality GetSharingConnQuality(bool bSending = true) = 0;
 
 	/// \brief Get the Internet connection quality of video.
 	/// \param bSending TRUE indicates to get the connection quality of sending the video. FALSE indicates to get the connection quality of receiving the video.
 	/// \return If the function succeeds, the return is one of those enumerated in ConnectionQuality enum.
-	/// \remarks If you are not in the meeting, the Conn_Quality_Unknow will be returned.
+	/// \remarks If you are not in the meeting, the Conn_Quality_Unknown will be returned.
 	virtual ConnectionQuality GetVideoConnQuality(bool bSending = true) = 0;
 
 	/// \brief Get the Internet connection quality of audio.
 	/// \param bSending TRUE indicates to get the connection quality of sending the audio. FALSE indicates to get the connection quality of receiving the audio.
 	/// \return If the function succeeds, the return value is one of those enumerated in ConnectionQuality enum.
-	/// \remarks If you are not in the meeting, the Conn_Quality_Unknow will be returned.
+	/// \remarks If you are not in the meeting, the Conn_Quality_Unknown will be returned.
 	virtual ConnectionQuality GetAudioConnQuality(bool bSending = true) = 0;
 
 	/// \brief Get video controller interface.
@@ -718,6 +743,10 @@ public:
 	/// \brief Get the remote support controller.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingRemoteSupportController. Otherwise the function returns NULL.
 	virtual IMeetingRemoteSupportController* GetMeetingRemoteSupportController() = 0;
+
+	/// \brief Get the Indicator controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingIndicatorController. Otherwise the function returns NULL.
+	virtual IMeetingIndicatorController* GetMeetingIndicatorController() = 0;
 #endif
 
 	/// \brief Get data center information

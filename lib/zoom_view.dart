@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:flutter_zoom_sdk/models/audio_types.dart';
 import 'package:flutter_zoom_sdk/zoom_platform_view.dart';
 
 class ZoomView extends ZoomPlatform {
@@ -179,7 +178,7 @@ class ZoomView extends ZoomPlatform {
     if (isWindows) {
       await channel.invokeMethod<bool>('show_meeting');
       await channel.invokeMethod<bool>('hide_meeting');
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
     }
 
     return await channel

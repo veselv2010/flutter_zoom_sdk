@@ -3,8 +3,8 @@
 * \brief Notification Service Interface
 * Valid for both ZOOM style and user custom interface mode.
 */
-#ifndef _NOTIFICATIONE_SERVICE_INTERFACE_H_
-#define _NOTIFICATIONE_SERVICE_INTERFACE_H_
+#ifndef _NOTIFICATION_SERVICE_INTERFACE_H_
+#define _NOTIFICATION_SERVICE_INTERFACE_H_
 #include "zoom_sdk_def.h"
 
 BEGIN_ZOOM_SDK_NAMESPACE

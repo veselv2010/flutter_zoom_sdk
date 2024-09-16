@@ -217,7 +217,7 @@ public:
 	/// \brief Switch to the mode of showing the current speaker.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SwtichToAcitveSpeaker() = 0;
+	virtual SDKError SwitchToActiveSpeaker() = 0;
 
 	/// \brief Move the floating video window.
 	/// \param left Sets the left margin edge for the floating video window. Please use the coordinate of the screen.
@@ -242,7 +242,7 @@ public:
 	/// \param type Specify the type of the floating video. For more details, see \link SDKFloatVideoType \endlink enum.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError ChangeFloatoActiveSpkVideoSize(SDKFloatVideoType type) = 0;
+	virtual SDKError ChangeFloatToActiveSpkVideoSize(SDKFloatVideoType type) = 0;
 
 	/// \brief Switch to gallery view mode on the floating window. 
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -302,13 +302,13 @@ public:
 	/// \brief Determines the minimize state of the first view.
 	/// \param [out] mode If the function succeeds, the parameter will save the display mode. For more details, see \link SDKMinimizeUIMode \endlink enum.
 	/// \return TRUE indicates the minimize state. FALSE not.
-	virtual bool IsMinimizeModeOfFristScreenMeetingUIWnd(SDKMinimizeUIMode& mode) = 0;
+	virtual bool IsMinimizeModeOfFirstScreenMeetingUIWnd(SDKMinimizeUIMode& mode) = 0;
 
 	/// \brief Change the display mode of the minimized meeting window for the first view.
 	/// \param mode Specifies the minimized mode. For more details, see \link SDKMinimizeUIMode \endlink enum.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SwitchMinimizeUIMode4FristScreenMeetingUIWnd(SDKMinimizeUIMode mode) = 0;
+	virtual SDKError SwitchMinimizeUIMode4FirstScreenMeetingUIWnd(SDKMinimizeUIMode mode) = 0;
 
 	/// \brief Get the information whether the current view supports split screen mode or not. If supports, check it if it is already in the split screen mode.
 	/// \param [out] info If the function succeeds, the parameter will save the configuration of split screen mode. For more details, see \link SplitScreenInfo \endlink enum.
@@ -345,6 +345,7 @@ public:
 	/// \param meetingtopic Specify the meeting topic in the meeting information page.
 	/// \return SDKErr_Success means success, otherwise not
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \deprecated This interface is marked as deprecated, and is replaced by IMeetingService::SetMeetingTopic().
 	virtual SDKError SetMeetingTopic(const zchar_t* meetingtopic) = 0;
 
 	/// \brief Set the cloud recording manage url in the recording setting page. 

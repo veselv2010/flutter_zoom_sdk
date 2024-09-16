@@ -51,9 +51,178 @@ enum MeetingAICompanionQuerySettingOptions
 	MeetingAICompanionQuerySettingOptions_OnlyHost				///<Only hosts and users with host privileges assigned before the meeting starts can ask question.
 };
 
+/*! \class IMeetingEnableSmartSummaryHandler
+	\brief Interface to handle enable smart summary.
+*/
+class IMeetingEnableSmartSummaryHandler
+{
+public:
+	virtual ~IMeetingEnableSmartSummaryHandler() {};
+
+	/// \brief Enable smart summary.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableSmartSummary() = 0;
+
+	/// \brief Determine if this handler is requesting enable smart summary.
+	/// \return True means this handler is for requesting enable smart summary. Otherwise not.
+	virtual bool IsForRequest() = 0;
+};
+
+/*! \class IMeetingStartSmartSummaryHandler
+	\brief Interface to handle starting the smart summary.
+*/
+class IMeetingStartSmartSummaryHandler
+{
+public:
+	virtual ~IMeetingStartSmartSummaryHandler() {};
+
+	/// \brief Start smart summary.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError StartSmartSummary() = 0;
+
+	/// \brief Determine if this handler is for requesting to start the smart summary.
+	/// \return True means this handler is requesting to start the smart summary. Otherwise not.
+	virtual bool IsForRequest() = 0;
+};
+
+/*! \class IMeetingStopSmartSummaryHandler
+	\brief Interface to handle stopping the smart summary.
+*/
+class IMeetingStopSmartSummaryHandler
+{
+public:
+	virtual ~IMeetingStopSmartSummaryHandler() {};
+
+	/// \brief Stop smart summary.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError StopSmartSummary() = 0;
+};
+
+/*! \class IMeetingEnableSmartSummaryActionHandler
+	\brief The handler to confirm enabling smart summary
+*/
+class IMeetingEnableSmartSummaryActionHandler
+{
+public:
+	virtual ~IMeetingEnableSmartSummaryActionHandler() {};
+
+	/// \brief Get the title of tip.
+	/// \return The title of tip.
+	virtual const zchar_t* GetTipTitle() = 0;
+
+	/// \brief Get the string of tip.
+	/// \return The string of tip.
+	virtual const zchar_t* GetTipString() = 0;
+
+	/// \brief Confirm enabling smart summary.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError Confirm() = 0;
+
+	/// \brief Cancel enabling smart summary.
+/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError Cancel() = 0;
+};
+
+/*! \class IMeetingApproveStartSmartSummaryHandler
+	\brief The handler to approve the smart summary started request
+*/
+class IMeetingApproveStartSmartSummaryHandler
+{
+public:
+	virtual ~IMeetingApproveStartSmartSummaryHandler() {};
+
+	/// \brief Get the user ID of the requester.
+	/// \return The user ID of the requester.
+	virtual unsigned int GetSenderUserID() = 0;
+
+	/// \brief Approve request.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError Approve() = 0;
+
+	/// \brief Decline request.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError Decline() = 0;
+};
+
+/*! \class IMeetingApproveEnableSmartSummaryHandler
+	\brief The handler to approve the smart summary enablement request.
+*/
+class IMeetingApproveEnableSmartSummaryHandler
+{
+public:
+	virtual ~IMeetingApproveEnableSmartSummaryHandler() {};
+
+	/// \brief Get the user ID of the requester.
+	/// \return The user ID of the requester.
+	virtual unsigned int GetSenderUserID() = 0;
+
+	/// \brief Continue approve action.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError ContinueApprove() = 0;
+};
+
+/// \brief Meeting smart summary callback event.
+class IMeetingAICompanionSmartSummaryHelperEvent
+{
+public:
+	/// \brief Notify the meting does not support smart summary.
+	virtual void onSmartSummaryStateNotSupported() = 0;
+
+	/// \brief Notify the meeting support smart summary but smart summary feature is disabled.
+	/// \param handler The handler to enable smart summary.
+	virtual void onSmartSummaryStateSupportedButDisabled(IMeetingEnableSmartSummaryHandler* handler) = 0;
+
+	/// \brief Notify the meeting smart summary is not started.
+	/// \param handler The handler to start smart summary.
+	virtual void onSmartSummaryStateEnabledButNotStarted(IMeetingStartSmartSummaryHandler* handler) = 0;
+
+	/// \brief Notify the meeting smart summary is started.
+	/// \param handler The handler to stop smart summary. If the user can not stop smart summary, the handler will be null.
+	virtual void onSmartSummaryStateStarted(IMeetingStopSmartSummaryHandler* handler) = 0;
+
+	/// \brief Notify failed to start the smart summary.
+	/// \param bTimeout True means timeout. Otherwise no timeout. May be declined by host or cohost.
+	virtual void onFailedToStartSmartSummary(bool bTimeout) = 0;
+
+	/// \brief Notify receive request to enable smart summary.
+	/// \param handler The handler to handle enable smart summary request.
+	virtual void onSmartSummaryEnableRequestReceived(IMeetingApproveEnableSmartSummaryHandler* handler) = 0;
+
+	/// \brief Notify receive request to start smart summary.
+	/// \param handler The handler to handle request.
+	virtual void onSmartSummaryStartRequestReceived(IMeetingApproveStartSmartSummaryHandler* handler) = 0;
+
+	/// \brief Notify receive smart summary enable action callback.
+	/// \param handler The handler to enable smart summary.
+	virtual void onSmartSummaryEnableActionCallback(IMeetingEnableSmartSummaryActionHandler* handler) = 0;
+
+	virtual ~IMeetingAICompanionSmartSummaryHelperEvent() {}
+
+};
+
+/// \brief Smart summary helper in meeting.
+class IMeetingAICompanionSmartSummaryHelper
+{
+public:
+	virtual ~IMeetingAICompanionSmartSummaryHelper() {}
+
+	/// \brief Set the smart summary callback event handler.
+	/// \param event A pointer to the IMeetingAICompanionSmartSummaryHelperEvent that receives the smart summary event. 
+	virtual void SetEvent(IMeetingAICompanionSmartSummaryHelperEvent* event) = 0;
+};
+
 
 /*! \class ISmartSummaryPrivilegeHandler
 	\brief Interface to handle start smart summary request
+	\deprecated This class is marked as deprecated
 */
 class ISmartSummaryPrivilegeHandler
 {
@@ -76,7 +245,7 @@ public:
 	virtual SDKError Ignore() = 0;
 };
 /// \brief Meeting smart summary callback event.
-///
+/// \deprecated This class is marked as deprecated
 class IMeetingSmartSummaryHelperEvent
 {
 public:
@@ -103,7 +272,7 @@ public:
 };
 
 /// \brief Meeting smart summary helper interface.
-///
+/// \deprecated This class is marked as deprecated
 class IMeetingSmartSummaryHelper
 {
 public:
@@ -504,7 +673,12 @@ public:
 
 	/// \brief Get the smart summary helper.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingSmartSummaryHelper. Otherwise the function returns NULL.
+	/// \deprecated This interface is marked as deprecated, and is replaced by GetMeetingAICompanionSmartSummaryHelper().
 	virtual IMeetingSmartSummaryHelper* GetMeetingSmartSummaryHelper() = 0;
+
+	/// \brief Get the AI companion smart summary helper.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingAICompanionSmartSummaryHelper. Otherwise the function returns NULL.
+	virtual IMeetingAICompanionSmartSummaryHelper* GetMeetingAICompanionSmartSummaryHelper() = 0;
 
 	/// \brief Get the AI companion query helper.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingAICompanionQueryHelper. Otherwise the function returns NULL.

@@ -120,6 +120,20 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError GetCurrentRemoteController(unsigned int& userId) = 0;
+
+	/// \brief Determine if the auto accept remote control requests feature is enabled in the meeting.
+	/// \return True means that the feature enabled, False means that the feature isn't enabled.	
+	virtual bool IsAutoAcceptRemoteControlFeatureEnabled() = 0;
+
+	/// \brief Whether the current user can enable the auto accept remote control requests feature.
+	/// \return True means the current user can enable the feature.
+	virtual SDKError CanEnableAutoAcceptRemoteControlFeature() = 0;
+
+	/// \brief Enable or disable auto accept remote control requests feature.
+	/// \param bEnable True means that auto accept remote control requests are enabled; False means disabled.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableAutoAcceptRemoteControlFeature(bool bEnable) = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

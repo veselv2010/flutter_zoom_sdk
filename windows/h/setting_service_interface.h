@@ -295,7 +295,7 @@ public:
 	/// \brief Notify the current mic or speaker volume when testing.
 	/// \param MicVolume Specify the volume of the mic.
 	/// \param SpkVolume Specify the volume of the speaker.
-	virtual void OnMicSpkVolumnChanged(unsigned int MicVolume, unsigned int SpkVolume) = 0;
+	virtual void OnMicSpkVolumeChanged(unsigned int MicVolume, unsigned int SpkVolume) = 0;
 
 	/// \brief Notify that either mic device or speaker device is not found.
 	/// \param bMicOrSpk TRUE indicates no mic device. False no speaker device.
@@ -359,7 +359,7 @@ public:
 	virtual SDKError TestSpeakerStopPlaying() = 0;
 	
 	/// \brief Set the time interval for audio test. 
-	/// \param timerInterval Usually the SDK sends the mic and speaker volumes every 200 ms by default via ITestAudioDeviceHelperEvent::OnMicSpkVolumnChanged(). With this function, the user can modify the time interval instead of 200.
+	/// \param timerInterval Usually the SDK sends the mic and speaker volumes every 200 ms by default via ITestAudioDeviceHelperEvent::OnMicSpkVolumeChanged(). With this function, the user can modify the time interval instead of 200.
 	///The time interval varies only from 50 to 1000 in millisecond.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
@@ -1560,7 +1560,7 @@ public:
 
 enum VBVideoError {
 	VB_VideoError_None = 0,
-	VB_VideoError_UnknowFormat,
+	VB_VideoError_UnknownFormat,
 	VB_VideoError_ResolutionHigh1080P,
 	VB_VideoError_ResolutionHigh720P,
 	VB_VideoError_ResolutionLow,
@@ -2152,13 +2152,13 @@ public:
 	/// \param [out] shareOption Specifies the share option in meeting.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError GetShareOptionwWhenShareInMeeting(ShareOptionInMeeting& shareOption) = 0;
+	virtual SDKError GetShareOptionWhenShareInMeeting(ShareOptionInMeeting& shareOption) = 0;
 
 	/// \brief Set the share option in meeting.
 	/// \param shareOption Specifies the share option in meeting.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetShareOptionwWhenShareInMeeting(ShareOptionInMeeting shareOption) = 0;
+	virtual SDKError SetShareOptionWhenShareInMeeting(ShareOptionInMeeting shareOption) = 0;
 
 	/// \brief Get the share select mode.
 	/// \param [out] select_mode Specifies the share select mode.
@@ -2176,13 +2176,13 @@ public:
 	/// \param [out] share_option Specifies the share option to room.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError GetShareOptionwWhenShareInDirectShare(ShareOptionToRoom& share_option) = 0;
+	virtual SDKError GetShareOptionWhenShareInDirectShare(ShareOptionToRoom& share_option) = 0;
 
 	/// \brief Get the share option to room.
 	/// \param share_option Specifies the share option to room.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError SetShareOptionwWhenShareInDirectShare(ShareOptionToRoom share_option) = 0;
+	virtual SDKError SetShareOptionWhenShareInDirectShare(ShareOptionToRoom share_option) = 0;
 
 	/// \brief set the screen capture mode.
 	/// \param capture_mode Specifies the screen capture mode.

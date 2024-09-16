@@ -79,6 +79,8 @@ enum SDKError
 	SDKERR_HARDWARE_DONT_SUPPORT, ///<The current device doesn't support the feature.
 	SDKERR_DOMAIN_DONT_SUPPORT,
 	SDKERR_MEETING_REMOTE_CONTROL_IS_OFF, ///<Remote control is disabled.
+	SDKERR_FILETRANSFER_ERROR,
+
 };
 
 /*! \enum SDK_LANGUAGE_ID
@@ -87,7 +89,7 @@ enum SDKError
 */
 enum SDK_LANGUAGE_ID
 {
-	LANGUAGE_Unknow = 0,///<For initialization.
+	LANGUAGE_Unknown = 0,///<For initialization.
 	LANGUAGE_English,///<In English.
 	LANGUAGE_Chinese_Simplified,///<In simplified Chinese.
 	LANGUAGE_Chinese_Traditional,///<In traditional Chinese.
@@ -274,7 +276,7 @@ typedef struct tagInitParam
 		strWebDomain = NULL;
 		strBrandingName = NULL;
 		strSupportUrl = NULL;
-		emLanguageID = LANGUAGE_Unknow;
+		emLanguageID = LANGUAGE_Unknown;
 		enableGenerateDump = false;
 		enableLogByDefault = false;
 		uiLogFileSize = 5;
