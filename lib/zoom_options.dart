@@ -1,4 +1,5 @@
 /// Basic Zoom Options required for plugin (WEB, iOS, Android)
+library;
 // ignore_for_file: constant_identifier_names
 
 class ZoomOptions {

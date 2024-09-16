@@ -187,7 +187,7 @@ public:
 	/// \return If the function succeeds, the return value is the pointer to the list of devices. 
 	///Otherwise failed, the return value is an empty list. For more details, see \link IH323Device \endlink.
 	/// \remarks The list will be cleared each time the function is called.
-	virtual IList<IH323Device* >* GetCalloutH323DviceList() = 0;
+	virtual IList<IH323Device* >* GetCalloutH323DeviceList() = 0;
 
 	/// \brief Call out with the assigned H.323 device.
 	/// \param deviceInfo Specify the H.323 device to use. For more details, see \link IH323Device \endlink.

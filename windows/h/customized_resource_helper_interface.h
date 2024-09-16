@@ -3,8 +3,8 @@
 * \brief Customized Service Interface
 * \Remarks You must call the functions first before calling ZOOM_SDK_NAMESPACE::InitSDK(), or no, they won't work.
 */
-#ifndef _customiezed_resource_helper_interface_h
-#define _customiezed_resource_helper_interface_h
+#ifndef _customized_resource_helper_interface_h
+#define _customized_resource_helper_interface_h
 #include "zoom_sdk_def.h"
 
 BEGIN_ZOOM_SDK_NAMESPACE

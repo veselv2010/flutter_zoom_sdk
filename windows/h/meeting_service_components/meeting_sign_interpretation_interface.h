@@ -164,12 +164,12 @@ public:
 	/// \param userID Specify the sign language interpreter.
 	/// \param allowToTalk true indicates to allow to talk. Otherwise, false.
 	/// \return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError RequestSignLanuageInterpreterToTalk(unsigned int userID, bool allowToTalk) = 0;
+	virtual SDKError RequestSignLanguageInterpreterToTalk(unsigned int userID, bool allowToTalk) = 0;
 
 	/// \brief Determine if the sign language interpreter be allowed to talk.
 	/// \param [out] canTalk indicates if allow to talk.
 	/// \return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError CanSignLanuageInterpreterTalk(unsigned int userID, bool& canTalk) = 0;
+	virtual SDKError CanSignLanguageInterpreterTalk(unsigned int userID, bool& canTalk) = 0;
 
 	//Interpreter (only for interpreter)
 	/// \brief Get sign language id if myself is a sign interpreter.

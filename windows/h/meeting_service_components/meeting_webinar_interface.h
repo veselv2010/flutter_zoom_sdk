@@ -106,13 +106,13 @@ enum SDKPanelistChatPrivilege
  */
 enum  SDKAttendeeViewMode
 {
-	SDKAttendeeViewMode_None,           ///attendee view display mode is invaild
-	SDKAttendeeViewMode_FollowHost,     ///follow host
-	SDKAttendeeViewMode_Speaker,        ///always view active speaker
-	SDKAttendeeViewMode_Gallery,        ///always view gallery
-	SDKAttendeeViewMode_Standard,       ///attendee can manually switch between gallery and active speaker
-	SDKAttendeeViewMode_SidebysideSpeaker,
-	SDKAttendeeViewMode_SidebysideGallery
+	SDKAttendeeViewMode_None,              /// attendee view display mode is invaild
+	SDKAttendeeViewMode_FollowHost,        /// follow host
+	SDKAttendeeViewMode_Speaker,           /// always view active speaker
+	SDKAttendeeViewMode_Gallery,           /// always view gallery
+	SDKAttendeeViewMode_Standard,          /// attendee can manually switch between gallery and active speaker
+	SDKAttendeeViewMode_SidebysideSpeaker, /// attendee view sharing side by side speaker
+	SDKAttendeeViewMode_SidebysideGallery  /// attendee view sharing side by side gallery
 };
 
 /*! \struct tagWebinarLegalNoticesExplained

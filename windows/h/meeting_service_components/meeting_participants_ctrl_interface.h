@@ -138,7 +138,7 @@ public:
 
 	/// \brief Get the webinar status of the user specified by the current information.
 	/// \return The status of the specified user. For more details, see \link WebinarAttendeeStatus \endlink structure.
-	virtual WebinarAttendeeStatus* GetWebinarAttendeeStauts() = 0;
+	virtual WebinarAttendeeStatus* GetWebinarAttendeeStatus() = 0;
 #if defined(WIN32)
 	/// \brief Determine whether the user specified by the current information is a interpreter or not.
 	/// \return TRUE indicates that the specified user is a interpreter, otherwise not.
@@ -359,6 +359,10 @@ public:
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks Valid for both ZOOM style and user custom interface mode..
 	virtual SDKError ExpelUser(unsigned int userid) = 0;
+
+	/// \brief Check whether myself is original host.
+	/// \return true means that myself is original host, otherwise not.
+	virtual bool IsSelfOriginalHost() = 0;
 
 	/// \brief Reclaim the role of the host.
 	/// \return If the function succeeds, the return value is SDKErr_Success.

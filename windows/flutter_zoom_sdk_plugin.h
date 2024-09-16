@@ -111,6 +111,8 @@ namespace flutter_zoom_sdk {
 		void onSuspendParticipantsActivities();
 
 		void onAICompanionActiveChangeNotice(bool bActive);
+
+        void onMeetingTopicChanged(const zchar_t *sTopic);
 	};
 
 }  // namespace flutter_zoom_sdk

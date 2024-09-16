@@ -12,6 +12,11 @@ public:
 	virtual void onMixedAudioRawDataReceived(AudioRawData* data_) = 0;
 	virtual void onOneWayAudioRawDataReceived(AudioRawData* data_, uint32_t node_id) = 0;
 	virtual void onShareAudioRawDataReceived(AudioRawData* data_) = 0;
+
+	/// \brief Invoked when individual interpreter's raw audio data received
+	/// \param data_ Raw audio data, see \link AudioRawData \endlink.
+	/// \param pLanguageName The pointer to interpreter language name.
+	virtual void onOneWayInterpreterAudioRawDataReceived(AudioRawData* data_, const zchar_t* pLanguageName) = 0;
 };
 
 class IZoomSDKAudioRawDataSender
@@ -53,7 +58,14 @@ class IZoomSDKAudioRawDataHelper
 {
 public:
 	virtual ~IZoomSDKAudioRawDataHelper(){}
-	virtual SDKError subscribe(IZoomSDKAudioRawDataDelegate* pDelegate) = 0;
+
+	/// \brief Subscribe raw audio data.
+	/// \param pDelegate, the callback handler of raw audio data.
+	/// \param bWithInterpreters, if bWithInterpreters is true, it means that you want to get the raw audio data of interpreters, otherwise not. 
+	///        NOTE: if bWithInterpreters is true, it will cause your local interpreter related functions to be unavailable.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError subscribe(IZoomSDKAudioRawDataDelegate* pDelegate, bool bWithInterpreters = false) = 0;
 	virtual SDKError unSubscribe() = 0;
 
 	/// \brief Subscribe audio mic raw data with a callback.

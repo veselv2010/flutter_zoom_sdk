@@ -24,10 +24,10 @@ enum MeetingReminderType
 	TYPE_WEBINAR_AS_PANELIST_JOIN,///<Reminder type of join webinar as panelist.
 	TYPE_TERMS_OF_SERVICE, ///Reminder type of Terms of service or privacy statement changed.
 	TYPE_SMART_SUMMARY_DISCLAIMER, ///<Reminder type of smart summary disclaimer.
-	TYPE_SMART_SUMMARY_ENABLE_REQUEST_REMINDER, ///<Reminder type of smart summary enable request.
-	TYPE_QUERY_DISCLAIMER, ///<Reminder type of query disclaimer. This type is marked as deprecated.
+	TYPE_SMART_SUMMARY_ENABLE_REQUEST_REMINDER, ///<Reminder type of smart summary enable request. This type is marked as deprecated. Replaced with callback \link IMeetingAICompanionSmartSummaryHelperEvent::onSmartSummaryEnableActionCallback \endlink
+	TYPE_QUERY_DISCLAIMER, ///<Reminder type of query disclaimer. 
 	TYPE_QUERY_ENABLE_REQUEST_REMINDER, ///<Reminder type of query enable request. This type is marked as deprecated.
-	TYPE_ENABLE_SMART_SUMMARY_REMINDER,///<Reminder type of enable smart summary.
+	TYPE_ENABLE_SMART_SUMMARY_REMINDER,///<Reminder type of enable smart summary. This type is marked as deprecated. Replaced with callback \link IMeetingAICompanionSmartSummaryHelperEvent::onSmartSummaryEnableActionCallback \endlink
 	TYPE_WEBINAR_ATTENDEE_PROMOTE_REMINDER,///<Reminder type of webinar promote attendee.
 	TYPE_JOIN_PRIVATE_MODE_MEETING_REMINDER,///<Reminder type of joining a meeting with private mode.
 	TYPE_SMART_RECORDING_ENABLE_REQUEST_REMINDER,///<Reminder type to enable smart recording request. This type is marked as deprecated.
@@ -35,6 +35,8 @@ enum MeetingReminderType
 	TYPE_AI_COMPANION_PLUS_DISCLAIMER,///<Reminder type of AICompanionPlus disclaimer.
 	TYPE_CLOSED_CAPTION_DISCLAIMER,///<Reminder type of Close Caption disclaimer.
 	TYPE_MULTI_DISCLAIMER,///<Reminder type of disclaimers combination. 
+	TYPE_JOIN_MEETING_CONNECTOR_AS_GUEST_REMINDER,///<Reminder type for a join meeting connector with guest mode.
+	TYPE_COMMON_DISCLAIMER,///<Reminder type of common disclaimer.
 };
 
 /*! \enum ActionType
@@ -47,6 +49,27 @@ enum ActionType
 	ACTION_TYPE_NEED_SIGN_IN,///<Need to sign in.
 	ACTION_TYPE_NEED_SWITCH_ACCOUNT,///<Need to switch account.
 };
+
+#if (defined WIN32 )
+/*! \struct tagWndPosition
+	\brief The position of the window. The coordinate of position is that of monitor when the parent window is null. If the the parent window is not null, the position coordinate is that of the parent window.
+	Here are more detailed structural descriptions.
+*/
+typedef struct tagMultiReminderUIConfig
+{
+	int left;///<Specifies the X-axis coordinate of the top-left corner of the multi-reminder window in the parent window.
+	int top;///<Specifies the Y-axis coordinate of the top-left corner of the multi-reminder window in the parent window.
+	HWND hParent;///<Specifies the window handle of the parent window. If the value is NULL, the position coordinate is the monitor coordinate.
+	unsigned long background_color;///<Specifies the background color of the multi-reminder window.
+	tagMultiReminderUIConfig()
+	{
+		left = 0;
+		top = 0;
+		hParent = NULL;
+		background_color = 0xffffff;
+	}
+}MultiReminderUIConfig;
+#endif
 
 /// \brief the interface of reminder dialog content.
 class IMeetingReminderContent
@@ -81,6 +104,8 @@ public:
 	virtual SDKError  Accept() = 0;
 	/// \brief Decline the reminder.
 	virtual SDKError  Decline() = 0;
+	/// \brief Set not show the disclaimer in subsequent meetings.
+	virtual SDKError  SetHideFeatureDisclaimers() = 0;
 };
 
 /*! \enum FeatureEnableOption
@@ -146,6 +171,17 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SetEvent(IMeetingReminderEvent* pEvent) = 0;
+
+#if (defined WIN32 )
+	/// \brief Set the customized config of multi-reminder disclaimer. 
+	/// \param config the customized config of multi-reminder disclaimer, see \link MultiReminderUIConfig \endlink 
+	/// \remarks Valid for user custom interface mode only.	
+	virtual void SetMultiReminderDisclaimerUIConfig(MultiReminderUIConfig config) = 0;
+
+	/// \brief Update the position and size of multi-reminder disclaimer window when its parent window moves or changes size.
+	/// \remark This interface should be invoked when the OnSize and OnMove messages of the parent window recieved. Valid for user custom interface mode only.
+	virtual void UpdateMultiReminderDisclaimerUI() = 0;
+#endif
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

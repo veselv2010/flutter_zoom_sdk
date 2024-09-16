@@ -7,7 +7,6 @@
 #define _MEETING_Recording_INTERFACE_H_
 #include "zoom_sdk_def.h"
 #include <time.h>
-
 BEGIN_ZOOM_SDK_NAMESPACE
 /*! \enum RecordingStatus
     \brief Recording status.
@@ -22,6 +21,35 @@ enum RecordingStatus
 	Recording_Connecting,///Connecting, only for cloud recording.
 	Recording_Fail,///Saving the recording failed.
 };
+
+#if defined(__linux__)
+enum TranscodingStatus
+{
+	Transcoding_Start,
+	Transcoding_Inprogress,
+	Transcoding_End,
+	Transcoding_Error_LowDiskSpace,
+	Transcoding_Error_UnknownSources,
+	Transcoding_Error_WrongFile,
+	Transcoding_Error_Unknown,
+};
+
+typedef enum 
+{
+	REC_TYPE_VIDEO = 0,
+	REC_TYPE_SHARE,
+}LocalRecordingSubscribeType;
+
+typedef enum LocalRecordingResolution
+{
+	LocalRecordingResolution_90P = 0,
+	LocalRecordingResolution_180P,
+	LocalRecordingResolution_360P,
+	LocalRecordingResolution_720P,
+	LocalRecordingResolution_1080P,
+	LocalRecordingResolution_NoUse = 100
+}LocalRecordingResolution;
+#endif
 
 /*! \enum RequestLocalRecordingStatus
 	\brief Request local recording privilege status.
@@ -219,6 +247,9 @@ public:
 	/// \brief Callback event received when you call \link EnableSmartRecording \endlink. You can use the handler to confirm or cancel enabling the smart recording.
 	/// \param handler A pointer to the ISmartRecordingEnableActionHandler. For more details, see \link ISmartRecordingEnableActionHandler \endlink.
 	virtual void onSmartRecordingEnableActionCallback(ISmartRecordingEnableActionHandler* handler) = 0;
+#if defined(__linux__)
+	virtual void onTranscodingStatusChanged(TranscodingStatus status,const zchar_t* path) = 0;
+#endif
 };
 
 /// \brief Meeting recording controller interface.
@@ -359,6 +390,10 @@ public:
 	/// \return If the function succeeds, the return value is recording status.
 	///To get extended error information, see \link RecordingStatus \endlink enum.
 	virtual RecordingStatus GetCloudRecordingStatus() = 0;
+#if defined(__linux__)
+	virtual SDKError SubscribeLocalrecordingResource(unsigned int sourceId, LocalRecordingSubscribeType type,LocalRecordingResolution resolution) = 0;
+	virtual SDKError UnSubscribeLocalrecordingResource(unsigned int sourceId, LocalRecordingSubscribeType type) = 0;
+#endif
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

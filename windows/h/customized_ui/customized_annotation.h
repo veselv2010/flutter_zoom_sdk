@@ -17,7 +17,7 @@ class ICustomizedShareRender;
 */ 
 enum CustomizedShareAnnotationStatus
 {
-	CS_ANNO_READYTOUSE,///<The toolbar has been created.
+	CS_ANNO_READY_TO_USE,///<The toolbar has been created.
 	CS_ANNO_CLOSE,///<The toolbar will be destroyed.  
 };
 
@@ -182,7 +182,7 @@ public:
 	/// \param pp_obj A pointer to the ICustomizedAnnotationObj*.
 	/// \return If the function succeeds, the return value is SDKErr_Success, and ppMeetingService is not NULL
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks It is suggested to call this function if the value of status_ is CS_ANNO_READYTOUSE when you receive the ICustomizedAnnotationControllerEvent::onSharingShareAnnotationStatusChanged.
+	/// \remarks It is suggested to call this function if the value of status_ is CS_ANNO_READY_TO_USE when you receive the ICustomizedAnnotationControllerEvent::onSharingShareAnnotationStatusChanged.
 	virtual SDKError CreateAnnoObj(ICustomizedShareRender* view_share_render, ICustomizedAnnotationObj** pp_obj) = 0;
 
 	/// \brief Destroy the specified annotation object.

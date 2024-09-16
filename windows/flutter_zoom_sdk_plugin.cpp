@@ -233,6 +233,8 @@ namespace flutter_zoom_sdk {
         if (meetingConfiguration)
         {
         	meetingConfiguration->HideMeetingInfoOnMeetingUI(true);
+            meetingConfiguration->EnableInviteButtonOnMeetingUI(false);
+            meetingConfiguration->EnableInviteLinkOnMeetingUI(false);
         }
 
 		ZOOM_SDK_NAMESPACE::SDKError joinMeetingCallReturnValue(ZOOM_SDK_NAMESPACE::SDKERR_UNKNOWN);
@@ -413,5 +415,7 @@ namespace flutter_zoom_sdk {
 	void MeetingServiceEvent::onSuspendParticipantsActivities(){}
 
 	void MeetingServiceEvent::onAICompanionActiveChangeNotice(bool bActive){}
+
+	void MeetingServiceEvent::onMeetingTopicChanged(const zchar_t *sTopic){}
 
 }  // namespace flutter_zoom_sdk

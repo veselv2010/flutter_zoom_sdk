@@ -51,23 +51,6 @@ public:
 	virtual ~IMeetingPasswordAndScreenNameHandler() {};
 };
 
-/// \brief user to handle confirm whether start archiving after joining the meeting.
-///
-class IMeetingArchiveConfirmHandler
-{
-public:
-	virtual ~IMeetingArchiveConfirmHandler() {};
-
-	/// \brief The content that notifies the user to confirm starting to archive when joining the meeting.
-	virtual const zchar_t* GetArchiveConfirmContent() = 0;
-
-	/// \brief Join the meeting.		
-	/// \param bStartArchive true means start the archive when joining the meeting, false means do not start the archive when joining the meeting.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError JoinWithArchive(bool bStartArchive) = 0;
-};
-
 /// \brief Webinar register handler.
 ///
 class IWebinarNeedRegisterHandler
@@ -169,6 +152,24 @@ public:
 	/// \remarks The SDK will destroy this object instance after calling this function. 
 	virtual void Cancel() = 0;
 };
+
+/// \brief user to handle confirm whether start archiving after joining the meeting.
+///
+class IMeetingArchiveConfirmHandler
+{
+public:
+	virtual ~IMeetingArchiveConfirmHandler() {};
+
+	/// \brief The content that notifies the user to confirm starting to archive when joining the meeting.
+	virtual const zchar_t* GetArchiveConfirmContent() = 0;
+		
+	/// \brief Join the meeting.		
+	/// \param bStartArchive true means start the archive when joining the meeting, false means do not start the archive when joining the meeting.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError JoinWithArchive(bool bStartArchive) = 0;
+};
+
 
 /// \brief End other meeting to join the new meeting Handler.
 ///
