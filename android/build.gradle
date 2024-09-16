@@ -54,7 +54,7 @@ android {
         implementation "androidx.appcompat:appcompat:1.6.1"
         implementation "androidx.constraintlayout:constraintlayout:2.1.0"
         implementation "com.google.android.material:material:1.9.0"
-        implementation "com.google.android:flexbox:2.0.1"
+        implementation "com.google.android.flexbox:flexbox:3.0.0"
         implementation "androidx.multidex:multidex:2.0.1"
         implementation "com.google.code.gson:gson:2.9.1"
         implementation "com.github.bumptech.glide:annotations:4.11.0"
@@ -65,7 +65,6 @@ android {
         implementation "com.airbnb.android:lottie:4.0.0"
 
         implementation "androidx.window:window:1.1.0"
-
         implementation "androidx.window:window-java:1.1.0"
 
         implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.20"
@@ -84,6 +83,7 @@ android {
         implementation "io.reactivex.rxjava3:rxandroid:3.0.2"
 
         implementation "androidx.compose.material3:material3:1.1.1"
+        implementation "androidx.compose.material3:material3-window-size-class:1.1.1"
         implementation "androidx.compose.ui:ui-tooling-preview:1.4.1"
         implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
         implementation "androidx.activity:activity-compose:1.6.1"
@@ -91,11 +91,9 @@ android {
         implementation "androidx.navigation:navigation-compose:2.6.0"
         implementation "io.coil-kt:coil-compose:2.3.0"
 
-        implementation "androidx.webkit:webkit:1.6.0"
+        implementation "androidx.webkit:webkit:1.9.0"
 
-        /// implementation "online.studyrooms:commonlib:1.0.0"
         implementation "online.studyrooms:mobilertc:1.0.0"
-//    implementation project(':commonlib')
 //    implementation project(':mobilertc')
     }
 
@@ -103,6 +101,5 @@ android {
 }
 
 task deployAllToMavenLocal {
-    /// dependsOn('commonlib:publishToMavenLocal')
     dependsOn('mobilertc:publishToMavenLocal')
 }
