@@ -9,7 +9,7 @@ class MeetingWidget extends StatefulWidget {
   const MeetingWidget({super.key});
 
   @override
-  _MeetingWidgetState createState() => _MeetingWidgetState();
+  State<MeetingWidget> createState() => _MeetingWidgetState();
 }
 
 class _MeetingWidgetState extends State<MeetingWidget> {
@@ -177,7 +177,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   //API KEY & SECRET is required for below methods to work
   //Join Meeting With Meeting ID & Password
   void joinMeeting(BuildContext context) {
-    bool _isMeetingEnded(String status) {
+    bool isMeetingEnded(String status) {
       var result = false;
 
       if (!kIsWeb) {
@@ -277,10 +277,9 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         if (results[0] == 0) {
           zoom.onMeetingStatus().listen((status) {
             if (kDebugMode) {
-              print(
-                  '[Meeting Status Stream] : ' + status[0] + ' - ' + status[1]);
+              print('[Meeting Status Stream] : ${status[0]} - ${status[1]}');
             }
-            if (_isMeetingEnded(status[0])) {
+            if (isMeetingEnded(status[0])) {
               if (kDebugMode) {
                 print('[Meeting Status] :- Ended');
               }
@@ -294,10 +293,8 @@ class _MeetingWidgetState extends State<MeetingWidget> {
             timer = Timer.periodic(const Duration(seconds: 2), (timer) {
               zoom.meetingStatus(meetingOptions.meetingId!).then((status) {
                 if (kDebugMode) {
-                  print('[Meeting Status Polling] : ' +
-                      status[0] +
-                      ' - ' +
-                      status[1]);
+                  print(
+                      '[Meeting Status Polling] : ${status[0]} - ${status[1]}');
                 }
               });
             });
@@ -305,7 +302,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         }
       }).catchError((error) {
         if (kDebugMode) {
-          print('[Error Generated] : ' + error);
+          print('[Error Generated] : $error');
         }
       });
     } else {
@@ -323,7 +320,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
 
   //Start Meeting With Random Meeting ID ----- Emila & Password For Zoom is required.
   void startMeeting(BuildContext context) {
-    bool _isMeetingEnded(String status) {
+    bool isMeetingEnded(String status) {
       var result = false;
 
       if (Platform.isAndroid) {
@@ -359,9 +356,9 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       if (results[0] == 0) {
         zoom.onMeetingStatus().listen((status) {
           if (kDebugMode) {
-            print('[Meeting Status Stream] : ' + status[0] + ' - ' + status[1]);
+            print('[Meeting Status Stream] : ${status[0]} - ${status[1]}');
           }
-          if (_isMeetingEnded(status[0])) {
+          if (isMeetingEnded(status[0])) {
             if (kDebugMode) {
               print('[Meeting Status] :- Ended');
             }
@@ -370,16 +367,14 @@ class _MeetingWidgetState extends State<MeetingWidget> {
           if (status[0] == 'MEETING_STATUS_INMEETING') {
             zoom.meetingDetails().then((meetingDetailsResult) {
               if (kDebugMode) {
-                print('[MeetingDetailsResult] :- ' +
-                    meetingDetailsResult.toString());
+                print('[MeetingDetailsResult] :- $meetingDetailsResult');
               }
             });
           }
         });
         zoom.startMeeting(meetingOptions).then((loginResult) {
           if (kDebugMode) {
-            print(
-                '[LoginResult] :- ' + loginResult[0] + ' - ' + loginResult[1]);
+            print('[LoginResult] :- ${loginResult[0]} - ${loginResult[1]}');
           }
           if (loginResult[0] == 'SDK ERROR') {
             //SDK INIT FAILED
@@ -405,20 +400,20 @@ class _MeetingWidgetState extends State<MeetingWidget> {
           }
         }).catchError((error) {
           if (kDebugMode) {
-            print('[Error Generated] : ' + error);
+            print('[Error Generated] : $error');
           }
         });
       }
     }).catchError((error) {
       if (kDebugMode) {
-        print('[Error Generated] : ' + error);
+        print('[Error Generated] : $error');
       }
     });
   }
 
   //Start Meeting With Custom Meeting ID ----- Emila & Password For Zoom is required.
   void startMeetingNormal(BuildContext context) {
-    bool _isMeetingEnded(String status) {
+    bool isMeetingEnded(String status) {
       var result = false;
 
       if (Platform.isAndroid) {
@@ -455,9 +450,9 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       if (results[0] == 0) {
         zoom.onMeetingStatus().listen((status) {
           if (kDebugMode) {
-            print('[Meeting Status Stream] : ' + status[0] + ' - ' + status[1]);
+            print('[Meeting Status Stream] : ${status[0]} - ${status[1]}');
           }
-          if (_isMeetingEnded(status[0])) {
+          if (isMeetingEnded(status[0])) {
             if (kDebugMode) {
               print('[Meeting Status] :- Ended');
             }
@@ -466,15 +461,14 @@ class _MeetingWidgetState extends State<MeetingWidget> {
           if (status[0] == 'MEETING_STATUS_INMEETING') {
             zoom.meetingDetails().then((meetingDetailsResult) {
               if (kDebugMode) {
-                print('[MeetingDetailsResult] :- ' +
-                    meetingDetailsResult.toString());
+                print('[MeetingDetailsResult] :- $meetingDetailsResult');
               }
             });
           }
         });
         zoom.startMeetingNormal(meetingOptions).then((loginResult) {
           if (kDebugMode) {
-            print('[LoginResult] :- ' + loginResult.toString());
+            print('[LoginResult] :- $loginResult');
           }
           if (loginResult[0] == 'SDK ERROR') {
             //SDK INIT FAILED
@@ -496,7 +490,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
       }
     }).catchError((error) {
       if (kDebugMode) {
-        print('[Error Generated] : ' + error);
+        print('[Error Generated] : $error');
       }
     });
   }
