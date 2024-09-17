@@ -47,8 +47,6 @@ namespace flutter_zoom_sdk {
 	}
 
 	FlutterZoomSdkPlugin::FlutterZoomSdkPlugin() {
-		setlocale(LC_ALL, "");
-
 		plagin = this;
 		FlutterZoomSdkPlugin::AuthService = nullptr;
 		FlutterZoomSdkPlugin::MeetingService = nullptr;
