@@ -2,7 +2,7 @@
 
 Windows: v5.17.6
 
-Android: v5.17.6
+Android: v6.0.12
 
 Web: v3.1.6
 

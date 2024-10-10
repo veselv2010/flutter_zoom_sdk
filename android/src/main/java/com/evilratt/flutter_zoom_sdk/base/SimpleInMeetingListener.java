@@ -10,10 +10,13 @@ import us.zoom.sdk.InMeetingChatController;
 import us.zoom.sdk.InMeetingChatMessage;
 import us.zoom.sdk.InMeetingEventHandler;
 import us.zoom.sdk.InMeetingServiceListener;
-//import us.zoom.sdk.LocalRecordingRequestPrivilegeStatus;
+import us.zoom.sdk.CameraControlRequestType;
 import us.zoom.sdk.VideoQuality;
 import us.zoom.sdk.LocalRecordingRequestPrivilegeStatus;
 import us.zoom.sdk.MobileRTCFocusModeShareType;
+import us.zoom.sdk.ICameraControlRequestHandler;
+import us.zoom.sdk.IMeetingArchiveConfirmHandler;
+import us.zoom.sdk.IMeetingInputUserInfoHandler;
 
 public class SimpleInMeetingListener implements InMeetingServiceListener {
 
@@ -25,6 +28,10 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     @Override
     public void onWebinarNeedRegister(String s) {
 
+    }
+
+    @Override
+    public void onJoinMeetingNeedUserInfo(IMeetingInputUserInfoHandler iMeetingInputUserInfoHandler) {
     }
 
     @Override
@@ -73,11 +80,6 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     }
 
     @Override
-    public void onMeetingCoHostChanged(long l) {
-
-    }
-
-    @Override
     public void onMeetingCoHostChange(long l, boolean b) {
 
     }
@@ -103,22 +105,12 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     }
 
     @Override
-    public void onSpotlightVideoChanged(boolean b) {
-
-    }
-
-    @Override
     public void onSpotlightVideoChanged(List<Long> list) {
 
     }
 
     @Override
     public void onUserVideoStatusChanged(long l, VideoStatus videoStatus) {
-
-    }
-
-    @Override
-    public void onUserNetworkQualityChanged(long l) {
 
     }
 
@@ -204,11 +196,6 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onSinkPanelistChatPrivilegeChanged(InMeetingChatController.MobileRTCWebinarPanelistChatPrivilege mobileRTCWebinarPanelistChatPrivilege) {
-
-    }
-
-    @Override
-    public void onUserNameChanged(long l, String s) {
 
     }
 
@@ -347,5 +334,25 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     @Override
     public void onAllowParticipantsRequestCloudRecording(boolean b) {
 
+    }
+
+    @Override
+    public void onSinkJoin3rdPartyTelephonyAudio(java.lang.String audioInfo) {
+    }
+
+    @Override
+    public void onUserConfirmToStartArchive(IMeetingArchiveConfirmHandler iMeetingArchiveConfirmHandler) {
+    }
+
+    @Override
+    public void onCameraControlRequestReceived(long l, CameraControlRequestType cameraControlRequestType, ICameraControlRequestHandler iCameraControlRequestHandler) {
+    }
+
+    @Override
+    public void onWebinarNeedInputScreenName(InMeetingEventHandler handler) {
+    }
+
+    @Override
+    public void onCameraControlRequestResult(long userId, boolean isApproved) {
     }
 }
