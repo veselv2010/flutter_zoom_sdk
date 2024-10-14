@@ -311,11 +311,6 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
             }
 
             @Override
-            public void onNotificationServiceStatus(SDKNotificationServiceStatus sdkNotificationServiceStatus) {
-
-            }
-
-            @Override
             public void onNotificationServiceStatus(ZoomSDKAuthenticationListener.SDKNotificationServiceStatus status, SDKNotificationServiceError error) {
 
             }
@@ -450,11 +445,6 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
             }
 
             @Override
-            public void onNotificationServiceStatus(SDKNotificationServiceStatus sdkNotificationServiceStatus) {
-
-            }
-
-            @Override
             public void onNotificationServiceStatus(ZoomSDKAuthenticationListener.SDKNotificationServiceStatus status, SDKNotificationServiceError error) {
 
             }
@@ -551,7 +541,9 @@ public class FlutterZoomSdkPlugin extends Activity implements FlutterPlugin, Met
     }
 
     public void leaveMeeting() {
-        ZoomSDK zoomSDK = ZoomSDK.getInstance();
+        ZoomSDK zoomSDK = getInitializedZoomInstance();
+        if (zoomSDK == null) return;
+
         zoomSDK.getInMeetingService().leaveCurrentMeeting(true);
 //        this.activity.finish();
         ZoomSDK.getInstance().uninitialize();
