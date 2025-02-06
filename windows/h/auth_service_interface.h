@@ -115,7 +115,7 @@ typedef struct tagAuthContext
 							  */
 	tagAuthContext()
 	{
-		jwt_token = NULL;
+		jwt_token = nullptr;
 	}
 
 }AuthContext;
@@ -156,7 +156,7 @@ public:
 
 	/// \brief Callback of login result with fail reason.
 	/// \param ret Login status. see \link LOGINSTATUS \endlink enum.
-	/// \param pAccountInfo Valid when the ret is LOGINRET_SUCCESS. Otherwise NULL.
+	/// \param pAccountInfo Valid when the ret is LOGINRET_SUCCESS. Otherwise nullptr.
 	/// \param reason Login fail reason. Valid when the ret is LOGIN_FAILED. Otherwise LoginFail_None. see \link LoginFailReason \endlink enum.
 	virtual void onLoginReturnWithReason(LOGINSTATUS ret, IAccountInfo* pAccountInfo, LoginFailReason reason) = 0;
 	
@@ -223,7 +223,7 @@ public:
 	virtual SDKError LogOut() = 0;
 
 	/// \brief Get login account information.
-	/// \return If you has logged in your account successfully, the return value is a pointer to IAccountInfo, otherwise is NULL.
+	/// \return If you has logged in your account successfully, the return value is a pointer to IAccountInfo, otherwise is nullptr.
 	virtual IAccountInfo* GetAccountInfo() = 0;
 
 	/// \brief Get login status.
@@ -231,7 +231,7 @@ public:
 	virtual LOGINSTATUS GetLoginStatus() = 0;
 #if defined(WIN32)
 	/// \brief Get direct share service helper interface. 
-	/// \return If you logged in your account successfully, the return value is the object pointer IDirectShareServiceHelper. Otherwise is NULL.
+	/// \return If you logged in your account successfully, the return value is the object pointer IDirectShareServiceHelper. Otherwise is nullptr.
 	virtual IDirectShareServiceHelper* GetDirectShareServiceHelper() = 0;
 
 	/// \brief Enable or disable auto register notification service. This is enabled by default.
@@ -250,7 +250,7 @@ public:
 	virtual SDKError UnregisterNotificationService() = 0;
 
 	/// \brief Get notification service helper interface. 
-	/// \return If the function succeeds, the return value is a pointer to INotificationServiceHelper . Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to INotificationServiceHelper . Otherwise returns nullptr.
 	virtual INotificationServiceHelper* GetNotificationServiceHelper() = 0;
 #endif
 };

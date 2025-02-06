@@ -162,7 +162,7 @@ public:
 	virtual void SetEvent(IMeetingH323HelperEvent* pEvent) = 0;
 
 	/// \brief Get the list of H.323 call-in number supported by the current meeting.
-	/// \return If the function succeeds, the return value is the pointer to the list of the call-in number. Otherwise failed, the return value is NULL.
+	/// \return If the function succeeds, the return value is the pointer to the list of the call-in number. Otherwise failed, the return value is nullptr.
 	virtual IList<const zchar_t* >* GetH323Address() = 0;
 
 	/// \brief Get the H.323 password for the current meeting.

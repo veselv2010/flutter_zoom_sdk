@@ -18,12 +18,12 @@ class ICameraInfo
 public:
 	/// \brief Get the camera device ID.
 	/// \return If the function succeeds, the return value is the camera device ID.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual const zchar_t* GetDeviceId() = 0;
 
 	/// \brief Get the camera device name
 	/// \return If the function succeeds, the return value is the camera device name.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual const zchar_t* GetDeviceName() = 0;
 
 	/// \brief Determine if the current device is selected to use.
@@ -40,12 +40,12 @@ class IMicInfo
 public:
 	/// \brief Get the microphone device ID.
 	/// \return If the function succeeds, the return value is the camera device ID.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual const zchar_t* GetDeviceId() = 0;
 
 	/// \brief Get the microphone device name.
 	/// \return If the function succeeds, the return value is the camera device name.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual const zchar_t* GetDeviceName() = 0;
 
 	/// \brief Determine if the current device is selected to use.
@@ -62,12 +62,12 @@ class ISpeakerInfo
 public:
 	/// \brief Get the speaker device ID.
 	/// \return If the function succeeds, the return value is the camera device ID.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual const zchar_t* GetDeviceId() = 0;
 
 	/// \brief Get the speaker device name.
 	/// \return If the function succeeds, the return value is speaker device name.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual const zchar_t* GetDeviceName() = 0;
 
 	/// \brief Determine if the current device is selected to use.
@@ -83,12 +83,12 @@ class IRingSpeakerInfo
 public:
 	/// \brief Get the ring speaker device ID.
 	/// \return If the function succeeds, the return value is the ring speaker device ID.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual const zchar_t* GetDeviceId() = 0;
 
 	/// \brief Get the ring speaker device name.
 	/// \return If the function succeeds, the return value is ring speaker device name.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual const zchar_t* GetDeviceName() = 0;
 
 	/// \brief Determine if the current device is selected to use.
@@ -122,13 +122,13 @@ enum LimitFPSValue
 */
 typedef enum tagReactionSkinToneType
 {
-	ReactionSkinTone_None = 0,     //none
-	ReactionSkinTone_Default,      //default skin tone
-	ReactionSkinTone_Light,        //light skin tone
-	ReactionSkinTone_MediumLight,  //medium light skin tone
-	ReactionSkinTone_Medium,       //medium skin tone
-	ReactionSkinTone_MediumDark,   //meduim dark skin tone
-	ReactionSkinTone_Dark,         //dark skin tone 
+	ReactionSkinTone_None = 0,     ///<none
+	ReactionSkinTone_Default,      ///<default skin tone
+	ReactionSkinTone_Light,        ///<light skin tone
+	ReactionSkinTone_MediumLight,  ///<medium light skin tone
+	ReactionSkinTone_Medium,       ///<medium skin tone
+	ReactionSkinTone_MediumDark,   ///<meduim dark skin tone
+	ReactionSkinTone_Dark,         ///<dark skin tone 
 }ReactionSkinToneType;
 
 enum ZoomSDKUITheme
@@ -149,9 +149,9 @@ enum ZoomSDKUIAppearance
 enum WindowSizeType
 {
 	WindowSize_None = 0,
-	WindowSize_FullScreen,  //Full screen when share
-	WindowSize_Maximize,    //Maximize window when share
-	WindowSize_CurrentSize  //Current size when share
+	WindowSize_FullScreen,  ///<Full screen when share
+	WindowSize_Maximize,    ///<Maximize window when share
+	WindowSize_CurrentSize  ///<Current size when share
 };
 
 /*! \enum SettingTabPage
@@ -210,10 +210,10 @@ typedef struct tagShowSettingDlgParam
 	SettingTabPage eTabPageType; ///<The tab page shown at the top of the displayed setting dialog.
 	tagShowSettingDlgParam()
 	{
-		hParent = NULL;
+		hParent = nullptr;
  		top = 0;
 		left = 0;
-		hSettingWnd = NULL;
+		hSettingWnd = nullptr;
 		bShow = true;
 		bCenter = false;
 		eTabPageType = SettingTabPage_General;
@@ -234,7 +234,7 @@ typedef struct tagSettingDlgShowTabPageOption
 	bool bSHowRecording;///<True indicates to show recording page
 	bool bShowAdvancedFeature;///<True indicates to show profile page
 	bool bShowStatistics;///<True indicates to show statistics page
-	bool bShowFeedback;///<True indicates to show feed back page
+	bool bShowFeedback;///<True indicates to show feed back page.This parameter is marked as deprecated.
 	bool bShowKeyboardShortcuts;///<True indicates to show keyboard shortcuts page
 	bool bShowAccessibility;///<True indicates to show accessibility page
 	tagSettingDlgShowTabPageOption()
@@ -330,7 +330,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	///\remarks The function is disabled if no event handler is set.
-	virtual SDKError TestMicStartRecording(const zchar_t* deviceID = NULL) = 0;
+	virtual SDKError TestMicStartRecording(const zchar_t* deviceID = nullptr) = 0;
 
 	/// \brief Stop the mic test. The SDK will return an error if there is no mic test.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -350,7 +350,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	///\remarks The function is disabled if no event handler is set.
-	virtual SDKError TestSpeakerStartPlaying(const zchar_t* deviceID = NULL) = 0;
+	virtual SDKError TestSpeakerStartPlaying(const zchar_t* deviceID = nullptr) = 0;
 	
 	/// \brief Stop the speaker test. The SDK will return an error if there is no speaker test.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -565,7 +565,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks The function can not work if no event is set or no window handle is set.
-	virtual SDKError TestVideoStartPreview(const zchar_t* deviceID = NULL) = 0;
+	virtual SDKError TestVideoStartPreview(const zchar_t* deviceID = nullptr) = 0;
 	
 	/// \brief Stop testing the camera.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
@@ -646,12 +646,12 @@ public:
 
 	/// \brief Get the file path of the current image.
 	/// \return If the function succeeds, the return value is the file path of current image.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual const zchar_t* GetImageFilePath() = 0;
 
 	/// \brief Get the name of the current image.
 	/// \return If the function succeeds, the return value is the name of the current image.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual const zchar_t* GetImageName() = 0;
 
 	/// \brief Get the index of the current image.
@@ -721,7 +721,7 @@ class IVideoSettingContext
 public:
 	/// \brief Get camera device list.
 	/// \return If the function succeeds, the return value the is camera device list.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual IList<ICameraInfo* >* GetCameraList() = 0;
 
 	/// \brief Select camera device.
@@ -973,27 +973,10 @@ public:
 	/// \return Enabled or disabled.
 	/// \remarks Valid only for Zoom style user interface mode.
 	virtual SDKError IsHideSelfViewEnabled(bool& bEnabled) = 0;
-
-	/// \brief Determine whether to show audio-only avatar when the user's video feature is supported by the meeting.
-	/// \return true indicates enabled. False not.
-	/// \deprecated This interface is marked as deprecated. The return value will not be expected, always return false.
-	virtual bool IsSupportLipSyncAvatar() = 0;
-
-	/// \brief Enable or disable audio-only 3d avatar when the user's video is off.
-	/// \param bEnable TRUE indicates to show audio-only 3d avatar when the user's video is off.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise the function fails and return an error. To get extended error information, see \link SDKError \endlink enum.
-	/// \deprecated This interface is marked as deprecated. The return value will not be expected, always return SDKERR_WRONG_USAGE.
-	virtual SDKError EnableLipSyncAvatarWhenVideoOff(bool bEnable) = 0;
-
-	/// \brief Get the flag to enable or disable audio-only 3d avatar when the user's video is off.
-	/// \return Enabled or disabled.
-	/// \deprecated This interface is marked as deprecated. The return value will not be expected, always return false.
-	virtual bool IsLipSyncAvatarWhenVideoOffEnabled() = 0;
 	
 	/// \brief Get the pointer to ITestVideoDeviceHelper which is used to test camera device.
 	/// \return If the function succeeds, the return value is the pointer to ITestVideoDeviceHelper.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link ITestVideoDeviceHelper \endlink.
 	virtual ITestVideoDeviceHelper* GetTestVideoDeviceHelper() = 0;
 #endif
@@ -1026,9 +1009,9 @@ public:
 
 typedef enum
 {
-	SDK_AUDIO_DEVICE_RAW_MODE_DEFAULT, //default mode
-	SDK_AUDIO_DEVICE_RAW_MODE_ON, //on
-	SDK_AUDIO_DEVICE_RAW_MODE_OFF //off
+	SDK_AUDIO_DEVICE_RAW_MODE_DEFAULT, ///<default mode
+	SDK_AUDIO_DEVICE_RAW_MODE_ON, ///<on
+	SDK_AUDIO_DEVICE_RAW_MODE_OFF ///<off
 }SDK_AUDIO_DEVICE_RAW_MODE_TYPE;
 
 typedef enum {
@@ -1043,7 +1026,7 @@ class IAudioSettingContext
 public:
 	/// \brief Get the mic device list.
 	/// \return If the function succeeds, the return value is the camera device list.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual IList<IMicInfo* >* GetMicList() = 0;
 
 	/// \brief Select mic device.
@@ -1055,7 +1038,7 @@ public:
 
 	/// \brief Get the speaker device list.
 	/// \return If the function succeeds, the return value is the camera device list.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual IList<ISpeakerInfo* >* GetSpeakerList() = 0;
 
 	/// \brief Select speaker device.
@@ -1217,7 +1200,7 @@ public:
 
 	/// \brief Get the pointer to ITestAudioDeviceHelper which is used to test audio devices.
 	/// \return If the function succeeds, the return value is the pointer to ITestAudioDeviceHelper.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link ITestAudioDeviceHelper \endlink.
 	virtual ITestAudioDeviceHelper* GetTestAudioDeviceHelper() = 0;
 
@@ -1406,7 +1389,7 @@ typedef struct tagOverallStatisticInfo
 	{
 		net_work_type_ = SETTINGS_NETWORK_UNKNOWN;
 		connection_type_ = SETTINGS_CONNECTION_TYPE_UNKNOWN;
-		proxy_addr_ = NULL;
+		proxy_addr_ = nullptr;
 	}
 }OverallStatisticInfo;
 
@@ -1489,6 +1472,156 @@ public:
 	///For more details, see \link ASVSessionStatisticInfo \endlink.
 	virtual SDKError QueryShareStatisticInfo(ASVSessionStatisticInfo& info_) = 0;
 };
+
+typedef enum
+{
+	ZoomSDKWallpaperLayoutMode_None,
+	ZoomSDKWallpaperLayoutMode_Fill,
+	ZoomSDKWallpaperLayoutMode_Fit
+}ZoomSDKWallpaperLayoutMode;
+
+typedef enum
+{
+	ZoomSDKWallpaperSettingStatus_None,
+	ZoomSDKWallpaperSettingStatus_Downloading,
+	ZoomSDKWallpaperSettingStatus_Downloaded,
+	ZoomSDKWallpaperSettingStatus_DownloadFail
+}ZoomSDKWallpaperSettingStatus;
+
+/// \brief Wall-paper item interface.
+///
+class IWallpaperItem
+{
+public:
+	/// \brief Get the layout mode of the wall-paper.
+	/// \return Value defined in ZoomSDKWallpaperLayoutMode enum, see \link ZoomSDKWallpaperLayoutMode \endlink enum.
+	virtual ZoomSDKWallpaperLayoutMode GetWallpaperLayoutMode() = 0;
+
+	/// \brief Get the wall-paper ID.
+	/// \return The wall-paper ID.
+	virtual const zchar_t* GetWallpaperID() = 0;
+
+	/// \brief Get the wall-paper title.
+	/// \return The wall-paper title.
+	virtual const zchar_t* GetTitle() = 0;
+
+	/// \brief Get the wall-paper thumbnail path.
+	/// \return The wall-paper thumbnail path.
+	virtual const zchar_t* GetThumbnailPath() = 0;
+
+	/// \brief Get the full image path of the wall-paper.
+	/// \return The full image path of the wall-paper.
+	virtual const zchar_t* GetPath() = 0;
+
+	/// \brief Get the transparency of the wall-paper.
+	/// \return The transparency of the wall-paper. 0 ~ 255, -1 means no transparency. Only possible in meeting wall-paper.
+	virtual int GetTransparency() = 0;
+
+	/// \brief Set the transparency of the wall-paper.
+	/// \param transparency The transparency of the wall-paper. 0 ~ 255, -1 means no transparency. Only possible in meeting wall-paper.
+	virtual void SetTransparency(int transparency) = 0;
+
+	/// \brief Set the layout mode of the wall-paper.
+	/// \param mode Value defined in ZoomSDKWallpaperLayoutMode enum, see \link ZoomSDKWallpaperLayoutMode \endlink enum.
+	virtual void SetWallpaperLayoutMode(ZoomSDKWallpaperLayoutMode mode) = 0;
+
+	virtual ~IWallpaperItem() {};
+};
+
+/// \brief Meeting wall-paper context Callback Event.
+///
+class IWallpaperSettingContextEvent
+{
+public:
+	/// \brief Callback event of notification that the meeting wall-paper item is changed.
+	/// \param item The config changed.
+	virtual void onMeetingWallpaperChanged(IWallpaperItem* item) = 0;
+
+	/// \brief Callback event of notification that download status of the meeting wall-paper is changed.
+	/// \param status The download status of the meeting wall-peper. see \link ZoomSDKWallpaperSettingStatus \endlink enum.
+	/// \param wallpaperId The download meeting wall-paper image ID.
+	virtual void onMeetingWallpaperImageDownloadStatus(ZoomSDKWallpaperSettingStatus status, const zchar_t* wallpaperId) = 0;
+
+#if defined(WIN32)
+	/// \brief Callback event of notification that the personal wall-paper item is changed.
+	/// \param item The config changed.
+	virtual void onPersonalWallpaperChanged(IWallpaperItem* item) = 0;
+
+	/// \brief Callback event of notification that download status of the personal wall-paper is changed.
+	/// \param status The download status of the personal wall-peper. see \link ZoomSDKWallpaperSettingStatus \endlink enum.
+	/// \param wallpaperId The download personal wall-paper image ID.
+	virtual void onPersonalWallpaperImageDownloadStatus(ZoomSDKWallpaperSettingStatus status, const zchar_t* wallpaperId) = 0;
+#endif
+};
+
+/// \brief Meeting Wall-paper setting interface.
+class IWallpaperSettingContext
+{
+public:
+	/// \brief Meeting wall-paper callback handler. 
+	/// \param pEvent A pointer to the IWallpaperSettingContextEvent that receives wall-paper event. 
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Call the function before using any other interface of the same class.
+	virtual SDKError SetEvent(IWallpaperSettingContextEvent* pEvent) = 0;
+
+	/// \brief Determine if the meeting wall-paper feature enabled by OP.
+	/// \return True indicates the feature enabled. Otherwise false.
+	virtual bool IsMeetingWallpaperEnabled() = 0;
+
+	/// \brief Determine if meeting wall-paper thumbnail ready.
+	/// \return True indicates ready. Otherwise false.
+	virtual bool IsMeetingWallpaperThumbsReady() = 0;
+
+	/// \brief Get the meeting wall-paper item.
+	/// \return The current using meeting wall-paper config.
+	/// \remarks If select None, the wall-paper ID is empty.
+	virtual IWallpaperItem* GetCurrentMeetingWallpaperItem() = 0;
+
+	/// \brief Get the meeting wall-paper list.
+	/// \return The meeting wall-paper list.
+	virtual IList<IWallpaperItem* >* GetMeetingWallpaperList() = 0;
+
+	/// \brief Set the meeting wall-paper item.
+	/// \param item The meeting wall-paper item need to set.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetMeetingWallpaper(IWallpaperItem* item) = 0;
+
+	/// \brief Get the meeting wall-paper item by wall-paper ID.
+	/// \return The meeting wall-paper with the wall-paper ID.
+	virtual IWallpaperItem* GetMeetingWallpaperItemByID(const zchar_t* wallpaperID) = 0;
+
+#if defined(WIN32)	
+	/// \brief Determine if the personal wall-paper feature enabled by OP.
+	/// \return True indicates the feature enabled. Otherwise false.
+	virtual bool IsPersonalWallpaperEnabled() = 0;
+
+	/// \brief Get the current user's persional wall-paper item.
+	/// \return The current user's personal wall-paper config.
+	/// \remarks Only login user has this config. If select None, the wall-paper ID is empty.
+	virtual IWallpaperItem* GetCurrentPersonalWallpaperItem() = 0;
+
+	/// \brief Get the current user's personal wall-paper list.
+	/// \return The current user's personal wall-paper list.
+	/// \remarks Only login user has this config list.
+	virtual IList<IWallpaperItem* >* GetPersonalWallpaperList() = 0;
+
+	/// \brief Set the current user's personal wall-paper.
+	/// \param item Personal wall-paper item need to set.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \remarks Only valid for login user.
+	virtual SDKError SetPersonalWallpaper(IWallpaperItem* item) = 0;
+
+	/// \brief Get the personal wall-paper item by wall-paper ID.
+	/// \return The personal wall-paper item with the wall-paper ID.
+	/// \remarks Only valid for login user.
+	virtual IWallpaperItem* GetPersonalWallpaperItemByID(const zchar_t* wallpaperID) = 0;
+#endif
+};
+
+
 #if defined(WIN32)	
 /// \brief Accessibility setting interface.
 ///
@@ -1547,12 +1680,12 @@ public:
 	virtual bool isAllowDelete() = 0;
 	/// \brief Get the file path of current image.
 	/// \return If the function succeeds, the return value is the file path of current image.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual const zchar_t* GetImageFilePath() = 0;
 
 	/// \brief Get the name of current image.
 	/// \return If the function succeeds, the return value is the name of current image.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual const zchar_t* GetImageName() = 0;
 
 	virtual ~IVirtualBGImageInfo() {};
@@ -1652,7 +1785,7 @@ public:
 
 	/// \brief Get the list of the virtual background images.
 	/// \return If there are images in the list, the return value is a list of the poiters to IVirtualBGImageInfo.
-	///Otherwise return NULL. To get extended error information, see \link IVirtualBGImageInfo \endlink enum.
+	///Otherwise return nullptr. To get extended error information, see \link IVirtualBGImageInfo \endlink enum.
 	virtual IList<IVirtualBGImageInfo* >* GetBGImageList() = 0;
 
 	/// \brief Specify an image to be the virtual background image.
@@ -1685,7 +1818,7 @@ public:
 
 	/// \brief Get the list of the virtual background videoes.
 	/// \return If there are videoes in the list, the return value is a list of the poiters to IVirtualBGImageInfo.
-	///Otherwise return NULL. To get extended error information, see \link IVirtualBGImageInfo \endlink enum.
+	///Otherwise return nullptr. To get extended error information, see \link IVirtualBGImageInfo \endlink enum.
 	virtual IList<IVirtualBGImageInfo* >* GetBGVideoList() = 0;
 
 	/// \brief Specify a video to be the virtual background video.
@@ -1696,7 +1829,7 @@ public:
 
 	/// \brief Get the pointer to ITestVideoDeviceHelper which is used to preview the video with virtual background image.
 	/// \return If the function succeeds, the return value is the pointer to ITestVideoDeviceHelper.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link ITestVideoDeviceHelper \endlink.
 	virtual ITestVideoDeviceHelper* GetTestVideoDeviceHelper() = 0;
 };
@@ -1722,12 +1855,12 @@ public:
 
 	/// \brief Get the file path of current image.
 	/// \return If the function succeeds, the return value is the file path of current image.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual const zchar_t* GetImageFilePath() = 0;
 
 	/// \brief Get the name of current image.
 	/// \return If the function succeeds, the return value is the name of current image.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual const zchar_t* GetImageName() = 0;
 
 	/// \brief Get the type of current image.
@@ -1789,7 +1922,7 @@ public:
 
 	/// \brief Get the list of the video filter images.
 	/// \return If there are images in the list, the return value is a list of the poiters to IVideoFilterImageInfo.
-	///Otherwise return NULL. To get extended information, see \link IVideoFilterImageInfo \endlink enum.
+	///Otherwise return nullptr. To get extended information, see \link IVideoFilterImageInfo \endlink enum.
 	virtual IList<IVideoFilterImageInfo* >* GetVideoFilterImageList() = 0;
 
 	/// \brief Specify an image to be the video filter image.
@@ -1800,7 +1933,7 @@ public:
 
 	/// \brief Get the pointer to ITestVideoDeviceHelper which is used to preview the video with virtual background image.
 	/// \return If the function succeeds, the return value is the pointer to ITestVideoDeviceHelper.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link ITestVideoDeviceHelper \endlink.
 	virtual ITestVideoDeviceHelper* GetTestVideoDeviceHelper() = 0;
 };
@@ -1856,7 +1989,7 @@ public:
 
 	/// \brief Get the list of the 3D avatar images.
 	/// \return If there are images in the list, the return value is a list of the pointers to I3DAvatarImageInfo.
-	///Otherwise return NULL. To get extended information, see \link IVideoFilterImageInfo \endlink enum.
+	///Otherwise return nullptr. To get extended information, see \link IVideoFilterImageInfo \endlink enum.
 	virtual IList<I3DAvatarImageInfo* >* Get3DAvatarImageList() = 0;
 
 	/// \brief Specify an image to be the the 3D avatar image.
@@ -1867,13 +2000,13 @@ public:
 
 	/// \brief Get the pointer to ITestVideoDeviceHelper which is used to preview the video with 3D avatar image.
 	/// \return If the function succeeds, the return value is the pointer to ITestVideoDeviceHelper.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link ITestVideoDeviceHelper \endlink.
 	virtual ITestVideoDeviceHelper* GetTestVideoDeviceHelper() = 0;
 
 	/// \brief Get the pointer to ILipSyncAvatarPreviewHelper which is used to preview the lip-sync avatar.
 	/// \return If the function succeeds, the return value is the pointer to ILipSyncAvatarPreviewHelper.
-	///Otherwise the function fails, and returns NULL.
+	///Otherwise the function fails, and returns nullptr.
 	///For more details, see \link ILipSyncAvatarPreviewHelper \endlink.
 	virtual ILipSyncAvatarPreviewHelper* GetLipSyncAvatarPreviewHelper() = 0;
 };
@@ -1900,12 +2033,12 @@ public:
 
 	/// \brief Get the file path of the current image.
 	/// \return If the function succeeds, the return value is the file path of current image.
-	///Otherwise the function fails and the return value is NULL.
+	///Otherwise the function fails and the return value is nullptr.
 	virtual const zchar_t* GetImageFilePath() = 0;
 
 	/// \brief Get the name of the current image.
 	/// \return If the function succeeds, the return value is the name of the current image.
-	///Otherwise the function fails and the return value is NULL.
+	///Otherwise the function fails and the return value is nullptr.
 	virtual const zchar_t* GetImageName() = 0;
 
 	/// \brief Get the index of the current face makeup.
@@ -1967,7 +2100,7 @@ public:
 
 	/// \brief Get the list of the face makeup images.
 	/// \return If there are images in the list, the return value is a list of the pointers to IFaceMakeupImageInfo.
-	///Otherwise return NULL. To get extended information, see \link IFaceMakeupImageInfo \endlink enum.
+	///Otherwise return nullptr. To get extended information, see \link IFaceMakeupImageInfo \endlink enum.
 	virtual IList<IFaceMakeupImageInfo* >* GetFaceMakeupImageList() = 0;
 
 	/// \brief Specify an image to be face makeup image.
@@ -2003,7 +2136,7 @@ public:
 
 	/// \brief Get the pointer to ITestVideoDeviceHelper which is used to preview the video with face makeup image.
 	/// \return If the function succeeds, the return value is the pointer to ITestVideoDeviceHelper.
-	///Otherwise the function fails and returns NULL.
+	///Otherwise the function fails and returns nullptr.
 	///For more details, see \link ITestVideoDeviceHelper \endlink.
 	virtual ITestVideoDeviceHelper* GetTestVideoDeviceHelper() = 0;
 };
@@ -2206,37 +2339,37 @@ public:
 
 	/// \brief Get general setting interface.
 	/// \return If the function succeeds, the return value is an object pointer to IGeneralSettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link IGeneralSettingContext \endlink.
 	virtual IGeneralSettingContext* GetGeneralSettings() = 0;
 
 	/// \brief Get audio setting interface.
 	/// \return If the function succeeds, the return value an object pointer to IAudioSettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link IAudioSettingContext \endlink.
 	virtual IAudioSettingContext* GetAudioSettings() = 0;
 
 	/// \brief Get video setting interface.
 	/// \return If the function succeeds, the return value is an object pointer to IVideoSettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link IVideoSettingContext \endlink.
 	virtual IVideoSettingContext* GetVideoSettings() = 0;
 
 	/// \brief Get recording setting interface.
 	/// \return If the function succeeds, the return value is an object pointer to IRecordingSettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link IRecordingSettingContext \endlink.
 	virtual IRecordingSettingContext* GetRecordingSettings() = 0;
 
 	/// \brief Get statistic settings interface.
 	/// \return If the function succeeds, the return value is an object pointer to IStatisticSettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link IStatisticSettingContext \endlink.
 	virtual IStatisticSettingContext* GetStatisticSettings() = 0;
 
 	/// \brief Get share settings interface.
 	/// \return If the function succeeds, the return value is an object pointer to IShareSettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link IShareSettingContext \endlink.
 	virtual IShareSettingContext* GetShareSettings() = 0;
 
@@ -2256,40 +2389,47 @@ public:
 
 	/// \brief Get Accessibility settings interface.
 	/// \return If the function succeeds, the return value is an object pointer to IAccessibilitySettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link IAccessibilitySettingContext \endlink.
 	virtual IAccessibilitySettingContext* GetAccessibilitySettings() = 0;
 
 	/// \brief Get setting user strategy interface.
 	/// \return If the function succeeds, the return value is an object pointer to ISettingUIStrategy.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link ISettingUIStrategy \endlink.
 	virtual ISettingUIStrategy* GetSettingUIStrategy() = 0;
 
 	/// \brief Get virtual background interface.
 	/// \return If the function succeeds, the return value is an object pointer to IVirtualBGSettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link IVirtualBGSettingContext \endlink.
 	virtual IVirtualBGSettingContext* GetVirtualBGSettings() = 0;
 
 	/// \brief Get video filter settings interface.
 	/// \return If the function succeeds, the return value is an object pointer to IVideoFilterSettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link IVideoFilterSettingContext \endlink.
 	virtual IVideoFilterSettingContext* GetVideoFilterSettings() = 0;
 
 	/// \brief Get 3D avatar settings interface.
 	/// \return If the function succeeds, the return value is an object pointer to I3DAvatarSettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link I3DAvatarSettingContext \endlink.
 	virtual I3DAvatarSettingContext* Get3DAvatarSettings() = 0;
 
 	/// \brief Get face makeup settings interface.
 	/// \return If the function succeeds, the return value is an object pointer to IFaceMakeupSettingContext.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	///For more details, see \link IFaceMakeupSettingContext \endlink.
 	virtual IFaceMakeupSettingContext* GetFaceMakeupSettings() = 0;
 #endif
+
+	/// \brief Get wallpaper settings interface.
+	/// \return If the function succeeds, the return value is an object pointer to IWallpaperSettingContext.
+	///Otherwise failed, returns nullptr.
+	///For more details, see \link IWallpaperSettingContext \endlink.
+	virtual IWallpaperSettingContext* GetWallpaperSettings() = 0;
+
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

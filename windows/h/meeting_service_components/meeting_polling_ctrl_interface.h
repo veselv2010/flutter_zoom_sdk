@@ -178,30 +178,30 @@ public:
 	virtual const zchar_t* GetActivePollingID() = 0;
 	/// \brief Get the list of poll's question.
 	/// \param pollingID Specify the question's polling ID. 
-	/// \return If the function succeeds, the return value is a pointer to the IList<IPollingQuestionItem*>. Otherwise, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<IPollingQuestionItem*>. Otherwise, the return value is nullptr.
 	virtual IList<IPollingQuestionItem*>* GetPollingQuestionItemList(const zchar_t* pollingID) = 0;
 	/// \brief Determine if the right answer item list can be allowed to get.
 	/// \param pollingID Specify the right answer's polling ID. 
 	virtual bool CanGetRightAnswerItemList(const zchar_t* pollingID) = 0;
 	/// \brief Get the list of polling question or subquestion's right answer.
 	/// \param pollingID Specify the right answer's polling ID. 
-	/// \return If the function succeeds, the return value is a pointer to the IList<IPollingAnswerItem*>, Otherwise, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<IPollingAnswerItem*>, Otherwise, the return value is nullptr.
 	virtual IList<IPollingAnswerItem*>* GetPollingRightAnswerItemList(const zchar_t* pollingID) = 0;
 	/// \brief Determine if the answer result list can be show.
 	/// \param pollingID Specify the answer result's polling ID. 
 	virtual bool CanShowAnswerResultList(const zchar_t* pollingID) = 0;
 	/// \brief Get the list of polling answer result item.
 	/// \param pollingID Specify the answer result's polling ID. 
-	/// \return If the function succeeds, the return value is a pointer to the IList<IPollingAnswerResultItem*>. Otherwise, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<IPollingAnswerResultItem*>. Otherwise, the return value is nullptr.
 	virtual IList<IPollingAnswerResultItem*>* GetPollingAnswerResultItemList(const zchar_t* pollingID) = 0;
 	/// \brief Get the polling item object of specified polling ID.
 	/// \param pollingID Specify the polling ID where you want to get the information. 
-	/// \return If the function succeeds, the return value is a pointer to the IPollingItem, Otherwise the function fails, and the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IPollingItem, Otherwise the function fails, and the return value is nullptr.
 	virtual IPollingItem* GetPollingItemByID(const zchar_t* pollingID) = 0;
 	/// \brief Get the polling question's image path.
 	/// \param pollingID Specify the answer's polling ID. 
 	/// \param questionID Specify the answer's question ID. 
-	/// \return If the function succeeds, the return value is the question's image path. Otherwise the function fails, and the return value is NULL.
+	/// \return If the function succeeds, the return value is the question's image path. Otherwise the function fails, and the return value is nullptr.
 	virtual const zchar_t* GetPollingQuestionImagePath(const zchar_t* pollingID, const zchar_t* questionID) = 0;
 	/// \brief Get the polling question's minimum character and maximum character count.
 	/// \param pollingID Specify the question's polling ID. 
@@ -257,7 +257,7 @@ public:
 	/// \param pollingID Specify the poll's polling ID. 
 	virtual SDKError ViewPollingResultFromBrowser(const zchar_t* pollingID) = 0;
 	/// \brief Get the list of poll item. 
-	/// \return If the function succeeds, the return value is a pointer to the IList<IPollingItem*>. Otherwise, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<IPollingItem*>. Otherwise, the return value is nullptr.
 	virtual IList<IPollingItem*>* GetPollingItemList() = 0;
 	/// \brief Determine if the host or co-host can start the polling.
 	/// \param pollingID Specify the poll's polling ID. 

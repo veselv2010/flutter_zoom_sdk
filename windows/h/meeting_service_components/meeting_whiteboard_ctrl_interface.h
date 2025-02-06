@@ -65,7 +65,7 @@ public:
 	virtual SDKError SetEvent(IMeetingWhiteboardCtrlEvent* pEvent) = 0;
 
 	/// \brief Set the whiteboard web view and dashboard web view owner window.
-	/// \param [in] hOwner Specify the owner window. If the hOwner is NULL, the owner window will be desktop window. 
+	/// \param [in] hOwner Specify the owner window. If the hOwner is nullptr, the owner window will be desktop window. 
 	/// \Call this function before calling ShowDashboardView. Call this function when receiving the meeting status MEETING_STATUS_INMEETING. 
 	///Otherwise, the dashboard web view owner window will be desktop window. 
 	/// \return If the function succeeds, the return value is SDKErr_Success.

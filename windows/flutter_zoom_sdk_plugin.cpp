@@ -416,4 +416,6 @@ namespace flutter_zoom_sdk {
 
 	void MeetingServiceEvent::onMeetingTopicChanged(const zchar_t *sTopic){}
 
+	void MeetingServiceEvent::onMeetingFullToWatchLiveStream(const zchar_t* sLiveStreamUrl){}
+
 }  // namespace flutter_zoom_sdk

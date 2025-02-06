@@ -19,7 +19,7 @@ typedef struct tagProxySettings
 	bool auto_detect;///<TRUE indicates automatic detection.
 	tagProxySettings()
 	{
-		proxy = NULL;
+		proxy = nullptr;
 		auto_detect = false;
 	}
 }ProxySettings;

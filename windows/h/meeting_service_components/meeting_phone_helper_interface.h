@@ -132,7 +132,7 @@ public:
 	virtual bool IsDialoutSupported() = 0;
 
 	/// \brief Get the list of the country information where the meeting supports to join by telephone.
-	/// \return List of the country information returns if the meeting supports to join by telephone. Otherwise NULL.
+	/// \return List of the country information returns if the meeting supports to join by telephone. Otherwise nullptr.
 	virtual IList<IMeetingPhoneSupportCountryInfo* >* GetSupportCountryInfo() = 0;
 
 	/// \brief Invite the specified user to join the meeting by calling out.

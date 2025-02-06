@@ -42,11 +42,20 @@ class IZoomSDKRenderer
 {
 public:
 	virtual SDKError setRawDataResolution(ZoomSDKResolution resolution) = 0;
-	virtual SDKError subscribe(uint32_t userId, ZoomSDKRawDataType type) = 0;
+	
+	/// \brief Subscribe to the video or share's raw data.
+	/// \param subscribeId: If 'type' is RAW_DATA_TYPE_VIDEO, 'subscribeId' refers to the user ID, otherwise it refers to the shared source ID of user.
+	/// \param type: Specify the raw data type.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError subscribe(uint32_t subscribeId, ZoomSDKRawDataType type) = 0;
 	virtual SDKError unSubscribe() = 0;
 	virtual ZoomSDKResolution getResolution() = 0;
 	virtual ZoomSDKRawDataType getRawDataType() = 0;
-	virtual uint32_t getUserId() = 0;
+	
+	/// \brief Get the subscribed ID specified when subscribing.
+	/// \return subscribed id.
+	virtual uint32_t getSubscribeId() = 0;
 	virtual ~IZoomSDKRenderer(){}
 };
 END_ZOOM_SDK_NAMESPACE

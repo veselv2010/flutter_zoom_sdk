@@ -27,6 +27,12 @@ struct SeatPlacementInfo
 {
 	unsigned int seat_id;	///<The seat ID.
 	RECT position;			///<The seat position.
+
+	SeatPlacementInfo()
+	{
+		seat_id = 0;
+		position = { 0 };
+	}
 };
 
 /*! \struct CustomImmersiveLayoutData
@@ -39,6 +45,15 @@ struct CustomImmersiveLayoutData
 	unsigned int user_id;	///<The user ID.
 	unsigned int z_order;	///<The seat z order. Higher numbers are displayed on top of lower ones.
 	RECT position;			///<The seat position.
+
+	CustomImmersiveLayoutData()
+	{
+		is_seat_free = false;
+		seat_id = 0;
+		user_id = 0;
+		z_order = 0;
+		position = { 0 };
+	}
 };
 
 /// \brief Immersive template data object interface.
@@ -180,30 +195,30 @@ class ICustomImmersiveController
 public:
 	/// \brief Set immersive object callback event handler.
 	/// \param pEvent A pointer to the ICustomImmersiveCtrlEvent that receives the immersive object events. For more details, see \link ICustomImmersiveCtrlEvent \endlink.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError SetEvent(ICustomImmersiveCtrlEvent* pEvent) = 0;
 
 	/// \brief Determine if immersive is supported. 
 	/// \param [out] bSupport True means support immersive. Otherwise, false. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError isSupportImmersive(bool& bSupport) = 0;
 
 	/// \brief Determine if immersive view is active. 
 	/// \param [out] bOn True means the immersive view is active. Otherwise, false. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError isImmersiveViewOn(bool& bOn) = 0;
 
 	/// \brief Download the template thumbnails. See /link ICustomImmersiveCtrlEvent /endlink for updates on the download.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError downloadTemplateThumbnails() = 0;
 
 	/// \brief Determine if the thumbnails are ready. 
 	/// \param [out] bReady True means the immersive thumbnails is ready, false not. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError isTemplateThumbnailsReady(bool& bReady) = 0;
 
@@ -213,32 +228,32 @@ public:
 
 	/// \brief Download complete template resource. 
 	/// \param immersiveTemplate The template to be downloaded. For more details, see \link ICustomImmersiveTemplate \endlink.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError downloadTemplate(ICustomImmersiveTemplate* immersiveTemplate) = 0;
 
 	/// \brief Determine if the immersive template can be started. 
 	/// \param immersiveTemplate The selected template in immersive view. For more details, see \link ICustomImmersiveTemplate \endlink.
 	/// \param [out] bCan True means the immersive can be started, false not. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError canStartImmersiveView(ICustomImmersiveTemplate* immersiveTemplate, bool& bCan) = 0;
 
 	/// \brief Start immersive view. 
 	/// \param immersiveTemplate The selected template in immersive view. For more details, see \link ICustomImmersiveTemplate \endlink.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	/// remarks For the host, it must be started after the immersive container is created.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError startImmersiveView(ICustomImmersiveTemplate* immersiveTemplate) = 0;
 
 	/// \brief Change template in immersive view. 
 	/// \param immersiveTemplate The selected template in immersive view. For more details, see \link ICustomImmersiveTemplate \endlink.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError changeTemplate(ICustomImmersiveTemplate* immersiveTemplate) = 0;
 
 	/// \brief Exit immersive view. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError endImmersiveView() = 0;
 
@@ -249,7 +264,7 @@ public:
 	/// \brief Determine if the user can be shown in immersive view. 
 	/// \param userID The user ID.
 	/// \param [out] bCan True means the user can be shown in immersive view, false if they cannot. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError canUserShowInImmersiveView(unsigned int userID, bool& bCan) = 0;
 
@@ -264,60 +279,60 @@ public:
 	/// \brief Put the user in the seat. 
 	/// \param userID The user ID.
 	/// \param seatID The seat ID.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError assignUser(unsigned int userID, unsigned int seatID) = 0;
 
 	/// \brief Put the user in the free seat. 
 	/// \param userID The user ID.
 	/// \param pos The position.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError putUserToFreeSeat(unsigned int userID, RECT pos) = 0;
 
 	/// \brief Remove user from immersive view. 
 	/// \param userID The user ID.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError removeUser(unsigned int userID) = 0;
 
 	/// \brief Determine if the user is in immersive view. 
 	/// \param userID The user ID.
 	/// \param [out] bIn True means the user is in immersive view, false means that they are not. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError isUserInImmersiveView(unsigned int userID, bool& bIn) = 0;
 
 	/// \brief Add a template based on a custom image. 
 	/// \param filePath The image file path.
 	/// \param [out] immersiveTemplate The object of custom template. For more details, see \link ICustomImmersiveTemplate \endlink.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError addCustomImageTemplate(const zchar_t* filePath, ICustomImmersiveTemplate** immersiveTemplate) = 0;
 
 	/// \brief Remove custom image template. 
 	/// \param immersiveTemplate The custom image template that want to remove. For more details, see \link ICustomImmersiveTemplate \endlink.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError removeCustomImageTemplate(ICustomImmersiveTemplate* immersiveTemplate) = 0;
 
 	/// \brief Determine if displaying sharing contents in immersive mode.
 	/// \param [out] bInShare True means displaying sharing contents in immersive mode, false means that they are not. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError isInImmersiveShareMode(bool& bInShare) = 0;
 
-	/// \brief Update the user id to view share, available only for host.
-	/// \param userID The sepecified user id.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \brief Update the share source ID to view share, only available for host.
+	/// \param shareSourceID The sepecified share source ID.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError viewShare(unsigned int userID) = 0;
+	virtual SDKError viewShare(unsigned int shareSourceID) = 0;
 
-	/// \brief Query the user id when viewing share in immersive mode, available only for host.
-	/// \param [out] userID The sepecified user id.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \brief Query the share source ID when viewing share in immersive mode, only available for host.
+	/// \param [out] shareSourceID The sepecified share source ID.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise, failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError getViewingShareUser(unsigned int& userID) = 0;
+	virtual SDKError getViewingShareSourceID(unsigned int& shareSourceID) = 0;
 
 	virtual ~ICustomImmersiveController() {}
 };

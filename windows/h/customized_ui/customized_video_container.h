@@ -207,7 +207,7 @@ public:
 	/// \brief Create a video render element.
 	/// \param [out] ppElement Once the function succeeds, the parameter will store the pointer to the video render element.
 	/// \param type_ Specify the type of the video render element to be created.
-	/// \return If the function succeeds, the return value is SDKErr_Success, the return value of ppElement is not NULL.
+	/// \return If the function succeeds, the return value is SDKErr_Success, the return value of ppElement is not nullptr.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError CreateVideoElement(IVideoRenderElement** ppElement, VideoRenderElementType type_) = 0;
 

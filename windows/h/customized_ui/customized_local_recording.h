@@ -61,9 +61,9 @@ public:
 	virtual SDKError SelectActiveVideoSource() = 0;
 	
 	/// \brief Choose the video source in the list of shared content via specified user ID.
-	/// \param user_id Specify the user ID.
+	/// \param shareSourceID Specify the share source ID.
 	/// \return If the function succeeds, the return value is SDKErr_SUCCESS. If the specified user ID is out of the list to receive the shared content, it returns SDKERR_INVALID_PARAMETER.	
-	virtual SDKError SelectRecvSharingSource(unsigned int user_id) = 0;
+	virtual SDKError SelectRecvSharingSource(unsigned int shareSourceID) = 0;
 	
 	/// \brief Mark the found video source that sends shared content.
 	/// \return If the function succeeds,the return value is SDKErr_SUCCESS. If there is no user who is sending the sharing, it returns SDKERR_WRONG_USAGE. 

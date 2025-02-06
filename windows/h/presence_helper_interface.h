@@ -238,7 +238,7 @@ public:
 	virtual SDKError InviteContact(const zchar_t* contactId) = 0;
 
 	/// \brief Get the Batch request contact controller.
-	/// \return If the function succeeds, the return value is a pointer to IBatchRequestContactHelper. Otherwise the function fails and returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IBatchRequestContactHelper. Otherwise the function fails and returns nullptr.
 	virtual IBatchRequestContactHelper* GetBatchRequestContactHelper() = 0;
 
 };

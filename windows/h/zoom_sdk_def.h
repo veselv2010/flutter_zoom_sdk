@@ -125,13 +125,13 @@ typedef struct tagWndPosition
 	int left;///<Specifies the X-axis coordinate of the top-left corner of the window
 	int top;///<Specifies the Y-axis coordinate of the top-left of the window.
 	HWND hSelfWnd;///<Specifies the window handle of the window itself.
-	HWND hParent;///<Specifies the window handle of the parent window. If the value is NULL, the position coordinate is the monitor coordinate.
+	HWND hParent;///<Specifies the window handle of the parent window. If the value is nullptr, the position coordinate is the monitor coordinate.
 	tagWndPosition()
 	{
 		left = 0;
 		top = 0;
-		hSelfWnd = NULL;
-		hParent = NULL;
+		hSelfWnd = nullptr;
+		hParent = nullptr;
 	}
 }WndPosition;
 
@@ -157,8 +157,8 @@ typedef struct tagCustomizedLanguageInfo
 	CustomizedLanguageType langType;///<Use the custom resource type.
 	tagCustomizedLanguageInfo()
 	{
-		langName = NULL;
-		langInfo = NULL;
+		langName = nullptr;
+		langInfo = nullptr;
 		langType = CustomizedLanguage_None;
 	}
 
@@ -172,13 +172,13 @@ typedef struct tagCustomizedLanguageInfo
 #define ENABLE_CUSTOMIZED_UI_FLAG (1 << 5)
 typedef struct tagConfigurableOptions
 {
-	CustomizedLanguageInfo customizedLang;///The custom resource information.
+	CustomizedLanguageInfo customizedLang;///<The custom resource information.
 	int optionalFeatures;///<Additional functional configuration. The function currently supports whether to use the custom UI mode only. When the value of the optionalFeatures&ENABLE_CUSTOMIZED_UI_FLAG is TRUE, it means the custom UI mode will be used. Otherwise the Zoom UI mode will be used.
 	const zchar_t* sdkPathPostfix;
 	tagConfigurableOptions()
 	{
 		optionalFeatures = 0;
-		sdkPathPostfix = NULL;
+		sdkPathPostfix = nullptr;
 	}
 
 }ConfigurableOptions;
@@ -273,9 +273,9 @@ typedef struct tagInitParam
 	int wrapperType;
 	tagInitParam()
 	{
-		strWebDomain = NULL;
-		strBrandingName = NULL;
-		strSupportUrl = NULL;
+		strWebDomain = nullptr;
+		strBrandingName = nullptr;
+		strSupportUrl = nullptr;
 		emLanguageID = LANGUAGE_Unknown;
 		enableGenerateDump = false;
 		enableLogByDefault = false;
@@ -305,6 +305,9 @@ enum ShareType
 	SHARE_TYPE_CAMERA,///<Type of sharing the camera.
 	SHARE_TYPE_DATA,///<Type of sharing the data.
 	SHARE_TYPE_VIDEO_FILE,///<Type of sharing the video file.
+	SHARE_TYPE_FRAME,///<Type of sharing the frame.
+	SHARE_TYPE_DOCUMENT,///<Type of sharing the document.
+	SHARE_TYPE_COMPUTER_AUDIO///<Type of sharing the computer audio.
 };
 
 /*! \enum LastErrorType
@@ -394,6 +397,16 @@ enum SharingStatus
 	Sharing_View_Other_Sharing,///<View the sharing of others.
 	Sharing_Pause,///<Pause sharing.
 	Sharing_Resume,///<Resume sharing.
+};
+
+/*! \struct ZoomSDKColor
+	\brief Zoom SDK color.
+	The standard RGB color model has a value range of 0-255.
+*/
+struct ZoomSDKColor {
+	unsigned int red = 0; ///<Font color R value.
+	unsigned int green = 0; ///<Font color G value.
+	unsigned int blue = 0; ///<Font color B value.
 };
 END_ZOOM_SDK_NAMESPACE
 

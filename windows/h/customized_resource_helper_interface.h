@@ -50,7 +50,7 @@ public:
 	/// \param customizedString Specify the custom string.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks If customizedString is NULL or is not NULL but with length zero(0), the return value is SDKERR_INVALID_PARAMETER.
+	/// \remarks If customizedString is nullptr or is not nullptr but with length zero(0), the return value is SDKERR_INVALID_PARAMETER.
 	/// \remarks You must call the function first before calling ZOOM_SDK_NAMESPACE::InitSDK(), or no, it won't work.
 	virtual SDKError AddCustomizedStringResource(SDKCustomizedStringType customizedType, const zchar_t* customizedString) = 0;
 	/// \brief Use the custom URL to replace the specified URL.
@@ -58,7 +58,7 @@ public:
 	/// \param customizedUrl Specify the custom URL. 
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks If customizedUrl is NULL or is not NULL but with length zero(0), the return value is SDKERR_INVALID_PARAMETER.
+	/// \remarks If customizedUrl is nullptr or is not nullptr but with length zero(0), the return value is SDKERR_INVALID_PARAMETER.
 	/// \remarks You must call the function first before calling ZOOM_SDK_NAMESPACE::InitSDK(), or no, it won't work.
 	virtual SDKError AddCustomizedURLResource(SDKCustomizedURLType customizedType, const zchar_t* customizedUrl) = 0;
 };

@@ -97,8 +97,8 @@ typedef struct tagWebinarMeetingStatus
  */
 enum SDKPanelistChatPrivilege
 {
-	SDKPanelistChatPrivilege_PanelistOnly = 1,	/// Allow panelists only to chat with each other.
-	SDKPanelistChatPrivilege_All = 2			/// Allow panelist to chat with everyone.
+	SDKPanelistChatPrivilege_PanelistOnly = 1,	///<Allow panelists only to chat with each other.
+	SDKPanelistChatPrivilege_All = 2			///<Allow panelist to chat with everyone.
 };
 #if defined(WIN32)
 /**
@@ -106,13 +106,13 @@ enum SDKPanelistChatPrivilege
  */
 enum  SDKAttendeeViewMode
 {
-	SDKAttendeeViewMode_None,              /// attendee view display mode is invaild
-	SDKAttendeeViewMode_FollowHost,        /// follow host
-	SDKAttendeeViewMode_Speaker,           /// always view active speaker
-	SDKAttendeeViewMode_Gallery,           /// always view gallery
-	SDKAttendeeViewMode_Standard,          /// attendee can manually switch between gallery and active speaker
-	SDKAttendeeViewMode_SidebysideSpeaker, /// attendee view sharing side by side speaker
-	SDKAttendeeViewMode_SidebysideGallery  /// attendee view sharing side by side gallery
+	SDKAttendeeViewMode_None,              ///<attendee view display mode is invaild
+	SDKAttendeeViewMode_FollowHost,        ///<follow host
+	SDKAttendeeViewMode_Speaker,           ///<always view active speaker
+	SDKAttendeeViewMode_Gallery,           ///<always view gallery
+	SDKAttendeeViewMode_Standard,          ///<attendee can manually switch between gallery and active speaker
+	SDKAttendeeViewMode_SidebysideSpeaker, ///<attendee view sharing side by side speaker
+	SDKAttendeeViewMode_SidebysideGallery  ///<attendee view sharing side by side gallery
 };
 
 /*! \struct tagWebinarLegalNoticesExplained
@@ -167,6 +167,7 @@ public:
 	/// \brief Query if the webinar supports the user to use the audio device.
 	/// \return If it supports, the return value is SDKErr_Success.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	/// \deprecated This interface is marked as deprecated.
 	virtual SDKError IsSupportAttendeeTalk() = 0;
 
 	/// \brief The attendee is permitted to use the audio device.

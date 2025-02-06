@@ -35,8 +35,8 @@ struct RawLiveStreamInfo
 	RawLiveStreamInfo()
 	{
 		userId = 0;
-		broadcastUrl = NULL;
-		broadcastName = NULL;
+		broadcastUrl = nullptr;
+		broadcastName = nullptr;
 	}
 };
 
@@ -100,6 +100,18 @@ public:
 	/// \brief Callback event when users start/stop raw live streaming.
 	/// \param liveStreamList A list of users with an active raw live stream.
 	virtual void onUserRawLiveStreamingStatusChanged(IList<RawLiveStreamInfo>* liveStreamList) = 0;
+
+	/// \brief Callback event when the live stream reminder enable status changes.
+	/// \param enable True means the live stream reminder is enabled.
+	virtual void onLiveStreamReminderStatusChanged(bool enable) = 0;
+
+	/// \brief Callback event when the live stream reminder enable status change fails.
+	virtual void onLiveStreamReminderStatusChangeFailed() = 0;
+
+	/// \brief Callback event when the meeting or webinar user has nearly reached the meeting capacity, like 80% or 100% for the meeting or webinar capacity.
+	/// The host can start live stream to let unjoined user watch live stream.
+	/// \param percent Proportion of joined users to the total capacity.
+	virtual void onUserThresholdReachedForLiveStream(int percent) = 0;
 };
 
 /// \brief Live stream of current meeting.
@@ -114,6 +126,10 @@ public:
 	/// \brief Get the descriptions of live stream.
 	/// \return If the function succeeds, the return value is the description of live stream.
 	virtual const zchar_t* GetLiveStreamURLDescription() = 0;
+
+	/// \brief Get the viewer URL of the live stream meeting.
+	/// \return If the function succeeds, the return value is the viewer URL of the live stream meeting.
+	virtual const zchar_t* GetLiveStreamViewerURL() = 0;
 	virtual ~IMeetingLiveStreamItem() {};
 };
 
@@ -155,8 +171,19 @@ public:
 
 	/// \brief Get the list of URL and associated information used by live streaming in the current meeting. 
 	/// \return If the function succeeds, the return value is the meeting information to be live streamed.
-	///Otherwise failed, the return value is NULL. For more details, see \link IMeetingLiveStreamItem \endlink.
+	///Otherwise failed, the return value is nullptr. For more details, see \link IMeetingLiveStreamItem \endlink.
+	/// \deprecated This interface is marked as deprecated, and is replaced by GetSupportLiveStreamItems().
 	virtual IList<IMeetingLiveStreamItem* >* GetSupportLiveStreamURL() = 0;
+
+	/// \brief Get the list of live stream information items in the current meeting.
+	/// \return If the function succeeds, the return value is the live stream item list.
+	///Otherwise the function fails and the return value is nullptr. For more details, see \link IMeetingLiveStreamItem \endlink.
+	virtual IList<IMeetingLiveStreamItem* >* GetSupportLiveStreamItems() = 0;
+
+	/// \brief Get the current live stream object. 
+	/// \return If the function succeeds, the return value is the current live stream object.
+	///Otherwise the function fails and the return value is nullptr. For more details, see \link IMeetingLiveStreamItem \endlink.
+	virtual IMeetingLiveStreamItem* GetCurrentLiveStreamItem() = 0;
 
 	/// \brief Get live stream status of current meeting.
 	/// \return If the function succeeds, the return value is the live stream status of current meeting.  
@@ -169,7 +196,7 @@ public:
 
 	/// \brief Whether if the current user is able to start raw live streaming.
 	/// \return If the current user is able to start raw live streaming, the return value is SDKErr_Success.
-	///Otherwise it fails,and returns NULL. To get extended error information, see \link SDKError \endlink enum.
+	///Otherwise it fails,and returns nullptr. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError CanStartRawLiveStream() = 0;
 
 	/// \brief Send a request to enable the SDK to start a raw live stream.
@@ -203,6 +230,21 @@ public:
 	/// \brief Get the list of users'IDs who have raw live stream privileges.
 	/// \return If the function succeeds, the return value is a pointer to the IList object.
 	virtual IList<unsigned int>* GetRawLiveStreamPrivilegeUserList() = 0;
+
+	/// \brief Check if the live stream reminder is enabled.
+	///When the live stream reminder is enabled, the new join user is notified that the meeting is at capacity but that they can
+	///watch the meeting live stream with the callback IMeetingServiceEvent::onMeetingFullToWatchLiveStream when the meeting user has reached the meeting capability.
+	/// \return True means the live stream reminder is enabled.
+	virtual bool IsLiveStreamReminderEnabled() = 0;
+
+	/// \brief Check if the current user can enable/disable the live stream reminder.
+	/// \return True means the current user can enable/disable the live stream reminder.
+	virtual bool CanEnableLiveStreamReminder() = 0;
+
+	/// \brief Enable or disable the live stream reminder.
+	/// \param enable True means enable the live stream reminder. False means disable the live stream reminder.
+	/// \return If the function succeeds, the return value is SDKErr_Success. Otherwise it fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableLiveStreamReminder(bool enable) = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

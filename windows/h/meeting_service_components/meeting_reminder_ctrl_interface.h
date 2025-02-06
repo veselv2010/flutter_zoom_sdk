@@ -15,7 +15,7 @@ BEGIN_ZOOM_SDK_NAMESPACE
 */
 enum MeetingReminderType
 {
-	TYPE_LOGIN_REQUIRED,///Reminder type of login.
+	TYPE_LOGIN_REQUIRED,///<Reminder type of login.
 	TYPE_START_OR_JOIN_MEETING,///<Reminder type of start or join meeting.
 	TYPE_RECORD_REMINDER,///<Reminder type of record reminder.
 	TYPE_RECORD_DISCLAIMER,///<Reminder type of record disclaimer
@@ -32,7 +32,7 @@ enum MeetingReminderType
 	TYPE_JOIN_PRIVATE_MODE_MEETING_REMINDER,///<Reminder type of joining a meeting with private mode.
 	TYPE_SMART_RECORDING_ENABLE_REQUEST_REMINDER,///<Reminder type to enable smart recording request. This type is marked as deprecated.
 	TYPE_ENABLE_SMART_RECORDING_REMINDER,///<Reminder type to enable smart recording. This type is marked as deprecated.
-	TYPE_AI_COMPANION_PLUS_DISCLAIMER,///<Reminder type of AICompanionPlus disclaimer.
+	TYPE_AI_COMPANION_PLUS_DISCLAIMER,///<Reminder type of AICompanionPlus disclaimer. This type is marked as Deprecated.
 	TYPE_CLOSED_CAPTION_DISCLAIMER,///<Reminder type of Close Caption disclaimer.
 	TYPE_MULTI_DISCLAIMER,///<Reminder type of disclaimers combination. 
 	TYPE_JOIN_MEETING_CONNECTOR_AS_GUEST_REMINDER,///<Reminder type for a join meeting connector with guest mode.
@@ -59,13 +59,13 @@ typedef struct tagMultiReminderUIConfig
 {
 	int left;///<Specifies the X-axis coordinate of the top-left corner of the multi-reminder window in the parent window.
 	int top;///<Specifies the Y-axis coordinate of the top-left corner of the multi-reminder window in the parent window.
-	HWND hParent;///<Specifies the window handle of the parent window. If the value is NULL, the position coordinate is the monitor coordinate.
+	HWND hParent;///<Specifies the window handle of the parent window. If the value is nullptr, the position coordinate is the monitor coordinate.
 	unsigned long background_color;///<Specifies the background color of the multi-reminder window.
 	tagMultiReminderUIConfig()
 	{
 		left = 0;
 		top = 0;
-		hParent = NULL;
+		hParent = nullptr;
 		background_color = 0xffffff;
 	}
 }MultiReminderUIConfig;
@@ -113,9 +113,9 @@ public:
 */
 enum FeatureEnableOption
 {
-	EnableOption_None,///do not enable.
-	EnableOption_Once,///enable for this meeting.
-	EnableOption_Always,///enable for this and all future meetings on this account.
+	EnableOption_None,///<do not enable.
+	EnableOption_Once,///<enable for this meeting.
+	EnableOption_Always,///<enable for this and all future meetings on this account.
 };
 
 /// \brief if the current user can control web setting, they will get this handler when an attendee requests to start the smart recording feature or start feature by itself.

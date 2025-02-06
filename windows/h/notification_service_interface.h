@@ -23,9 +23,9 @@ struct InMeetingDeviceInfo
 	InMeetingDeviceInfo()
 	{
 		nIndex = -1;
-		deviceName = NULL;
-		meetingTopic = NULL;
-		meetingId = NULL;
+		deviceName = nullptr;
+		meetingTopic = nullptr;
+		meetingId = nullptr;
 		meetingNumber = 0;
 	}
 };
@@ -35,8 +35,9 @@ struct InMeetingDeviceInfo
 class INotificationServiceEvent
 {
 public:
-	/// \brief Callback event that the device for users to attend the meeting has changed.
+	/// \brief Callback event that the device for users to attend the meeting has changed.	
 	/// \param pDeviceList A list of meeting info with active meetings.
+	/// \If the user USES IAuthService::RegisterNotificationService interface to connect to the service,they can't get webinar meeting list in this callback.
 	virtual void onMeetingDeviceListChanged(IList<InMeetingDeviceInfo>* pDeviceList) = 0;
 
 	/// \brief Transfer meeting status changed callback.
@@ -53,7 +54,7 @@ public:
 	virtual ~INotificationServiceHelper () {}
 
 	/// \brief Get the Presence helper.
-	/// \return If the function succeeds, the return value is a pointer to IPresenceHelper. Otherwise the function fails and returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IPresenceHelper. Otherwise the function fails and returns nullptr.
 	virtual IPresenceHelper* GetPresenceHelper() = 0;
 
 	/// Set the controller event of notification service.

@@ -10,7 +10,7 @@ class IZoomSDKAudioRawDataDelegate
 public:
 	~IZoomSDKAudioRawDataDelegate(){}
 	virtual void onMixedAudioRawDataReceived(AudioRawData* data_) = 0;
-	virtual void onOneWayAudioRawDataReceived(AudioRawData* data_, uint32_t node_id) = 0;
+	virtual void onOneWayAudioRawDataReceived(AudioRawData* data_, uint32_t user_id) = 0;
 	virtual void onShareAudioRawDataReceived(AudioRawData* data_) = 0;
 
 	/// \brief Invoked when individual interpreter's raw audio data received

@@ -116,11 +116,11 @@ public:
 	virtual bool SetDefaultCellPhoneInfo(const zTCHAR* country_code, const zTCHAR* phone_number) = 0;
 	
 	/// \brief Get retrieve SMS verification code handler interface.
-	/// \return If the function succeeds, the return value is a pointer to IZoomRetrieveSMSVerificationCodeHandler. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IZoomRetrieveSMSVerificationCodeHandler. Otherwise returns nullptr.
 	virtual IZoomRetrieveSMSVerificationCodeHandler* GetResendSMSVerificationCodeHandler() = 0;
 	
 	/// \brief Get verify SMS verification code handler interface.
-	/// \return If the function succeeds, the return value is a pointer to IZoomVerifySMSVerificationCodeHandler. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IZoomVerifySMSVerificationCodeHandler. Otherwise returns nullptr.
 	virtual IZoomVerifySMSVerificationCodeHandler* GetReVerifySMSVerificationCodeHandler() = 0;
 	
 	/// \brief Get the list of the country information where the meeting supports real name auth.

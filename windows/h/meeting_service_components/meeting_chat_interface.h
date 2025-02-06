@@ -13,59 +13,59 @@ BEGIN_ZOOM_SDK_NAMESPACE
  */
 typedef enum
 {
-	SDKChatMessageType_To_None, ///For initialize	
-	SDKChatMessageType_To_All,///Chat message is send to all.	
-	SDKChatMessageType_To_All_Panelist,///Chat message is send to all panelists.	
-	SDKChatMessageType_To_Individual_Panelist,///Chat message is send to individual attendee and cc panelists.	
-	SDKChatMessageType_To_Individual,///Chat message is send to individual user.	
-	SDKChatMessageType_To_WaitingRoomUsers,///Chat message is send to waiting room user.
+	SDKChatMessageType_To_None, ///<For initialize	
+	SDKChatMessageType_To_All,///<Chat message is send to all.	
+	SDKChatMessageType_To_All_Panelist,///<Chat message is send to all panelists.	
+	SDKChatMessageType_To_Individual_Panelist,///<Chat message is send to individual attendee and cc panelists.	
+	SDKChatMessageType_To_Individual,///<Chat message is send to individual user.	
+	SDKChatMessageType_To_WaitingRoomUsers,///<Chat message is send to waiting room user.
 }SDKChatMessageType;
 
 /// \brief Bold attributes.
 struct BoldAttrs
 {
-	bool bBold = false; //If the value is true, the text style is Bold
+	bool bBold = false; ///<If the value is true, the text style is Bold
 };
 
 // \brief Italic attributes.
 struct ItalicAttrs
 {
-	bool bItalic = false; //If the value is true, the text style is Italic.
+	bool bItalic = false; ///<If the value is true, the text style is Italic.
 };
 
 // \brief Strikethrough attributes.
 struct StrikethroughAttrs
 {
-	bool bStrikethrough = false; //If the value is true, the text style is Strikethrough.
+	bool bStrikethrough = false; ///<If the value is true, the text style is Strikethrough.
 };
 
 // \brief BulletedList attributes.
 struct BulletedListAttrs
 {
-	bool bBulletedList = false; //If the value is true, the text style is BulletedList.
+	bool bBulletedList = false; ///<If the value is true, the text style is BulletedList.
 };
 
 // \brief NumberedList attributes.
 struct NumberedListAttrs
 {
-	bool bNumberedList = false; //If the value is true, the text style is Numbered.
+	bool bNumberedList = false; ///<If the value is true, the text style is Numbered.
 };
 
 // \brief Underline attributes.
 struct UnderlineAttrs
 {
-	bool bUnderline = false; //If the value is true, the text style is Underline.
+	bool bUnderline = false; ///<If the value is true, the text style is Underline.
 };
 
 // \brief Quote attributes.
 struct QuoteAttrs
 {
-	bool bQuote = false; //If the value is true, the text style is Quote.
+	bool bQuote = false; ///<If the value is true, the text style is Quote.
 };
 
 // \brief InsertLink attributes.
 struct InsertLinkAttrs {
-    const zchar_t* insertLinkUrl = nullptr; //If insertLinkUrl is not empty, the text style has insert link url.
+    const zchar_t* insertLinkUrl = nullptr; ///<If insertLinkUrl is not empty, the text style has insert link url.
 };
 
 /* font size for TextStyle_FontSize*/
@@ -98,9 +98,9 @@ struct FontSizeAttrs {
  */ 
  // \brief FontColor attributes. The standard RGB color model has a value range of 0-255.
 struct FontColorAttrs {
-	unsigned int red = 0; // Font color R value.
-	unsigned int green = 0; // Font color G value.
-	unsigned int blue = 0; // Font color B value.
+	unsigned int red = 0; ///<Font color R value.
+	unsigned int green = 0; ///<Font color G value.
+	unsigned int blue = 0; ///<Font color B value.
 };
 
 /**
@@ -117,9 +117,9 @@ struct FontColorAttrs {
  */
 // \brief FontColor attributes. The standard RGB color model has a value range of 0-255.
 struct BackgroundColorAttrs {
-	unsigned int red = 0; // Background color R value.
-	unsigned int green = 0; // Background color G value.
-	unsigned int blue = 0; // Background color B value.
+	unsigned int red = 0; ///<Background color R value.
+	unsigned int green = 0; ///<Background color G value.
+	unsigned int blue = 0; ///<Background color B value.
 };
 
 /**
@@ -132,12 +132,12 @@ struct BackgroundColorAttrs {
  
 // \brief FontColor attributes.
 struct ParagraphAttrs {
-    const zchar_t* strParagraph = nullptr; //If strParagraph is not empty, the text style has Paragraph style.
+    const zchar_t* strParagraph = nullptr; ///<If strParagraph is not empty, the text style has Paragraph style.
 };
 
 // \brief Indent attributes.
 struct IndentAttrs {
-    unsigned int indent = 0; // The number of times the indentation style is applied.
+    unsigned int indent = 0; ///<The number of times the indentation style is applied.
 };
 
 /*! \struct SegmentDetails
@@ -145,21 +145,21 @@ struct IndentAttrs {
 	Here are more detailed structural descriptions..
 */
 struct SegmentDetails {
-  const zchar_t* strContent = nullptr; // Segment content value.
+  const zchar_t* strContent = nullptr; ///<Segment content value.
 
-  BoldAttrs boldAttrs = {}; // Segment BoldAttrs value.
-  ItalicAttrs italicAttrs = {}; // Segment ItalicAttrs value.
-  StrikethroughAttrs strikethroughAttrs = {}; // StrikethroughAttrs content value.
-  BulletedListAttrs bulletedListAttrs = {}; // Segment BulletedListAttrs value.
-  NumberedListAttrs numberedListAttrs = {}; // Segment NumberedListAttrs value.
-  UnderlineAttrs underlineAttrs = {}; // Segment UnderlineAttrs value.
-  QuoteAttrs quoteAttrs = {}; // Segment QuoteAttrs value.
-  InsertLinkAttrs insertLinkAttrs = {}; // Segment InsertLinkAttrs value.
-  FontSizeAttrs fontSizeAttrs = {}; // Segment FontSizeAttrs value.
-  FontColorAttrs fontColorAttrs = {}; // Segment FontColorAttrs value.
-  BackgroundColorAttrs backgroundColorAttrs = {}; // Segment BackgroundColorAttrs value.
-  ParagraphAttrs paragraphAttrs = {}; // Segment ParagraphAttrs value.
-  IndentAttrs indentAttrs = {}; // Segment IndentAttrs value.
+  BoldAttrs boldAttrs = {}; ///<Segment BoldAttrs value.
+  ItalicAttrs italicAttrs = {}; ///<Segment ItalicAttrs value.
+  StrikethroughAttrs strikethroughAttrs = {}; ///<StrikethroughAttrs content value.
+  BulletedListAttrs bulletedListAttrs = {}; ///<Segment BulletedListAttrs value.
+  NumberedListAttrs numberedListAttrs = {}; ///<Segment NumberedListAttrs value.
+  UnderlineAttrs underlineAttrs = {}; ///<Segment UnderlineAttrs value.
+  QuoteAttrs quoteAttrs = {}; ///<Segment QuoteAttrs value.
+  InsertLinkAttrs insertLinkAttrs = {}; ///<Segment InsertLinkAttrs value.
+  FontSizeAttrs fontSizeAttrs = {}; ///<Segment FontSizeAttrs value.
+  FontColorAttrs fontColorAttrs = {}; ///<Segment FontColorAttrs value.
+  BackgroundColorAttrs backgroundColorAttrs = {}; ///<Segment BackgroundColorAttrs value.
+  ParagraphAttrs paragraphAttrs = {}; ///<Segment ParagraphAttrs value.
+  IndentAttrs indentAttrs = {}; ///<Segment IndentAttrs value.
 };
 
 /**
@@ -167,20 +167,20 @@ struct SegmentDetails {
  */
 typedef enum
 {
-	TextStyle_None, ///Chat message rich text style normal.
-	TextStyle_Bold, ///Chat message rich text style bold.
-	TextStyle_Italic, ///Chat message rich text style italic.
-	TextStyle_Strikethrough, ///Chat message rich text style strike through.
-	TextStyle_BulletedList, ///Chat message rich text style bulleted list.
-	TextStyle_NumberedList, ///Chat message rich text style numbered list.
-	TextStyle_Underline, ///Chat message rich text style underline.
-	TextStyle_FontSize, ///Chat message rich text style font size.
-	TextStyle_FontColor, ///Chat message rich text style font color.
-	TextStyle_BackgroundColor, ///Chat message rich text style background color.
-	TextStyle_Indent, ///Chat message rich text style indent.
-	TextStyle_Paragraph, ///Chat message rich text style paragraph.
-	TextStyle_Quote, ///Chat message rich text style quote.
-	TextStyle_InsertLink ///Chat message rich text style insert link.
+	TextStyle_None, ///<Chat message rich text style normal.
+	TextStyle_Bold, ///<Chat message rich text style bold.
+	TextStyle_Italic, ///<Chat message rich text style italic.
+	TextStyle_Strikethrough, ///<Chat message rich text style strike through.
+	TextStyle_BulletedList, ///<Chat message rich text style bulleted list.
+	TextStyle_NumberedList, ///<Chat message rich text style numbered list.
+	TextStyle_Underline, ///<Chat message rich text style underline.
+	TextStyle_FontSize, ///<Chat message rich text style font size.
+	TextStyle_FontColor, ///<Chat message rich text style font color.
+	TextStyle_BackgroundColor, ///<Chat message rich text style background color.
+	TextStyle_Indent, ///<Chat message rich text style indent.
+	TextStyle_Paragraph, ///<Chat message rich text style paragraph.
+	TextStyle_Quote, ///<Chat message rich text style quote.
+	TextStyle_InsertLink ///<Chat message rich text style insert link.
 }RichTextStyle;
 
 /// \brief Chat message rich text style offset.
@@ -239,8 +239,8 @@ public:
 
 	/// \brief Get the sender screen name of the current message.
 	/// \return If the function succeeds, the return value is sender screen name of the current message.
-	///Otherwise failed, the return value is NULL.
-	/// \remarks If the message is sent to all or to all panelists, the return value will be NULL.
+	///Otherwise failed, the return value is nullptr.
+	/// \remarks If the message is sent to all or to all panelists, the return value will be nullptr.
 	virtual const zchar_t* GetSenderDisplayName() = 0;
 
 	/// \brief Get the receiver ID of the current message.
@@ -257,7 +257,7 @@ public:
 
 	/// \brief Get the content of the current message.
 	/// \return If the function succeeds, the return value is the pointer to the content of the current message.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual const zchar_t* GetContent() = 0;
 
 	/// \brief Get the timestamps of the current message.
@@ -374,11 +374,11 @@ typedef struct tagChatStatus
  * @brief Enumerations of the chat priviledge.
  */
 typedef enum {
-	SDK_CHAT_PRIVILEGE_ALL = 1,                    	/// allow attendee to chat with everyone [meeting & webinar]
-	SDK_CHAT_PRIVILEGE_ALL_PANELIST = 2,		          /// allow attendee to chat with all panelists only, but cannot to "all panelists and attendees" [webinar]
-	SDK_CHAT_PRIVILEGE_HOST = 3,	                    /// allow attendee to chat with host only [meeting]
-	SDK_CHAT_PRIVILEGE_DISABLE_ATTENDEE_CHAT = 4,    /// allow attendee to chat with no one [meeting & webinar]
-	SDK_CHAT_PRIVILEGE_HOST_PUBLIC = 5,              /// allow attendee to chat with host and public [meeting]
+	SDK_CHAT_PRIVILEGE_ALL = 1,                    	///<allow attendee to chat with everyone [meeting & webinar]
+	SDK_CHAT_PRIVILEGE_ALL_PANELIST = 2,		          ///<allow attendee to chat with all panelists only, but cannot to "all panelists and attendees" [webinar]
+	SDK_CHAT_PRIVILEGE_HOST = 3,	                    ///<allow attendee to chat with host only [meeting]
+	SDK_CHAT_PRIVILEGE_DISABLE_ATTENDEE_CHAT = 4,    ///<allow attendee to chat with no one [meeting & webinar]
+	SDK_CHAT_PRIVILEGE_HOST_PUBLIC = 5,              ///<allow attendee to chat with host and public [meeting]
 	SDK_CHAT_PRIVILEGE_END
 } SDKChatPrivilege;
 
@@ -387,10 +387,10 @@ typedef enum {
  */
 typedef enum
 {
-	SDK_CHAT_DELETE_BY_NONE,	/// none
-	SDK_CHAT_DELETE_BY_SELF,	/// delete by self
-	SDK_CHAT_DELETE_BY_HOST,	/// delete by host
-	SDK_CHAT_DELETE_BY_DLP,		/// delete by dlp when the message goes against the host organization's compliance policies.
+	SDK_CHAT_DELETE_BY_NONE,	///<none
+	SDK_CHAT_DELETE_BY_SELF,	///<delete by self
+	SDK_CHAT_DELETE_BY_HOST,	///<delete by host
+	SDK_CHAT_DELETE_BY_DLP,		///<delete by dlp when the message goes against the host organization's compliance policies.
 }SDKChatMessageDeleteType;
 
 
@@ -476,7 +476,7 @@ public:
 	/// \brief Chat message callback. This function is used to inform the user once received the message sent by others.
 	/// \param chatMsg An object pointer to the chat message.
 	/// \param content A pointer to the chat message in json format. This parameter is currently invalid, hereby only for reservations. 
-	virtual void onChatMsgNotification(IChatMsgInfo* chatMsg, const zchar_t* content = NULL) = 0;
+	virtual void onChatMsgNotification(IChatMsgInfo* chatMsg, const zchar_t* content = nullptr) = 0;
 
 	/// \brief The authority of chat changes callback. This function is used to inform the user when the authority of chat changes in the meeting or webinar.
 	/// \param status_ The chat status. For more details, see \link ChatStatus \endlink.
@@ -721,7 +721,7 @@ public:
 
 	/// \brief Get the authority status to send current message. 
 	/// \return If the function succeeds, the return value is a pointer to the structure of ChatStatus. For more details, see \link ChatStatus \endlink structure.
-	///Otherwise failed, the return value is NULL. To get extended error information, see \link ChatStatus \endlink.
+	///Otherwise failed, the return value is nullptr. To get extended error information, see \link ChatStatus \endlink.
 	virtual const ChatStatus* GetChatStatus() = 0;
 
 	/// \brief Set the chat privilege of participants.

@@ -96,17 +96,17 @@ public:
 
 	/// \brief Get the interpretation language object of specified language ID.
 	/// \param lanID Specify the language ID for which you want to get the information. 
-	/// \return If the function succeeds, the return value is a pointer to the IInterpretationLanguage, Otherwise failed, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IInterpretationLanguage, Otherwise failed, the return value is nullptr.
 	virtual IInterpretationLanguage* GetInterpretationLanguageByID(int lanID) = 0;
 
 	//Admin (only for host) 
 
 	/// \brief Get the all interpretation language list.
-	/// \return If the function succeeds, the return value is a pointer to the IList<IInterpretationLanguage*>, Otherwise failed, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<IInterpretationLanguage*>, Otherwise failed, the return value is nullptr.
     virtual IList<IInterpretationLanguage*>* GetAllLanguageList() = 0;
 	
 	/// \brief Get the interpreters list.
-	/// \return If the function succeeds, the return value is a pointer to the IList<IInterpreter*>, Otherwise failed, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<IInterpreter*>, Otherwise failed, the return value is nullptr.
 	virtual IList<IInterpreter*>* GetInterpreterList() = 0;
 
 	/// \brief Add someone as a interpreter.
@@ -139,7 +139,7 @@ public:
 	//Listener (for non interpreter)
 
 	/// \brief Get the available interpretation language list.
-	/// \return If the function succeeds, the return value is a pointer to the IList<IInterpretationLanguage*>, Otherwise failed, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<IInterpretationLanguage*>, Otherwise failed, the return value is nullptr.
 	virtual IList<IInterpretationLanguage*>* GetAvailableLanguageList() = 0;
 
 	/// \brief Join some language channel.
@@ -184,7 +184,7 @@ public:
 	virtual SDKError GetInterpreterActiveLan(int& lanID) = 0;
 
 	/// \brief Get the list of available languages that interpreters can hear
-	/// \return If the function succeeds, the return value is a pointer to the IList<IInterpretationLanguage*>, Otherwise, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<IInterpretationLanguage*>, Otherwise, the return value is nullptr.
 	virtual IList<IInterpretationLanguage*>* GetInterpreterAvailableLanguages() = 0;
 
 	/// \brief Set a language that I can hear as an interpreter.
