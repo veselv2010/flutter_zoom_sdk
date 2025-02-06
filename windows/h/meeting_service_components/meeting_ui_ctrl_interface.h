@@ -27,6 +27,12 @@ typedef struct tagVideoWallPageInfoParam
 {
 	int nCurrentPage;///<The page in video wall mode for the moment.
 	int nTotalPages;///<The total number of pages in video wall mode.
+
+	tagVideoWallPageInfoParam()
+	{
+		nCurrentPage = 0;
+		nTotalPages = 0;
+	}
 }VideoWallPageInfoParam;
 
 /*! \struct tagShowChatDlgParam
@@ -40,8 +46,8 @@ typedef struct tagShowChatDlgParam
 	HWND hChatWnd;///<Chat dialog handle. 
 	tagShowChatDlgParam()
 	{
-		hParent = NULL;
-		hChatWnd = NULL;
+		hParent = nullptr;
+		hChatWnd = nullptr;
  		rect.top = 0;
  		rect.bottom = 0;
  		rect.left = 0;

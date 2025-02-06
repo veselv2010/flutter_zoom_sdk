@@ -190,7 +190,7 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     }
 
     @Override
-    public void onSinkAttendeeChatPriviledgeChanged(int i) {
+    public void onSinkAttendeeChatPrivilegeChanged(int i) {
 
     }
 
@@ -397,6 +397,26 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onMeetingTopicChanged(java.lang.String topic) {
+
+    }
+
+    @Override
+    public void onMeetingFullToWatchLiveStream(String s) {
+
+    }
+
+    @Override
+    public void onVirtualNameTagRosterInfoUpdated(long l) {
+
+    }
+
+    @Override
+    public void onVirtualNameTagStatusChanged(boolean b,long l) {
+
+    }
+
+    @Override
+    public void onRobotRelationChanged(long l) {
 
     }
 }

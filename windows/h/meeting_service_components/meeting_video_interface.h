@@ -27,10 +27,10 @@ enum VideoStatus
 */
 enum VideoConnectionQuality
 {
-	VideoConnectionQuality_Unknown = 0, //Unknown video quality status.
-	VideoConnectionQuality_Bad,  //The video quality is poor.
-	VideoConnectionQuality_Normal, //The video quality is normal.
-	VideoConnectionQuality_Good, //The video quality is good.
+	VideoConnectionQuality_Unknown = 0, ///<Unknown video quality status.
+	VideoConnectionQuality_Bad,  ///<The video quality is poor.
+	VideoConnectionQuality_Normal, ///<The video quality is normal.
+	VideoConnectionQuality_Good, ///<The video quality is good.
 };
 
 typedef struct tagVideoSize
@@ -189,24 +189,24 @@ public:
 enum PinResult
 {
 	PinResult_Success = 0,
-	PinResult_Fail_NotEnoughUsers,  /// user counts less than 2
-	PinResult_Fail_ToMuchPinnedUsers, /// pinned user counts more than 9
-	PinResult_Fail_UserCannotBePinned, /// user in view only mode or silent mode or active
-	PinResult_Fail_VideoModeDoNotSupport, /// other reasons	
-	PinResult_Fail_NoPrivilegeToPin,  /// current user has no privilege to pin
-	PinResult_Fail_MeetingDoNotSupport, /// webinar and in view only meeting
+	PinResult_Fail_NotEnoughUsers,  ///<user counts less than 2
+	PinResult_Fail_ToMuchPinnedUsers, ///<pinned user counts more than 9
+	PinResult_Fail_UserCannotBePinned, ///<user in view only mode or silent mode or active
+	PinResult_Fail_VideoModeDoNotSupport, ///<other reasons	
+	PinResult_Fail_NoPrivilegeToPin, ///<current user has no privilege to pin
+	PinResult_Fail_MeetingDoNotSupport, ///<webinar and in view only meeting
 	PinResult_Unknown = 100,
 };
 
 enum SpotlightResult
 {
 	SpotResult_Success = 0,
-	SpotResult_Fail_NotEnoughUsers,  /// user counts less than 2
-	SpotResult_Fail_ToMuchSpotlightedUsers, /// spotlighted user counts is more than 9
-	SpotResult_Fail_UserCannotBeSpotlighted, /// user in view only mode or silent mode or active
-	SpotResult_Fail_UserWithoutVideo, /// user doesn't turn on video
-	SpotResult_Fail_NoPrivilegeToSpotlight,  /// current user has no privilege to spotlight
-	SpotResult_Fail_UserNotSpotlighted, ///user is not spotlighted
+	SpotResult_Fail_NotEnoughUsers,  ///<user counts less than 2
+	SpotResult_Fail_ToMuchSpotlightedUsers, ///<spotlighted user counts is more than 9
+	SpotResult_Fail_UserCannotBeSpotlighted, ///<user in view only mode or silent mode or active
+	SpotResult_Fail_UserWithoutVideo, ///<user doesn't turn on video
+	SpotResult_Fail_NoPrivilegeToSpotlight,  ///<current user has no privilege to spotlight
+	SpotResult_Fail_UserNotSpotlighted, ///<user is not spotlighted
 	SpotResult_Unknown = 100,
 };
 
@@ -333,7 +333,7 @@ public:
 
 	/// \brief Get the list of all the spotlighted user in the meeting.
 	/// \return If the function succeeds, the return value is the list of the spotlighted user in the meeting.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	/// \remarks Valid for both Zoom style and customize user interface mode.
 	virtual IList<unsigned int >* GetSpotlightedUserList() = 0;
 
@@ -381,7 +381,7 @@ public:
 
 	/// \brief Get the video order list.
 	/// \return If the function succeeds, the return value the is video order list.
-	///Otherwise failed, returns NULL.
+	///Otherwise failed, returns nullptr.
 	virtual IList<unsigned int >* GetVideoOrderList() = 0;
 
 
@@ -419,7 +419,7 @@ public:
 
 	/// \brief Get the list of all the pinned user in the first view.
 	/// \return If the function succeeds, the return value is the list of the pinned user in the first view.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	/// \remarks Valid only for Zoom style user interface mode.
 	virtual IList<unsigned int >* GetPinnedUserListFromFirstView() = 0;
 
@@ -447,7 +447,7 @@ public:
 
 	/// \brief Get the list of all the pinned user in the second view.
 	/// \return If the function succeeds, the return value is the list of the pinned user in the second view.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	/// \remarks Valid only for Zoom style user interface mode.
 	virtual IList<unsigned int >* GetPinnedUserListFromSecondView() = 0;
 
@@ -464,11 +464,11 @@ public:
 	virtual SDKError HideOrShowSelfView(bool bHide) = 0;
 
 	/// \brief Get set video order helper interface.
-	/// \return If the function succeeds, the return value is a pointer to ISetVideoOrderHelper. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to ISetVideoOrderHelper. Otherwise returns nullptr.
 	virtual ISetVideoOrderHelper* GetSetVideoOrderHelper() = 0;
 
 	/// \brief Get camera controller interface.
-	/// \return If the function succeeds, the return value is a pointer to ICameraController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to ICameraController. Otherwise returns nullptr.
 	virtual ICameraController* GetMyCameraController() = 0;
 	
 	/// \brief Stop the incoming video.
@@ -489,7 +489,7 @@ public:
 #endif
 
 	/// \brief Get camera helper interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingCameraHelper. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingCameraHelper. Otherwise returns nullptr.
 	virtual IMeetingCameraHelper* GetMeetingCameraHelper(unsigned int userid) = 0;
 
 	/// \brief Revoke camera control privilege.

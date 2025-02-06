@@ -113,6 +113,8 @@ namespace flutter_zoom_sdk {
 		void onAICompanionActiveChangeNotice(bool bActive);
 
         void onMeetingTopicChanged(const zchar_t *sTopic);
+
+		void onMeetingFullToWatchLiveStream(const zchar_t* sLiveStreamUrl);
 	};
 
 }  // namespace flutter_zoom_sdk

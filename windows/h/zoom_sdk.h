@@ -27,7 +27,7 @@ extern "C"
 	SDK_API SDKError SwitchDomain(const zchar_t* new_domain, bool bForce);
 	/// \brief Create meeting service interface.
 	/// \param ppMeetingService An object pointer to the IMeetingService*. 
-	/// \return If the function succeeds, the return value is SDKErr_Success while the value of ppMeetingService is not NULL.
+	/// \return If the function succeeds, the return value is SDKErr_Success while the value of ppMeetingService is not nullptr.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	SDK_API SDKError CreateMeetingService(IMeetingService** ppMeetingService);
 
@@ -39,7 +39,7 @@ extern "C"
 
 	/// \brief Create authentication service interface.
 	/// \param ppAuthService An object pointer to the IAuthService*. 
-	/// \return If the function succeeds, the return value is SDKErr_Success while the value of ppAuthService is not NULL.
+	/// \return If the function succeeds, the return value is SDKErr_Success while the value of ppAuthService is not nullptr.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	SDK_API SDKError CreateAuthService(IAuthService** ppAuthService);
 
@@ -51,7 +51,7 @@ extern "C"
 
 	/// \brief Create setting service interface.
 	/// \param ppSettingService An object pointer to the ISettingService*. 
-	/// \return If the function succeeds, the return value is SDKErr_Success while the value of ppSettingService is not NULL.
+	/// \return If the function succeeds, the return value is SDKErr_Success while the value of ppSettingService is not nullptr.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	SDK_API SDKError CreateSettingService(ISettingService** ppSettingService);
 
@@ -63,7 +63,7 @@ extern "C"
 
 	/// \brief Create network connection helper interface.
 	/// \param ppNetworkHelper An object pointer to the INetworkConnectionHelper*. 
-	/// \return If the function succeeds, the return value is SDKErr_Success while the value of ppNetworkHelper is not NULL.
+	/// \return If the function succeeds, the return value is SDKErr_Success while the value of ppNetworkHelper is not nullptr.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	SDK_API SDKError CreateNetworkConnectionHelper(INetworkConnectionHelper** ppNetworkHelper);
 
@@ -84,7 +84,7 @@ extern "C"
 
 	/// \brief Get ZOOM last error interface.
 	/// \return If the function succeeds, the return value is an interface of ZOOM last error.
-	///If the function fails or there is no error, the return value is NULL.
+	///If the function fails or there is no error, the return value is nullptr.
 	/// For more information, see \link IZoomLastError  \endlink
 	SDK_API const IZoomLastError* GetZoomLastError();
 }

@@ -75,7 +75,7 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise the function fails and returns an error code. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks If pShareAudioSource is non-null, it indicates sharing user-defined audio at the same time.
-	virtual SDKError setExternalShareSource(IZoomSDKShareSource* pShareSource, IZoomSDKShareAudioSource* pShareAudioSource = NULL) = 0;
+	virtual SDKError setExternalShareSource(IZoomSDKShareSource* pShareSource, IZoomSDKShareAudioSource* pShareAudioSource = nullptr) = 0;
 	
 	/// \brief Start sharing pure external audio source.
 	/// \param pShareAudioSource the external audio source object pointer. 

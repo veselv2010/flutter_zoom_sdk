@@ -59,7 +59,7 @@ class IMeetingAnnotationSupportEvent
 {
 public:
 	/// \brief The SDK will trigger this callback if the presenter enable/disable PARTICIPANTS ANNOTATION.										
-	virtual void onSupportAnnotationStatus(unsigned int userid, bool bSupportAnnotation) = 0;
+	virtual void onSupportAnnotationStatus(unsigned int nShareSourceID, bool bSupportAnnotation) = 0;
 
 	virtual ~IMeetingAnnotationSupportEvent() {}
 };
@@ -147,9 +147,9 @@ public:
 
 	/// \brief Get the controller of annotation tools used in user custom interface mode.
 	/// \return If the function succeeds, the return value is the controller of annotation tools used in user custom interface mode.
-	///If the function fails, the return value is NULL.
+	///If the function fails, the return value is nullptr.
 	///  \remarks Valid only for user custom interface mode.
-	virtual ICustomizedAnnotationController* GetCustomizedAnnotationController(ICustomizedShareRender* pShareRender = NULL) = 0;
+	virtual ICustomizedAnnotationController* GetCustomizedAnnotationController(ICustomizedShareRender* pShareRender = nullptr) = 0;
 
 	/// \brief Disallow/allow participants to annotate when viewing the sharing content.
 	/// \param [in] viewtype: SDK_FIRST_VIEW/SDK_SECOND_VIEW

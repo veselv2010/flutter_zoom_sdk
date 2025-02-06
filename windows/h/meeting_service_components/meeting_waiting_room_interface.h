@@ -32,6 +32,30 @@ enum CustomWaitingRoomDataStatus
 	CustomWaitingRoomDataStatus_Download_Failed
 };
 
+/*! \struct WaitingRoomBrandingPageColor
+	\brief The waiting room page color.
+*/
+struct WaitingRoomBrandingPageColor {
+	ZoomSDKColor background_color;
+};
+
+/*! \struct WaitingRoomBrandingTextColor
+	\brief The waiting room text color.
+*/
+struct WaitingRoomBrandingTextColor {
+	ZoomSDKColor primary_color;
+	ZoomSDKColor secondary_color;
+	ZoomSDKColor paragraph_color;
+	ZoomSDKColor hyperlink_color;
+};
+
+/*! \struct WaitingRoomBrandingButtonColor
+	\brief The waiting room button color.
+*/
+struct WaitingRoomBrandingButtonColor {
+	ZoomSDKColor primary_button_color;
+};
+
 /*! \struct WaitingRoomCustomizeData
 	\brief The WaitingRoom Customize Data Info.
 	Here are more detailed structural descriptions..
@@ -42,11 +66,11 @@ typedef struct CustomWaitingRoomData_s
 		:type(WaitingRoomLayoutType_Default)
 		, status(CustomWaitingRoomDataStatus_Init)
 	{
-		title = NULL;
-		description = NULL;
-		logo_path = NULL;
-		video_path = NULL;
-		image_path = NULL;
+		title = nullptr;
+		description = nullptr;
+		logo_path = nullptr;
+		video_path = nullptr;
+		image_path = nullptr;
 	}
 	const zchar_t* title;
 	const zchar_t* description;
@@ -55,6 +79,10 @@ typedef struct CustomWaitingRoomData_s
 	const zchar_t* image_path;
 	WaitingRoomLayoutType type;
 	CustomWaitingRoomDataStatus status;
+
+	WaitingRoomBrandingPageColor page_color;
+	WaitingRoomBrandingTextColor text_color;
+	WaitingRoomBrandingButtonColor button_color;
 }CustomWaitingRoomData;
 
 /// \brief handler for download waitingRoom Customize Data if download fail.
@@ -134,24 +162,24 @@ public:
 
 	/// \brief Get the list of attendees who are in the waiting room.
 	/// \return If the function succeeds, the return value is the list of attendees.
-	///Otherwise failed, the return is NULL. 
+	///Otherwise failed, the return is nullptr. 
 	virtual IList<unsigned int >* GetWaitingRoomLst() = 0;
 
 	/// \brief Get the attendee information in the waiting room via user ID.
 	/// \param userid Specifies the user ID.
 	/// \return If the function succeeds, the return value is a pointer to IUserInfo. 
-	///Otherwise failed, the return is NULL. For more details, see \link IUserInfo \endlink.
+	///Otherwise failed, the return is nullptr. For more details, see \link IUserInfo \endlink.
 	virtual IUserInfo* GetWaitingRoomUserInfoByID(unsigned int userid) = 0;
 
 	/// \brief Permit the specified user to join the meeting.
 	/// \param userid Specifies the user ID.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed, the return is NULL. For more details, see \link SDKError \endlink enum.
+	///Otherwise failed, the return is nullptr. For more details, see \link SDKError \endlink enum.
 	virtual SDKError AdmitToMeeting(unsigned int userid) = 0;
 
 	/// \brief Permit all of the users currently in the waiting room to join the meeting.
 	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed, the return is NULL. For more details, see \link SDKError \endlink enum.
+	///Otherwise failed, the return is nullptr. For more details, see \link SDKError \endlink enum.
 	virtual SDKError AdmitAllToMeeting() = 0;
 
 	/// \brief Enable the specified user to enter the waiting room.

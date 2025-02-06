@@ -112,22 +112,22 @@ public:
 
 	/// \brief Get the sign interpretation language object of specified sign language ID.
 	/// \param signLanguageId Specify the sign language ID for which you want to get the information. 
-	/// \return If the function succeeds, the return value is a pointer to the IInterpretationLanguage, Otherwise failed, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IInterpretationLanguage, Otherwise failed, the return value is nullptr.
 	virtual ISignInterpretationLanguageInfo* GetSignInterpretationLanguageInfoByID(const zchar_t* signLanguageId) = 0;
 
 	/// \brief Get the available sign interpretation language list.
-	/// \return If the function succeeds, the return value is a pointer to the IList<ISignInterpretationLanguageInfo*>, Otherwise failed, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<ISignInterpretationLanguageInfo*>, Otherwise failed, the return value is nullptr.
 	/// For more details, see \link ISignInterpretationLanguageInfo \endlink.
 	virtual IList<ISignInterpretationLanguageInfo*>* GetAvailableSignLanguageInfoList() = 0;
 
 	//Admin (only for host) 
 	/// \brief Get all supported sign interpretation language list.
-	/// \return If the function succeeds, the return value is a pointer to the IList<ISignInterpretationLanguageInfo*>, Otherwise failed, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<ISignInterpretationLanguageInfo*>, Otherwise failed, the return value is nullptr.
 	/// \For more details, see \link ISignInterpretationLanguageInfo \endlink.
 	virtual IList<ISignInterpretationLanguageInfo*>* GetAllSupportedSignLanguageInfoList() = 0;
 
 	/// \brief Get the sign interpreters list.
-	/// \return If the function succeeds, the return value is a pointer to the IList<ISignInterpreter*>, Otherwise failed, the return value is NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IList<ISignInterpreter*>, Otherwise failed, the return value is nullptr.
 	virtual IList<ISignInterpreter*>* GetSignInterpreterList() = 0;
 
 	/// \brief Add someone as a sign interpreter.

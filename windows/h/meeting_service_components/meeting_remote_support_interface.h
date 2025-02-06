@@ -25,10 +25,10 @@ enum RemoteSupportType
 */
 enum RemoteSupportStatus
 {
-	RemoteSupport_RequestDeny,///Request was denied by other.
-	RemoteSupport_RequestGrant,///Request was granted by other.
-	RemoteSupport_Stop_By_SupportedUser,///User stops remote support.
-	RemoteSupport_Stop_By_Supporter,///Supporter stops remote support.
+	RemoteSupport_RequestDeny,///<Request was denied by other.
+	RemoteSupport_RequestGrant,///<Request was granted by other.
+	RemoteSupport_Stop_By_SupportedUser,///<User stops remote support.
+	RemoteSupport_Stop_By_Supporter,///<Supporter stops remote support.
 };
 
 

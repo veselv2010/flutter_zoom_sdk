@@ -56,7 +56,7 @@ public:
 	/// \param hParentWnd Specify the parent window of the video container.
 	/// \param rc Specify the position of client area of the video render elements.
 	///The client coordinates corresponds to the client area of the upper-left corner of the parent window.
-	/// \return If the function succeeds, the return value is SDKErr_Success, and the return value of ppContainer is not NULL.
+	/// \return If the function succeeds, the return value is SDKErr_Success, and the return value of ppContainer is not nullptr.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError CreateVideoContainer(ICustomizedVideoContainer** ppContainer, HWND hParentWnd, RECT rc) = 0;
 
@@ -76,7 +76,7 @@ public:
 	/// \param hParentWnd Specify the parent window of the shared render.
 	/// \param rc Specify the position of client area of the shared render.
 	///The client coordinates corresponds to the client area of the upper-left corner of the parent window.
-	/// \return If the function succeeds, the return value is SDKErr_Success, and the return value of ppRender is not NULL.
+	/// \return If the function succeeds, the return value is SDKErr_Success, and the return value of ppRender is not nullptr.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError CreateShareRender(ICustomizedShareRender** ppRender, HWND hParentWnd, RECT rc) = 0;
 
@@ -97,7 +97,7 @@ public:
 	/// \param rc Specify the position of client area of the immersive container.
 	///The client coordinates corresponds to the client area of the upper-left corner of the parent window.
 	///Only allow creating an object before DestroyImmersiveContainer.
-	/// \return If the function succeeds, the return value is SDKErr_Success, and the return value of ppContainer is not NULL.
+	/// \return If the function succeeds, the return value is SDKErr_Success, and the return value of ppContainer is not nullptr.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError CreateImmersiveContainer(ICustomizedImmersiveContainer** ppContainer, HWND hParentWnd, RECT rc) = 0;
 

@@ -580,11 +580,11 @@ public:
 	virtual SDKError IsAICompanionQueryLegalNoticeAvailable(bool& bAvailable) = 0;
 
 	/// \brief Get the AI Companion query legal notices prompt.
-	/// \return If the function succeeds, it will return the AI Companion query legal notices prompt. Otherwise the function fails and returns NULL.
+	/// \return If the function succeeds, it will return the AI Companion query legal notices prompt. Otherwise the function fails and returns nullptr.
 	virtual const zchar_t* GetAICompanionQueryLegalNoticesPrompt() = 0;
 
 	/// \brief Get the AI Companion query legal notices explained.
-	/// \return If the function succeeds, it will return the AI Companion query legal notices explained. Otherwise the function fails and returns NULL.
+	/// \return If the function succeeds, it will return the AI Companion query legal notices explained. Otherwise the function fails and returns nullptr.
 	virtual const zchar_t* GetAICompanionQueryLegalNoticesExplained() = 0;
 
 	/// \brief Determine whether the legal notice for the AI Companion query privacy is available.
@@ -594,7 +594,7 @@ public:
 	virtual SDKError IsAICompanionQueryPrivacyLegalNoticeAvailable(bool& bAvailable) = 0;
 
 	/// \brief Get the AI Companion query privacy legal notices prompt.
-	/// \return If the function succeeds, it will return the AI Companion query privacy legal notices prompt. Otherwise the function fails and returns NULL.
+	/// \return If the function succeeds, it will return the AI Companion query privacy legal notices prompt. Otherwise the function fails and returns nullptr.
 	virtual const zchar_t* GetAICompanionQueryPrivacyLegalNoticesPrompt() = 0;
 };
 
@@ -672,16 +672,16 @@ public:
 	virtual SDKError SetEvent(IMeetingAICompanionCtrlEvent* pEvent) = 0;
 
 	/// \brief Get the smart summary helper.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingSmartSummaryHelper. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingSmartSummaryHelper. Otherwise the function returns nullptr.
 	/// \deprecated This interface is marked as deprecated, and is replaced by GetMeetingAICompanionSmartSummaryHelper().
 	virtual IMeetingSmartSummaryHelper* GetMeetingSmartSummaryHelper() = 0;
 
 	/// \brief Get the AI companion smart summary helper.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingAICompanionSmartSummaryHelper. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingAICompanionSmartSummaryHelper. Otherwise the function returns nullptr.
 	virtual IMeetingAICompanionSmartSummaryHelper* GetMeetingAICompanionSmartSummaryHelper() = 0;
 
 	/// \brief Get the AI companion query helper.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingAICompanionQueryHelper. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingAICompanionQueryHelper. Otherwise the function returns nullptr.
 	virtual IMeetingAICompanionQueryHelper* GetMeetingAICompanionQueryHelper() = 0;
 
 	// \brief Determine whether the current meeting supports turning off the AI Companion features.

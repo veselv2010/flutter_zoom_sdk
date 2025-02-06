@@ -77,7 +77,7 @@ public:
 	/// \brief User's audio status changed callback.
 	/// \param lstAudioStatusChange List of the user information with audio status changed. The list will be emptied once the function calls end. 
 	/// \param strAudioStatusList List of the user information whose audio status changes, saved in json format. This parameter is currently invalid, hereby only for reservations. 
-	virtual void onUserAudioStatusChange(IList<IUserAudioStatus* >* lstAudioStatusChange, const zchar_t* strAudioStatusList = NULL) = 0;
+	virtual void onUserAudioStatusChange(IList<IUserAudioStatus* >* lstAudioStatusChange, const zchar_t* strAudioStatusList = nullptr) = 0;
 
 	/// \brief The callback event that users whose audio is active changed.
 	/// \param plstActiveAudio List to store the ID of user whose audio is active.

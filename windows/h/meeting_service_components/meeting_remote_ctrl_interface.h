@@ -33,12 +33,13 @@ class IMeetingRemoteCtrlEvent
 public:
 	/// \brief Callback event of notification of the remote control status. 
 	/// \param status The value of remote control status. For more details, see \link RemoteControlStatus \endlink enum.
-	/// \param userId The remote control user ID. For more details, see \link RemoteControlStatus \endlink enum.
-	virtual void onRemoteControlStatus(RemoteControlStatus status, unsigned int userId) = 0;
+	/// \param userID The remote control user ID. For more details, see \link RemoteControlStatus \endlink enum.
+	/// \param shareSourceID The sharing source ID.
+	virtual void onRemoteControlStatus(RemoteControlStatus status, unsigned int userID, unsigned int shareSourceID) = 0;
 
 	/// \brief Callback event when the request of remote control is forbidden for guest user. 
-	/// \param userId The remote control user ID.
-	virtual void onUserRemoteControlForbidden(unsigned int userId) = 0;
+	/// \param userID The remote control user ID.
+	virtual void onUserRemoteControlForbidden(unsigned int userID) = 0;
 };
 
 /// \brief Meeting remote control interface.
@@ -50,74 +51,74 @@ public:
 
 	/// \brief Set meeting remote control callback event handler.
 	/// \param pEvent A pointer to the IMeetingRemoteCtrlEvent that receives the remote control event. 
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	/// \remarks When the remote control or the authority changes, the user will receive a callback event.
 	virtual SDKError SetEvent(IMeetingRemoteCtrlEvent* pEvent) = 0;
 
-	/// \brief Determine if it is able to ask for controlling the specified user by long-distance.
-	/// \param userId Specify the user ID to check.
+	/// \brief Determine if the current user is able to request to control others remotely.
+	/// \param shareSourceID Specify the share scource ID to check.
 	/// \remarks For custom style mode, this interface is only valid after subscribing the sharing content from the specified user by calling ICustomizedShareRender::SetUserID(unsigned int userid) successfully.
-	/// \return If it is able to request to control the specified user by long-distance, the return value is SDKErr_Success. 
+	/// \return If it is able to request to control the specified user by long-distance, the return value is SDKERR_SUCCESS. 
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError CanRequestControl(unsigned int userId) = 0;
+	virtual SDKError CanRequestControl(unsigned int shareSourceID) = 0;
 
-	/// \brief Determine if it is able to control the specified user by long-distance.
-	/// \param userId Specify the user ID to check.
-	/// \return If it is able to control the specified user by long-distance, the return value is SDKErr_Success.
+	/// \brief Determine if the user has privileges to control the specified user remotely..
+	/// \param shareSourceID Specify the share scource ID to check.
+	/// \return If it is able to control the specified user by long-distance, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError IsHaveRemoteControlRight(unsigned int userId) = 0;
+	virtual SDKError IsHaveRemoteControlRight(unsigned int shareSourceID) = 0;
 
-	/// \brief Determine if the specified user is in process of remote control.
-	/// \param userId Specify the user ID to check.
-	/// \return If the specified user is in process of remote control, the return value is SDKErr_Success.
+	/// \brief Determine if the current user is controlling the specified user remotely.
+	/// \param shareSourceID Specify the share scource ID to check.
+	/// \return If the specified user is in process of remote control, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError IsInRemoteControllingStatus(unsigned int userId) = 0;
+	virtual SDKError IsInRemoteControllingStatus(unsigned int shareSourceID) = 0;
 
-	/// \brief Control the specified user by long-distance.
-	/// \param userId Specify the user ID to be controlled.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \brief Start remotely controlling the specified user's computer.
+	/// \param shareSourceID Specify the share scource ID to be controlled.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnterRemoteControllingStatus(unsigned int userId) = 0;
+	virtual SDKError EnterRemoteControllingStatus(unsigned int shareSourceID) = 0;
 
-	/// \brief End controlling the specified user by long distance.
-	/// \param userId Specify the user ID that you want to end the remote control.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \brief Stop controlling remotely.
+	/// \param shareSourceID Specify the share scource ID that you want to end the remote control.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError LeaveRemoteControllingStatus(unsigned int userId) = 0;
+	virtual SDKError LeaveRemoteControllingStatus(unsigned int shareSourceID) = 0;
 
-	/// \brief Send the request of remote control to the specified user.
-	/// \param userId Specify the user ID that you want to send the request.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \brief Request to remotely control the specified user.
+	/// \param shareSourceID Specify the share scource ID that you want to send the request.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError RequestRemoteControl(unsigned int userId) = 0;
+	virtual SDKError RequestRemoteControl(unsigned int shareSourceID) = 0;
 
-	/// \brief Abandon the remote control to the specified user.
-	/// \param userId Specify the user ID.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \brief Give up remotely controlling the specified user.
+	/// \param shareSourceID Specify the share scource ID.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError GiveupRemoteControl(unsigned int userId) = 0;
+	virtual SDKError GiveupRemoteControl(unsigned int shareSourceID) = 0;
 
 	/// \brief Give the authority of remote control to the specified user.
 	/// \param userId Specify the user ID that you want to give the authority.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError GiveRemoteControlTo(unsigned int userId) = 0;
 
 	/// \brief Refuse the request to remote control from the specified user.
-	/// \param userId Specify the user ID to be disabled to remote control.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \param userId Specify the share scource ID to be disabled to remote control.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError DeclineRemoteControlRequest(unsigned int userId) = 0;
 
 	/// \brief Get back all the authority of remote control.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError RevokeRemoteControl() = 0;
 
 	/// \brief Get the controller ID who is currently controlling by long-distance.
 	/// \param [out] userId The user ID who is currently controlling by long-distance. ZERO(0) indicates that there is no controller for the moment.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError GetCurrentRemoteController(unsigned int& userId) = 0;
 

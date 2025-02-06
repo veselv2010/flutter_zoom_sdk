@@ -49,7 +49,7 @@ enum MeetingFailCode
 	MEETING_FAIL_MEETING_OVER				= 6,///<Meeting is over.
 	MEETING_FAIL_MEETING_NOT_START			= 7,///<Meeting has not begun.
 	MEETING_FAIL_MEETING_NOT_EXIST			= 8,///<Meeting does not exist.
-	MEETING_FAIL_MEETING_USER_FULL			= 9,///<The capacity of meeting is full.
+	MEETING_FAIL_MEETING_USER_FULL			= 9,///<The capacity of meeting is full. For users that can't join meeting, they can go to watch live stream with the callback IMeetingServiceEvent::onMeetingFullToWatchLiveStream if the host has started.
 	MEETING_FAIL_CLIENT_INCOMPATIBLE		= 10,///<The client is incompatible.
 	MEETING_FAIL_NO_MMR						= 11,///<The Multi-media router is not founded. 
 	MEETING_FAIL_CONFLOCKED					= 12,///<The meeting is locked.
@@ -156,6 +156,7 @@ typedef struct tagJoinParam4WithoutLogin
 	bool		   isVideoOff;///<Turn off the video of not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	bool		   isAudioOff;///<Turn off the audio or not. True indicates to turn off. In addition, this flag is affected by meeting attributes.
 	const zchar_t* join_token;///<Join token.
+	const zchar_t* onBehalfToken;///<On behalf token.
 	bool           isMyVoiceInMix; ///<Is my voice in the mixed audio raw data?
 #if defined(WIN32)
 	HWND		   hDirectShareAppWnd;///<The window handle of the direct Sharing application.
@@ -284,7 +285,7 @@ typedef struct tagStartParam
 	tagStartParam()
 	{
 		userType = SDK_UT_WITHOUT_LOGIN;
-		inviteContactId = NULL;
+		inviteContactId = nullptr;
 		memset(&param, 0, sizeof(param));  
 	}
 }StartParam;
@@ -310,7 +311,7 @@ enum ConnectionQuality
 */
 enum SDKViewType
 {
-	SDK_FIRST_VIEW,///Primary displayer.
+	SDK_FIRST_VIEW,///<Primary displayer.
 	SDK_SECOND_VIEW,///<Secondary displayer.
 	SDK_SEND_SHARE_VIEW,
 };
@@ -377,19 +378,19 @@ public:
 	virtual MeetingType GetMeetingType() = 0;
 
 	/// \brief Get the email invitation template for the current meeting.
-	/// \return If the function succeeds, the return value is the email invitation template. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is the email invitation template. Otherwise returns nullptr.
 	virtual const zchar_t* GetInviteEmailTemplate() = 0;
 
 	/// \brief Get the meeting title in the email invitation template.
-	/// \return If the function succeeds, the return value is the meeting title. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is the meeting title. Otherwise returns nullptr.
 	virtual const zchar_t* GetInviteEmailTitle() = 0;
 
 	/// \brief Get the URL of invitation to join the meeting.
-	/// \return If the function succeeds, the return value is the URL of invitation. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is the URL of invitation. Otherwise returns nullptr.
 	virtual const zchar_t* GetJoinMeetingUrl() = 0;
 
 	/// \brief Get the host tag of the current meeting.
-	/// \return If the function succeeds, the return value is the host tag. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is the host tag. Otherwise returns nullptr.
 	virtual const zchar_t* GetMeetingHostTag() = 0;
 
 	/// \brief Get the connection type of the current meeting.
@@ -423,8 +424,8 @@ typedef struct tagMeetingParameter
 		is_auto_recording_local = false;
 		is_auto_recording_cloud = false;
 		meeting_number = 0;
-		meeting_topic = NULL;
-		meeting_host = NULL;
+		meeting_topic = nullptr;
+		meeting_host = nullptr;
 	}
 
 	~tagMeetingParameter()
@@ -432,12 +433,12 @@ typedef struct tagMeetingParameter
 		if (meeting_host)
 		{
 			delete[] meeting_host;
-			meeting_host = NULL;
+			meeting_host = nullptr;
 		}
 		if (meeting_topic)
 		{
 			delete[] meeting_topic;
-			meeting_topic = NULL;
+			meeting_topic = nullptr;
 		}
 	}
 }MeetingParameter;
@@ -486,6 +487,11 @@ public:
 	/// \brief Callback event for the meeting topic changed. 
 	/// \param sTopic The new meeting topic.
 	virtual void onMeetingTopicChanged(const zchar_t* sTopic) = 0;
+
+	/// \brief Calback event that the meeting users have reached the meeting capacity.
+	/// The new join user can not join meeting, but they can watch the meeting live stream.
+	/// \param sLiveStreamUrl The live stream URL to watch the meeting live stream.
+	virtual void onMeetingFullToWatchLiveStream(const zchar_t* sLiveStreamUrl) = 0;
 };
 #if defined(WIN32)
 class IAnnotationController;
@@ -504,6 +510,7 @@ class IMeetingAANController;
 class ICustomImmersiveController;
 class IMeetingPollingController;
 class IMeetingIndicatorController;
+class IMeetingProductionStudioController;
 #endif
 class IMeetingConfiguration;
 class IMeetingBOController;
@@ -596,7 +603,7 @@ public:
 	virtual bool CanSuspendParticipantsActivities() = 0;
 
 	/// \brief Get meeting information.
-	/// \return If the function succeeds, the return value is the meeting information. Otherwise returns NULL. For more details, see \link IMeetingInfo \endlink.
+	/// \return If the function succeeds, the return value is the meeting information. Otherwise returns nullptr. For more details, see \link IMeetingInfo \endlink.
 	virtual IMeetingInfo* GetMeetingInfo() = 0;
 
 	/// \brief Get the quality of Internet connection when sharing.
@@ -618,142 +625,146 @@ public:
 	virtual ConnectionQuality GetAudioConnQuality(bool bSending = true) = 0;
 
 	/// \brief Get video controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingVideoController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingVideoController. Otherwise returns nullptr.
 	virtual IMeetingVideoController* GetMeetingVideoController() = 0;
 
 	/// \brief Get the sharing controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingVideoController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingVideoController. Otherwise returns nullptr.
 	virtual IMeetingShareController* GetMeetingShareController() = 0;
 
 	/// \brief Get the audio controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingAudioController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingAudioController. Otherwise returns nullptr.
 	virtual IMeetingAudioController* GetMeetingAudioController() = 0;
 
 	/// \brief Get the recording controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingRecordingController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingRecordingController. Otherwise returns nullptr.
 	virtual IMeetingRecordingController* GetMeetingRecordingController() = 0;
 
 	/// \brief Get the waiting room controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingWaitingRoomController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingWaitingRoomController. Otherwise returns nullptr.
 	virtual IMeetingWaitingRoomController* GetMeetingWaitingRoomController() = 0;
 
 	/// \brief Get the participants controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingParticipantsController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingParticipantsController. Otherwise returns nullptr.
 	virtual IMeetingParticipantsController* GetMeetingParticipantsController() = 0;
 
 	/// \brief Get the webinar controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingWebinarController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingWebinarController. Otherwise returns nullptr.
 	virtual IMeetingWebinarController* GetMeetingWebinarController() = 0;
 
 	/// \brief Get the Raw Archiving controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingRawArchivingController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingRawArchivingController. Otherwise returns nullptr.
 	virtual IMeetingRawArchivingController* GetMeetingRawArchivingController() = 0;
 
 	/// \brief Get the reminder controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingReminderController. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingReminderController. Otherwise the function returns nullptr.
 	virtual IMeetingReminderController* GetMeetingReminderController() = 0;
 	
 	/// \brief Get the smart summary controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingSmartSummaryController. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingSmartSummaryController. Otherwise the function returns nullptr.
 	/// \deprecated This interface is marked as deprecated, and is replaced by GetMeetingSmartSummaryHelper() in class IMeetingAICompanionController.
 	virtual IMeetingSmartSummaryController* GetMeetingSmartSummaryController() = 0;
 
 	/// \brief Get the chat controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingChatController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingChatController. Otherwise returns nullptr.
 	virtual IMeetingChatController* GetMeetingChatController() = 0;
 
 	/// \brief Get the Breakout Room controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingBOController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingBOController. Otherwise returns nullptr.
 	virtual IMeetingBOController* GetMeetingBOController() = 0;
 
 	/// \brief Get the meeting configuration interface.
-	/// \return If the function succeeds, the return value is the meeting configuration interface. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is the meeting configuration interface. Otherwise returns nullptr.
 	virtual IMeetingConfiguration* GetMeetingConfiguration() = 0;
 
 	/// \brief Get the AI companion controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingAICompanionController. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingAICompanionController. Otherwise the function returns nullptr.
 	virtual IMeetingAICompanionController* GetMeetingAICompanionController() = 0;
 	
 #if defined(WIN32)
 
 	/// \brief Get the meeting UI controller interface.
-	/// \return If the function succeeds, the return value is a pointer to the IMeetingConfiguration. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to the IMeetingConfiguration. Otherwise returns nullptr.
 	virtual IMeetingUIController* GetUIController() = 0;
 
 	/// \brief Get the annotation controller interface.
-	/// \return If the function succeeds, the return value is a pointer of IAnnotationController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer of IAnnotationController. Otherwise returns nullptr.
 	virtual IAnnotationController* GetAnnotationController() = 0;
 
 	/// \brief Get the remote controller interface.
-	/// \return If the function succeeds, the return value is a pointer of IMeetingVideoController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer of IMeetingVideoController. Otherwise returns nullptr.
 	virtual IMeetingRemoteController* GetMeetingRemoteController() = 0;
 
 	/// \brief Get the meeting H.323 helper interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingH323Helper. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingH323Helper. Otherwise returns nullptr.
 	virtual IMeetingH323Helper* GetH323Helper() = 0;
 
 	/// \brief Get the meeting phone helper interface.
-	/// \return If the function succeeds, the return value is a pointer of IMeetingPhoneHelper. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer of IMeetingPhoneHelper. Otherwise returns nullptr.
 	virtual IMeetingPhoneHelper* GetMeetingPhoneHelper() = 0;
 
 	/// \brief Get the live stream controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingLiveStreamController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingLiveStreamController. Otherwise returns nullptr.
 	virtual IMeetingLiveStreamController* GetMeetingLiveStreamController() = 0;
 
 	/// \brief Get the Closed Caption controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingWebinarController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingWebinarController. Otherwise returns nullptr.
 	virtual IClosedCaptionController* GetMeetingClosedCaptionController() = 0;
 
 	/// \brief Get the real name auth controller interface.
-	/// \return If the function succeeds, the return value is a pointer to IZoomRealNameAuthMeetingHelper. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IZoomRealNameAuthMeetingHelper. Otherwise returns nullptr.
 	virtual IZoomRealNameAuthMeetingHelper* GetMeetingRealNameAuthController() = 0;
 
 	/// \brief Get the Q&A controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingQAController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingQAController. Otherwise returns nullptr.
 	virtual IMeetingQAController* GetMeetingQAController() = 0;
 
 	/// \brief Get the Interpretation controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingInterpretationController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingInterpretationController. Otherwise returns nullptr.
 	virtual IMeetingInterpretationController* GetMeetingInterpretationController() = 0;
 
 	/// \brief Get the sign interpretation controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingSignInterpretationController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingSignInterpretationController. Otherwise returns nullptr.
 	virtual IMeetingSignInterpretationController* GetMeetingSignInterpretationController() = 0;
 
 	/// \brief Get the Reaction controller.
-	/// \return If the function succeeds, the return value is a pointer to IEmojiReactionController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IEmojiReactionController. Otherwise returns nullptr.
 	virtual IEmojiReactionController* GetMeetingEmojiReactionController() = 0;
 
 	/// \brief Get the AAN controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingAANController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingAANController. Otherwise returns nullptr.
 	virtual IMeetingAANController* GetMeetingAANController() = 0;
 
 	/// \brief Get the immersive controller.
-	/// \return If the function succeeds, the return value is a pointer to ICustomImmersiveController. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to ICustomImmersiveController. Otherwise the function returns nullptr.
 	virtual ICustomImmersiveController* GetMeetingImmersiveController() = 0;
 
 	/// \brief Get the Whiteboard controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingWhiteboardController. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingWhiteboardController. Otherwise the function returns nullptr.
 	virtual IMeetingWhiteboardController* GetMeetingWhiteboardController() = 0;
 	
 	/// \brief Get the Polling controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingPollingController. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingPollingController. Otherwise the function returns nullptr.
 	virtual IMeetingPollingController* GetMeetingPollingController() = 0;
 
 	/// \brief Get the remote support controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingRemoteSupportController. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingRemoteSupportController. Otherwise the function returns nullptr.
 	virtual IMeetingRemoteSupportController* GetMeetingRemoteSupportController() = 0;
 
 	/// \brief Get the Indicator controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingIndicatorController. Otherwise the function returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingIndicatorController. Otherwise the function returns nullptr.
 	virtual IMeetingIndicatorController* GetMeetingIndicatorController() = 0;
+
+	/// \brief Get the production studio controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingProductionStudioController. Otherwise returns nullptr.
+	virtual IMeetingProductionStudioController* GetMeetingProductionStudioController() = 0;
 #endif
 
 	/// \brief Get data center information
 	virtual const zchar_t* GetInMeetingDataCenterInfo() = 0;
 
 	/// \brief Get the encryption controller.
-	/// \return If the function succeeds, the return value is a pointer to IMeetingEncryptionController. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingEncryptionController. Otherwise returns nullptr.
 	virtual IMeetingEncryptionController* GetInMeetingEncryptionController() = 0;
 };
 END_ZOOM_SDK_NAMESPACE

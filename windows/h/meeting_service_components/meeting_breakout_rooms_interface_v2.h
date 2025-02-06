@@ -121,6 +121,7 @@ public:
 
 	/// \brief If CreateBO successfully, you will receive the event. Make sure you receive the event before start bo.
 	/// \param strBOID, to indicate which bo has been created successfully.
+	/// \deprecated This interface is marked as deprecated, and it is recommended to use 'onCreateBOResponse(bool bSuccess, const zchar_t* strBOID)'.
 	virtual void onBOCreateSuccess(const zchar_t* strBOID) = 0;
 
 	/// \brief When the pre-assigned data download status changes, you will receive the event.
@@ -129,6 +130,21 @@ public:
 
 	/// \brief You will receive the event when the option changes
 	virtual void OnBOOptionChanged(const BOOption& newOption) = 0;
+
+	/// \brief The callback notification of CreateBreakoutRoom.
+	/// \param bSuccess, Indicate whether the creation is actually successful. True indicates success, false indicates failure.
+	/// \param strBOID, If the creation is successful, its value is the breakout room's ID, otherwise the value is nullptr.
+	virtual void onCreateBOResponse(bool bSuccess, const zchar_t* strBOID) = 0;
+
+	/// \brief The callback notification of RemoveBO.
+	/// \param bSuccess, Indicates whether the removal was actually successful. True indicates success, false indicates failure.
+	/// \param strBOID, Identifies which breakout room is being removed.
+	virtual void onRemoveBOResponse(bool bSuccess, const zchar_t* strBOID) = 0;
+
+	/// \brief The callback notification of UpdateBOName.
+	/// \param bSuccess, Indicates whether the update was actually successful. True indicates success, false indicates failure.
+	/// \param strBOID, Identifies which breakout room is being updated.
+	virtual void onUpdateBONameResponse(bool bSuccess, const zchar_t* strBOID) = 0;
 };
 
 /// \brief enum for BO stop countdown
@@ -146,18 +162,18 @@ enum BO_STOP_COUNTDOWN
 struct BOOption
 {
 	BO_STOP_COUNTDOWN countdown_seconds; ///<Set the countdown after closing breakout room.
-	bool IsParticipantCanChooseBO;       ///<Enable/Disable that participant can choose breakout room.
+	bool IsParticipantCanChooseBO;       ///<Enable/Disable that participant can choose breakout room. Only for Meeting not Webinar.
 	bool IsParticipantCanReturnToMainSessionAtAnyTime; ///<Enable/Disable that participant can return to main session at any time.
 	bool IsAutoMoveAllAssignedParticipantsEnabled;     ///<Enable/Disable that auto move all assigned participants to breakout room.
 	bool IsBOTimerEnabled;         ///<true: it's timer BO false: not timer BO
-	bool IsTimerAutoStopBOEnabled; ///<true: if time is up, will stop BO auto. false: don't auto stop.
+	bool IsTimerAutoStopBOEnabled; ///<true: if time is up, will stop BO auto. false: don't auto stop. Only for Meeting not Webinar.
 	unsigned int nTimerDuration;   ///<seconds of BO timer duration, NOTE: when nTimerDuration is 0, it means that the BO duration is 30*60 seconds.
 
-	///  WebinarBo Available Only For Zoomui Mode
+	/// \brief The following items are for Webinar only
 	bool IsAttendeeContained;	///<Enable/Disable Webinar Attendee join Webinar BO, When it changes, the BO data will be reset.
 	bool IsPanelistCanChooseBO;	///<Enable/Disable that Panelist can choose breakout room.
 	bool IsAttendeeCanChooseBO;	///<Enable/Disable that Attendee can choose breakout room, invalid when attendee is not contained.
-	bool IsUserConfigMaxRoomUserLimitsEnabled = false;	///<Enable/Disable that max roomUser limits in BO room.
+	bool IsUserConfigMaxRoomUserLimitsEnabled;	///<Enable/Disable that max roomUser limits in BO room.
 	unsigned int  nUserConfigMaxRoomUserLimits;	///<numbers of max roomUser limits in BO room.
 	BOOption()
 	{
@@ -211,18 +227,28 @@ public:
 
 	/// \brief Create a BO.
 	/// \param strBOName, the BO name.
-	/// \return if success the return value is BO ID, otherwise NULL.
+	/// \return if success the return value is BO ID, otherwise nullptr.
+	/// \deprecated This interface is marked as deprecated, and it is recommended to use 'CreateBreakoutRoom(const zchar_t* strBOName)'.
 	virtual const zchar_t* CreateBO(const zchar_t* strBOName) = 0;
 	
-	/// \brief Update BO name.
-	/// \param strBOID, is the BO ID.
-	/// \param strNewBOName, is the new BO name.
-	/// \return if success the return value is true, otherwise false.
+	/// \brief Create a breakout room.
+	/// \param strBOName, the breakout room name.
+	/// \return if success the return value is true. Otherwise false.
+	/// Note: 
+	///		1. This function is compatible with meeting breakout room and webinar breakout room.
+	///		2. This function is asynchronous. onCreateBOResponse is the corresponding callback notification.
+	///		3. Webinar breakout room only support Zoomui Mode
+	virtual bool CreateBreakoutRoom(const zchar_t* strBOName) = 0;
+
+	/// \brief Update BO name, 'IBOCreatorEvent.onUpdateBONameResponse' is the corresponding callback notification.
+	/// \param strBOID, is the breakout room's ID.
+	/// \param strNewBOName, is the new breakout room's name.
+	/// \return if success the return value is true. Otherwise false.
 	virtual bool UpdateBOName(const zchar_t* strBOID, const zchar_t* strNewBOName) = 0; 
 	
-	/// \brief Remove a BO.
-	/// \param strBOID, is the BO ID.
-	/// \return if success the return value is true, otherwise false.
+	/// \brief Remove a breakout room, 'IBOCreatorEvent.onRemoveBOResponse' is the corresponding callback notification.
+	/// \param strBOID, is the breakout room ID.
+	/// \return if success the return value is true. Otherwise false.
 	virtual bool RemoveBO(const zchar_t* strBOID) = 0;
 	
 	/// \brief Assign a user to a BO.
@@ -248,7 +274,7 @@ public:
 	virtual bool GetBOOption(BOOption& option) = 0;
 
 	/// \brief Get the Batch create bo controller.
-	/// \return If the function succeeds, the return value is a pointer to IBatchCreateBOHelper. Otherwise returns NULL.
+	/// \return If the function succeeds, the return value is a pointer to IBatchCreateBOHelper. Otherwise returns nullptr.
 	virtual IBatchCreateBOHelper* GetBatchCreateBOHelper() = 0;
 
 	/// \brief Determine whether web enabled the pre-assigned option when scheduling a meeting.
@@ -266,7 +292,8 @@ public:
 
 	/// \brief Create a Webinar BO, Available Only For Zoomui Mode.
 	/// \param strBOName, the BO name.
-	/// \return if success the return value is BO ID, otherwise NULL.
+	/// \return if success the return value is true, otherwise false.
+	/// \deprecated This interface is marked as deprecated, and it is recommended to use 'CreateBreakoutRoom(const zchar_t* strBOName)'.
 	virtual bool CreateWebinarBo(const zchar_t* strBOName) = 0;
 };
 
@@ -302,6 +329,14 @@ public:
 	/// \brief if it's timer BO, after start BO, you will receive the event. 
 	/// \param [remaining] remaining time, [isTimesUpNotice] true: when time is up, auto stop BO. false: don't auto stop BO. 
 	virtual void onBOEndTimerUpdated(int remaining, bool isTimesUpNotice) = 0;
+
+	/// \brief The callback notification of StartBO.
+	/// \param bSuccess, Indicates whether the startup is actually successful. True indicates success, and false indicates failure.
+	virtual void onStartBOResponse(bool bSuccess) = 0;
+
+	/// \brief The callback notification of StopBO.
+	/// \param bSuccess, Indicates whether the stop is actually successful. True indicates success, and false indicates failure.
+	virtual void onStopBOResponse(bool bSuccess) = 0;
 };
 
 /// \brief BO admin interface.
@@ -309,11 +344,11 @@ public:
 class IBOAdmin
 {
 public:
-	/// \brief start BO.
+	/// \brief start breakout room, 'IBOAdminEvent.onStartBOResponse' is the corresponding callback notification.
 	/// \return true indicates success, otherwise fail.
 	virtual bool StartBO() = 0;
 
-	/// \brief stop BO.
+	/// \brief stop breakout room, 'IBOAdminEvent.onStopBOResponse' is the corresponding callback notification.
 	/// \return true indicates success, otherwise fail.
 	virtual bool StopBO() = 0;
 	
@@ -441,7 +476,7 @@ class IBODataEvent
 public:
 	virtual ~IBODataEvent() {}
 
-	/// \brief To notify if some BO information is changed(user join/leave BO or BO name is modified)
+	/// \brief To notify if some BO information is changed(user join/leave BO or BO user name is modified)
 	/// \param strBOID, the BO ID which information is changed.
 	virtual void onBOInfoUpdated(const zchar_t* strBOID) = 0; 
 	
@@ -451,7 +486,6 @@ public:
 
 	/// \brief Host/CoHost both can edit BO, Host edit BO->start BO->stop BO, 
 	///        then CoHost edit BO->start BO, you will receive the event, you must update BO list in UI.
- 	/// \param strBOID, the BO ID which information is changed.
 	virtual void OnBOListInfoUpdated() = 0;
 };
 /// \brief BO data interface
@@ -465,12 +499,12 @@ public:
 
 	/// \brief Get the id list of all unassigned users. 
 	/// \return If the function succeeds, the return value is a pointer to IList object. For more details, see \link IList \endlink,
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual IList<const zchar_t*>* GetUnassignedUserList() = 0;
 
 	/// \brief Get the id list of all BOs. 
 	/// \return If the function succeeds, the return value is a pointer to IList object. For more details, see \link IList \endlink,
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual IList<const zchar_t*>* GetBOMeetingIDList() = 0;
 	
 	/// \brief Get user name by user ID. 
@@ -483,7 +517,7 @@ public:
 
 	/// \brief Get BO object by BO ID.
 	/// \return If the function succeeds, the return value is a pointer to IBOMeeting object. For more details, see \link IBOMeeting \endlink,
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual IBOMeeting* GetBOMeetingByID(const zchar_t* strBOID) = 0;
 
 	/// \brief Get current BO name if you in a BO.
@@ -579,7 +613,7 @@ public:
 
 	/// \brief Whenever the host switches you to another BO while you are assigned but haven't joined the BO, you will receive this event.
 	/// \param strNewBOName The new BO name.
-	/// \param strNewBOID The new BO ID. If the current user is IBOAttendee, then the 2nd parameter strNewBOID will return NULL.
+	/// \param strNewBOID The new BO ID. If the current user is IBOAttendee, then the 2nd parameter strNewBOID will return nullptr.
 	virtual void onBOSwitchRequestReceived(const zchar_t* strNewBOName, const zchar_t* strNewBOID) = 0;
 
 	/// \brief The status of broadcasting voice to BO has been changed.
@@ -607,27 +641,27 @@ public:
 
 	/// \brief Get the pointer of BO creator object. 
 	/// \return If the function succeeds, the return value is a pointer to IBOCreator object. For more details, see \link IBOCreator \endlink,
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual IBOCreator*    GetBOCreatorHelper() = 0;
 
 	/// \brief Get the pointer of BO administrator object. 
 	/// \return If the function succeeds, the return value is a pointer to IBOAdmin object. For more details, see \link IBOAdmin \endlink,
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual IBOAdmin*      GetBOAdminHelper() = 0;
 
 	/// \brief Get the pointer of BO assistant object. 
 	/// \return If the function succeeds, the return value is a pointer to IBOAssistant object. For more details, see \link IBOAssistant \endlink,
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual IBOAssistant*  GetBOAssistantHelper() = 0;
 
 	/// \brief Get the pointer of BO attendee object. 
 	/// \return If the function succeeds, the return value is a pointer to IBOAttendee object. For more details, see \link IBOAttendee \endlink,
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual IBOAttendee*   GetBOAttedeeHelper() = 0;
 
 	/// \brief Get the pointer of BO data object. 
 	/// \return If the function succeeds, the return value is a pointer to IBOData object. For more details, see \link IBOData \endlink,
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual IBOData*	   GetBODataHelper() = 0;
 
 	/// \brief Determine if the BO is started or not.

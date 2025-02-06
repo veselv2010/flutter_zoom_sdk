@@ -14,12 +14,12 @@ BEGIN_ZOOM_SDK_NAMESPACE
 */
 enum RecordingStatus
 {
-	Recording_Start,///Start recording on local computer or on cloud.
-	Recording_Stop,///Stop recording on local computer or on cloud.
-	Recording_DiskFull,///There is no more space to store both local and cloud recording.
-	Recording_Pause,///Pause recording on local or on cloud.
-	Recording_Connecting,///Connecting, only for cloud recording.
-	Recording_Fail,///Saving the recording failed.
+	Recording_Start,///<Start recording on local computer or on cloud.
+	Recording_Stop,///<Stop recording on local computer or on cloud.
+	Recording_DiskFull,///<There is no more space to store both local and cloud recording.
+	Recording_Pause,///<Pause recording on local or on cloud.
+	Recording_Connecting,///<Connecting, only for cloud recording.
+	Recording_Fail,///<Saving the recording failed.
 };
 
 #if defined(__linux__)
@@ -57,9 +57,9 @@ typedef enum LocalRecordingResolution
 */
 enum RequestLocalRecordingStatus
 {
-	RequestLocalRecording_Granted,///host grant the request.
-	RequestLocalRecording_Denied,///host deny the request.
-	RequestLocalRecording_Timeout,///the request local recording timeout.	
+	RequestLocalRecording_Granted,///<host grant the request.
+	RequestLocalRecording_Denied,///<host deny the request.
+	RequestLocalRecording_Timeout,///<the request local recording timeout.	
 };
 
 /*! \enum RequestStartCloudRecordingStatus
@@ -67,17 +67,17 @@ enum RequestLocalRecordingStatus
 */
 enum RequestStartCloudRecordingStatus
 {
-	RequestStartCloudRecording_Granted,///host grants the request.
-	RequestStartCloudRecording_Denied,///host denies the request.
-	RequestStartCloudRecording_TimedOut,///the request for cloud recording timed out.	
+	RequestStartCloudRecording_Granted,///<host grants the request.
+	RequestStartCloudRecording_Denied,///<host denies the request.
+	RequestStartCloudRecording_TimedOut,///<the request for cloud recording timed out.	
 };
 
 enum LocalRecordingRequestPrivilegeStatus
 {
 	LocalRecordingRequestPrivilege_None,
-	LocalRecordingRequestPrivilege_AllowRequest,///allow participant to send privilege requests.
-	LocalRecordingRequestPrivilege_AutoGrant,///host auto-allow all privilege requests.
-	LocalRecordingRequestPrivilege_AutoDeny,///host auto-deny all privilege requests.
+	LocalRecordingRequestPrivilege_AllowRequest,///<allow participant to send privilege requests.
+	LocalRecordingRequestPrivilege_AutoGrant,///<host auto-allow all privilege requests.
+	LocalRecordingRequestPrivilege_AutoDeny,///<host auto-deny all privilege requests.
 };
 
 /// \brief Process after the host receives the requirement from the user to give the local recording privilege.

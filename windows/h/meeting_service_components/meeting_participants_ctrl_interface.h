@@ -49,6 +49,21 @@ enum FocusModeShareType
 	FocusModeShareType_AllParticipants,
 };
 
+/*! \struct tagZoomSDKVirtualNameTag
+	\brief Info of virtual name tag.
+	Here are more detailed structural descriptions.
+*/
+typedef struct tagZoomSDKVirtualNameTag
+{
+	int tagID;  ///<Tag ID.tagID is the unique identifier.The range of tagID is 0 - 1024.
+	const zchar_t* tagName;   ///<Tag name.
+
+	tagZoomSDKVirtualNameTag()
+	{
+		tagID = 0;
+		tagName = nullptr;
+	}
+}ZoomSDKVirtualNameTag;
 /// \brief User information interface.
 ///
 class IUserInfo
@@ -56,7 +71,7 @@ class IUserInfo
 public:
 	/// \brief Get the username matched with the current user information.
 	/// \return If the function succeeds, the return value is the username.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	/// \remarks Valid for both normal user and webinar attendee.
 	virtual const zchar_t* GetUserName() = 0;
 
@@ -72,19 +87,19 @@ public:
 
 	/// \brief Get the avatar file path matched with the current user information.
 	/// \return If the function succeeds, the return value is the avatar file path.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual const zchar_t* GetAvatarPath() = 0;
 
 	/// \brief Get the user persistent id matched with the current user information.
 	/// \return If the function succeeds, the return value is the user persistent id.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual const zchar_t* GetPersistentId() = 0;
 
 	/// \brief Get the customer_key matched with the current user information.
 	///If you assign a customer_key for a user in the start/join meeting parameter, the value you assigned will be returned.
 	///Otherwise a empty string will be returned.
 	/// \return If the function succeeds, the return value is the customer_key.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	virtual const zchar_t* GetCustomerKey() = 0;
 
 	/// \brief Determine the video status of the user specified by the current information.
@@ -172,6 +187,35 @@ public:
 	/// \return TRUE means the user has a camera, otherwise false.
 	virtual bool HasCamera() = 0;
 
+	/// \brief Determine whether the user is production studio user.
+	/// \return TRUE indicates that the specified user is production studio user, otherwise false.
+	virtual bool IsProductionStudioUser() = 0;
+
+	/// \brief Determine whether the user specified by the current information is in the webinar backstage or not.
+	/// \return TRUE indicates that the specified user is in the webinar backstage.
+	virtual bool IsInWebinarBackstage() = 0;
+
+	/// \brief Get the parent user ID of the production studio user.
+	/// \remarks Just production studio user has parent. 
+	virtual unsigned int GetProductionStudioParent() = 0;
+
+	/// \brief Determine whether the user specified by the current information is robot user or not.
+	/// \return TRUE indicates that the specified user is robot user.
+	virtual bool IsRobotUser() = 0;
+
+	/// \brief Get the robot brand name.
+	/// \return If the function succeeds, the return value is the rebot brand name.
+	///Otherwise the function fails, the return value is nullptr.
+	virtual const zchar_t* GetRobotBrandName() = 0;
+
+	/// \brief Query if the participant enabled virtual name tag.
+	/// \return TRUE means enabled, Otherwise not.
+	virtual bool IsVirtualNameTagEnabled() = 0;
+
+	/// \brief Query the virtual name tag roster infomation.
+	/// \return If the function succeeds, it return the list of user's virtual name tag roster info. For more details, see \link ZoomSDKVirtualNameTag \endlink structure.
+	virtual IList<ZoomSDKVirtualNameTag>* GetVirtualNameTagList() = 0;
+
 	virtual ~IUserInfo(){};
 };
 
@@ -186,13 +230,13 @@ public:
 	/// \param lstUserID List of user IDs. 
 	/// \param strUserList List of users in JSON format. This function is currently invalid, hereby only for reservations.
 	/// \remarks Valid for both normal user and webinar attendee.
-	virtual void onUserJoin(IList<unsigned int >* lstUserID, const zchar_t* strUserList = NULL) = 0;
+	virtual void onUserJoin(IList<unsigned int >* lstUserID, const zchar_t* strUserList = nullptr) = 0;
 
 	/// \brief Callback event of notification of user who leaves the meeting.
 	/// \param lstUserID List of the user ID who leaves the meeting.
 	/// \param strUserList List of the users in JSON format. This function is currently invalid, hereby only for reservations.
 	/// \remarks Valid for both normal user and webinar attendee.
-	virtual void onUserLeft(IList<unsigned int >* lstUserID, const zchar_t* strUserList = NULL) = 0;
+	virtual void onUserLeft(IList<unsigned int >* lstUserID, const zchar_t* strUserList = nullptr) = 0;
 
 	/// \brief Callback event of notification of the new host. 
 	/// \param userId Specify the ID of the new host. 
@@ -263,6 +307,20 @@ public:
 	/// \brief Callback event that that focus mode share type changed by host or co-host.
 	/// \param type Share type change.
 	virtual void onFocusModeShareTypeChanged(FocusModeShareType type) = 0;
+
+	/// \brief Callback event that the robot relationship changed in the meeting.
+	/// \param authorizeUserID Specify the authorizer user ID.
+	virtual void onRobotRelationChanged(unsigned int authorizeUserID) = 0;
+
+	/// \brief Notification of virtual name tag status change.
+	/// \param bOn TRUE means virtual name tag is turn on, Otherwise not.
+	/// \param userID The ID of user who virtual name tag status changed.
+	virtual void onVirtualNameTagStatusChanged(bool bOn, unsigned int userID) = 0;
+
+	/// \brief Notification of virtual name tag roster info updated.
+	/// \param userID The ID of user who virtual name tag status changed.
+	virtual void onVirtualNameTagRosterInfoUpdated(unsigned int userID) = 0;
+
 };
 
 /// \brief Meeting waiting room controller interface
@@ -278,22 +336,36 @@ public:
 
 	/// \brief Get the list of all the panelists in the meeting.
 	/// \return If the function succeeds, the return value is the list of the panelists in the meeting.
-	///Otherwise the function fails, and the return value is NULL.
+	///Otherwise the function fails, and the return value is nullptr.
 	/// \remarks Valid for both ZOOM style and user custom interface mode. Valid for both normal user and webinar attendee.
 	virtual IList<unsigned int >* GetParticipantsList() = 0;
 
 	/// \brief Get the information of specified user.
 	/// \param userid Specify the user ID for which you want to get the information. 
 	/// \return If the function succeeds, the return value is a pointer to the IUserInfo. For more details, see \link IUserInfo \endlink.
-	///Otherwise the function fails, and the return value is NULL.
+	///Otherwise the function fails, and the return value is nullptr.
 	/// \remarks Valid for both ZOOM style and user custom interface mode. Valid for both normal user and webinar attendee.
 	virtual IUserInfo* GetUserByUserID(unsigned int userid) = 0;
 
 	/// \brief Get the information of current user.
 	/// \return If the function succeeds, the return value is a pointer to the IUserInfo. For more details, see \link IUserInfo \endlink.
-	///Otherwise failed, the return value is NULL.
+	///Otherwise failed, the return value is nullptr.
 	/// \remarks Valid for both ZOOM style and user custom interface mode..
 	virtual IUserInfo* GetMySelfUser() = 0;
+
+	/// \brief Get the information about the robot's authorized user.
+	/// \param robotUserId Specify the user ID for which to get the information. 
+	/// \return If the function succeeds, the return value is a pointer to the IUserInfo. For more details, see \link IUserInfo \endlink.
+	///Otherwise the function fails, and the return value is nullptr.
+	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	virtual IUserInfo* GetAuthorizeUserByRobotUserID(unsigned int robotUserId) = 0;
+
+	/// \brief Get the authorizer's robot list.
+	/// \param userid Specify the user ID for which to get the information. 
+	/// \return If the function succeeds, the return value is the authorizer's robot list in the meeting.
+	///Otherwise the function fails, and the return value is nullptr.
+	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	virtual IList<unsigned int >* GetRobotListByAuthorizeUserID(unsigned int userid) = 0;
 
 	/// \brief Cancel all hands raised.
 	/// \param forWebinarAttendees is true, the SDK sends the lower all hands command only to webinar attendees.
@@ -498,6 +570,35 @@ public:
 	/// \return If the function succeeds, the return value is SDKErr_Success.
 	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError AllowParticipantsToRequestCloudRecording(bool bAllow) = 0;
+
+	/// \brief Determine if support virtual name tag feature.
+	/// \return TRUE means supports the virtual name tag feature. NO means not.
+	virtual bool IsSupportVirtualNameTag() = 0;
+
+	/// \brief Enable the virtual name tag feature for the account.
+	/// \param bEnabled TRUE means enabled, Otherwise not.
+	/// \return If the function succeeds, it return SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableVirtualNameTag(bool bEnabled) = 0;
+
+	/// \brief Prepare to Update virtual name tag roster infomation.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum
+	/// \remarks If the function succeeds, all the created virtual name tag roster will be removed.
+	virtual SDKError CreateVirtualNameTagRosterInfoBegin() = 0;
+
+	/// \brief Add the userRoster to a prepared list.
+	/// \param userRoster, The virtual name tag roster info list for specify user. For more details, see \link ZoomSDKVirtualNameTag \endlink structure.
+	/// \return true if the userRoster is added to the prepared list successfully.
+	/// \remarks The maximum size of userRoster should less 20. User should sepcify the tagName and tagID of echo ZoomSDKVirtualNameTag object. The range of tagID is 0-1024.
+	virtual bool AddVirtualNameTagRosterInfoToList(ZoomSDKVirtualNameTag userRoster) = 0;
+
+	/// \brief Batch create virtual name tag roster infoTo according to the prepare list.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum
+	/// \remarks CreateVirtualNameTagRosterInfoBegin() must be called before this function is called. Otherwise SDKErr_WRONG_USAGE will be returned.
+	virtual SDKError CreateVirtualNameTagRosterInfoCommit() = 0;
+
 };
 END_ZOOM_SDK_NAMESPACE
 #endif
