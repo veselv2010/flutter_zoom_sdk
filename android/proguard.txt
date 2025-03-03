@@ -5,3 +5,11 @@
 -keep class  us.google.protobuf.**{*;}
 -keep class  com.google.crypto.tink.**{*;}
 -keep class  androidx.security.crypto.**{*;}
+
+-dontwarn com.google.**
+-dontwarn com.zipow.**
+-dontwarn us.zoom.**
+-dontwarn xcrash.**
+-dontwarn org.**
+-dontwarn java.awt.**
+-dontwarn javax.swing.**
