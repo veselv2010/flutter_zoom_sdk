@@ -153,6 +153,14 @@ public:
 	// \brief Determine whether enable the participants create a new whiteboard without the host in the meeting.
 	/// \return True indicates that they have these permission.
 	virtual bool IsParticipantsCreateWithoutHostEnabled() = 0;
+
+	/// \brief Query if other user is sharing whiteboard.
+	/// \return True means other user is sharing. False means not.
+	virtual bool IsOtherSharingWhiteboard() = 0;
+
+	/// \brief Query if the current user is sharing whiteboard successfully.
+	/// \return True means the current user is sharing successfully. False means not.
+	virtual bool IsSharingWhiteboardOut() = 0;
 };
 
 END_ZOOM_SDK_NAMESPACE

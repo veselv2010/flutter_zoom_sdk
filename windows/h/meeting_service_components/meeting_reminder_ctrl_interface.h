@@ -37,6 +37,7 @@ enum MeetingReminderType
 	TYPE_MULTI_DISCLAIMER,///<Reminder type of disclaimers combination. 
 	TYPE_JOIN_MEETING_CONNECTOR_AS_GUEST_REMINDER,///<Reminder type for a join meeting connector with guest mode.
 	TYPE_COMMON_DISCLAIMER,///<Reminder type of common disclaimer.
+	TYPE_CUSTOM_AI_COMPANION_DISCLAIMER, ///Reminder type of custom AI companion disclaimer.
 };
 
 /*! \enum ActionType
@@ -106,6 +107,10 @@ public:
 	virtual SDKError  Decline() = 0;
 	/// \brief Set not show the disclaimer in subsequent meetings.
 	virtual SDKError  SetHideFeatureDisclaimers() = 0;
+	/// \brief Is need explicit consent for AI custom disclaimer. \link TYPE_CUSTOM_AI_COMPANION_DISCLAIMER \endlink.
+	/// \return True means explicit consent is required. Before agreeing to AIC disclaimer, the user's video and audio will be blocked. 
+	/// Otherwise means explicit consent is not required and video and audio will not be blocked.
+	virtual bool IsNeedExplicitConsent4AICustomDisclaimer() = 0;
 };
 
 /*! \enum FeatureEnableOption

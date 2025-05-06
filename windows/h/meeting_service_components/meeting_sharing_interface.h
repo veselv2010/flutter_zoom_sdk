@@ -43,6 +43,7 @@ typedef struct tagZoomSDKSharingSourceInfo
 	bool isShowingInFirstView;		///<Display or not on the primary view. Available only for Zoom UI mode.
 	bool isShowingInSecondView;		///<Display or not on the secondary view. Available only for Zoom UI mode.
 	bool isCanBeRemoteControl;		///<Enable or disable the remote control.
+	bool bEnableOptimizingVideoSharing;    ///<Enable or disable the optimizing video.
 
 	ShareType contentType;			///<Type of sharing, see \link ShareType \endlink enum.
 	HWND hwndSharedApp;				///<Handle of sharing application or white-board. It is invalid unless the value of the eShareType is SHARE_TYPE_AS or SHARE_TYPE_WB.
@@ -57,6 +58,7 @@ typedef struct tagZoomSDKSharingSourceInfo
 		isShowingInFirstView = false;
 		isShowingInSecondView = false;
 		isCanBeRemoteControl = false;
+		bEnableOptimizingVideoSharing = false;
 		hwndSharedApp = nullptr;
 		monitorID = nullptr;
 	}
@@ -143,6 +145,10 @@ public:
 	/// \brief Callback event of the video file playback error.
 	/// \param error The error type. For more details, see \link ZoomSDKVideoFileSharePlayError \endlink structure.
 	virtual void onVideoFileSharePlayError(ZoomSDKVideoFileSharePlayError error) = 0;
+
+	/// \brief Callback event of the changed optimizing video status. 
+	/// \param shareInfo Sharing information. For more details, see \link ZoomSDKSharingSourceInfo \endlink structure.
+	virtual void onOptimizingShareForVideoClipStatusChanged(ZoomSDKSharingSourceInfo shareInfo) = 0;
 };
 
 /// \brief Meeting share controller interface.
@@ -348,22 +354,41 @@ public:
 	/// \param [out] bCurEnableOrNot The parameter is valid only when the return value is TRUE. And TRUE indicates to sharing the sound of the computer for the moment.
 	/// \return If it is TRUE, the value of bCurEnableOrNot can be used to check whether the computer sound is supported or not when sharing. FALSE not.
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	/// \deprecated This interface is marked as deprecated.
 	virtual bool IsSupportEnableShareComputerSound(bool& bCurEnableOrNot) = 0;
 
 	/// \brief Determine whether to optimize the video fluidity when sharing in full screen mode. 
 	/// \param bCurEnableOrNot This parameter is valid only when the return value is TRUE. And TRUE indicates to optimize video for the moment. 
 	/// \return If it is TRUE, the value of bCurEnableOrNot can be used to check whether to support optimize video fluidity or not. FALSE not.
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	/// \deprecated This interface is marked as deprecated.
 	virtual bool IsSupportEnableOptimizeForFullScreenVideoClip(bool& bCurEnableOrNot) = 0;
 
-	/// \brief Set to enable or disable the audio before sharing.
+	/// \brief Determine if the specified share type supports sharing with compute sound or not.
+	/// \param type The type of sharing content.
+	/// \return True indicates that this is supported.
+	virtual bool IsSupportShareWithComputerSound(ShareType type) = 0;
+
+	/// \brief Determine if the current share supports sharing with compute sound or not.
+	/// \return True indicates that is supported.
+	virtual bool IsCurrentSharingSupportShareWithComputerSound() = 0;
+
+	// \brief Determine if the current meeting enabled sharing with compute sound or not before sharing. 
+	/// \return True indicates that this is enabled.
+	virtual bool IsEnableShareComputerSoundOn() = 0;
+
+	/// \brief Enable or disable the computer audio before sharing.
 	/// \param bEnable TRUE indicates to enable. FALSE not.
 	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	/// \remarks It will be applied when starting share.
 	virtual SDKError EnableShareComputerSound(bool bEnable) = 0;
 
-	/// \brief Set to enable or disable the audio when sharing.
+	// \brief Determine if the current sharing content enabled sharing with compute sound or not. 
+	/// \return True indicates that this is enabled.
+	virtual bool IsEnableShareComputerSoundOnWhenSharing() = 0;
+
+	/// \brief Set to enable or disable the computer audio when sharing.
 	/// \param bEnable TRUE indicates to enable. FALSE not.
 	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
@@ -384,14 +409,26 @@ public:
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
 	virtual SDKError GetAudioShareMode(AudioShareMode& mode) = 0;
 
-	/// \brief Set to enable the video optimization before sharing. 
+	// \brief Determine if the current meeting supports sharing with optimize video or not.
+	/// \return True indicates this is supported.
+	virtual bool IsSupportEnableOptimizeForFullScreenVideoClip() = 0;
+
+	// \brief Determine if the current meeting enabled sharing with optimize video or not.
+	/// \return True indicates this is enabled.
+	virtual bool IsEnableOptimizeForFullScreenVideoClipOn() = 0;
+
+	/// \brief Enable or disable the video optimization before sharing. 
 	/// \param bEnable TRUE indicates to enable. FALSE not.
 	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	/// \remarks It will be applied when starting share.
 	virtual SDKError EnableOptimizeForFullScreenVideoClip(bool bEnable) = 0;
 
-	/// \brief Set to enable the video optimization when sharing. 
+	// \brief Determine if the current sharing content enabled sharing with optimize video or not.
+	/// \return True indicates this is enabled.
+	virtual bool IsEnableOptimizeForFullScreenVideoClipOnWhenSharing() = 0;
+
+	/// \brief Enable or disable the video optimization when sharing. 
 	/// \param bEnable TRUE indicates to enable. FALSE not.
 	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.

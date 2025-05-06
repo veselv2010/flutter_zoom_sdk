@@ -165,9 +165,27 @@ public:
 		
 	/// \brief Join the meeting.		
 	/// \param bStartArchive true means start the archive when joining the meeting, false means do not start the archive when joining the meeting.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError JoinWithArchive(bool bStartArchive) = 0;
+};
+
+
+/// \brief host to handle confirm whether recover meeting or not when start a deleted or expired meeting.
+///
+class IMeetingConfirmRecoverHandler
+{
+public:
+	virtual ~IMeetingConfirmRecoverHandler() {};
+
+	/// \brief The content that notifies the host to recover the meeting.
+	virtual const zchar_t* GetRecoverMeetingContent() = 0;
+
+	/// \brief Join the meeting.		
+	/// \param bRecover true means to recover the meeting and start the meeting, false means not recover the meeting and leave the start meeting process.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError RecoverMeeting(bool bRecover) = 0;
 };
 
 
@@ -253,6 +271,10 @@ public:
 	/// \brief Callback event when joining a meeting if the admin allows the the user to choose to archive the meeting.
 	/// \param pHandler An object pointer the user to choose whether archive the meeting when joining the meeting. For more details, see \link IMeetingArchiveConfirmHandler \endlink.
 	virtual void onUserConfirmToStartArchive(IMeetingArchiveConfirmHandler* pHandler) = 0;
+
+	/// \brief Callback event when the host starts a deleted or expired meeting(not PMI meeting).
+	/// \param pHandler An object pointer the user to choose whether recover the meeting. For more details, see \link IMeetingConfirmRecoverHandler \endlink.
+	virtual void onUserConfirmRecoverMeeting(IMeetingConfirmRecoverHandler* handler) = 0;
 };
 #if defined(WIN32)
 enum SDKInviteDlgTabPage
@@ -630,6 +652,11 @@ public:
 	/// \remarks If it is true, the SDK will trigger the IMeetingConfigurationEvent::onUserConfirmToStartArchive()callback event. For more details, see \link IMeetingConfigurationEvent::onUserConfirmToStartArchive() \endlink.
 	virtual void RedirectConfirmStartArchiveDialog(bool bRedirect) = 0;
 
+	/// \brief Set if it is able to handle the confirm recover meeting dialog dlg with user's own program in the meeting. Default: FALSE.
+	/// \param bRedirect TRUE indicates to redirect. FALSE not. 
+	/// \remarks If it is true, the SDK will trigger the IMeetingConfigurationEvent::onUserConfirmRecoverMeeting()callback event. For more details, see \link IMeetingConfigurationEvent::onUserConfirmRecoverMeeting() \endlink.
+	virtual void RedirectConfirmRecoverMeetingDialog(bool bRedirect) = 0;
+
 	/// \brief Set if it is able to redirect the process to end another meeting by user's own program. Default: FALSE. 
 	/// \param bRedirect TRUE indicates to redirect. FALSE not. If it is TRUE, the SDK will trigger the  IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification().
 	/// \remarks This function doesn't work if the IJoinMeetingBehaviorConfiguration::EnableAutoEndOtherMeetingWhenStartMeeting(true) is also called. If redirect successfully, the SDK will trigger the IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification() callback event. For more details, see \link IMeetingConfigurationEvent::onEndOtherMeetingToJoinMeetingNotification() \endlink.
@@ -739,6 +766,12 @@ public:
 	/// \brief Set whether to forbid multi-share. Default: FALSE.
 	/// \param bDisable TRUE indicates to forbid multi-share. FALSE not.
 	virtual void ForceDisableMultiShare(bool bDisable) = 0;
+
+	/// \brief Enable or disable zoom docs features in custom UI. This is disabled by default.
+	/// \param bEnable TRUE indicates to enable the zoom docs feature, otherwise not.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableZoomDocs(bool bEnable) = 0;
 #endif
 };
 

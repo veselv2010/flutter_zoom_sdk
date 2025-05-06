@@ -1166,6 +1166,12 @@ public:
 	virtual SDKError UseDefaultSystemMic() = 0;
 
 	virtual SDKError UseDefaultSystemSpeaker() = 0;
+
+	/// \brief Enable or disable the original input of mic.
+	/// \param bEnable TRUE indicates to enable the original input of mic.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableMicOriginalInput(bool bEnable) = 0;
 #if defined(WIN32)
 	/// \brief Enable or disable the stereo audio.
 	/// \param bEnable TRUE indicates to enable the stereo audio.
@@ -1177,12 +1183,6 @@ public:
 	/// \brief Get the flag to enable/disable the stereo audio.
 	/// \return Enabled or disabled.
 	virtual bool IsStereoAudioEnable() = 0;
-
-	/// \brief Enable or disable the original input of mic.
-	/// \param bEnable TRUE indicates to enable the original input of mic.
-	/// \return If the function succeeds, the return value is SDKErr_Success.
-	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError EnableMicOriginalInput(bool bEnable) = 0;
 
 	/// \brief Get the flag to enable/disable the original input of mic.
 	/// \return Enabled or disabled.
