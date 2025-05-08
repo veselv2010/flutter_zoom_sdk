@@ -11,3 +11,4 @@ GeneratedPluginRegistrant.java
 key.properties
 
 app/build/
+app/.cxx/*

@@ -21,6 +21,7 @@ import us.zoom.sdk.CameraControlRequestResult;
 import us.zoom.sdk.ZoomSDKFileSender;
 import us.zoom.sdk.ZoomSDKFileReceiver;
 import us.zoom.sdk.ZoomSDKFileTransferInfo;
+import us.zoom.sdk.IRecoverMeetingHandle;
 
 public class SimpleInMeetingListener implements InMeetingServiceListener {
 
@@ -411,12 +412,32 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     }
 
     @Override
-    public void onVirtualNameTagStatusChanged(boolean b,long l) {
+    public void onVirtualNameTagStatusChanged(boolean b, long l) {
 
     }
 
     @Override
-    public void onRobotRelationChanged(long l) {
+    public void onRemoveCompanionRelation(long l) {
+
+    }
+
+    @Override
+    public void onCreateCompanionRelation(long parentUserID, long childUserID) {
+
+    }
+
+    @Override
+    public void onBotAuthorizerRelationChanged(long authorizeUserID) {
+
+    }
+
+    @Override
+    public void onUserConfirmRecoverMeeting(IRecoverMeetingHandle handler) {
+
+    }
+
+    @Override
+    public void onChatMessageEditNotification(InMeetingChatMessage msg) {
 
     }
 }
