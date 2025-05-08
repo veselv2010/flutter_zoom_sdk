@@ -529,6 +529,7 @@ class IMeetingSmartSummaryController;
 class IMeetingEncryptionController;
 class IMeetingRemoteSupportController;
 class IMeetingAICompanionController;
+class IMeetingDocsController;
 /// \brief Meeting Service Interface
 ///
 class IMeetingService
@@ -742,6 +743,10 @@ public:
 	/// \brief Get the Whiteboard controller.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingWhiteboardController. Otherwise the function returns nullptr.
 	virtual IMeetingWhiteboardController* GetMeetingWhiteboardController() = 0;
+
+	/// \brief Get the Docs controller.
+	/// \return If the function succeeds, the return value is a pointer to IMeetingDocsController. Otherwise the function returns nullptr.
+	virtual IMeetingDocsController* GetMeetingDocsController() = 0;
 	
 	/// \brief Get the Polling controller.
 	/// \return If the function succeeds, the return value is a pointer to IMeetingPollingController. Otherwise the function returns nullptr.

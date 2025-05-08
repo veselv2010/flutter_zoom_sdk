@@ -31,6 +31,11 @@ public:
 	/// \brief Get the channel number of the audio raw data.
 	/// \return The channel number of the audio raw data.
 	virtual unsigned int GetChannelNum() = 0;
+
+	/// \brief Get the timestamp of the raw data.
+	/// \return Millisecond timestamp.
+	virtual unsigned long long GetTimeStamp() = 0;
+
 	virtual ~AudioRawData(){}
 };
 
@@ -97,6 +102,11 @@ public:
 	/// \brief Get the source_id of the current YUV raw data.
 	/// \return The source_id.
 	virtual unsigned int GetSourceID() = 0;
+
+	/// \brief Get the timestamp of the raw data.
+	/// \return Millisecond timestamp.
+	virtual unsigned long long GetTimeStamp() = 0;
+
 	virtual ~YUVRawDataI420(){}
 };
 

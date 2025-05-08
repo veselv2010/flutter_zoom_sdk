@@ -177,6 +177,17 @@ public:
 	/// \brief Determine if the meeting has third party telephony audio enabled.
 	/// \return TRUE means enabled, otherwise it is not enabled. 
 	virtual bool Is3rdPartyTelephonyAudioOn() = 0;
+
+	/// brief Enable or disable SDK to play meeting audio.
+	/// \param bEnable True means that SDK will play meeting audio. False means that SDK will not play meeting audio.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	/// Otherwise fails. To get extended error information, see \link SDKError \endlink enum.
+	/// Note: SDK will not support sharing computer sound when disabling playing meeting audio.
+	virtual SDKError EnablePlayMeetingAudio(bool bEnable) = 0;
+	
+	/// \brief Determine if play meeting audio is enabled or not.
+	/// \return TRUE means enabled, otherwise it is not enabled. 
+	virtual bool IsPlayMeetingAudioEnabled() = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

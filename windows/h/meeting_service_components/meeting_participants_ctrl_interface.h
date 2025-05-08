@@ -170,6 +170,10 @@ public:
 	/// \brief Get the emoji feedback type of the user.
 	/// \return The emoji feedback type of the user. For more details, see \link SDKEmojiFeedbackType \endlink enum.
 	virtual SDKEmojiFeedbackType GetEmojiFeedbackType() = 0;
+
+	/// \brief Determine whether the user specified by the current information in companion mode or not.
+	/// \return TRUE indicates that the specified user in companion mode.
+	virtual bool IsCompanionModeUser() = 0;
 #endif
 	/// \brief Get the local recording status.
 	/// \return The status of the local recording status. For more details, see \link RecordingStatus \endlink structure
@@ -199,14 +203,14 @@ public:
 	/// \remarks Just production studio user has parent. 
 	virtual unsigned int GetProductionStudioParent() = 0;
 
-	/// \brief Determine whether the user specified by the current information is robot user or not.
-	/// \return TRUE indicates that the specified user is robot user.
-	virtual bool IsRobotUser() = 0;
+	/// \brief Determine whether the user specified by the current information is bot user or not.
+	/// \return TRUE indicates that the specified user is bot user.
+	virtual bool IsBotUser() = 0;
 
-	/// \brief Get the robot brand name.
-	/// \return If the function succeeds, the return value is the rebot brand name.
+	/// \brief Get the bot app name.
+	/// \return If the function succeeds, the return value is the bot app name.
 	///Otherwise the function fails, the return value is nullptr.
-	virtual const zchar_t* GetRobotBrandName() = 0;
+	virtual const zchar_t* GetBotAppName() = 0;
 
 	/// \brief Query if the participant enabled virtual name tag.
 	/// \return TRUE means enabled, Otherwise not.
@@ -308,9 +312,9 @@ public:
 	/// \param type Share type change.
 	virtual void onFocusModeShareTypeChanged(FocusModeShareType type) = 0;
 
-	/// \brief Callback event that the robot relationship changed in the meeting.
+	/// \brief Callback event that the bot relationship changed in the meeting.
 	/// \param authorizeUserID Specify the authorizer user ID.
-	virtual void onRobotRelationChanged(unsigned int authorizeUserID) = 0;
+	virtual void onBotAuthorizerRelationChanged(unsigned int authorizeUserID) = 0;
 
 	/// \brief Notification of virtual name tag status change.
 	/// \param bOn TRUE means virtual name tag is turn on, Otherwise not.
@@ -321,6 +325,16 @@ public:
 	/// \param userID The ID of user who virtual name tag status changed.
 	virtual void onVirtualNameTagRosterInfoUpdated(unsigned int userID) = 0;
 
+#if defined(WIN32)
+	/// \brief Callback event that the companion relationship created in the meeting.
+	/// \param parentUserID Specify the parent user ID.
+	/// \param childUserID Specify the child user ID.
+	virtual void onCreateCompanionRelation(unsigned int parentUserID, unsigned int childUserID) = 0;
+
+	/// \brief Callback event that the companion relationship removed in the meeting.
+	/// \param childUserID Specify the child user ID.
+	virtual void onRemoveCompanionRelation(unsigned int childUserID) = 0;
+#endif
 };
 
 /// \brief Meeting waiting room controller interface
@@ -353,19 +367,35 @@ public:
 	/// \remarks Valid for both ZOOM style and user custom interface mode..
 	virtual IUserInfo* GetMySelfUser() = 0;
 
-	/// \brief Get the information about the robot's authorized user.
-	/// \param robotUserId Specify the user ID for which to get the information. 
+	/// \brief Get the information about the bot's authorized user.
+	/// \param userid Specify the user ID for which to get the information. 
 	/// \return If the function succeeds, the return value is a pointer to the IUserInfo. For more details, see \link IUserInfo \endlink.
 	///Otherwise the function fails, and the return value is nullptr.
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
-	virtual IUserInfo* GetAuthorizeUserByRobotUserID(unsigned int robotUserId) = 0;
+	virtual IUserInfo* GetBotAuthorizedUserInfoByUserID(unsigned int userid) = 0;
 
-	/// \brief Get the authorizer's robot list.
+	/// \brief Get the authorizer's bot list.
 	/// \param userid Specify the user ID for which to get the information. 
-	/// \return If the function succeeds, the return value is the authorizer's robot list in the meeting.
+	/// \return If the function succeeds, the return value is the authorizer's bot list in the meeting.
 	///Otherwise the function fails, and the return value is nullptr.
 	/// \remarks Valid for both ZOOM style and user custom interface mode.
-	virtual IList<unsigned int >* GetRobotListByAuthorizeUserID(unsigned int userid) = 0;
+	virtual IList<unsigned int >* GetAuthorizedBotListByUserID(unsigned int userid) = 0;
+
+#if defined(WIN32)
+	/// \brief Get the information about the user's parent user.
+	/// \param userid Specify the user ID for which to get the information. 
+	/// \return If the function succeeds, the return value is a pointer to the IUserInfo. For more details, see \link IUserInfo \endlink.
+	///Otherwise the function fails, and the return value is nullptr.
+	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	virtual IUserInfo* GetCompanionParentUser(unsigned int userid) = 0;
+
+	/// \brief Get the user's child list.
+	/// \param userid Specify the user ID for which to get the information. 
+	/// \return If the function succeeds, the return value is the sub-user list of user companion mode.
+	///Otherwise the function fails, and the return value is nullptr.
+	/// \remarks Valid for both ZOOM style and user custom interface mode.
+	virtual IList<unsigned int >* GetCompanionChildList(unsigned int userid) = 0;
+#endif
 
 	/// \brief Cancel all hands raised.
 	/// \param forWebinarAttendees is true, the SDK sends the lower all hands command only to webinar attendees.

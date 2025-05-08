@@ -43,6 +43,40 @@ typedef struct tagVideoSize
 	}
 }VideoSize;
 
+
+/*!  \enum SDKVideoPreferenceMode
+	\brief Select and use any of the defined preference mode below when initializing the SDKVideoPreferenceSetting.
+	Video preference modes determined the video frame rate and resolution based on the user's bandwidth.
+	Here are more detailed structural descriptions.
+*/
+typedef enum
+{
+	SDKVideoPreferenceMode_Balance, ///<Balance mode. Default Preference, no additional parameters needed. Zoom will do what is best under the current bandwidth situation and make adjustments as needed.
+	SDKVideoPreferenceMode_Sharpness, ///<Sharpness mode. Prioritizes a smooth video frame transition by preserving the frame rate as much as possible.
+	SDKVideoPreferenceMode_Smoothness, ///<Smoothness mode. Prioritizes a sharp video image by preserving the resolution as much as possible.
+	SDKVideoPreferenceMode_Custom	///<Custom mode. Allows customization by providing the minimum and maximum frame rate. Use this mode if you have an understanding of your network behavior and a clear idea on how to adjust the frame rate to achieve the desired video quality.
+}SDKVideoPreferenceMode;
+
+
+/*! \struct SDKVideoPreferenceSetting
+	\brief When setting custom modes, the developer provides the maximum and minimum frame rates.
+	If the current bandwidth cannot maintain the minimum frame rate, the video system will drop to the next lower resolution.
+	The default maximum and minimum frame rates for other modes are 0.
+*/
+typedef struct tagSDKVideoPreferenceSetting
+{
+	SDKVideoPreferenceMode mode;  ///<0: Balance mode; 1: Smoothness mode; 2: Sharpness mode; 3: Custom mode
+	unsigned int minimumFrameRate; ///<0 for the default value,minimum_frame_rate should be less than maximum_frame_rate, range: from 0 to 30 .out of range for frame-rate will use default frame-rate of Zoom	
+	unsigned int maximumFrameRate; ///<0 for the default value,maximum_frame_rate should be less and equal than 30, range: from 0 to 30.out of range for frame-rate will use default frame-rate of Zoom
+	tagSDKVideoPreferenceSetting()
+	{
+		mode = SDKVideoPreferenceMode_Balance;
+		minimumFrameRate = 0;
+		maximumFrameRate = 0;
+	}
+} SDKVideoPreferenceSetting;
+
+
 /// \brief set video order helper interface.
 ///
 class ISetVideoOrderHelper
@@ -515,6 +549,22 @@ public:
 	/// \param userid Specifies the user ID. The user id should be 0 when not in meeting.
 	/// \return The size of user's video.
 	virtual VideoSize GetUserVideoSize(unsigned int userid) = 0;
+
+	/// \brief Set the video quality preference that automatically adjust user's video to prioritize frame rate versus resolution based on the current bandwidth available.
+	/// \param preferenceSetting Specifies the video quality preference. For more information, see \link SDKError \endlink enum.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError SetVideoQualityPreference(SDKVideoPreferenceSetting preferenceSetting) = 0;
+
+	/// \brief Enable or disable contrast enhancement effect for speaker video.
+	/// \param enable True indicates to enable contrast enhancement effect. Otherwise, disable it.
+	/// \return If the function succeeds, the return value is SDKErr_Success.
+	///Otherwise fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError EnableSpeakerContrastEnhance(bool enable) = 0;
+
+	/// \brief Determine if contrast enhancement effect for speaker video is enabled.
+	/// \return True indicates contrast enhancement effect is enabled. Otherwise false.
+	virtual bool IsSpeakerContrastEnhanceEnabled() = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

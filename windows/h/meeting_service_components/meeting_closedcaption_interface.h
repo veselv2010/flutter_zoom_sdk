@@ -173,6 +173,10 @@ public:
 
 	/// \brief Sink the event to start captions request was approved.
 	virtual void onStartCaptionsRequestApproved() = 0;
+
+	/// \brief Sink the event of manual captions enablement status change.
+	/// \param bEnabled True means the host enables the manual captions. Otherwise the host disabled the manual captions.
+	virtual void onManualCaptionStatusChanged(bool bEnabled) = 0;
 };
 
 /// \brief Closed caption controller interface.

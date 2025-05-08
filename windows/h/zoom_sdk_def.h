@@ -377,6 +377,8 @@ enum CannotShareReasonType
 	CannotShareReasonType_Need_Grap_WB_Sharing,            ///<Other or myself is sharing whiteboard, and can Grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
 	CannotShareReasonType_Reach_Maximum,                   ///<The meeting has reached the maximum allowed screen share sessions.
 	CannotShareReasonType_Have_Share_From_Mainsession,     ///<Other share screen in main session.
+	CannotShareReasonType_Other_DOCS_Sharing,			   ///<Another participant is sharing their zoom docs.
+	CannotShareReasonType_Need_Grab_DOCS_Sharing,          ///<Other or myself is sharing docs, and can grab. To grab, call EnableGrabShareWithoutReminder(true) before starting share.
 	CannotShareReasonType_UnKnown,
 };
 

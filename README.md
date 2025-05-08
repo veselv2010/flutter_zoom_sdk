@@ -1,10 +1,10 @@
 # Current versions of the Zoom Meeting SDK
 
-Windows: v6.3.5
+Windows: v6.4.6
 
-Android: v6.3.6
+Android: v6.4.5
 
-Web: v3.11.2
+Web: v3.13.1
 
 # Flutter Zoom SDK
 

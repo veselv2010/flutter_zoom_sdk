@@ -487,6 +487,10 @@ public:
 	/// \param deleteBy Indicates by whom the message was deleted.
 	virtual void onChatMsgDeleteNotification(const zchar_t* msgID, SDKChatMessageDeleteType deleteBy) = 0;
 
+	/// \brief Chat message be edited callback.
+	/// \param chatMsg An object pointer to the chat message.
+	virtual void onChatMessageEditNotification(IChatMsgInfo* chatMsg) = 0;
+
 	virtual void onShareMeetingChatStatusChanged(bool isStart) = 0;
 
 	/// \brief Invoked when start send file.

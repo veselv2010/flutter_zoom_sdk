@@ -48,7 +48,9 @@ enum MeetingAICompanionQuerySettingOptions
 	MeetingAICompanionQuerySettingOptions_None = 0,				///<Initialization.
 	MeetingAICompanionQuerySettingOptions_WhenQueryStarted,		///<All participants can ask question, and answers are based on the meeting's start until now.
 	MeetingAICompanionQuerySettingOptions_WhenParticipantsJoin,	///<All participants can ask question, and answers are based on the current user's joining time until now.
-	MeetingAICompanionQuerySettingOptions_OnlyHost				///<Only hosts and users with host privileges assigned before the meeting starts can ask question.
+	MeetingAICompanionQuerySettingOptions_OnlyHost,				///<Only hosts and users with host privileges assigned before the meeting starts can ask question.
+	MeetingAICompanionQuerySettingOptions_ParticipantsAndInviteesInOurOrganization,  //All participants in our organization can ask questions, and answers include everything from the meeting's start until now.
+	MeetingAICompanionQuerySettingOptions_WhenParticipantsAndOrganizationJoin        //All participants in our organization can ask questions, and answers only includes the meeting content after current user's join time until now.
 };
 
 /*! \class IMeetingEnableSmartSummaryHandler
@@ -471,6 +473,14 @@ public:
 	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError StopMeetingQuery() = 0;
+
+	/// \brief Determine if the current user can send query.
+	/// \return True means can, otherwise not.
+	virtual bool CanSendQuery() = 0;
+
+    /// \brief Request send query privilege.
+    /// \return If the function succeeds, it returns ZoomSDKError_Success Otherwise the function fails.
+	virtual SDKError RequestSendQueryPrivilege() = 0;
 };
 
 /*! \class IMeetingEnableQueryActionHandler
@@ -497,6 +507,27 @@ public:
 	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
 	virtual SDKError Cancel() = 0;
 };
+
+class IMeetingApproveSendQueryHandler
+{
+public:
+	virtual ~IMeetingApproveSendQueryHandler() {}
+
+	/// \brief Get the requester's user ID.
+	virtual unsigned int GetSenderUserID() = 0;
+
+	/// \brief Approve the request.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError Approve() = 0;
+
+	/// \brief Decline the request.
+	/// \param bDeclineAll true means decline all requests.
+	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
+	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	virtual SDKError Decline(bool bDeclineAll) = 0;
+};
+
 
 /// \brief Meeting AI companion query callback event.
 ///
@@ -525,7 +556,7 @@ public:
 	virtual void onQuerySettingChanged(MeetingAICompanionQuerySettingOptions eSetting) = 0;
 
 	/// \brief Callback event that the query failed to start.
-	/// \param bTimeout true means is timeout. Otherwise not.
+	/// \param bTimeout true means is timeout. Otherwise means the user declines the request.
 	virtual void onFailedToStartQuery(bool bTimeout) = 0;
 
 	/// \brief Callback event that receiving request to enable query.
@@ -537,12 +568,24 @@ public:
 	virtual void onReceiveRequestToStartQuery(IMeetingApproveStartQueryHandler* pHandler) = 0;
 
 	/// \brief Callback event that receiving query answer.
-	/// \param pHandler The obejct of IMeetingAICompanionQueryItem. For more details, see \link IMeetingAICompanionQueryItem \endlink.
+	/// \param pHandler The object of IMeetingAICompanionQueryItem. For more details, see \link IMeetingAICompanionQueryItem \endlink.
 	virtual void onReceiveQueryAnswer(IMeetingAICompanionQueryItem* pQueryItem) = 0;
 
 	/// \brief Callback event that receiving query enable action callback.
 	/// \param pHandler The handler to enable the query. For more details, see \link IMeetingEnableQueryActionHandler \endlink.
 	virtual void onQueryEnableActionCallback(IMeetingEnableQueryActionHandler* pHandler) = 0;
+
+    /// \brief Callback event that getting or losing send query question privilege.
+    /// \param canSendQuery YES means can send. Otherwise not.
+	virtual void onSendQueryPrivilegeChanged(bool canSendQuery) = 0;
+
+	/// \brief Callback event that the request to send query failed.
+	/// \param bTimeout true means that the request timed out. Otherwise means that the user declines the request.
+	virtual void onFailedToRequestSendQuery(bool bTimeout) = 0;
+
+	/// \brief Callback event that receiving request to send query.
+	/// \param handler The handler to handle the request. For more details, see \link IMeetingApproveSendQueryHandler \endlink.
+	virtual void onReceiveRequestToSendQuery(IMeetingApproveSendQueryHandler* pHandler) = 0;
 };
 
 
@@ -629,10 +672,10 @@ public:
 	/// \return true means turn on the AI Companion features, false means turn off the AI Companion features.
 	virtual bool IsTurnOn() = 0;
 	/// \brief Agree the request to turn the AI companion features on or off.
-	/// \param deleteAssets Specify whether delete the meeting assets when turning off the AI Companion features. 
+	/// \param bDeleteAssets Specify whether delete the meeting assets when turning off the AI Companion features. 
 	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
-	virtual SDKError Agree(bool deleteAsserts) = 0;
+	virtual SDKError Agree(bool bDeleteAssets) = 0;
 	/// \brief Decline the request to turn the AI companion features on or off.
 	/// \return If the function succeeds, the return value is SDKERR_SUCCESS.
 	///Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
