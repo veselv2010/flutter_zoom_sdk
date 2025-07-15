@@ -2,8 +2,10 @@ package com.evilratt.flutter_zoom_sdk.base;
 
 import java.util.List;
 
+import us.zoom.sdk.CameraControlRequestResult;
 import us.zoom.sdk.ChatMessageDeleteType;
 import us.zoom.sdk.FreeMeetingNeedUpgradeType;
+import us.zoom.sdk.IRecoverMeetingHandle;
 import us.zoom.sdk.IRequestLocalRecordingPrivilegeHandler;
 import us.zoom.sdk.InMeetingAudioController;
 import us.zoom.sdk.InMeetingChatController;
@@ -17,6 +19,9 @@ import us.zoom.sdk.MobileRTCFocusModeShareType;
 import us.zoom.sdk.ICameraControlRequestHandler;
 import us.zoom.sdk.IMeetingArchiveConfirmHandler;
 import us.zoom.sdk.IMeetingInputUserInfoHandler;
+import us.zoom.sdk.ZoomSDKFileReceiver;
+import us.zoom.sdk.ZoomSDKFileSender;
+import us.zoom.sdk.ZoomSDKFileTransferInfo;
 
 public class SimpleInMeetingListener implements InMeetingServiceListener {
 
@@ -32,6 +37,7 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onJoinMeetingNeedUserInfo(IMeetingInputUserInfoHandler iMeetingInputUserInfoHandler) {
+
     }
 
     @Override
@@ -165,6 +171,11 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     }
 
     @Override
+    public void onChatMessageEditNotification(InMeetingChatMessage inMeetingChatMessage) {
+
+    }
+
+    @Override
     public void onShareMeetingChatStatusChanged(boolean b) {
 
     }
@@ -185,7 +196,7 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
     }
 
     @Override
-    public void onSinkAttendeeChatPriviledgeChanged(int i) {
+    public void onSinkAttendeeChatPrivilegeChanged(int i) {
 
     }
 
@@ -354,5 +365,70 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onCameraControlRequestResult(long userId, boolean isApproved) {
+    }
+
+    @Override
+    public void onCameraControlRequestResult(long l, CameraControlRequestResult cameraControlRequestResult) {
+
+    }
+
+    @Override
+    public void onFileSendStart(ZoomSDKFileSender zoomSDKFileSender) {
+
+    }
+
+    @Override
+    public void onFileReceived(ZoomSDKFileReceiver zoomSDKFileReceiver) {
+
+    }
+
+    @Override
+    public void onFileTransferProgress(ZoomSDKFileTransferInfo zoomSDKFileTransferInfo) {
+
+    }
+
+    @Override
+    public void onMuteOnEntryStatusChange(boolean b) {
+
+    }
+
+    @Override
+    public void onMeetingTopicChanged(String s) {
+
+    }
+
+    @Override
+    public void onMeetingFullToWatchLiveStream(String s) {
+
+    }
+
+    @Override
+    public void onBotAuthorizerRelationChanged(long l) {
+
+    }
+
+    @Override
+    public void onVirtualNameTagStatusChanged(boolean b, long l) {
+
+    }
+
+    @Override
+    public void onVirtualNameTagRosterInfoUpdated(long l) {
+
+    }
+
+    @Override
+    public void onCreateCompanionRelation(long l, long l1) {
+
+    }
+
+    @Override
+    public void onRemoveCompanionRelation(long l) {
+
+    }
+
+    @Override
+    public void onUserConfirmRecoverMeeting(IRecoverMeetingHandle iRecoverMeetingHandle) {
+
     }
 }
