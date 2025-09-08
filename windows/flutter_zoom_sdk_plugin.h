@@ -13,6 +13,7 @@
 #include <sstream>
 #include <thread>
 #include <future>
+#include <string>
 
 #include <zoom_sdk.h>
 #include <meeting_service_interface.h>
@@ -26,6 +27,10 @@ namespace flutter_zoom_sdk {
 	using flutter::EncodableMap;
 	using flutter::EncodableValue;
 	using namespace std;
+
+    class MeetingServiceEvent;
+
+    ZOOM_SDK_NAMESPACE::SDK_LANGUAGE_ID LanguageIdFromString(const string &lang_in);
 
 	class FlutterZoomSdkPlugin : public flutter::Plugin {
 	public:
@@ -50,6 +55,8 @@ namespace flutter_zoom_sdk {
 
 		// Keep meeting options from initAndJoin Zoom for onAuthenticationReturn in AuthEvent
 		EncodableMap ZoomMeetingOptions;
+
+        unique_ptr<MeetingServiceEvent> meetingListener;
 
 		// Called when a method is called on this plugin's channel from Dart.
 		void HandleMethodCall(

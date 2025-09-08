@@ -37,6 +37,12 @@ class ZoomOptions {
   final bool? disableReport; //--for web
   final List<String>? meetingInfo; //--for web
   final String? returnBtnMsg; //--for android
+  final String?
+      defaultView; // --for web: "gallery" | "speaker" | "multiSpeaker"
+  final bool? enableHD; // --for web default >=2.8.0: true
+  final bool? enableFullHD; // --for web default >=2.9.0: false
+  final bool? leaveOnPageUnload; // --for web default: false
+  final bool? patchJsMedia; // --for web default: true
 
   const ZoomOptions({
     required this.domain,
@@ -67,7 +73,7 @@ class ZoomOptions {
     this.isSupportNonverbal = true,
     this.isShowJoiningErrorDialog = true,
     this.disablePreview = false,
-    this.disableCORP = true,
+    this.disableCORP = false,
     this.inviteUrlFormat = '',
     this.disableVOIP = false,
     this.disableReport = false,
@@ -84,6 +90,11 @@ class ZoomOptions {
       'report'
     ],
     this.returnBtnMsg,
+    this.defaultView,
+    this.enableHD,
+    this.enableFullHD = false,
+    this.leaveOnPageUnload = false,
+    this.patchJsMedia = true,
   });
 }
 
@@ -137,9 +148,6 @@ class ZoomMeetingOptions {
   /// Zoom access token for SDK
   String? zoomAccessToken;
 
-  /// JWT API KEY For Web Only
-  String? sdkKey;
-
   /// JWT API Signature For Web Only
   String? signature;
 
@@ -160,7 +168,6 @@ class ZoomMeetingOptions {
     this.noVideo,
     this.zoomToken,
     this.zoomAccessToken,
-    this.sdkKey,
     this.signature,
   });
 }

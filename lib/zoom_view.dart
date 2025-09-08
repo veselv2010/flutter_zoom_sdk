@@ -32,7 +32,12 @@ class ZoomView extends ZoomPlatform {
       optionMap.putIfAbsent('jwtToken', () => options.jwtToken!);
     }
 
+    if (options.language != null) {
+      optionMap.putIfAbsent("language", () => options.language);
+    }
+
     optionMap.putIfAbsent("domain", () => options.domain);
+
     return await channel
         .invokeMethod<List>('init', optionMap)
         .then<List>((List? value) => value ?? List.empty());
@@ -61,6 +66,7 @@ class ZoomView extends ZoomPlatform {
 
     optionsMap.putIfAbsent('initOptions', () => initOptionsMap);
     optionsMap.putIfAbsent('meetingOptions', () => meetingOptionsMap);
+    initOptionsMap.putIfAbsent("language", () => zoomOptions.language);
 
     return await channel
         .invokeMethod<bool>('init_and_join', optionsMap)
@@ -188,7 +194,7 @@ class ZoomView extends ZoomPlatform {
 
   /// The event channel used to interact with the native platform leaveMeeting (Android & Windows) function
   @override
-  Future<bool> leaveMeeting() async {
+  Future<bool> leaveMeeting({bool confirm = false}) async {
     return await channel
         .invokeMethod<bool>('leave_meeting')
         .then<bool>((bool? value) => value ?? false);

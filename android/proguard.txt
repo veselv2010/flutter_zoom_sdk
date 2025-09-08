@@ -6,10 +6,15 @@
 -keep class  com.google.crypto.tink.**{*;}
 -keep class  androidx.security.crypto.**{*;}
 
+-dontwarn com.android.**
 -dontwarn com.google.**
+-dontwarn com.microsoft.**
 -dontwarn com.zipow.**
+-dontwarn javax.lang.**
+-dontwarn kotlin.jvm.internal.**
+-dontwarn kotlinx.parcelize.**
+-dontwarn org.**
 -dontwarn us.zoom.**
 -dontwarn xcrash.**
--dontwarn org.**
 -dontwarn java.awt.**
 -dontwarn javax.swing.**

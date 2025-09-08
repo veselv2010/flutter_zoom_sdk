@@ -37,6 +37,7 @@ import us.zoom.sdk.MeetingViewsOptions;
 import us.zoom.sdk.SDKNotificationServiceError;
 import us.zoom.sdk.StartMeetingOptions;
 import us.zoom.sdk.StartMeetingParams4NormalUser;
+import us.zoom.sdk.ZoomAppLocal;
 import us.zoom.sdk.ZoomAuthenticationError;
 import us.zoom.sdk.ZoomError;
 import us.zoom.sdk.ZoomSDK;

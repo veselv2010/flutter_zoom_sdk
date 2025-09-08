@@ -207,6 +207,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         //API KEY FROM ZOOM
         appSecret: sdkSecret,
         //API SECRET FROM ZOOM
+        debug: kDebugMode,
         disablePreview: true,
         jwtToken: signature,
         showMeetingHeader: false,
@@ -230,7 +231,6 @@ class _MeetingWidgetState extends State<MeetingWidget> {
 
         /// pass username for join meeting only
         displayName: 'userName',
-        sdkKey: sdkKey,
 
         /// pass meeting id for join meeting only
         meetingId: meetingIdController.text,

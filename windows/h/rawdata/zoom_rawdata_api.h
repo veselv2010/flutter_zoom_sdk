@@ -1,8 +1,7 @@
-/*!
-* \file zoom_rawdata_api.h
-* \brief zoom raw data api.
-* 
-*/
+/**
+ * @file zoom_rawdata_api.h
+ * @brief zoom raw data api.
+ */
 #ifndef _ZOOM_RAWDATA_API_H_
 #define _ZOOM_RAWDATA_API_H_
 #include "zoom_sdk_def.h"

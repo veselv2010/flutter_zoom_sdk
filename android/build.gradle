@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.12.2'
     }
 }
 
@@ -26,11 +26,11 @@ apply plugin: 'com.android.library'
 android {
     namespace = "com.evilratt.flutter_zoom_sdk"
 
-    compileSdk 35
+    compileSdkVersion 36
 
     defaultConfig {
         minSdkVersion 26
-        targetSdkVersion 35
+        targetSdkVersion 36
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         consumerProguardFiles 'proguard.txt'
@@ -77,6 +77,8 @@ android {
         implementation "androidx.core:core:1.13.0"
         implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
         implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
+        implementation "androidx.lifecycle:lifecycle-service:2.6.2"
+        implementation "androidx.work:work-runtime:2.9.0"
 
         implementation "androidx.fragment:fragment-ktx:1.4.1"
         implementation "com.davemorrissey.labs:subsampling-scale-image-view:3.10.0"
@@ -113,6 +115,6 @@ android {
     namespace 'com.evilratt.flutter_zoom_sdk'
 }
 
-task deployAllToMavenLocal {
+tasks.register('deployAllToMavenLocal') {
     dependsOn('mobilertc:publishToMavenLocal')
 }
