@@ -1,145 +1,211 @@
 @JS()
-library zoom_helper;
+library;
 
-import 'package:js/js.dart';
+import 'dart:js_interop';
 
 /// Initial Parameter Required For Zoom Web
 @JS()
+@staticInterop
 @anonymous
-
-/// needed along with factory constructor
 class InitParams {
-  external factory InitParams(
-      {leaveUrl,
-      helper,
-      debug,
-      showMeetingHeader,
-      disableInvite,
-      disableCallOut,
-      disableRecord,
-      disableJoinAudio,
-      audioPanelAlwaysOpen,
-      isSupportAV,
-      isSupportChat,
-      isSupportQA,
-      isSupportCC,
-      isSupportPolling,
-      isSupportBreakout,
-      screenShare,
-      videoDrag,
-      sharingMode,
-      videoHeader,
-      isLockBottom,
-      isSupportNonverbal,
-      isShowJoiningErrorDialog,
-      disablePreview,
-      disableCORP,
-      inviteUrlFormat,
-      disableVoIP,
-      disableReport,
-      meetingInfo,
-      success,
-      error});
-  external String get leaveUrl;
+  external factory InitParams({
+    String? leaveUrl,
+    String? helper,
+    bool? debug,
+    bool? showMeetingHeader,
+    bool? disableInvite,
+    bool? disableCallOut,
+    bool? disableRecord,
+    bool? disableJoinAudio,
+    bool? audioPanelAlwaysOpen,
+    bool? isSupportAV,
+    bool? isSupportChat,
+    bool? isSupportQA,
+    bool? isSupportCC,
+    bool? isSupportPolling,
+    bool? isSupportBreakout,
+    bool? screenShare,
+    bool? videoDrag,
+    String? sharingMode,
+    bool? videoHeader,
+    bool? isLockBottom,
+    bool? isSupportNonverbal,
+    bool? isShowJoiningErrorDialog,
+    bool? disablePreview,
+    bool? disableCORP,
+    String? inviteUrlFormat,
+    bool? disableVoIP,
+    bool? disableReport,
+    JSAny? meetingInfo,
+    JSFunction? success,
+    JSFunction? error,
+    String? defaultView,
+    bool? enableHD,
+    bool? enableFullHD,
+    bool? enableWaitingRoomPreview,
+    bool? leaveOnPageUnload,
+    bool? patchJsMedia,
+  });
 }
 
-/// Join Meeting helper
-@JS()
-@anonymous
+extension InitParamsExtension on InitParams {
+  external String? get leaveUrl;
+}
 
-/// needed along with factory constructor
+@JS()
+@staticInterop
+@anonymous
 class JoinParams {
-  external factory JoinParams(
-      {meetingNumber, userName, signature, sdkKey, passWord, success, error});
+  external factory JoinParams({
+    String? meetingNumber,
+    String? userName,
+    String signature,
+    String? passWord,
+    JSFunction? success,
+    JSFunction? error,
+  });
 }
 
 /// Signature helper
 @JS()
+@staticInterop
 @anonymous
-
-/// needed along with factory constructor
 class SignatureParams {
-  external factory SignatureParams({meetingNumber, apiKey, apiSecret, role});
+  external factory SignatureParams({
+    String meetingNumber,
+    String apiKey,
+    String apiSecret,
+    int role,
+  });
 }
 
 /// meeting status helper
 @JS()
+@staticInterop
 @anonymous
 class MeetingStatus {
-  external factory MeetingStatus({int meetingStatus});
+  external factory MeetingStatus();
+}
+
+extension MeetingStatusExtension on MeetingStatus {
   external int get meetingStatus;
 }
 
 @JS()
+@staticInterop
 @anonymous
 class ShowJoinAudioParams {
-  /// bool
-  external factory ShowJoinAudioParams({show});
+  external factory ShowJoinAudioParams({bool? show});
 }
 
 @JS()
+@staticInterop
 @anonymous
 class LeaveParams {
-  external factory LeaveParams({success, error});
+  external factory LeaveParams({
+    JSFunction? cancelCallback,
+    bool? confirm,
+    JSFunction? success,
+    JSFunction? error,
+  });
 }
 
 @JS()
+@staticInterop
 @anonymous
 class MuteParams {
-  external factory MuteParams({userId, mute});
+  external factory MuteParams({String userId, bool? mute});
 }
+
 @JS()
+@staticInterop
 @anonymous
 class UserParams {
-  external factory UserParams({Function(UserSuccessParams res) success, error});
+  external factory UserParams({required JSFunction success, JSFunction? error});
 }
 
 @JS()
+@staticInterop
 @anonymous
 class UserSuccessParams {
-  external UserSuccessResultParams result;
+  external factory UserSuccessParams();
+}
+
+extension UserSuccessParamsExtension on UserSuccessParams {
+  external UserSuccessResultParams get result;
 }
 
 @JS()
+@staticInterop
 @anonymous
 class UserSuccessResultParams {
-  external CurrentUserParams currentUser;
+  external factory UserSuccessResultParams();
+}
+
+extension UserSuccessResultParamsExtension on UserSuccessResultParams {
+  external CurrentUserParams get currentUser;
 }
 
 @JS()
+@staticInterop
 @anonymous
 class CurrentUserParams {
-  external bool? muted;
-  external String? audio;
+  external factory CurrentUserParams();
+}
+
+extension CurrentUserParamsExtension on CurrentUserParams {
+  external bool? get muted;
+
+  external String? get audio;
 }
 
 /// Basic Zoom SDK Web Functions helper
 @JS()
+@staticInterop
 class ZoomMtg {
   external static void setZoomJSLib(String path, String dir);
-  external static ZoomMtgLang i18n;
+
+  external static ZoomMtgLang get i18n;
+
   external static void preLoadWasm();
+
   external static void prepareWebSDK();
+
   external static void prepareJssdk();
+
   external static void init(InitParams initParams);
+
   external static void join(JoinParams joinParams);
+
   external static void mute(MuteParams params);
 
   @JS('getAttendeeslist')
-  external static dynamic getAttendeeslist();
+  external static JSAny getAttendeeslist();
 
-  external static dynamic getCurrentUser(UserParams params);
+  external static void getCurrentUser(UserParams params);
 
   external static void showJoinAudioFunction(ShowJoinAudioParams params);
+
   external static void leaveMeeting(LeaveParams params);
+
   external static String generateSDKSignature(SignatureParams signatureParams);
-  external static dynamic checkFeatureRequirements();
+
+  external static JSAny checkFeatureRequirements();
+
   external static void inMeetingServiceListener(
-      String event, Function(MeetingStatus?) callback);
+    String event,
+    JSFunction callback,
+  );
 }
 
 @JS()
+@staticInterop
 class ZoomMtgLang {
+  external factory ZoomMtgLang();
+}
+
+extension ZoomMtgLangExtension on ZoomMtgLang {
   external String getCurrentLang();
-  external dynamic load(String lang);
+
+  external void load(String lang);
 }

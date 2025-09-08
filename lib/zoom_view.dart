@@ -188,7 +188,7 @@ class ZoomView extends ZoomPlatform {
 
   /// The event channel used to interact with the native platform leaveMeeting (Android & Windows) function
   @override
-  Future<bool> leaveMeeting() async {
+  Future<bool> leaveMeeting({bool confirm = false}) async {
     return await channel
         .invokeMethod<bool>('leave_meeting')
         .then<bool>((bool? value) => value ?? false);

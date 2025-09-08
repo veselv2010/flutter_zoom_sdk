@@ -4,7 +4,7 @@ Windows: v6.4.6
 
 Android: v6.4.5
 
-Web: v3.13.1
+Web: v4.0.5
 
 # Flutter Zoom SDK
 

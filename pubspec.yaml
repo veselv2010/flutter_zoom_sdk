@@ -14,11 +14,11 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   plugin_platform_interface: ^2.1.8
-  js: ^0.6.4
-  crypto: ^3.0.5
+  crypto: ^3.0.6
+  web: ^1.1.1
 
 dev_dependencies:
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
 
