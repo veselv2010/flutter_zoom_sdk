@@ -70,6 +70,7 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     }
 
+    @Deprecated
     @Override
     public void onMeetingUserUpdated(long l) {
 
@@ -438,6 +439,11 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onChatMessageEditNotification(InMeetingChatMessage msg) {
+
+    }
+
+    @Override
+    public void onGrantCoOwnerPrivilegeChanged(boolean b) {
 
     }
 }
