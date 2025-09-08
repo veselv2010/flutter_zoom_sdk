@@ -10,6 +10,9 @@
 
 #include <codecvt>
 
+#include <algorithm>
+#include <cctype>
+
 namespace flutter_zoom_sdk {
 	FlutterZoomSdkPlugin* plagin;
 
@@ -59,18 +62,22 @@ namespace flutter_zoom_sdk {
 		FlutterZoomSdkPlugin::SettingService = nullptr;
 		FlutterZoomSdkPlugin::ZoomMeetingOptions.clear();
 
+        meetingListener.reset();
+
 		ZOOM_SDK_NAMESPACE::CleanUPSDK();
 	}
 
-	void FlutterZoomSdkPlugin::MeetingStreamListen(unique_ptr<flutter::EventSink<>>&& events) {
-		FlutterZoomSdkPlugin::meeting_event_sink_ = std::move(events);
-		FlutterZoomSdkPlugin::createMeetingService();
+    void FlutterZoomSdkPlugin::MeetingStreamListen(unique_ptr<flutter::EventSink<>>&& events) {
+        FlutterZoomSdkPlugin::meeting_event_sink_ = std::move(events);
+        FlutterZoomSdkPlugin::createMeetingService();
 
-		if (FlutterZoomSdkPlugin::MeetingService != NULL) {
-			MeetingServiceEvent* meetingListener = new MeetingServiceEvent();
-			FlutterZoomSdkPlugin::MeetingService->SetEvent(meetingListener);
-		}
-	}
+        if (FlutterZoomSdkPlugin::MeetingService != NULL) {
+            if (!meetingListener) {
+                meetingListener = std::make_unique<MeetingServiceEvent>();
+            }
+            FlutterZoomSdkPlugin::MeetingService->SetEvent(meetingListener.get());
+        }
+    }
 
 	void FlutterZoomSdkPlugin::HandleMethodCall(
 		const flutter::MethodCall<EncodableValue>& method_call,
@@ -124,7 +131,9 @@ namespace flutter_zoom_sdk {
 			return false;
 		}
 
-		// Initialize SDK with InitParam object
+        ZOOM_SDK_NAMESPACE::CleanUPSDK();
+
+        // Initialize SDK with InitParam object
 		ZOOM_SDK_NAMESPACE::InitParam initParam;
 		ZOOM_SDK_NAMESPACE::SDKError initReturnVal(ZOOM_SDK_NAMESPACE::SDKERR_UNINITIALIZE);
 
@@ -132,6 +141,14 @@ namespace flutter_zoom_sdk {
 		string domainStr = get<string>(ZoomInitOptions.find(EncodableValue("domain"))->second);
 		wstring domainWstr = wstring(domainStr.begin(), domainStr.end());
 		initParam.strWebDomain = domainWstr.c_str();
+
+        // Set language
+        auto itLang = ZoomInitOptions.find(EncodableValue("language"));
+        if (itLang != ZoomInitOptions.end()) {
+            string langStr = get<string>(itLang->second);
+            initParam.emLanguageID = LanguageIdFromString(langStr);
+        }
+
 		initReturnVal = ZOOM_SDK_NAMESPACE::InitSDK(initParam);
 
 		// Check if InitSDK call succeeded
@@ -417,5 +434,23 @@ namespace flutter_zoom_sdk {
 	void MeetingServiceEvent::onMeetingTopicChanged(const zchar_t *sTopic){}
 
 	void MeetingServiceEvent::onMeetingFullToWatchLiveStream(const zchar_t* sLiveStreamUrl){}
+
+    ZOOM_SDK_NAMESPACE::SDK_LANGUAGE_ID LanguageIdFromString(const string &lang_in) {
+        if (lang_in.empty()) return ZOOM_SDK_NAMESPACE::LANGUAGE_Unknown;
+
+        string s = lang_in;
+        transform(s.begin(), s.end(), s.begin(),
+                       [](unsigned char c) { return tolower(c); });
+
+        if (s.rfind("en", 0) == 0) {
+            return ZOOM_SDK_NAMESPACE::LANGUAGE_English;
+        }
+
+        if (s.rfind("ru", 0) == 0) {
+            return ZOOM_SDK_NAMESPACE::LANGUAGE_Russian;
+        }
+
+        return ZOOM_SDK_NAMESPACE::LANGUAGE_Unknown;
+    }
 
 }  // namespace flutter_zoom_sdk

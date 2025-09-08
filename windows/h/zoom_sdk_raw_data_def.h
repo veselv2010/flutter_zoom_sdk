@@ -49,29 +49,32 @@ public:
 	
 	/// \brief Add one to the reference count.
 	/// \return If the function succeeds, the return value is TRUE.
+	/// Note:
+	/// After increasing the reference count, the current object will not be automatically destroyed by SDK and you can use this object in other context.
+	/// When you no longer use this object, please call 'Release()', otherwise there will be a memory leak.
 	virtual bool AddRef() = 0;
 	
 	/// \brief Subtract one from the reference count.
-	/// \return The current reference count. If the currrent reference count is 0, the SDK will delete this object instance.
+	/// \return The current reference count. If the current reference count is 0, the SDK will delete this object instance.
 	virtual int Release() = 0;
 	
-	/// \brief Get the y-data of the YUV raw data.
-	/// \return A pointer to the y-data of the YUV raw data.
+	/// \brief Get the starting address of Y raw data.
+	/// \return A pointer to the Y raw data.
 	virtual char* GetYBuffer() = 0;
 	
-	/// \brief Get the u-data of the YUV raw data.
-	/// \return A pointer to the u-data of the YUV raw data.
+	/// \brief Get the starting address of U raw data.
+	/// \return A pointer to the U raw data.
 	virtual char* GetUBuffer() = 0;
 	
-	/// \brief Get the v-data of the YUV raw data.
-	/// \return A pointer to the v-data of the YUV raw data.
+	/// \brief Get the starting address of V raw data.
+	/// \return A pointer to the V raw data.
 	virtual char* GetVBuffer() = 0;
 
 	/// \brief Get the alpha mask data of YUV raw data.
 	/// \return A pointer to the alpha mask data.
 	virtual char* GetAlphaBuffer() = 0;
 	
-	/// \brief Get the YUV raw data.
+	/// \brief Get the starting address of YUV raw data.
 	/// \return A pointer to the YUV raw data.
 	virtual char* GetBuffer() = 0;
 	
