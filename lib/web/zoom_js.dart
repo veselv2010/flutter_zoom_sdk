@@ -59,6 +59,7 @@ class JoinParams {
   external factory JoinParams({
     String? meetingNumber,
     String? userName,
+    String? sdkKey,
     String signature,
     String? passWord,
     JSFunction? success,
