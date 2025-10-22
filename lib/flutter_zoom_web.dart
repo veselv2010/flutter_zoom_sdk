@@ -201,6 +201,7 @@ class ZoomViewWeb extends ZoomPlatform {
       userName: options.displayName ?? options.userId,
       signature: options.signature!,
       passWord: options.meetingPassword,
+      sdkKey: options.sdkKey,
       success: (([JSAny? joinResult]) {
         if (autoAudioJoin) {
           bool continueLoop = true;
