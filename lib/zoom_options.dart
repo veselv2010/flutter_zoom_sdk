@@ -148,6 +148,10 @@ class ZoomMeetingOptions {
   /// Zoom access token for SDK
   String? zoomAccessToken;
 
+  /// JWT API KEY For Web Only
+  @Deprecated('deprecated after 4.0.0 zoom web sdk version')
+  String? sdkKey;
+
   /// JWT API Signature For Web Only
   String? signature;
 
@@ -168,6 +172,7 @@ class ZoomMeetingOptions {
     this.noVideo,
     this.zoomToken,
     this.zoomAccessToken,
+    this.sdkKey,
     this.signature,
   });
 }
