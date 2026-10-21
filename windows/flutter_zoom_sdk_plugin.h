@@ -28,6 +28,7 @@ namespace flutter_zoom_sdk {
 	using flutter::EncodableValue;
 	using namespace std;
 
+	class AuthEvent;
     class MeetingServiceEvent;
 
     ZOOM_SDK_NAMESPACE::SDK_LANGUAGE_ID LanguageIdFromString(const string &lang_in);
@@ -56,7 +57,10 @@ namespace flutter_zoom_sdk {
 		// Keep meeting options from initAndJoin Zoom for onAuthenticationReturn in AuthEvent
 		EncodableMap ZoomMeetingOptions;
 
-        unique_ptr<MeetingServiceEvent> meetingListener;
+		unique_ptr<AuthEvent> authListener;
+		unique_ptr<MeetingServiceEvent> meetingListener;
+		bool sdkInitialized = false;
+		unsigned int pinnedHostId = 0;
 
 		// Called when a method is called on this plugin's channel from Dart.
 		void HandleMethodCall(
@@ -66,6 +70,8 @@ namespace flutter_zoom_sdk {
 		void MeetingStreamListen(unique_ptr<flutter::EventSink<>>&& events);
 
 		bool AuthorizeSDK(EncodableMap ZoomInitOptions);
+
+		void cleanupSDK();
 
 		void createMeetingService();
 
@@ -77,7 +83,9 @@ namespace flutter_zoom_sdk {
 
 		bool showMeeting();
 
-		void pressWinAndDownKeys();
+		void pinHostVideo();
+
+		void unpinHostVideo();
 	};
 
 	class AuthEvent : public ZOOM_SDK_NAMESPACE::IAuthServiceEvent {

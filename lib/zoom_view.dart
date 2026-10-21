@@ -49,6 +49,10 @@ class ZoomView extends ZoomPlatform {
     ZoomOptions zoomOptions,
     ZoomMeetingOptions meetingOptions,
   ) async {
+    if (zoomOptions.jwtToken == null) {
+      return false;
+    }
+
     var optionsMap = <String, Map>{};
     var initOptionsMap = <String, String?>{};
     var meetingOptionsMap = <String, String?>{};
@@ -175,18 +179,7 @@ class ZoomView extends ZoomPlatform {
 
   /// The event channel used to interact with the native platform hideMeeting (Android & Windows) function
   @override
-  Future<bool> hideMeeting({bool isWindows = false}) async {
-    /// Для Windows сначала раскрываем окно на весь экран,
-    /// для того чтобы гарантированно поймать фокус клавиатуры.
-    /// После вызываем hide_meeting для Windows два раза с небольшой задержкой,
-    /// т.к. сворачиваем окно с помощью клавиш Win+Down,
-    /// а окно может быть в полноэкранном режиме.
-    if (isWindows) {
-      await channel.invokeMethod<bool>('show_meeting');
-      await channel.invokeMethod<bool>('hide_meeting');
-      await Future.delayed(const Duration(milliseconds: 100));
-    }
-
+  Future<bool> hideMeeting() async {
     return await channel
         .invokeMethod<bool>('hide_meeting')
         .then<bool>((bool? value) => value ?? false);

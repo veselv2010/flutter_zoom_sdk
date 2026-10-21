@@ -12,6 +12,9 @@
 
 #include <algorithm>
 #include <cctype>
+#include <meeting_service_components/meeting_audio_interface.h>
+#include <meeting_service_components/meeting_video_interface.h>
+#include <meeting_service_components/meeting_participants_ctrl_interface.h>
 
 namespace flutter_zoom_sdk {
 	FlutterZoomSdkPlugin* plagin;
@@ -56,26 +59,52 @@ namespace flutter_zoom_sdk {
 		FlutterZoomSdkPlugin::SettingService = nullptr;
 	}
 
-	FlutterZoomSdkPlugin::~FlutterZoomSdkPlugin() {
-		FlutterZoomSdkPlugin::AuthService = nullptr;
-		FlutterZoomSdkPlugin::MeetingService = nullptr;
-		FlutterZoomSdkPlugin::SettingService = nullptr;
-		FlutterZoomSdkPlugin::ZoomMeetingOptions.clear();
+    FlutterZoomSdkPlugin::~FlutterZoomSdkPlugin() {
+        cleanupSDK();
+        ZoomMeetingOptions.clear();
+        plagin = nullptr;
+    }
+
+    void FlutterZoomSdkPlugin::cleanupSDK() {
+        if (MeetingService) {
+            MeetingService->SetEvent(nullptr);
+            ZOOM_SDK_NAMESPACE::DestroyMeetingService(MeetingService);
+            MeetingService = nullptr;
+        }
+        if (SettingService) {
+            ZOOM_SDK_NAMESPACE::DestroySettingService(SettingService);
+            SettingService = nullptr;
+        }
+        if (AuthService) {
+            AuthService->SetEvent(nullptr);
+            ZOOM_SDK_NAMESPACE::DestroyAuthService(AuthService);
+            AuthService = nullptr;
+        }
 
         meetingListener.reset();
+        authListener.reset();
+        pinnedHostId = 0;
+        if (sdkInitialized) {
+            ZOOM_SDK_NAMESPACE::CleanUPSDK();
+            sdkInitialized = false;
+        }
+    }
 
-		ZOOM_SDK_NAMESPACE::CleanUPSDK();
-	}
+    void FlutterZoomSdkPlugin::MeetingStreamListen(
+            unique_ptr<flutter::EventSink<>>&& events) {
+        meeting_event_sink_ = std::move(events);
+        if (!sdkInitialized) {
+            return;
+        }
+        createMeetingService();
 
-    void FlutterZoomSdkPlugin::MeetingStreamListen(unique_ptr<flutter::EventSink<>>&& events) {
-        FlutterZoomSdkPlugin::meeting_event_sink_ = std::move(events);
-        FlutterZoomSdkPlugin::createMeetingService();
-
-        if (FlutterZoomSdkPlugin::MeetingService != NULL) {
-            if (!meetingListener) {
-                meetingListener = std::make_unique<MeetingServiceEvent>();
-            }
-            FlutterZoomSdkPlugin::MeetingService->SetEvent(meetingListener.get());
+        if (MeetingService && meeting_event_sink_ &&
+            MeetingService->GetMeetingStatus() ==
+            ZOOM_SDK_NAMESPACE::MEETING_STATUS_INMEETING) {
+            EncodableList results;
+            results.push_back(EncodableValue("MEETING_STATUS_INMEETING"));
+            results.push_back(EncodableValue(0));
+            meeting_event_sink_->Success(results);
         }
     }
 
@@ -116,11 +145,11 @@ namespace flutter_zoom_sdk {
 
 			result->Success(EncodableValue(res));
 		}
-		else if (method_call.method_name().compare("hide_meeting") == 0) {
-			bool res = FlutterZoomSdkPlugin::hideMeeting();
+        else if (method_call.method_name().compare("hide_meeting") == 0) {
+            bool res = FlutterZoomSdkPlugin::hideMeeting();
 
-			result->Success(EncodableValue(res));
-		}
+            result->Success(EncodableValue(res));
+        }
 		else {
 			result->NotImplemented();
 		}
@@ -131,7 +160,7 @@ namespace flutter_zoom_sdk {
 			return false;
 		}
 
-        ZOOM_SDK_NAMESPACE::CleanUPSDK();
+        cleanupSDK();
 
         // Initialize SDK with InitParam object
 		ZOOM_SDK_NAMESPACE::InitParam initParam;
@@ -152,7 +181,8 @@ namespace flutter_zoom_sdk {
 		initReturnVal = ZOOM_SDK_NAMESPACE::InitSDK(initParam);
 
 		// Check if InitSDK call succeeded
-		if (initReturnVal == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
+        if (initReturnVal == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
+            sdkInitialized = true;
 			// Create IAuthService object to perform Auth actions
 			ZOOM_SDK_NAMESPACE::IAuthService* authService;
 			ZOOM_SDK_NAMESPACE::SDKError authServiceInitReturnVal = ZOOM_SDK_NAMESPACE::CreateAuthService(&authService);
@@ -162,11 +192,9 @@ namespace flutter_zoom_sdk {
 				FlutterZoomSdkPlugin::AuthService = authService;
 
 				// Create IAuthServiceEvent object to listen for Auth events from SDK
-				AuthEvent* authListener;
-
-				// Call SetEvent to assign your IAuthServiceEvent listener
-				authListener = new AuthEvent();
-				FlutterZoomSdkPlugin::AuthService->SetEvent(authListener);
+                // Call SetEvent to assign your IAuthServiceEvent listener
+                authListener = std::make_unique<AuthEvent>();
+                FlutterZoomSdkPlugin::AuthService->SetEvent(authListener.get());
 
 				ZOOM_SDK_NAMESPACE::SDKError authCallReturnValue(ZOOM_SDK_NAMESPACE::SDKERR_UNAUTHENTICATION);
 
@@ -187,6 +215,7 @@ namespace flutter_zoom_sdk {
 			}
 		}
 
+        cleanupSDK();
 		return false;
 	}
 
@@ -197,15 +226,17 @@ namespace flutter_zoom_sdk {
 			return;
 		}
 
-		FlutterZoomSdkPlugin::createMeetingService();
-		FlutterZoomSdkPlugin::createSettingService();
+        FlutterZoomSdkPlugin::createMeetingService();
+        if (!MeetingService) {
+            return;
+        }
+        FlutterZoomSdkPlugin::createSettingService();
 
 		// Join meeting for non-login user with JoinParam object
 		ZOOM_SDK_NAMESPACE::JoinParam joinMeetingParam = ZOOM_SDK_NAMESPACE::JoinParam();
 
 		// Provide meeting credentials for non-login user using JoinParam4WithoutLogin
-		ZOOM_SDK_NAMESPACE::JoinParam4NormalUser joinMeetingForNonLoginUserParam = ZOOM_SDK_NAMESPACE::JoinParam4NormalUser();
-
+		ZOOM_SDK_NAMESPACE::JoinParam4WithoutLogin joinMeetingForNonLoginUserParam = ZOOM_SDK_NAMESPACE::JoinParam4WithoutLogin();
 		joinMeetingParam.userType = ZOOM_SDK_NAMESPACE::SDK_UT_WITHOUT_LOGIN;
 
 		string meetingNumberStr = get<string>(ZoomMeetingOptions.find(EncodableValue("meetingId"))->second);
@@ -224,7 +255,7 @@ namespace flutter_zoom_sdk {
 		joinMeetingForNonLoginUserParam.isAudioOff = (noAudioStr == "true");
 		joinMeetingForNonLoginUserParam.isVideoOff = (noVideoStr == "true");
 
-		joinMeetingParam.param.normaluserJoin = joinMeetingForNonLoginUserParam;
+        joinMeetingParam.param.withoutloginuserJoin = joinMeetingForNonLoginUserParam;
 
 		if (FlutterZoomSdkPlugin::SettingService != NULL)
 		{
@@ -247,30 +278,45 @@ namespace flutter_zoom_sdk {
 
         if (meetingConfiguration)
         {
-        	meetingConfiguration->HideMeetingInfoOnMeetingUI(true);
+            meetingConfiguration->HideMeetingInfoOnMeetingUI(true);
             meetingConfiguration->EnableInviteButtonOnMeetingUI(false);
             meetingConfiguration->EnableInviteLinkOnMeetingUI(false);
+            meetingConfiguration->HideRecordItemOnMeetingUI(true);
+            meetingConfiguration->HideUpgradeFreeMeetingButton(true);
         }
 
 		ZOOM_SDK_NAMESPACE::SDKError joinMeetingCallReturnValue(ZOOM_SDK_NAMESPACE::SDKERR_UNKNOWN);
 
 		joinMeetingCallReturnValue = FlutterZoomSdkPlugin::MeetingService->Join(joinMeetingParam);
 
-		if (joinMeetingCallReturnValue == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
-			// Join meeting call succeeded
-			_cputts(L"Join meeting call succeeded\n");
-		}
+        if (joinMeetingCallReturnValue == ZOOM_SDK_NAMESPACE::SDKERR_SUCCESS) {
+            _cputts(L"Join meeting call succeeded\n");
+        } else {
+            OutputDebugStringW(
+                    (L"Zoom join failed: " +
+                     std::to_wstring(static_cast<int>(joinMeetingCallReturnValue)) +
+                     L"\n").c_str()
+            );
+        }
 	}
 
-	void FlutterZoomSdkPlugin::createMeetingService() {
-		if (!FlutterZoomSdkPlugin::MeetingService) {
-			ZOOM_SDK_NAMESPACE::SDKError meetingServiceInitReturnVal = ZOOM_SDK_NAMESPACE::CreateMeetingService(&(FlutterZoomSdkPlugin::MeetingService));
-
-			if (meetingServiceInitReturnVal == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
-				_cputts(L"Created Meeting Service\n");
-			}
-		}
-	}
+    void FlutterZoomSdkPlugin::createMeetingService() {
+        if (!sdkInitialized) {
+            return;
+        }
+        if (!MeetingService) {
+            ZOOM_SDK_NAMESPACE::SDKError result =
+                    ZOOM_SDK_NAMESPACE::CreateMeetingService(&MeetingService);
+            if (result != ZOOM_SDK_NAMESPACE::SDKERR_SUCCESS) {
+                return;
+            }
+            _cputts(L"Created Meeting Service\n");
+        }
+        if (!meetingListener) {
+            meetingListener = std::make_unique<MeetingServiceEvent>();
+            MeetingService->SetEvent(meetingListener.get());
+        }
+    }
 
 	void FlutterZoomSdkPlugin::createSettingService() {
 		if (FlutterZoomSdkPlugin::SettingService == NULL) {
@@ -305,9 +351,10 @@ namespace flutter_zoom_sdk {
 
 				UIController->GetMeetingUIWnd(firstView, secondView);
 
-				if (firstView) {
-					ShowWindow(firstView, SW_SHOWMAXIMIZED);
-					UIController->BackToMeeting();
+                if (firstView) {
+                    unpinHostVideo();
+                    ShowWindow(firstView, SW_SHOWMAXIMIZED);
+                    UIController->BackToMeeting();
 
 					_cputts(L"Show meeting screen\n");
 
@@ -319,61 +366,74 @@ namespace flutter_zoom_sdk {
 		return false;
 	}
 
-	bool FlutterZoomSdkPlugin::hideMeeting() {
-		if (FlutterZoomSdkPlugin::MeetingService) {
-			ZOOM_SDK_NAMESPACE::IMeetingUIController* UIController = FlutterZoomSdkPlugin::MeetingService->GetUIController();
+    bool FlutterZoomSdkPlugin::hideMeeting() {
+        if (MeetingService) {
+            ZOOM_SDK_NAMESPACE::IMeetingUIController* UIController = MeetingService->GetUIController();
 
-			if (UIController) {
-				HWND firstView = NULL;
-				HWND secondView = NULL;
+            if (UIController) {
+                HWND firstView = NULL;
+                HWND secondView = NULL;
 
-				UIController->GetMeetingUIWnd(firstView, secondView);
+                UIController->GetMeetingUIWnd(firstView, secondView);
 
-				if (firstView) {
-					//ShowWindow(firstView, SW_MINIMIZE);
+                if (firstView) {
+                    UIController->ExitFullScreen(true, true);
+                    pinHostVideo();
 
-					// Выходим из полноэкранного режима, если он включен (т.к. иначе свернуть с помощью Win+Down не выйдет)
-					UIController->ExitFullScreen(true, true);
+                    return PostMessage(firstView, WM_SYSCOMMAND, SC_MINIMIZE, 0) != 0;
+                }
+            }
+        }
 
-					// ShowWindow не позволяет отобразить мини окно Zoom при сворачивании окна, поэтому
-					// сворачиваем окно конференции при помощи клавиш Win + Down.
-					FlutterZoomSdkPlugin::pressWinAndDownKeys();
+        return false;
+    }
 
-					_cputts(L"Hide meeting screen\n");
+    void FlutterZoomSdkPlugin::pinHostVideo() {
+        if (!MeetingService || pinnedHostId != 0) {
+            return;
+        }
+        auto* participants = MeetingService->GetMeetingParticipantsController();
+        auto* video = MeetingService->GetMeetingVideoController();
+        if (!participants || !video) {
+            return;
+        }
+        auto* users = participants->GetParticipantsList();
+        if (!users) {
+            return;
+        }
+        for (int i = 0; i < users->GetCount(); ++i) {
+            unsigned int id = users->GetItem(i);
+            auto* user = participants->GetUserByUserID(id);
+            if (user && user->IsHost() && !user->IsMySelf()) {
+                auto* pinned = video->GetPinnedUserListFromFirstView();
+                if (pinned) {
+                    for (int j = 0; j < pinned->GetCount(); ++j) {
+                        if (pinned->GetItem(j) == id) {
+                            return;
+                        }
+                    }
+                }
+                if (video->PinVideoToFirstView(id) ==
+                    ZOOM_SDK_NAMESPACE::SDKERR_SUCCESS) {
+                    pinnedHostId = id;
+                }
+                return;
+            }
+        }
+    }
 
-					return true;
-				}
-
-			}
-		}
-
-		return false;
-	}
-
-	void FlutterZoomSdkPlugin::pressWinAndDownKeys() {
-		INPUT inputs[4] = {};
-		ZeroMemory(inputs, sizeof(inputs));
-
-		inputs[0].type = INPUT_KEYBOARD;
-		inputs[0].ki.wVk = VK_LWIN;
-
-		inputs[1].type = INPUT_KEYBOARD;
-		inputs[1].ki.wVk = VK_DOWN;
-
-		inputs[2].type = INPUT_KEYBOARD;
-		inputs[2].ki.wVk = VK_DOWN;
-		inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
-
-		inputs[3].type = INPUT_KEYBOARD;
-		inputs[3].ki.wVk = VK_LWIN;
-		inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
-
-		UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
-		if (uSent != ARRAYSIZE(inputs))
-		{
-			_cputts(L"Press win and down key failed\n");
-		}
-	}
+    void FlutterZoomSdkPlugin::unpinHostVideo() {
+        if (pinnedHostId == 0) {
+            return;
+        }
+        if (MeetingService) {
+            auto* video = MeetingService->GetMeetingVideoController();
+            if (video) {
+                video->UnPinVideoFromFirstView(pinnedHostId);
+            }
+        }
+        pinnedHostId = 0;
+    }
 
 	// class AuthEvent
 	AuthEvent::AuthEvent() {}
@@ -381,8 +441,15 @@ namespace flutter_zoom_sdk {
 	AuthEvent::~AuthEvent() {}
 
 	void AuthEvent::onAuthenticationReturn(ZOOM_SDK_NAMESPACE::AuthResult ret) {
-		if (ret == ZOOM_SDK_NAMESPACE::SDKError::SDKERR_SUCCESS) {
-			plagin->joinMeeting();
+		if (ret == ZOOM_SDK_NAMESPACE::AUTHRET_SUCCESS) {
+			if (plagin) {
+				plagin->joinMeeting();
+			}
+		} else {
+			OutputDebugStringW(
+					(L"Zoom authentication failed: " +
+					 std::to_wstring(static_cast<int>(ret)) + L"\n").c_str()
+			);
 		}
 	}
 
@@ -404,21 +471,30 @@ namespace flutter_zoom_sdk {
 
 	MeetingServiceEvent::~MeetingServiceEvent() {}
 
-	void MeetingServiceEvent::onMeetingStatusChanged(ZOOM_SDK_NAMESPACE::MeetingStatus status, int iResult) {
-		if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_INMEETING) {
-			EncodableList results;
-
-			results.push_back(EncodableValue("MEETING_STATUS_INMEETING"));
-			results.push_back(EncodableValue(iResult));
-
-			plagin->meeting_event_sink_->Success(results);
+	void MeetingServiceEvent::onMeetingStatusChanged(
+			ZOOM_SDK_NAMESPACE::MeetingStatus status, int iResult) {
+		const char* state = nullptr;
+		switch (status) {
+			case ZOOM_SDK_NAMESPACE::MEETING_STATUS_INMEETING:
+				state = "MEETING_STATUS_INMEETING";
+				break;
+			case ZOOM_SDK_NAMESPACE::MEETING_STATUS_DISCONNECTING:
+				state = "MEETING_STATUS_DISCONNECTING";
+				break;
+			case ZOOM_SDK_NAMESPACE::MEETING_STATUS_FAILED:
+				state = "MEETING_STATUS_FAILED";
+				break;
+			case ZOOM_SDK_NAMESPACE::MEETING_STATUS_ENDED:
+				state = "MEETING_STATUS_ENDED";
+				break;
+			default:
+				return;
 		}
-		else if (status == ZOOM_SDK_NAMESPACE::MEETING_STATUS_DISCONNECTING) {
+
+		if (plagin && plagin->meeting_event_sink_) {
 			EncodableList results;
-
-			results.push_back(EncodableValue("MEETING_STATUS_DISCONNECTING"));
+			results.push_back(EncodableValue(state));
 			results.push_back(EncodableValue(iResult));
-
 			plagin->meeting_event_sink_->Success(results);
 		}
 	}

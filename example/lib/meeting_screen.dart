@@ -500,12 +500,6 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   }
 
   Future<void> hideMeeting() async {
-    bool isWindows = false;
-
-    if (!kIsWeb) {
-      isWindows = Platform.isWindows;
-    }
-
-    await zoom.hideMeeting(isWindows: isWindows);
+    await zoom.hideMeeting();
   }
 }
