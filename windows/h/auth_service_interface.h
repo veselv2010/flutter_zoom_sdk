@@ -129,9 +129,9 @@ typedef enum
 	 * This happens when the same user or resource logs in again on the same device.
 	 * The previous login application will receive this error.
 	 */
-	SDK_Notification_Service_Error_Multi_Connect,///<Use same user/resource login again on the same device, the previous login application will receive this error.
+	SDK_Notification_Service_Error_Multi_Connect,
 	/** A network issue prevented the operation from succeeding. */
-	SDK_Notification_Service_Error_Network_Issue,///<Network issue.
+	SDK_Notification_Service_Error_Network_Issue,
 	/**
 	 * @brief The client has been connected for too long (over 24 hours).
 	 *
@@ -143,7 +143,7 @@ typedef enum
 #endif
 
 /**
- * @brief SDK authentication parameter with jwt token.
+ * @brief SDK authentication parameter with JWT token or public app key.
  */
 typedef struct tagAuthContext
 {
@@ -172,9 +172,15 @@ typedef struct tagAuthContext
 		)
 	 */
 	const zchar_t* jwt_token; 
+
+	/**
+	 * @brief Public app key used for SDK authentication. Alternative to JWT token.
+	 */
+	const zchar_t* publicAppKey;
 	tagAuthContext()
 	{
 		jwt_token = nullptr;
+		publicAppKey = nullptr;
 	}
 
 }AuthContext;
@@ -198,13 +204,13 @@ class IAccountInfo
 {
 public:
     /**
-	 * @brief Get the screen name of user.
-	 * @return The return value is the displayed username. If there is no screen name of user, the return value is a string of length ZERO(0).
+	 * @brief Gets the screen name of user.
+	 * @return If the function succeeds, it returns the displayed username. If there is no screen name of user, this function returns a string of length ZERO(0).
 	 */
 	virtual const zchar_t* GetDisplayName() = 0;
     /**
-	 * @brief Get login type.
-	 * @return The return value is the account login type. For more details, see \link LoginType \endlink enum.
+	 * @brief Gets login type.
+	 * @return If the function succeeds, it returns the account login type.
      */
 	virtual LoginType GetLoginType() = 0;
 	virtual ~IAccountInfo(){};
@@ -221,15 +227,15 @@ public:
 
     /**
 	 * @brief Notification of authentication result.
-	 * @param ret Authentication result value.  For more details, see \link AuthResult \endlink enum.
+	 * @param ret Authentication result value.
 	 */
 	virtual void onAuthenticationReturn(AuthResult ret) = 0;
 
     /**
 	 * @brief Notification of login result with fail reason.
-	 * @param ret Login status. see \link LOGINSTATUS \endlink enum.
+	 * @param ret Login status.
 	 * @param pAccountInfo Valid when the ret is LOGINRET_SUCCESS. Otherwise nullptr.
-	 * @param reason Login fail reason. Valid when the ret is LOGIN_FAILED. Otherwise LoginFail_None. see \link LoginFailReason \endlink enum.
+	 * @param reason Login fail reason. Valid when the ret is LOGIN_FAILED. Otherwise LoginFail_None.
 	 */
 	virtual void onLoginReturnWithReason(LOGINSTATUS ret, IAccountInfo* pAccountInfo, LoginFailReason reason) = 0;
 	
@@ -250,8 +256,8 @@ public:
 #if defined(WIN32)
     /**
 	 * @brief Notification of service status changed.
-	 * @param status The value of transfer meeting service. For more details, see \link SDKNotificationServiceStatus \endlink.
-	 * @param error Connection Notification service fail error code. For more details, see \link SDKNotificationServiceError \endlink enum.
+	 * @param status The value of transfer meeting service.
+	 * @param error Connection Notification service fail error code.
 	 */
 	virtual void onNotificationServiceStatus(SDKNotificationServiceStatus status, SDKNotificationServiceError error) = 0;
 #endif
@@ -269,92 +275,92 @@ class IAuthService
 {
 public:
     /**
-	 * @brief Set the authentication service callback event handler.
+	 * @brief Sets the authentication service callback event handler.
 	 * @param pEvent A pointer to receive authentication event. 
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed. For detailed error codes, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(IAuthServiceEvent* pEvent) = 0;
 
     /**
-	 * @brief SDK Authentication with jwt token.
-	 * @param authContext The parameter to be used for authentication SDK, see \link AuthContext \endlink structure. 
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed. For detailed error codes, see \link SDKError \endlink enum.
+	 * @brief Authenticates SDK.
+	 * @param authContext The parameter to be used for authentication SDK.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SDKAuth(AuthContext& authContext) = 0;
 
      /**
-	 * @brief Get authentication status.
-	 * @return The return value is authentication status. For more details, see \link AuthResult \endlink enum.
+	 * @brief Gets authentication status.
+	 * @return If the function succeeds, it returns the authentication status.
 	 */
 	virtual AuthResult GetAuthResult() = 0;
 
     /**
-	 * @brief Get SDK identity.
-	 * @return The SDK identity.
+	 * @brief Gets SDK identity.
+	 * @return If the function succeeds, it returns the SDK identity. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetSDKIdentity() = 0;
 
     /**
-	 * @brief Get SSO login web url.
-	 * @param prefix_of_vanity_url, prefix of vanity url. 
-	 * @return SSO login web url
+	 * @brief Gets SSO login web URL.
+	 * @param prefix_of_vanity_url The prefix of vanity URL. 
+	 * @return If the function succeeds, it returns the SSO login web URL. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GenerateSSOLoginWebURL(const zchar_t* prefix_of_vanity_url) = 0;
 
     /**
-	 * @brief Account login.
-	 * @param uri_protocol For the parameter to be used for sso account login
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed. For detailed error codes, see \link SDKError \endlink enum.
-	 * @note You need to call this APIs after IAuthServiceEvent::onAuthenticationReturn(AUTHRET_SUCCESS).
+	 * @brief Performs account login.
+	 * @param uri_protocol The parameter to be used for SSO account login.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
+	 * @note You need to call this API after IAuthServiceEvent::onAuthenticationReturn(AUTHRET_SUCCESS).
 	 */
 	virtual SDKError SSOLoginWithWebUriProtocol(const zchar_t* uri_protocol) = 0;
 	
     /**
-	 * @brief Account logout.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed. For detailed error codes, see \link SDKError \endlink enum.
+	 * @brief Performs account logout.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError LogOut() = 0;
 
     /**
-	 * @brief Get login account information.
-	 * @return If you has logged in your account successfully, the return value is a pointer to @ref IAccountInfo, otherwise returns nullptr.
+	 * @brief Gets login account information.
+	 * @return If you have logged in your account successfully, the return value is a pointer to IAccountInfo. Otherwise, this function returns nullptr.
 	 */
 	virtual IAccountInfo* GetAccountInfo() = 0;
 
     /**
-	 * @brief Get login status.
-	 * @return The return value is login status. For more details, see \link LOGINSTATUS \endlink enum.
+	 * @brief Gets login status.
+	 * @return If the function succeeds, it returns the login status. Otherwise, this function returns an error.
 	 */
 	virtual LOGINSTATUS GetLoginStatus() = 0;
 #if defined(WIN32)
     /**
-	 * @brief Get direct share service helper interface. 
-	 * @return If you logged in your account successfully, the return value is the object pointer IDirectShareServiceHelper. Otherwise is nullptr.
+	 * @brief Gets direct share service helper interface. 
+	 * @return If you have logged in your account successfully, the return value is a pointer to IDirectShareServiceHelper. Otherwise, this function returns nullptr.
 	 */
 	virtual IDirectShareServiceHelper* GetDirectShareServiceHelper() = 0;
 
     /**
-	 * @brief Enable or disable auto register notification service. This is enabled by default.
-	 * @param bEnable true means enabled. 
+	 * @brief Enables or disables auto register notification service. This is enabled by default.
+	 * @param bEnable true to enable, false to disable. 
 	 */
 	virtual void EnableAutoRegisterNotificationServiceForLogin(bool bEnable) = 0;
 
     /**
-	 * @brief Register notification service.
-	 * @param accessToken Initialize parameter of notification service.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed. For detailed error codes, see \link SDKError \endlink enum.
+	 * @brief Registers notification service.
+	 * @param accessToken The initialization parameter of notification service.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError RegisterNotificationService(const zchar_t* accessToken) = 0;
 
     /**
-	 * @brief UnRegister notification service.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed. For detailed error codes, see \link SDKError \endlink enum.
+	 * @brief Unregisters notification service.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError UnregisterNotificationService() = 0;
 
     /**
-	 * @brief Get notification service helper interface. 
-	 * @return If the function succeeds, the return value is a pointer to INotificationServiceHelper. Otherwise returns nullptr.
+	 * @brief Gets notification service helper interface. 
+	 * @return If the function succeeds, the return value is a pointer to INotificationServiceHelper. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual INotificationServiceHelper* GetNotificationServiceHelper() = 0;
 #endif

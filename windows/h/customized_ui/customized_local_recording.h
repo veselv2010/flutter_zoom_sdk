@@ -8,7 +8,7 @@
 
 BEGIN_ZOOM_SDK_NAMESPACE
 /**
- * @brief Layout mode of local recording.
+ * @brief Enumeration of local recording layout mode.
  * Here are more detailed structural descriptions.
  */ 
 enum RECORDING_LAYOUT_MODE
@@ -30,40 +30,40 @@ class ICustomizedLocalRecordingLayoutHelper
 {
 public:
 	/**
-	 * @brief Get the layout mode supported by the current meeting. see \link RECORDING_LAYOUT_MODE \endlink enum. 
+	 * @brief Gets the layout mode supported by the current meeting.
 	 * @return If the function succeeds, the return value is the layout type supported by the current meeting. For more details, see \link RECORDING_LAYOUT_MODE \endlink enum.
 	 */
 	virtual int GetSupportLayout() = 0;
 	
 	/**
-	 * @brief Get the list of users whose video source is available.
+	 * @brief Gets the list of users whose video source is available.
 	 * @return The list of users. ZERO(0) indicates that there is no available video source of users. 
 	 * @note The value saved in the list is the user ID.
 	 */
 	virtual IList<unsigned int >* GetValidVideoSourceList() = 0;
 	
 	/**
-	 * @brief Get the available list of users who can receive the shared content.
+	 * @brief Gets the available list of users who can receive the shared content.
 	 * @return The available list of users who can receive the shared content. ZERO(0) indicates that there is no available users.
 	 * @note The value saved in the list is the user ID.
 	 */
 	virtual IList<unsigned int >* GetValidRecvSharingSourceList() = 0;
 	
 	/**
-	 * @brief Determine if there exists user who is sharing the content. 
-	 * @return TRUE indicates that there is user who is sharing the content.
+	 * @brief Determines if there exists user who is sharing the content. 
+	 * @return true indicates that there is user who is sharing the content.
 	 */
 	virtual bool IsSendSharingSourceAvailable() = 0;
 	
 	/**
-	 * @brief Determine if there exists the active video source.
-	 * @return TRUE indicates that there is the active video source.
+	 * @brief Determines if there exists the active video source.
+	 * @return true indicates that there is the active video source.
 	 */
 	virtual bool HasActiveVideoSource() = 0;
 	
 	/**
-	 * @brief Set the specified recording layout mode.
-	 * @param mode_ Specify the recording layout mode that you want. For more details, see \link RECORDING_LAYOUT_MODE \endlink enum.
+	 * @brief Sets the specified recording layout mode.
+	 * @param mode_ Specify the recording layout mode that you want.
 	 * @return If the function succeeds, the return value is SDKErr_SUCCESS. Otherwise returns the RECORDING_LAYOUT_MODE.
 	 */
 	virtual SDKError SelectRecordingLayoutMode(RECORDING_LAYOUT_MODE mode_) = 0;

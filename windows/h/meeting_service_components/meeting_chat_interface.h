@@ -15,15 +15,15 @@ typedef enum
 {
 	/** For initialize */
 	SDKChatMessageType_To_None, 
-	/** Chat message is send to all. */
+	/** Chat message is sent to all. */
 	SDKChatMessageType_To_All,	
-	/** Chat message is send to all panelists. */
+	/** Chat message is sent to all panelists. */
 	SDKChatMessageType_To_All_Panelist,
-	/** Chat message is send to individual attendee and cc panelists. */
+	/** Chat message is sent to individual attendee and cc panelists. */
 	SDKChatMessageType_To_Individual_Panelist,
-	/** Chat message is send to individual user. */
+	/** Chat message is sent to individual user. */
 	SDKChatMessageType_To_Individual,
-	/** Chat message is send to waiting room user. */
+	/** Chat message is sent to waiting room user. */
 	SDKChatMessageType_To_WaitingRoomUsers,
 }SDKChatMessageType;
 
@@ -267,24 +267,24 @@ class IRichTextStyleOffset
 {
 public:
 	/**
-     * @brief Get a certain rich-text style's start position.
-	 * @return If the function succeeds, the return value is the specified rich-text style's start position. Otherwise the function fails, and the return value is -1.
+     * @brief Gets the start position of a certain rich-text style.
+	 * @return If the function succeeds, it returns the start position of the specified rich-text style. Otherwise, this function returns -1.
 	 */
 	virtual unsigned int GetPositionStart() = 0;
 
 	/**
-	 * @brief Get the end position of a certain style in rich text.
-	 * @return If the function succeeds, the return value is the end position of a certain style in rich text. Otherwise failed, the return value is -1.
+	 * @brief Gets the end position of a certain rich-text style.
+	 * @return If the function succeeds, it returns the end position of the specified rich-text style. Otherwise, this function returns -1.
 	 */
 	virtual unsigned int GetPositionEnd() = 0;
 
 	/**
-     * @brief Get a certain rich-text style's supplementary information.
-	 * @return If the function succeeds, the return value is the specified rich-text style's supplementary information.
+     * @brief Gets the supplementary information of a certain rich-text style.
+	 * @return If the function succeeds, it returns the supplementary information of the specified rich-text style. Otherwise, this function fails and returns nullptr.
 	 * If the style is TextStyle_FontSize, possible return values are FontSize_Small, FontSize_Medium, or FontSize_Large.
 	 * If the style is TextStyle_Paragraph, possible return values are Paragraph_H1, Paragraph_H2, or Paragraph_H3.
-	 * If the style is TextStyle_FontColor, or TextStyle_BackgroundColor, possible return values are hex string representing standard RGB data.
-	 * Otherwise the function fails, and the return value is the string of length zero(0).
+	 * If the style is TextStyle_FontColor or TextStyle_BackgroundColor, possible return values are hex string representing standard RGB data.
+	 * If the function fails, the return value is a string of length zero(0).
 	 */
 	virtual const zchar_t* GetReserve() = 0;
 };
@@ -297,14 +297,14 @@ class IRichTextStyleItem
 {
 public:
 	/**
-	 * @brief Get the rich text type of a portion of the current message.
-	 * @return If the function succeeds, the return value is the  rich text type of the specified portion of the current message.
+	 * @brief Gets the rich text type of a portion of the current message.
+	 * @return If the function succeeds, it returns the rich text type of the specified portion of the current message. Otherwise, this function returns an error.
 	 */
 	virtual RichTextStyle GetTextStyle() = 0;
 
 	/**
-	 * @brief Get the current message's rich text position info list of a certain style.
-	 * @return If the function succeeds, the return value is the rich text position info list of a certain style of the current message.
+	 * @brief Gets the rich text position info list of a certain style for the current message.
+	 * @return If the function succeeds, it returns the rich text position info list of a certain style for the current message. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual IList<IRichTextStyleOffset*>* GetTextStyleOffsetList() = 0;
 };
@@ -318,95 +318,89 @@ class IChatMsgInfo
 {
 public:
 	/** 
-	 * @brief Get the message ID of the current message.
-	 * @return If the function succeeds, the return value is the message ID of the current message. Otherwise failed, the return value is the string of length zero(0)
+	 * @brief Gets the message ID of the current message.
+	 * @return If the function succeeds, the return value is the message ID of the current message. Otherwise, this function returns an error, the return value is the string of length zero(0).
 	 */
 	virtual const zchar_t* GetMessageID() = 0;
 
 	/** 
-	 * @brief Get the sender ID of the current message.
-	 * @return If the function succeeds, the return value is the sender ID of the current message. Otherwise failed, the return value is -1.
+	 * @brief Gets the sender ID of the current message.
+	 * @return If the function succeeds, the return value is the sender ID of the current message. Otherwise, this function returns an error, the return value is -1.
 	 */
 	virtual unsigned int GetSenderUserId() = 0;
 
 	/** 
-	 * @brief Get the sender screen name of the current message.
-	 * @return If the function succeeds, the return value is sender screen name of the current message. Otherwise failed, the return value is nullptr.
+	 * @brief Gets the sender screen name of the current message.
+	 * @return If the function succeeds, the return value is sender screen name of the current message. Otherwise, this function returns an error, the return value is nullptr.
 	 * @note If the message is sent to all or to all panelists, the return value will be nullptr.
 	 */
 	virtual const zchar_t* GetSenderDisplayName() = 0;
 
 	/** 
-	 * @brief Get the receiver ID of the current message.
-	 * @return If the function succeeds, the return value is the receiver ID of the current message.
+	 * @brief Gets the receiver ID of the current message.
+	 * @return If the function succeeds, it returns the receiver ID of the current message.
 	 * ZERO(0) indicates that the message is sent to all.
 	 * ONE(1) indicates that the messages are sent to all the panelists.
-	 * Otherwise failed, the return value is negative ONE(-1).
+	 * Otherwise, the return value is negative ONE(-1).
 	 */
 	virtual unsigned int GetReceiverUserId() = 0;
 
 	/**
-	 * @brief Get the receiver screen name of the current message.
-	 * @return If the function succeeds, the return value is the receiver screen name of the current message. Otherwise failed, the return value is the string of length zero(0).
+	 * @brief Gets the receiver screen name of the current message.
+	 * @return If the function succeeds, the return value is the receiver screen name of the current message. Otherwise, the return value is the string of length zero(0).
 	 */
 	virtual const zchar_t* GetReceiverDisplayName() = 0;
 
 	/** 
-	 * @brief Get the content of the current message.
-	 * @return If the function succeeds, the return value is the pointer to the content of the current message. Otherwise failed, the return value is nullptr.
+	 * @brief Gets the content of the current message.
+	 * @return If the function succeeds, the return value is the pointer to the content of the current message. Otherwise, the return value is nullptr.
 	 */
 	virtual const zchar_t* GetContent() = 0;
 
 	/**
-	 * @brief Get the timestamps of the current message.
+	 * @brief Gets the timestamps of the current message.
 	 * @return If the function succeeds, the return value is the timestamps of the current message. 
 	 */
 	virtual time_t GetTimeStamp() = 0;
 
 	/**
-	 * @brief Determine if the current message is sent to all. 
-	 * @return TRUE indicates that the current message is sent to all. Otherwise not. 
+	 * @brief Determines if the current message is sent to all. 
+	 * @return true if the current message is sent to all. Otherwise, false.
 	 */
 	virtual bool IsChatToAll() = 0;
 
 	/**
-	 * @brief Determine if the current message is sent to all the panelists.
-	 * @return TRUE indicates that the current message is sent to all the panelists. Otherwise not. 
+	 * @brief Determines if the current message is sent to all the panelists.
+	 * @return true if the current message is sent to all the panelists. Otherwise, false.
 	 */
 	virtual bool IsChatToAllPanelist() = 0;
 
 	/**
-	 * @brief Determine if the current message is sent to waiting room.
-	 * @return TRUE indicates that the current message is sent to waiting room. Otherwise not.
+	 * @brief Determines if the current message is sent to waiting room.
+	 * @return true if the current message is sent to waiting room. Otherwise, false.
 	 */
 	virtual bool IsChatToWaitingroom() = 0;
 
 	/** 
-	 * @brief Get the chat message type of the current message.
-	 * @return If the function succeeds, the return value is the chat message type of the current message.
+	 * @brief Gets the chat message type of the current message.
+	 * @return If the function succeeds, it returns the chat message type of the current message.
 	 */
 	virtual SDKChatMessageType GetChatMessageType() = 0;
 
 	/** 
-	 * @brief Determine if the current message is a reply to another message. 
-	 * @return TRUE indicates that the current message is a reply to another message.  Otherwise the function fails and the message is a standalone message. 
+	 * @brief Determines if the current message is a reply to another message. 
+	 * @return true if the current message is a reply to another message. Otherwise, false.
 	 */
 	virtual bool IsComment() = 0;
 
 	/** 
-	 * @brief Determine if the current message is part of a message thread, and can be directly replied to. 
-	 * @return TRUE indicates that the current message is a part of a message thread. Otherwise, the function fails. 
+	 * @brief Determines if the current message is part of a message thread, and can be directly replied to. 
+	 * @return true if the current message is a part of a message thread. Otherwise, false.
 	 */
 	virtual bool IsThread() = 0;
 
 	/**
-	 * @brief Get the current message's chat message font style list.
-	 * @deprecated This class is marked as deprecated
-	 */
-	virtual IList<IRichTextStyleItem*>* GetTextStyleItemList() = 0;
-
-	/**
-	 * @brief Get the chat message segment content and style detail of the current message.
+	 * @brief Gets the chat message segment content and style detail of the current message.
 	 * When receiving rich-text messages, a list of isolated paragraphs is included,
 	 * each formatted according to its style. Concatenating these paragraphs
 	 * together forms the complete message text.
@@ -414,8 +408,8 @@ public:
 	virtual IList<SegmentDetails>* GetSegmentDetails() = 0;
 
 	/** 
-	 * @brief Get the current message's thread ID.
-	 * @return If the function succeeds, the return value is the current message's thread ID. Otherwise the function fails, and the return value is the string of length zero(0)
+	 * @brief Gets the current message's thread ID.
+	 * @return If the function succeeds, the return value is the current message's thread ID. Otherwise, the return value is the string of length zero(0).
 	 */
 	virtual const zchar_t* GetThreadID() = 0;
 
@@ -428,13 +422,13 @@ public:
  */
 typedef struct tagNormalMeetingChatStatus
 {
-	/** TRUE indicates that the user owns the authority to send message to chat. */
+	/** true indicates that the user owns the authority to send message to chat. */
 	bool can_chat;
-	/** TRUE indicates that the user owns the authority to send message to all. */
+	/** true indicates that the user owns the authority to send message to all. */
 	bool can_chat_to_all;
-	/** TRUE indicates that the user owns the authority to send message to an individual attendee in the meeting. */
+	/** true indicates that the user owns the authority to send message to an individual attendee in the meeting. */
 	bool can_chat_to_individual;
-	/** TRUE indicates that the user owns the authority to send message only to the host. */
+	/** true indicates that the user owns the authority to send message only to the host. */
 	bool is_only_can_chat_to_host; 
 }NormalMeetingChatStatus;
 
@@ -444,11 +438,11 @@ typedef struct tagNormalMeetingChatStatus
  */
 typedef struct tagWebinarAttendeeChatStatus
 {
-	/** TRUE indicates that the attendee can send message to chat. */
+	/** true indicates that the attendee can send message to chat. */
 	bool can_chat; 
-	/** TRUE indicates that the user owns the authority to send message to all the panelists and attendees. */
+	/** true indicates that the user owns the authority to send message to all the panelists and attendees. */
 	bool can_chat_to_all_panellist_and_attendee;
-	/** TRUE indicates that the user owns the authority to send message to all the panelists. */
+	/** true indicates that the user owns the authority to send message to all the panelists. */
 	bool can_chat_to_all_panellist;
 }WebinarAttendeeChatStatus;
 
@@ -458,11 +452,11 @@ typedef struct tagWebinarAttendeeChatStatus
  */
 typedef struct tagWebinarOtherUserRoleChatStatus
 {
-	/** TRUE indicates that the user owns the authority to send message to all the panelists. */
+	/** true indicates that the user owns the authority to send message to all the panelists. */
 	bool can_chat_to_all_panellist;
-	/** TRUE indicates that the user owns the authority to send message to all. */
+	/** true indicates that the user owns the authority to send message to all. */
 	bool can_chat_to_all_panellist_and_attendee;
-	/** TRUE indicates that the user owns the authority to send message to individual attendee. */
+	/** true indicates that the user owns the authority to send message to individual attendee. */
 	bool can_chat_to_individual;
 }WebinarOtherUserRoleChatStatus;
 
@@ -484,11 +478,11 @@ typedef struct tagChatStatus
 		WebinarAttendeeChatStatus webinar_attendee_status;
 		WebinarOtherUserRoleChatStatus webinar_other_status;
 	}ut;
-	/** TRUE indicates that it is disabled to chat in the specified meeting.  */
+	/** true indicates that it is disabled to chat in the specified meeting.  */
 	bool is_chat_off;
-	/** TRUE indicates that the owner of the current message is the attendee of the webinar.  */
+	/** true indicates that the owner of the current message is the attendee of the webinar.  */
 	bool is_webinar_attendee;
-	/** TRUE indicates that the current meeting is webinar. */
+	/** true indicates that the current meeting is webinar. */
 	bool is_webinar_meeting;
 
 	tagChatStatus()
@@ -550,7 +544,7 @@ typedef enum
 }SDKFileTransferStatus;
 
 /** 
- * @brief The basic information of transfer file
+ * @brief The basic information of transfer file.
  */
 typedef struct tagSDKFileTransferInfo
 {
@@ -588,15 +582,14 @@ class ISDKFileSender
 public:
 	virtual SDKFileTransferInfo* GetTransferInfo() = 0;
 	/** 
-	 * @brief Get file receiver's user id.
+	 * @brief Gets file receiver's user id.
 	 * @return The receiver user id. -1 specify the internel error of get user id. 0 specify the file send to all.
 	 */
 	virtual unsigned int GetReceiver() = 0;
 
 	/**
 	 * @brief Cancel the file send.
-	 * @return If the function succeeds, the return value is SDKErr_Success.
-	 * Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CancelSend() = 0;
 
@@ -609,21 +602,21 @@ public:
 	virtual SDKFileTransferInfo* GetTransferInfo() = 0;
 
 	/** 
-	 * @brief Get file sender's user id.
+	 * @brief Gets file sender's user id.
 	 * @return The receiver user id. -1 specify the internel error of get user id. 0 specify the file send to all.
 	 */
 	virtual unsigned int GetSender() = 0;
 
 	/**
 	 * @brief Cancel the file receive.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CancelReceive() = 0;
 
 	/**
-	 * @brief Start receive the file.
+	 * @brief Starts receive the file.
 	 * @param path The path to receive the file.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StartReceive(const zchar_t* path) = 0;
 
@@ -697,31 +690,31 @@ class IChatMsgInfoBuilder
 {
 public:
 	/**
-	 * @brief Set chat message content.
+	 * @brief Sets chat message content.
 	 * @param content The chat message's content. 
 	 */
 	virtual IChatMsgInfoBuilder* SetContent(const zchar_t* content) = 0;
 
 	/**
-	 * @brief Set who will receive the chat message.
+	 * @brief Sets who will receive the chat message.
 	 * @param receiver Specify the user ID to receive the chat message. The message is sent to all participants when the value is zero(0). 
 	 */
 	virtual IChatMsgInfoBuilder* SetReceiver(unsigned int receiver) = 0;
 
 	/**
-	 * @brief Set the ID of the thread where the message will be posted.
+	 * @brief Sets the ID of the thread where the message will be posted.
 	 * @param threadId Specify the thread ID. 
 	 */
 	virtual IChatMsgInfoBuilder* SetThreadId(const zchar_t* threadId) = 0;
 
 	/**
-	 * @brief Set the chat message type.
+	 * @brief Sets the chat message type.
 	 * @param type The chat message's type.
 	 */
 	virtual IChatMsgInfoBuilder* SetMessageType(SDKChatMessageType type) = 0;
 
 	/**
-	 * @brief Set the chat message content quote style and position.
+	 * @brief Sets the chat message content quote style and position.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
 	 */
@@ -736,7 +729,7 @@ public:
 	virtual IChatMsgInfoBuilder* UnsetQuotePosition(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/**
-	 * @brief Set the chat message content insert link style.
+	 * @brief Sets the chat message content insert link style.
 	 * @param insertLink The segment link url.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
@@ -753,7 +746,7 @@ public:
 	virtual IChatMsgInfoBuilder* UnsetInsertLink(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/**
-	 * @brief Set the chat message content font size style.
+	 * @brief Sets the chat message content font size style.
 	 * @param fontSize The segment font size.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
@@ -770,7 +763,7 @@ public:
 	virtual IChatMsgInfoBuilder* UnsetFontSize(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/**
-	 * @brief Set the chat message content italic style.
+	 * @brief Sets the chat message content italic style.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
 	 * @return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
@@ -786,7 +779,7 @@ public:
 	virtual IChatMsgInfoBuilder* UnsetItalic(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/**
-	 * @brief Set the chat message content bold style.
+	 * @brief Sets the chat message content bold style.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
 	 * @return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
@@ -802,7 +795,7 @@ public:
 	virtual IChatMsgInfoBuilder* UnsetBold(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/**
-	 * @brief Set the chat message content strikethrough style.
+	 * @brief Sets the chat message content strikethrough style.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
 	 * @return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
@@ -818,7 +811,7 @@ public:
 	virtual IChatMsgInfoBuilder* UnsetStrikethrough(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/**
-	 * @brief Set the chat message content bulleted list style.
+	 * @brief Sets the chat message content bulleted list style.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
 	 * @return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
@@ -834,7 +827,7 @@ public:
 	virtual IChatMsgInfoBuilder* UnsetBulletedList(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/**
-	 * @brief Set the chat message content numbered list style.
+	 * @brief Sets the chat message content numbered list style.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
 	 * @return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
@@ -850,7 +843,7 @@ public:
 	virtual IChatMsgInfoBuilder* UnsetNumberedList(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/**
-	 * @brief Set the chat message content under line style.
+	 * @brief Sets the chat message content under line style.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
 	 * @return Return value is a pointer of IChatMsgInfoBuilder with modifications for chain call.
@@ -866,7 +859,7 @@ public:
 	virtual IChatMsgInfoBuilder* UnsetUnderline(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/**
-	 * @brief Set the chat message content font color style.
+	 * @brief Sets the chat message content font color style.
 	 * @param color The segment color value.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
@@ -883,7 +876,7 @@ public:
 	virtual IChatMsgInfoBuilder* UnsetFontColor(unsigned int positionStart, unsigned int positionEnd) = 0;
 
 	/**
-	 * @brief Set the chat message content background color style.
+	 * @brief Sets the chat message content background color style.
 	 * @param color The segment color value.
 	 * @param positionStart The segment start position.
 	 * @param positionEnd The segment end position.
@@ -919,7 +912,7 @@ public:
 
 
 	/**
-	 * @brief Set the chat message content paragraph style.
+	 * @brief Sets the chat message content paragraph style.
 	 * @param paragraph The segment paragraph value.
 	 * Tips: if paragraph.strParagraph is one of the three contents, bold and font size styles will be added internally.
 	 * Paragraph_H1 with bold and FontSize_Large
@@ -953,7 +946,7 @@ public:
 
 	/**
 	 * @brief build chat message entity.
-	 * @return If the function succeeds, the return value is the message detail info.
+	 * @return If the function succeeds, it returns the message detail info. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual IChatMsgInfo* Build() = 0;
 
@@ -962,132 +955,131 @@ public:
 
 /**
  * @class IMeetingChatController
- * @brief Meeting chat controller interface
+ * @brief Meeting chat controller interface.
  */
 class IMeetingChatController
 {
 public:
 	/**
-	 * @brief Set meeting chat callback event.
-	 * @param pEvent A pointer to the IMeetingChatCtrlEvent to receive chat callback event. For more details, see \link IMeetingChatCtrlEvent \endlink.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Sets meeting chat callback event.
+	 * @param pEvent A pointer to the IMeetingChatCtrlEvent to receive chat callback event.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note The event is used by SDK to pass the callback event to user's application. If this function is not called or fails, the user's application can not retrieve the callback event.
 	 */
 	virtual SDKError SetEvent(IMeetingChatCtrlEvent* pEvent) = 0;
 
 	/**
-	 * @brief Get the authority status to send current message. 
-	 * @return If the function succeeds, the return value is a pointer to the structure of ChatStatus. For more details, see \link ChatStatus \endlink structure.
-	 * Otherwise failed, the return value is nullptr. To get extended error information, see \link ChatStatus \endlink.
+	 * @brief Gets the authority status to send current message. 
+	 * @return If the function succeeds, the return value is a pointer to the structure of ChatStatus. Otherwise, the return value is nullptr.
 	 */
 	virtual const ChatStatus* GetChatStatus() = 0;
 
 	/**
-	 * @brief Set the chat privilege of participants.
-	 * @param priviledge The chat priviledge of participants
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Sets the chat privilege of participants.
+	 * @param privilege The chat privilege of participants.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetParticipantsChatPrivilege(SDKChatPrivilege privilege) = 0;
 
 	/**
-	 * @brief Determine whether the legal notice for chat is available
-	 * @return True indicates the legal notice for chat is available. Otherwise False.
+	 * @brief Determines whether the legal notice for chat is available.
+	 * @return true if the legal notice for chat is available. Otherwise, false.
 	 */
 	virtual bool IsMeetingChatLegalNoticeAvailable() = 0;
 
 	/**
-	 * @brief Get the chat legal notices prompt.
+	 * @brief Gets the chat legal notices prompt.
 	 */
 	virtual const zchar_t* getChatLegalNoticesPrompt() = 0;
 
 	/**
-     * @brief Get the chat legal notices explained.
+     * @brief Gets the chat legal notices explained.
 	 */
 	virtual const zchar_t* getChatLegalNoticesExplained() = 0;
 
 	/**
-	 * @brief Determine whether the legal notice for sharing in meeting chat is available
-	 * @return True indicates the legal notice for chat is available. Otherwise False.
+	 * @brief Determines whether the legal notice for sharing in meeting chat is available.
+	 * @return true if the legal notice for sharing in meeting chat is available. Otherwise, false.
 	 */
 	virtual bool IsShareMeetingChatLegalNoticeAvailable() = 0;
 
 	/**
-	 * @brief Get the sharing in meeting chat started legal notices content.
+	 * @brief Gets the sharing in meeting chat started legal notices content.
 	 */
 	virtual const zchar_t* GetShareMeetingChatStartedLegalNoticeContent() = 0;
 
 	/**
-	 * @brief Get the sharing in meeting chat stopped legal notices content.
+	 * @brief Gets the sharing in meeting chat stopped legal notices content.
 	 */
 	virtual const zchar_t* GetShareMeetingChatStoppedLegalNoticeContent() = 0;
 
 	/**
-	 * @brief Determine whether the message can be delete.
+	 * @brief Determines whether the message can be deleted.
 	 * @param msgID is the message id.
-	 * @return True indicates the message can be delete. Otherwise False.	
+	 * @return true if the message can be deleted. Otherwise, false.
 	 */
 	virtual bool IsChatMessageCanBeDeleted(const zchar_t* msgID) = 0;
 
 	/**
 	 * @brief Delete chat message by message id.	 
 	 * @param msgID is the message id.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DeleteChatMessage(const zchar_t* msgID) = 0;
 
 	/**
-	 * @brief Get all chat message id.	
+	 * @brief Gets all chat message id.	
 	 */
 	virtual IList<const zchar_t*>* GetAllChatMessageID() = 0;
 
 	/**
-	 * @brief Get chat message by message ID.	
+	 * @brief Gets chat message by message ID.	
 	 * @param msgID is the message ID.
 	 */
 	virtual IChatMsgInfo* GetChatMessageById(const zchar_t* msgID) = 0;
 
 	/**
-	 * @brief Get the chat message builder which can help construct the message entity.
+	 * @brief Gets the chat message builder which can help construct the message entity.
 	 */
 	virtual IChatMsgInfoBuilder* GetChatMessageBuilder() = 0;
 
 	/**
-	 * @brief Send a chat message.
+	 * @brief Sends a chat message.
 	 * @param msg Specify the message detail info.
 	 */
 	virtual SDKError SendChatMsgTo(IChatMsgInfo* msg) = 0;
 
 	/**
-	 * @brief Determine whether file transfer is enabled.
-	 * @return True indicates file transfer is enabled, otherwise false.
+	 * @brief Determines whether file transfer is enabled.
+	 * @return true if file transfer is enabled. Otherwise, false.
 	 */	 
 	virtual bool IsFileTransferEnabled() = 0;
 
 	/**
-	 * @brief Send file to specify user in current session.
+	 * @brief Sends file to specify user in current session.
 	 * @param filePath The absolute path of the file.
 	 * @param user Send the file to this user.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note This interface is related to chat privilege, see \link SDKChatPrivilege \endlink enum.
 	 */
 	virtual SDKError TransferFile(const zchar_t* filePath, unsigned int userid) = 0;
 
 	/**
-	 * @brief Send file to all users in current session.
+	 * @brief Sends file to all users in current session.
 	 * @param filePath The absolute path of the file.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note This interface is related to chat privilege, see \link SDKChatPrivilege \endlink enum.
 	 */
 	virtual SDKError TransferFileToAll(const zchar_t* filePath) = 0;
 
 	/**
-	 * @brief Get the list of allowed file types in transfer.
+	 * @brief Gets the list of allowed file types in transfer.
 	 * @return The value of allowed file types in transfer, comma-separated if there are multiple values. Exe files are by default forbidden from being transferred.
 	 */
 	virtual const zchar_t* GetTransferFileTypeAllowList() = 0;
 
 	/**
-	 * @brief Get the maximum size for file transfer.
+	 * @brief Gets the maximum size for file transfer.
 	 * @return The maximum number of bytes for file transfer.
 	 */
 	virtual unsigned long long GetMaxTransferFileSizeBytes() = 0;

@@ -9,7 +9,7 @@
 
 BEGIN_ZOOM_SDK_NAMESPACE
 /**
- * @brief Information category for remote support.
+ * @brief Enumeration of remote support type.
  * Here are more detailed structural descriptions.
  */
 enum RemoteSupportType
@@ -23,7 +23,7 @@ enum RemoteSupportType
 };
 
 /**
- * @brief Information category for authority and status changes during remote support.
+ * @brief Enumeration of remote support status.
  * Here are more detailed structural descriptions.
  */
 enum RemoteSupportStatus
@@ -48,27 +48,27 @@ public:
 	virtual ~IRemoteSupportRequestHandler() {};
 	
 	/**
-	 * @brief Get the user ID who requested privilege.
+	 * @brief Gets the user ID who requested privilege.
 	 * @return If the function succeeds, the return value is the user ID. Otherwise, this returns 0.
 	 */
 	virtual unsigned int GetRequesterId() = 0;
 	
 	/**
-	 * @brief Get the user name who requested privileges.
-	 * @return If the function succeeds, the return value is the user name.
+	 * @brief Gets the user name who requested privileges.
+	 * @return If the function succeeds, it returns the user name. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetRequesterName() = 0;
 	
 	/**
-	 * @brief Get the remote support type.
-	 * @return If the function succeeds, the return value is the RemoteSupportType.
+	 * @brief Gets the remote support type.
+	 * @return If the function succeeds, it returns the RemoteSupportType.
 	 */
 	virtual RemoteSupportType GetRemoteSupportType() = 0;
 	
 	/**
-	 * @brief Set the specified application.
+	 * @brief Sets the specified application.
 	 * @param view Specify the window handle of the application to be remote support. If the view can't be shared, the return value is the SDKERR_INVALID_PARAMETER error code.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Set the application view only when RemoteSupportType is Remote_Support_Application.
 	 */
 	virtual SDKError SetRemoteSupportApplicationView(void* view) = 0;
@@ -93,7 +93,7 @@ class IMeetingRemoteSupportEvent
 public:
 	/**
 	 * @brief Callback event of notification of the remote support status. 
-	 * @param status The value of remote support status. For more details, see \link RemoteSupportStatus \endlink enum.
+	 * @param status The value of remote support status.
 	 * @param userId The remote support user ID.
 	 */
 	virtual void onRemoteSupportStatus(RemoteSupportStatus status, unsigned int userId) = 0;
@@ -105,7 +105,7 @@ public:
 	
 	/**
 	 * @brief Callback event when a host requests to support you remotely.
-	 * @param handler A pointer to the IRemoteSupportRequestHandler. For more details, see \link IRemoteSupportRequestHandler \endlink.
+	 * @param handler A pointer to the IRemoteSupportRequestHandler.
 	 */
 	virtual void onRemoteSupportRequestReceived(IRemoteSupportRequestHandler* handler) = 0;
 	
@@ -133,9 +133,9 @@ public:
 	virtual ~IMeetingRemoteSupportController() {}
 	
 	/**
-	 * @brief Set meeting remote support callback event handler.
+	 * @brief Sets meeting remote support callback event handler.
 	 * @param pEvent A pointer to the IMeetingRemoteSupportEvent that receives the remote support event. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note When the remote support or the authority changes, the user receives a callback event.
 	 */
 	virtual SDKError SetEvent(IMeetingRemoteSupportEvent* pEvent) = 0;
@@ -153,36 +153,36 @@ public:
 	virtual bool CanRequestRemoteSupport() = 0;
 	
 	/**
-	 * @brief Get the list of users'IDs that can be supported remotely.
-	 * @return If the function succeeds, the return value is a pointer to the IList object.
+	 * @brief Gets the list of users'IDs that can be supported remotely.
+	 * @return If the function succeeds, it returns a pointer to the IList object.
 	 */
 	virtual IList<unsigned int>* GetRemoteSupportUserList() = 0;
 	
 	/**
-	 * @brief Send the request of remote support to the specified user.
+	 * @brief Sends the request of remote support to the specified user.
 	 * @param userId Specify the user ID that you want to send the request.
 	 * @param supportType Specify category for remote support   .
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError RequestRemoteSupport(unsigned int userId, RemoteSupportType supportType) = 0;
 	
 	/**
-	 * @brief Stop the remote support to the specified user.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Stops the remote support to the specified user.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note It will stop the share currently in progress.
 	 */
 	virtual SDKError StopRemoteSupport() = 0;
 	
 	/**
-	 * @brief Whether if the current user is able to select remote support screen.
-	 * @return If the function succeeds, the return value is SDKErr_Success.
+	 * @brief Determines if the current user is able to select remote support screen.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CanSelectRemoteSupportScreen() = 0;
 	
 	/**
 	 * @brief Select the monitor of remote support to the specified user.
 	 * @param screenIndex Specify the screen index that you want to control.	
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SelectRemoteSupportScreen(int screenIndex) = 0;
 };

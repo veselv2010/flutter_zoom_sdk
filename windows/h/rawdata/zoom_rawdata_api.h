@@ -12,12 +12,14 @@ class IZoomSDKRenderer;
 class IZoomSDKAudioRawDataHelper;
 class IZoomSDKRendererDelegate;
 class IZoomSDKShareSourceHelper;
+class IZoomSDKVideoMixer;
 extern "C"
 {
 	SDK_API bool HasRawdataLicense();
 	SDK_API IZoomSDKVideoSourceHelper*  GetRawdataVideoSourceHelper();
 	SDK_API IZoomSDKShareSourceHelper*  GetRawdataShareSourceHelper();
 	SDK_API IZoomSDKAudioRawDataHelper* GetAudioRawdataHelper();
+	SDK_API IZoomSDKVideoMixer* GetZoomSDKVideoMixer();
 	SDK_API SDKError createRenderer(IZoomSDKRenderer** ppRenderer, IZoomSDKRendererDelegate* pDelegate);
 	SDK_API SDKError destroyRenderer(IZoomSDKRenderer* pRenderer);
 }

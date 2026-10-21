@@ -10,7 +10,7 @@
 BEGIN_ZOOM_SDK_NAMESPACE
 
 /**
- * @brief Specify the emoji reaction type.
+ * @brief Enumeration of emoji reaction type.
  * Here are more detailed enum descriptions.
  */
 typedef enum tagSDKEmojiReactionType
@@ -25,7 +25,7 @@ typedef enum tagSDKEmojiReactionType
 }SDKEmojiReactionType;
 
 /**
- * @brief Specify the emoji display type.
+ * @brief Enumeration of emoji display type.
  * Here are more detailed enum descriptions.
  */
 typedef enum tagSDKEmojiReactionDisplayType
@@ -37,7 +37,7 @@ typedef enum tagSDKEmojiReactionDisplayType
 }SDKEmojiReactionDisplayType;
 
 /**
- * @brief Specify the emoji feedback type.
+ * @brief Enumeration of emoji feedback type.
  * Here are more detailed enum descriptions.
  */
 typedef enum tagSDKEmojiFeedbackType
@@ -93,47 +93,47 @@ class IEmojiReactionController
 public:
 	/**
 	 * @brief Configure the meeting emoji reaction controller callback event handler.
-	 * @param pEvent An object pointer to the IEmojiReactionControllerEvent that receives the meeting reaction callback event. For more details, see \link IEmojiReactionControllerEvent \endlink.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param pEvent An object pointer to the IEmojiReactionControllerEvent that receives the meeting reaction callback event.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note The SDK use pEvent to transmit the callback event to the user's application. If the function is not called or failed, the user's application is unabled to retrieve the callback event.
 	 */
 	virtual SDKError SetEvent(IEmojiReactionControllerEvent* pEvent) = 0;
 	
 	/**
-	 * @brief Determine if the reactions feature is enabled in the meeting.
+	 * @brief Determines if the reactions feature is enabled in the meeting.
 	 */
 	virtual bool IsEmojiReactionEnabled() = 0;
 	
 	/**
-	 * @brief Send the reaction.
+	 * @brief Sends the reaction.
 	 * @param type Specify the reaction type to be sent.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SendEmojiReaction(SDKEmojiReactionType type) = 0;
 	
 	/**
-	 * @brief Set emoji reaction display type in webinar.
+	 * @brief Sets emoji reaction display type in webinar.
      * @param type The display type of the emoji reaction.
-     * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+     * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetWebinarEmojiReactionDisplayType(SDKEmojiReactionDisplayType type) = 0;
 	
 	/**
-	 * @brief Get emoji reaction display type in webinar.
+	 * @brief Gets emoji reaction display type in webinar.
 	 * @return If the function succeeds, it will return the display type of the emoji reaction, otherwise returns SDKEmojiReactionDisplayType_None.
 	 */
 	virtual SDKEmojiReactionDisplayType GetWebinarEmojiReactionDisplayType() = 0;
 	
 	/**
-	 * @brief Send the emoji feedback.
+	 * @brief Sends the emoji feedback.
 	 * @param type Specify the emoji feedback type to be sent.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SendEmojiFeedback(SDKEmojiFeedbackType type) = 0;
 	
 	/**
 	 * @brief Cancel the emoji feedback.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CancelEmojiFeedback() = 0;
 };

@@ -16,13 +16,13 @@ class IMeetingRawArchivingController
 public:
 	/**
 	 * @brief start raw archiving,call this method can get rawdata receive privilege.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StartRawArchiving() = 0;
 
 	/**
 	 * @brief stop raw archiving, call this method reclaim rawdata receive privilege.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StopRawArchiving() = 0;
 };

@@ -122,6 +122,17 @@ namespace flutter_zoom_sdk {
         void onMeetingTopicChanged(const zchar_t *sTopic);
 
 		void onMeetingFullToWatchLiveStream(const zchar_t* sLiveStreamUrl);
+
+		void onUserNetworkStatusChanged(
+				ZOOM_SDK_NAMESPACE::MeetingComponentType type,
+				ZOOM_SDK_NAMESPACE::ConnectionQuality level,
+				unsigned int userId,
+				bool uplink
+		) override;
+
+		void onAppSignalPanelUpdated(
+				ZOOM_SDK_NAMESPACE::IMeetingAppSignalHandler* pHandler
+		) override;
 	};
 
 }  // namespace flutter_zoom_sdk

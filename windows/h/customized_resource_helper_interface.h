@@ -53,28 +53,29 @@ class ICustomizedResourceHelper
 {
 public:
 	/**
-	 * @brief Add the custom photo files, currently, support PNG and SVG formats.
+	 * @brief Adds the custom photo files. Currently, supports PNG and SVG formats.
 	 * @param key_ Resource ID corresponding to the custom resource.
 	 * @param absolute_resource_path The location of the customized resource file must be an absolute path and include the file name with suffix.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note You must call the function first before calling ZOOM_SDK_NAMESPACE::InitSDK(), or no, it won't work.
 	 */
 	virtual SDKError AddCustomizedPictureResource(const zchar_t* key_, const zchar_t* absolute_resource_path) = 0;
 	
 	/**
-	 * @brief Use the custom string to replace the specified string item.
-	 * @param customizedType Specify the string item type. For more information, see \link SDKCustomizedStringType \endlink enum.
-	 * @param customizedString Specify the custom string.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Uses the custom string to replace the specified string item.
+	 * @param customizedType Specifies the string item type.
+	 * @param customizedString Specifies the custom string.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note If customizedString is nullptr or is not nullptr but with length zero(0), the return value is SDKERR_INVALID_PARAMETER.
 	 * @note You must call the function first before calling ZOOM_SDK_NAMESPACE::InitSDK(), or no, it won't work.
 	 */
 	virtual SDKError AddCustomizedStringResource(SDKCustomizedStringType customizedType, const zchar_t* customizedString) = 0;
 	
 	/**
-	 * @brief Use the custom URL to replace the specified URL.
-	 * @param customizedType Specify the URL type. For more information, see \link SDKCustomizedURLType \endlink enum.
-	 * @param customizedUrl Specify the custom URL. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Uses the custom URL to replace the specified URL.
+	 * @param customizedType Specifies the URL type.
+	 * @param customizedUrl Specifies the custom URL. 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note If customizedUrl is nullptr or is not nullptr but with length zero(0), the return value is SDKERR_INVALID_PARAMETER.
 	 * @note You must call the function first before calling ZOOM_SDK_NAMESPACE::InitSDK(), or no, it won't work.
 	 */

@@ -17,24 +17,24 @@ class IMeetingPhoneSupportCountryInfo
 public:
 	virtual ~IMeetingPhoneSupportCountryInfo(){}
 	/**
-	* @brief Get the country ID of the current information.  
+	* @brief Gets the country ID of the current information.  
 	* @return The country ID.
 	*/	
 	virtual const zchar_t* GetCountryID() = 0;
 	/**
-	* @brief Get the country name of the current information.
+	* @brief Gets the country name of the current information.
 	* @return The country name.
 	*/	
 	virtual const zchar_t* GetCountryName() = 0;
 	/**
-	* @brief Get the country code of the current information. 
+	* @brief Gets the country code of the current information. 
 	* @return The country code.
 	*/	
 	virtual const zchar_t* GetCountryCode() = 0;
 };
 
 /**
- * @brief Type of telephone call. 
+ * @brief Enumeration of telephone call type. 
  */
 enum CALLINNUMTYPE
 {
@@ -55,39 +55,39 @@ class IMeetingCallInPhoneNumberInfo
 public:
 	virtual ~IMeetingCallInPhoneNumberInfo(){}
 	/**
-	 * @brief Get the current call-in number's country ID.
+	 * @brief Gets the current call-in number's country ID.
 	 * @return The country ID.	
 	 */
 	virtual const zchar_t* GetID() = 0;
 	/**
-	 * @brief Get the current call-in number's country code.
+	 * @brief Gets the current call-in number's country code.
 	 * @return The country code.	
 	 */
 	virtual const zchar_t* GetCode() = 0;
 	/**
-	 * @brief Get the current call-in number's country name.
+	 * @brief Gets the current call-in number's country name.
 	 * @return The country name.
 	 */
 	virtual const zchar_t* GetName() = 0;
 	 /**
-	 * @brief Get the current call-in number's telephone number.
+	 * @brief Gets the current call-in number's telephone number.
 	 * @return The telephone number.
 	 */
 	virtual const zchar_t* GetNumber() = 0;
 	/**
-	 * @brief Get the current call-in number's display number. 
+	 * @brief Gets the current call-in number's display number. 
 	 * @return The display number.
 	 */
 	virtual const zchar_t* GetDisplayNumber() = 0;
 	/**
-	 * @brief Get the current call-in number's call type.
-	 * @return Call type. For more details, see \link CALLINNUMTYPE \endlink.
+	 * @brief Gets the current call-in number's call type.
+	 * @return Call type.
 	 */
 	virtual CALLINNUMTYPE  GetType() = 0;
 };
 
 /** 
- * @brief Status of telephone.
+ * @brief Enumeration of telephone status.
  */
 enum PhoneStatus
 {
@@ -114,7 +114,7 @@ enum PhoneStatus
 };
 
 /**
- * @brief The reason for the telephone call's failure.
+ * @brief Enumeration of telephone call failure reason.
  */
 enum PhoneFailedReason
 {
@@ -149,15 +149,15 @@ public:
 
 	/**
 	 * @brief Invite others by telephone call-out and send the response to the application according to the others' status.
-	 * @param status The telephone's status. For more details, see \link PhoneStatus \endlink enum.
-	 * @param reason The reason for the failure if the status value is PhoneStatus_Failed. For more details, see \link PhoneFailedReason \endlink enum.
+	 * @param status The telephone's status.
+	 * @param reason The reason for the failure if the status value is PhoneStatus_Failed.
 	 */
 	virtual void onInviteCallOutUserStatus(PhoneStatus status, PhoneFailedReason reason) = 0;
 	
 	/**
 	 * @brief Invite others to join the meeting by CALL ME and give the response to the application according to the status. 
-	 * @param status The telephone's status. For more details, see \link PhoneStatus \endlink enum.
-	 * @param reason The reason for the failure if the status value is PhoneStatus_Failed. For more details, see \link PhoneFailedReason \endlink enum.
+	 * @param status The telephone's status.
+	 * @param reason The reason for the failure if the status value is PhoneStatus_Failed.
 	 */
 	virtual void onCallMeStatus(PhoneStatus status, PhoneFailedReason reason) = 0;
 };
@@ -169,48 +169,60 @@ class IMeetingPhoneHelper
 {
 public:
 	/**
-	 * @brief Set meeting phone helper callback event handler 123, 456, 123
+	 * @brief Sets meeting phone helper callback event handler 123, 456, 123
 	 * @param pEvent A pointer to the IMeetingPhoneHelperEvent that receives the phone event. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(IMeetingPhoneHelperEvent* pEvent) = 0;
 
 	 /**
-	 * @brief Determine whether the meeting supports to join by the phone or not.
-	 * @return TRUE indicates to support to join by phone. FALSE not.
+	 * @brief Determines whether the meeting supports to join by the phone or not.
+	 * @return true if to support to join by phone. Otherwise, false.
 	 */	
 	 virtual bool IsSupportPhoneFeature() = 0;
 	
 	 /**
 	 * @brief Query if it is able to dial out in the current meeting.
-	 * @return return true means able to dial out. Otherwise return false.
+	 * @return true if able to dial out. Otherwise, false.
 	 */	
 	 virtual bool IsDialoutSupported() = 0;
 
 	 /**
-	 * @brief Get the list of the country information where the meeting supports to join by telephone.
+	  * @brief Determines whether any phone dial-out action is in progress.
+	  * @return true if either CALL ME or invite-callout is in progress. Otherwise, false.
+	  */
+	 virtual bool IsDialOutInProgress() = 0;
+
+	 /**
+	 * @brief Gets the list of the country information where the meeting supports to join by telephone.
 	 * @return List of the country information returns if the meeting supports to join by telephone. Otherwise nullptr.
 	 */	
 	 virtual IList<IMeetingPhoneSupportCountryInfo* >* GetSupportCountryInfo() = 0;
+
+	 /**
+	  * @brief Gets the selected caller ID for phone call-out.
+	  * @return If the function succeeds, it returns the caller ID. Otherwise returns nullptr.
+	  */
+	 virtual const zchar_t* GetCallOutCallerID() = 0;
 
 	 /**
 	 * @brief Invite the specified user to join the meeting by calling out.
 	 * @param countryCode The specified users' country code must be in the support list.
 	 * @param phoneNumber The specified users' phone number.
 	 * @param name The specified users' screen name in the meeting.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError InviteCallOutUser(const zchar_t* countryCode, const zchar_t* phoneNumber, const zchar_t* name) = 0;
 
 	/**
 	 * @brief Cancel the invitation that is being called out by phone.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CancelCallOut() = 0;
 
 	 /**
-	 * @brief Get the invited users' status by calling out.
-	 * @return If the function succeeds, the return value is the current call-out process. To get extended error information, see \link PhoneStatus \endlink enum
+	 * @brief Gets the invited users' status by calling out.
+	 * @return If the function succeeds, it returns the current call-out process.
 	 */	
 	 virtual PhoneStatus GetInviteCalloutUserStatus() = 0;
 
@@ -218,31 +230,31 @@ public:
 	 * @brief Use the CALL ME to invite the attendee who uses the specified number to join the meeting.
 	 * @param countryCode The country code of the specified user must be in the support list.
 	 * @param phoneNumber The specified phone number.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CallMe(const zchar_t* countryCode, const zchar_t* phoneNumber) = 0;
 
 	/**
 	 * @brief Cancel the current invitation by CALL ME.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Hangup() = 0;
 
 	/**
-	 * @brief Get the process of the invitation by CALL ME.
-	 * @return If the function succeeds, the return value is the process of the invitation by CALL ME.  Otherwise failed. To get extended error information, see \link PhoneStatus \endlink enum.
+	 * @brief Gets the process of the invitation by CALL ME.
+	 * @return If the function succeeds, the return value is the process of the invitation by CALL ME.
 	 */
 	virtual PhoneStatus GetCallMeStatus() = 0;
 
 	/**
-	 * @brief Get the list of call in numbers supported by meeting.
-	 * @return If the function succeeds, the return value is the list of the call-in numbers.  Otherwise failed. For more details, see \link IMeetingCallInPhoneNumberInfo \endlink.
+	 * @brief Gets the list of call in numbers supported by meeting.
+	 * @return If the function succeeds, the return value is the list of the call-in numbers.
 	 */	
 	virtual IList<IMeetingCallInPhoneNumberInfo*>* GetCurrentMeetingCallinNumber() = 0;
 
 	/**
-	 * @brief Get the ID of the participant who joins the meeting by calling in. 
-	 * @return If the function succeeds, the return value is the participant ID.
+	 * @brief Gets the ID of the participant who joins the meeting by calling in. 
+	 * @return If the function succeeds, it returns the participant ID.
 	 */	
 	virtual unsigned int GetCurrentMeetingCallinParticipantID() = 0;
 };

@@ -1,3 +1,7 @@
+/**
+ * @file rawdata_renderer_interface.h
+ * @brief Raw Data Renderer Interface.
+ */
 #ifndef _RAWDATA_RENDERER_INTERFACE_H_
 #define _RAWDATA_RENDERER_INTERFACE_H_
 #include "zoom_sdk_def.h"
@@ -37,6 +41,11 @@ public:
 
 	virtual void onRawDataFrameReceived(YUVRawDataI420* data) = 0;
 	virtual void onRawDataStatusChanged(RawDataStatus status) = 0;
+	/**
+	 * @brief Callback when the cursor data of share is received.
+	 * @param info Share cursor data object.
+	 */
+	virtual void onShareCursorDataReceived(ZoomSDKShareCursorData info) = 0;
 	virtual ~IZoomSDKRendererDelegate() {}
 };
 
@@ -48,14 +57,14 @@ public:
 	 * @brief Subscribe to the video or share's raw data.
 	 * @param subscribeId: If 'type' is RAW_DATA_TYPE_VIDEO, 'subscribeId' refers to the user ID, otherwise it refers to the shared source ID of user.
 	 * @param type: Specify the raw data type.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError subscribe(uint32_t subscribeId, ZoomSDKRawDataType type) = 0;
 	virtual SDKError unSubscribe() = 0;
 	virtual ZoomSDKResolution getResolution() = 0;
 	virtual ZoomSDKRawDataType getRawDataType() = 0;
 	/**
-	 * @brief Get the subscribed ID specified when subscribing.
+	 * @brief Gets the subscribed ID specified when subscribing.
 	 * @return subscribed id.
 	 */
 	virtual uint32_t getSubscribeId() = 0;

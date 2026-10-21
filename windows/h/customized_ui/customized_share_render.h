@@ -8,7 +8,7 @@
 
 BEGIN_ZOOM_SDK_NAMESPACE
 /**
- * @brief View mode of shared render.
+ * @brief Enumeration of shared render view mode.
  * Here are more detailed structural descriptions.
  */ 
 enum CustomizedViewShareMode 
@@ -60,19 +60,19 @@ class IShareActionBase
 public:
 	/**
 	 * @brief Show the shared content received.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Show() = 0;
 	
 	/**
 	 * @brief Hide the shared content received.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Hide() = 0;
 	
 	/**
-	 * @brief Get the window handle of showing sharing content.
-	 * @return If the function succeeds, the return value is the window handle. Otherwise failed, the return value is nullptr.
+	 * @brief Gets the window handle of showing sharing content.
+	 * @return If the function succeeds, the return value is the window handle. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual HWND GetOwnerWnd() = 0;
 
@@ -87,9 +87,9 @@ class ICustomizedShareRender : public IShareActionBase
 {
 public:
 	/**
-	 * @brief Set the share render callback event handler.
+	 * @brief Sets the share render callback event handler.
 	 * @param pEvent A pointer to the ICustomizedShareRenderEvent that receives the share render event. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(ICustomizedShareRenderEvent* pEvent) = 0;
 	
@@ -98,33 +98,33 @@ public:
 	 * @param nShareSourceID Specify the share source ID.
 	 * @note Call the IMeetingShareController::GetViewableShareSourceList to get the list of users who are sending the sharing. 
 	 * Handle the IMeetingShareCtrlEvent::onSharingStatus callback event to know who starts/stops the sharing.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetShareSourceID(unsigned int nShareSourceID) = 0;
 	
 	/**
-	 * @brief Get the share source ID of the user who's sending the sharing.
-	 * @return If the function succeeds, the return value is the share source ID. Otherwise failed, the return value is ZERO(0).
+	 * @brief Gets the share source ID of the user who's sending the sharing.
+	 * @return If the function succeeds, the return value is the share source ID. Otherwise, this function fails and returns ZERO(0).
 	 */
 	virtual unsigned int GetShareSourceID() = 0;
 	
 	/**
 	 * @brief Reset the dialog size to view the sharing content.
 	 * @param rc Specify the size of the window. The coordinate of the upper left corner of the window corresponds to the client area of the parent window. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Resize(RECT rc) = 0;
 	
 	/**
-	 * @brief Set the view mode of watching the sharing.
-	 * @param mode Specify the view mode. For more details, see \link CustomizedViewShareMode \endlink enum. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Sets the view mode of watching the sharing.
+	 * @param mode Specify the view mode.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetViewMode(CustomizedViewShareMode mode) = 0;
 	
 	/**
 	 * @brief Redraw the window of showing the sharing.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * Call the function when the parent window gets WM_MOVE windows message.
 	 * @note Call the function to complete the redraw work once received the ICustomizedShareRenderEvent::onWindowMsgNotification() callback event and dealt with WM_MOVE. Otherwise there maybe problem with the view.
 	 */
@@ -175,9 +175,9 @@ class IShareAction : public IShareActionBase
 {
 public:
 	/**
-	 * @brief Set the share action callback event handler.
+	 * @brief Sets the share action callback event handler.
 	 * @param pEvent A pointer to the IShareActionEvent that receives the share render event. 
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(IShareActionEvent* pEvent) = 0;
 	
@@ -185,31 +185,31 @@ public:
 	 * @brief Resize the share action in the specified area and reset the parent window.
 	 * @param rc Specify a new display area. The coordinate value of the structure is that of the parent window of share action.
 	 * @param hParentWnd Specify a new parent window HWND.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Reposition(RECT rc, HWND hParentWnd = nullptr) = 0;
 	
 	/**
-	 * @brief Get the sharing ID.
-	 * @return If the function succeeds, the return value is the sharing ID. Otherwise the function fails, and the return value is ZERO(0).
+	 * @brief Gets the sharing ID.
+	 * @return If the function succeeds, the return value is the sharing ID. Otherwise, this function returns an error, and the return value is ZERO(0).
 	 */
 	virtual const unsigned int GetSharingID() = 0;
 	
 	/**
-	 * @brief Get the name of the sharing user.
-	 * @return If the function succeeds, the return value is the name.  Otherwise the function fails, and the return value is nullptr.
+	 * @brief Gets the name of the sharing user.
+	 * @return If the function succeeds, the return value is the name.  Otherwise, this function returns an error, and the return value is nullptr.
 	 */
 	virtual const zchar_t* GetSharingUserName() = 0;
 	
 	/**
 	 * @brief Subscribe the sharing content.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Subscribe() = 0;
 	
 	/**
 	 * @brief Unsubscribe the sharing content.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Unsubscribe() = 0;
 

@@ -36,9 +36,9 @@ class ICustomizedImmersiveContainer
 {
 public:
 	/**
-	 * @brief Set immersive container callback event handler.
+	 * @brief Sets immersive container callback event handler.
 	 * @param pEvent A pointer to the ICustomizedImmersiveContainerEvent that receives video container callback event. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(ICustomizedImmersiveContainerEvent* pEvent) = 0;
 	
@@ -46,20 +46,20 @@ public:
 	 * @brief Resize the immersive container in the specified area and reset the parent window.
 	 * @param rc Specify a new display area. The coordinate value of the structure is that of the parent window of immersive container.
 	 * @param hParentWnd Specify a new parent window HWND.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError RepositionContainer(RECT rc, HWND hParentWnd = nullptr) = 0;
 	
 	/**
 	 * @brief Show the waiting area before start immersive.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note It is only valid if called before start immersive view.
 	 */
 	virtual SDKError ShowWaitingArea() = 0;
 	
 	/**
 	 * @brief Hide the waiting area before start immersive.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note It is only valid if called before start immersive view.
 	 */
 	virtual SDKError HideWaitingArea() = 0;

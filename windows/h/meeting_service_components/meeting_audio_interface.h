@@ -8,7 +8,7 @@
 
 BEGIN_ZOOM_SDK_NAMESPACE
 /**
- * @brief Define the audio status of the user.
+ * @brief Enumeration of audio status of the user.
  * Here are more detailed structural descriptions.
  */
 enum AudioStatus
@@ -29,7 +29,7 @@ enum AudioStatus
 	Audio_UnMutedAll_ByHost,
 };
 /**
- * @brief Define the audio type of the user.
+ * @brief Enumeration of audio type of the user.
  * Here are more detailed structural descriptions.
  */
 enum AudioType
@@ -52,21 +52,18 @@ class IRequestStartAudioHandler
 public:
 	virtual ~IRequestStartAudioHandler(){};
 	/**
-	 * @brief Get the user ID who asks to turn on the audio.
-	 * @return If the function succeeds, the return value is the user ID. FALSE 0.
-	 * @deprecated This interface is marked as deprecated.
-	 */
-	virtual unsigned int GetReqFromUserId() = 0;
-	/**
-	 * @brief Instance to ignore the requirement, return nothing and finally self-destroy.
+	 * @brief Ignores the requirement, returns nothing and finally self-destroys.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Ignore() = 0;
 	/**
-	 * @brief Instance to accept the requirement, turn on the audio and finally self-destroy.
+	 * @brief Accepts the requirement, turns on the audio and finally self-destroys.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Accept() = 0;
 	/**
-	 * @brief Ignore the request to enable the video in the meeting and finally the instance self-destroys.
+	 * @brief Ignores the request to enable the audio in the meeting and finally the instance self-destroys.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Cancel() = 0;
 };
@@ -79,20 +76,20 @@ class IUserAudioStatus
 {
 public:
 	/**
-	 * @brief Get the user ID.
-	 * @return The user ID.
+	 * @brief Gets the user ID.
+	 * @return If the function succeeds, it returns the user ID. Otherwise, this function returns ZERO(0).
 	 */
 	virtual unsigned int GetUserId() = 0;
 	
 	/**
-	 * @brief Get the audio status of the user.
-	 * @return Value defined in AudioStatus enum, see \link AudioStatus \endlink enum.
+	 * @brief Gets the audio status of the user.
+	 * @return If the function succeeds, it returns the value defined in AudioStatus enum. Otherwise, this function returns an error.
 	 */
 	virtual AudioStatus GetStatus() = 0;
 	
 	/**
-	 * @brief Get the audio type of the user. 
-	 * @return Value defined in AudioType enum, see \link AudioType \endlink enum.
+	 * @brief Gets the audio type of the user. 
+	 * @return If the function succeeds, it returns the value defined in AudioType enum. Otherwise, this function returns an error.
 	 */
 	virtual AudioType   GetAudioType() = 0;
 	virtual ~IUserAudioStatus(){};
@@ -120,7 +117,7 @@ public:
 
 	/**
 	 * @brief Callback event of the requirement to turn on the audio from the host.
-	 * @param handler_ A pointer to the IRequestStartAudioHandler. For more details, see \link IRequestStartAudioHandler \endlink.
+	 * @param handler_ A pointer to the IRequestStartAudioHandler.
 	 */
 	virtual void onHostRequestStartAudio(IRequestStartAudioHandler* handler_) = 0;
 
@@ -147,109 +144,111 @@ class IMeetingAudioController
 {
 public:
 	/**
-	 * @brief Configure the meeting audio controller callback event handler.
-	 * @param pEvent An object pointer to the IMeetingAudioCtrlEvent that receives the meeting audio callback event. For more details, see \link IMeetingAudioCtrlEvent \endlink.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	 * @note The SDK use pEvent to transmit the callback event to the user's application. If the function is not called or failed, the user's application is unabled to retrieve the callback event.
+	 * @brief Configures the meeting audio controller callback event handler.
+	 * @param pEvent An object pointer to the IMeetingAudioCtrlEvent that receives the meeting audio callback event.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
+	 * @note The SDK uses pEvent to transmit the callback event to the user's application. If the function is not called or fails, the user's application is unable to retrieve the callback event.
 	 */
 	virtual SDKError SetEvent(IMeetingAudioCtrlEvent* pEvent) = 0;
 
 	/**
-	 * @brief Join VoIP meeting.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Joins VoIP meeting.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual SDKError JoinVoip() = 0;
 
 	/**
-	 * @brief Leave VoIP meeting.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Leaves VoIP meeting.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual SDKError LeaveVoip() = 0;
 
 	/**
-	 * @brief Mute the assigned user.
-	 * @param userid Specify the user ID to mute. ZERO(0) indicates to mute all the participants.
-	 * @param allowUnmuteBySelf The user may unmute himself when everyone is muted.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Mutes the assigned user.
+	 * @param userid The user ID to mute. ZERO(0) indicates to mute all the participants.
+	 * @param allowUnmuteBySelf true if the user may unmute himself when everyone is muted, false otherwise.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual SDKError MuteAudio(unsigned int userid, bool allowUnmuteBySelf = true) = 0;
 
 	/**
-	 * @brief Unmute the assigned user. 
-	 * @param userid Specify the user ID to unmute. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Unmutes the assigned user. 
+	 * @param userid The user ID to unmute. 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual SDKError UnMuteAudio(unsigned int userid) = 0;
 
 	/**
-	 * @brief Check if the user can unmute himself.
-	 * @return TRUE indicates that the user can unmute himself. Otherwise not. 
+	 * @brief Determines whether the user can unmute himself.
+	 * @return true if the user can unmute himself. Otherwise, false.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual bool CanUnMuteBySelf() = 0;
 
 	/**
-	 * @brief Check if the host or cohost can enable mute on entry.
-	 * @return TRUE indicates that the host or cohost can enable mute on entry. Otherwise not. 
+	 * @brief Determines whether the host or cohost can enable mute on entry.
+	 * @return true if the host or cohost can enable mute on entry. Otherwise, false.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual bool CanEnableMuteOnEntry() = 0;
 
 	/**
-	 * @brief Mute or umute the user after joining the meeting. 
-	 * @param bEnable TRUE indicates to mute the user after joining the meeting.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Mutes or unmutes the user after joining the meeting. 
+	 * @param bEnable true indicates to mute the user after joining the meeting.
+	 * @param allowUnmuteBySelf true indicates to allow the user to unmute by self.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual SDKError EnableMuteOnEntry(bool bEnable,bool allowUnmuteBySelf) = 0;
 
 	/**
-	 * @brief Determine if mute on entry is enabled.
-	 * @return TRUE indicates that mute on entry is enabled. 
+	 * @brief Determines if mute on entry is enabled.
+	 * @return true indicates that mute on entry is enabled. 
 	 */
 	virtual bool IsMuteOnEntryEnabled() = 0;
 
 	/**
 	 * @brief User joins or leaves the meeting in silence or no.
-	 * @param bEnable TRUE indicates to play chime when the user joins or leaves the meeting.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param bEnable true indicates to play chime when the user joins or leaves the meeting.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual SDKError EnablePlayChimeWhenEnterOrExit(bool bEnable) = 0;
 
 	/**
-	 * @brief Stop the incoming audio.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails and returns an error. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Stops the incoming audio.
+	 * @param bStop true indicates to stop the incoming audio. false not.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StopIncomingAudio(bool bStop) = 0;
 
 	/**
-	 * @brief Determine if the incoming audio is stopped.
-	 * @return TRUE indicates that the incoming audio is stopped. 
+	 * @brief Determines if the incoming audio is stopped.
+	 * @return true indicates that the incoming audio is stopped. 
 	 */
 	virtual bool IsIncomingAudioStopped() = 0;
 
 	/**
-	 * @brief Determine if the meeting has third party telephony audio enabled.
-	 * @return TRUE means enabled, otherwise it is not enabled. 
+	 * @brief Determines if the meeting has third party telephony audio enabled.
+	 * @return true if enabled. Otherwise, false.
 	 */
 	virtual bool Is3rdPartyTelephonyAudioOn() = 0;
 
 	/**
-	 * @brief Enable or disable SDK to play meeting audio.
-	 * @param bEnable True means that SDK will play meeting audio. False means that SDK will not play meeting audio.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Enables or disables SDK to play meeting audio.
+	 * @param bEnable true to enable SDK to play meeting audio, false to disable.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note SDK will not support sharing computer sound when disabling playing meeting audio.
 	 */
 	virtual SDKError EnablePlayMeetingAudio(bool bEnable) = 0;
 
 	/**
-	 * @brief Determine if play meeting audio is enabled or not.
-	 * @return TRUE means enabled, otherwise it is not enabled.
+	 * @brief Determines if play meeting audio is enabled or not.
+	 * @return true if enabled. Otherwise, false.
 	 */
 	virtual bool IsPlayMeetingAudioEnabled() = 0;
 };

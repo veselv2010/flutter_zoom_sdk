@@ -20,6 +20,22 @@ typedef float  FLOAT;
 typedef void* HWND;
 #define TLS_KEY_DEF pthread_key_t
 #endif//#if defined(WIN32)
+
+/**
+ * @brief Share cursor information.
+ */
+struct ZoomSDKShareCursorData
+{
+	unsigned int source_id;
+	int x;
+	int y;
+
+	ZoomSDKShareCursorData()
+		: source_id(0), x(0), y(0)
+	{
+	}
+};
+
 #define PLATFORM_IMPORT	__declspec(dllimport)  
 #define PLATFORM_EXPORT	__declspec(dllexport)
 #ifdef ZOOM_SDK_DLL_EXPORT
@@ -115,7 +131,23 @@ enum SDKError
 	SDKERR_MEETING_REMOTE_CONTROL_IS_OFF,
 	/** File transfer fail. */
 	SDKERR_FILETRANSFER_ERROR,
+	/** No breakout room created yet. */
+	SDKERR_BREAKOUT_ROOM_NOT_CREATED,
+	/** Too much data sent in a single call. */
+	SDKERR_SEND_TOO_MUCH_DATA_IN_SINGLE_TIME,
 
+};
+
+/**
+ * @brief Enumeration of the meeting session a feature binds to.
+ * @note SessionSource_MainSession is valid only while the local user is in webinar backstage.
+ */
+enum ZoomSDKSessionSource
+{
+	/** The session the local user is currently in. Default. */
+	SessionSource_CurrentSession = 0,
+	/** The webinar main session. Valid only while the local user is in webinar backstage. */
+	SessionSource_MainSession = 1,
 };
 
 /**
@@ -196,7 +228,7 @@ typedef struct tagWndPosition
 }WndPosition;
 
 /**
- * @brief Custom resource type used by the SDK.
+ * @brief Enumeration of custom resource type used by the SDK.
  */
 enum CustomizedLanguageType
 {
@@ -233,20 +265,6 @@ typedef struct tagCustomizedLanguageInfo
  * @note This structure is used only for the SDK initialization to configure the custom resource file and choose whether to use the UI mode.
  */
 #define ENABLE_CUSTOMIZED_UI_FLAG (1 << 5)
-typedef struct tagConfigurableOptions
-{
-	/** The custom resource information. */
-	CustomizedLanguageInfo customizedLang;
-	/** Additional functional configuration. The function currently supports whether to use the custom UI mode only. When the value of the optionalFeatures&ENABLE_CUSTOMIZED_UI_FLAG is true, it means the custom UI mode will be used. Otherwise the Zoom UI mode will be used. */
-	int optionalFeatures;
-	const zchar_t* sdkPathPostfix;
-	tagConfigurableOptions()
-	{
-		optionalFeatures = 0;
-		sdkPathPostfix = nullptr;
-	}
-
-}ConfigurableOptions;
 
 /**
  * @brief Enumeration of locale type.
@@ -326,6 +344,39 @@ typedef struct tagZoomSDKRenderOptions
 }ZoomSDKRenderOptions;
 #endif
 
+typedef struct tagConfigurableOptions
+{
+#if defined(WIN32)
+	/** The custom resource information. */
+	CustomizedLanguageInfo customizedLang;
+	/** Additional functional configuration. The function currently supports whether to use the custom UI mode only. When the value of the optionalFeatures&ENABLE_CUSTOMIZED_UI_FLAG is true, it means the custom UI mode will be used. Otherwise the Zoom UI mode will be used. */
+	int optionalFeatures;
+#endif
+	/** Optional path postfix string appended to file system paths.
+	 * Maximum length is 8 characters (after trimming whitespace). Longer values will be silently ignored.
+	 * The postfix will be converted to lowercase automatically.
+	 * Note: Running multiple instances of the SDK simultaneously is unsupported and may result in undefined behavior.
+	 */
+	const zchar_t* sdkPathPostfix;
+#if defined(__linux__)
+	bool create_qt_gui_application_if_needed;
+	unsigned int custom_video_device_index;
+#endif
+
+	tagConfigurableOptions()
+	{
+	#if defined(WIN32)
+		optionalFeatures = 0;
+	#endif
+		sdkPathPostfix = nullptr;
+#if defined(__linux__)
+		create_qt_gui_application_if_needed = false;
+		custom_video_device_index = 0;
+#endif
+	}
+
+}ConfigurableOptions;
+
 /**
  * @brief Rawdata options.
  */
@@ -369,6 +420,8 @@ typedef struct tagInitParam
 	unsigned int uiLogFileSize; 
 	/** rawdata options. */
 	RawDataOptions rawdataOpts;
+	/** The configuration options of the SDK. */
+	ConfigurableOptions obConfigOpts;
 #if defined(WIN32)
 	/** Resource module handle. */
 	void* hResInstance;
@@ -376,8 +429,6 @@ typedef struct tagInitParam
 	unsigned int uiWindowIconSmallID;
 	/** The ID of the big Icon on the window. */
 	unsigned int uiWindowIconBigID;
-	/** The configuration options of the SDK. */
-	ConfigurableOptions obConfigOpts;
 	/** Locale. */
 	SDK_APP_Locale locale;
 	/** Render options. */
@@ -387,6 +438,7 @@ typedef struct tagInitParam
 #endif
 	/** Wrapper type. */
 	int wrapperType;
+
 	tagInitParam()
 	{
 		strWebDomain = nullptr;
@@ -433,7 +485,9 @@ enum ShareType
 	/** Type of sharing the document. */
 	SHARE_TYPE_DOCUMENT,
 	/** Type of sharing the computer audio. */
-	SHARE_TYPE_COMPUTER_AUDIO
+	SHARE_TYPE_COMPUTER_AUDIO,
+	/** Type of sharing a clip (Share Clips, sent by a Gateway virtual user). */
+	SHARE_TYPE_CLIPS
 };
 
 /**
@@ -460,18 +514,18 @@ class IZoomLastError
 {
 public:
     /**
-	 * @brief Get the last error type.	
-	 * @return If the function succeeds, the error type will be returned. For more details, see \link LastErrorType \endlink enum.
+	 * @brief Gets the last error type.	
+	 * @return If the function succeeds, the error type will be returned.
 	 */
 	virtual LastErrorType GetErrorType() const = 0 ;
     /**
-	 * @brief Get the last error code.
+	 * @brief Gets the last error code.
 	 * @return If the function succeeds, the error code will be returned.
 	 */
 	virtual UINT64 GetErrorCode() const = 0;
 
     /**
-	 * @brief Get the description for the last error.
+	 * @brief Gets the description for the last error.
 	 * @return If the function succeeds, the error description will be returned. If there is no error, it will return an empty string of length zero(0).
 	 */
 	virtual const zchar_t* GetErrorDescription() const = 0;

@@ -375,7 +375,7 @@ namespace flutter_zoom_sdk {
 		}
 	}
 
-	// class AuthEvent 
+	// class AuthEvent
 	AuthEvent::AuthEvent() {}
 
 	AuthEvent::~AuthEvent() {}
@@ -399,7 +399,7 @@ namespace flutter_zoom_sdk {
 	void AuthEvent::onNotificationServiceStatus(ZOOM_SDK_NAMESPACE::SDKNotificationServiceStatus status, ZOOM_SDK_NAMESPACE::SDKNotificationServiceError error) {}
 
 
-	// class MeetingServiceEvent 
+	// class MeetingServiceEvent
 	MeetingServiceEvent::MeetingServiceEvent() {}
 
 	MeetingServiceEvent::~MeetingServiceEvent() {}
@@ -434,6 +434,17 @@ namespace flutter_zoom_sdk {
 	void MeetingServiceEvent::onMeetingTopicChanged(const zchar_t *sTopic){}
 
 	void MeetingServiceEvent::onMeetingFullToWatchLiveStream(const zchar_t* sLiveStreamUrl){}
+
+	void MeetingServiceEvent::onUserNetworkStatusChanged(
+			ZOOM_SDK_NAMESPACE::MeetingComponentType type,
+			ZOOM_SDK_NAMESPACE::ConnectionQuality level,
+			unsigned int userId,
+			bool uplink
+	) {}
+
+	void MeetingServiceEvent::onAppSignalPanelUpdated(
+			ZOOM_SDK_NAMESPACE::IMeetingAppSignalHandler* pHandler
+	) {}
 
     ZOOM_SDK_NAMESPACE::SDK_LANGUAGE_ID LanguageIdFromString(const string &lang_in) {
         if (lang_in.empty()) return ZOOM_SDK_NAMESPACE::LANGUAGE_Unknown;

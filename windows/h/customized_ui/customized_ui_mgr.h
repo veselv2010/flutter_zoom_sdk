@@ -49,15 +49,15 @@ class ICustomizedUIMgr
 {
 public:
 	/**
-	 * @brief Determine if the user owns the license to enable the custom UI module.
-	 * @return If the user owns the license, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Determines if the user owns the license to enable the custom UI module.
+	 * @return If the user owns the license, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError HasLicense() = 0;
 	
 	/**
-	 * @brief Set custom UI manager interface callback event handler.
+	 * @brief Sets custom UI manager interface callback event handler.
 	 * @param pEvent A pointer to the ICustomizedUIMgrEvent that receives user manager custom interface event. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(ICustomizedUIMgrEvent* pEvent) = 0;
 	
@@ -67,20 +67,22 @@ public:
 	 * @param hParentWnd Specify the parent window of the video container.
 	 * @param rc Specify the position of client area of the video render elements.
 	 * The client coordinates corresponds to the client area of the upper-left corner of the parent window.
-	 * @return If the function succeeds, the return value is SDKErr_Success, and the return value of ppContainer is not nullptr. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param source CurrentSession (default) or MainSession. Source cannot be changed after create.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS, and the return value of ppContainer is not nullptr. Otherwise, this function returns an error.
 	 */
-	virtual SDKError CreateVideoContainer(ICustomizedVideoContainer** ppContainer, HWND hParentWnd, RECT rc) = 0;
+	virtual SDKError CreateVideoContainer(ICustomizedVideoContainer** ppContainer, HWND hParentWnd, RECT rc,
+		ZoomSDKSessionSource source = SessionSource_CurrentSession) = 0;
 	
 	/**
 	 * @brief Destroy the specified video container.
 	 * @param pContainer A pointer to the ICustomizedVideoContainer to be destroyed. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DestroyVideoContainer(ICustomizedVideoContainer* pContainer) = 0;
 	
 	/**
 	 * @brief Destroy all the video containers.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DestroyAllVideoContainer() = 0;
 	
@@ -90,20 +92,20 @@ public:
 	 * @param hParentWnd Specify the parent window of the shared render.
 	 * @param rc Specify the position of client area of the shared render.
 	 * The client coordinates corresponds to the client area of the upper-left corner of the parent window.
-	 * @return If the function succeeds, the return value is SDKErr_Success, and the return value of ppRender is not nullptr. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS, and the return value of ppRender is not nullptr. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CreateShareRender(ICustomizedShareRender** ppRender, HWND hParentWnd, RECT rc) = 0;
 	
 	/**
 	 * @brief Destroy the specified shared render.
 	 * @param pRender A pointer to the ICustomizedShareRender to be destroyed. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DestroyShareRender(ICustomizedShareRender* pRender) = 0;
 	
 	/**
 	 * @brief Destroy all the shared renders.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DestroyAllShareRender() = 0;
 	
@@ -114,13 +116,13 @@ public:
 	 * @param rc Specify the position of client area of the immersive container.
 	 * The client coordinates corresponds to the client area of the upper-left corner of the parent window.
 	 * Only allow creating an object before DestroyImmersiveContainer.
-	 * @return If the function succeeds, the return value is SDKErr_Success, and the return value of ppContainer is not nullptr. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS, and the return value of ppContainer is not nullptr. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CreateImmersiveContainer(ICustomizedImmersiveContainer** ppContainer, HWND hParentWnd, RECT rc) = 0;
 	
 	/**
 	 * @brief Destroy the immersive container. Once destroyed, the container can no longer be used.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DestroyImmersiveContainer() = 0;
 

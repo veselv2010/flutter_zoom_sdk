@@ -17,85 +17,92 @@ extern "C"
 	class INetworkConnectionHelper;
 	
 	/**
-	 * @brief Initialize ZOOM SDK.
-	 * @param [out] initParam Initialize the parameter of ZOOM SDK. For more details, see \link InitParam \endlink structure.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Initializes ZOOM SDK.
+	 * @param initParam The initialization parameter for ZOOM SDK.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError InitSDK(InitParam& initParam);
 
+	/**
+	 * @brief Switches ZOOM SDK domain.
+	 * @param new_domain The new domain to switch to.
+	 * @param bForce true to force the domain switch, false otherwise.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
+	 */
 	SDK_API SDKError SwitchDomain(const zchar_t* new_domain, bool bForce);
 	
 	/**
-	 * @brief Create meeting service interface.
+	 * @brief Creates meeting service interface.
 	 * @param ppMeetingService An object pointer to the IMeetingService*. 
-	 * @return If the function succeeds, the return value is SDKErr_Success while the value of ppMeetingService is not nullptr. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS while the value of ppMeetingService is not nullptr. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError CreateMeetingService(IMeetingService** ppMeetingService);
 	
 	/**
-	 * @brief Destroy the specified meeting service Interface.
+	 * @brief Destroys the specified meeting service interface.
 	 * @param pMeetingService A pointer to the IMeetingService to be destroyed. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError DestroyMeetingService(IMeetingService* pMeetingService);
 	
 	/**
-	 * @brief Create authentication service interface.
+	 * @brief Creates authentication service interface.
 	 * @param ppAuthService An object pointer to the IAuthService*. 
-	 * @return If the function succeeds, the return value is SDKErr_Success while the value of ppAuthService is not nullptr. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS while the value of ppAuthService is not nullptr. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError CreateAuthService(IAuthService** ppAuthService);
 	
 	/**
-	 * @brief Destroy the specified authentication service interface.
+	 * @brief Destroys the specified authentication service interface.
 	 * @param pAuthService A pointer to the IAuthService to be destroyed. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError DestroyAuthService(IAuthService* pAuthService);
 	
 	/**
-	 * @brief Create setting service interface.
+	 * @brief Creates setting service interface.
 	 * @param ppSettingService An object pointer to the ISettingService*. 
-	 * @return If the function succeeds, the return value is SDKErr_Success while the value of ppSettingService is not nullptr. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS while the value of ppSettingService is not nullptr. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError CreateSettingService(ISettingService** ppSettingService);
 	
 	/**
-	 * @brief Destroy the specified setting service interface.
+	 * @brief Destroys the specified setting service interface.
 	 * @param pSettingService A pointer to the ISettingService to be destroyed. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError DestroySettingService(ISettingService* pSettingService);
 	
 	/**
-	 * @brief Create network connection helper interface.
+	 * @brief Creates network connection helper interface.
 	 * @param ppNetworkHelper An object pointer to the INetworkConnectionHelper*. 
-	 * @return If the function succeeds, the return value is SDKErr_Success while the value of ppNetworkHelper is not nullptr. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS while the value of ppNetworkHelper is not nullptr. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError CreateNetworkConnectionHelper(INetworkConnectionHelper** ppNetworkHelper);
 	
 	/**
-	 * @brief Destroy the specified network connection helper interface.
+	 * @brief Destroys the specified network connection helper interface.
 	 * @param pNetworkHelper A pointer to the INetworkConnectionHelper to be destroyed. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError DestroyNetworkConnectionHelper(INetworkConnectionHelper* pNetworkHelper);
 	
 	/**
-	 * @brief Clean up ZOOM SDK.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Cleans up ZOOM SDK.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
+	 * @note This function must not be called within any SDK callback. Calling CleanUPSDK() inside a callback may cause unexpected behavior.
 	 */
 	SDK_API SDKError CleanUPSDK();
 	
 	/**
-	 * @brief Get the version of ZOOM SDK.
-	 * @return The version of ZOOM SDK.
+	 * @brief Gets the version of ZOOM SDK.
+	 * @return If the function succeeds, it returns the version of ZOOM SDK. 
 	 */
 	SDK_API const zchar_t* GetSDKVersion();
 	
 	/**
-	 * @brief Get ZOOM last error interface.
-	 * @return If the function succeeds, the return value is an interface of ZOOM last error. If the function fails or there is no error, the return value is nullptr. For more information, see \link IZoomLastError  \endlink
+	 * @brief Gets ZOOM last error interface.
+	 * @return If the function succeeds, it returns an interface of ZOOM last error. If the function fails or there is no error, this function returns nullptr.
 	 */
 	SDK_API const IZoomLastError* GetZoomLastError();
 }
