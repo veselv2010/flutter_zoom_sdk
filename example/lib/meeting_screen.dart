@@ -225,6 +225,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         isSupportPolling: true,
         meetingInfo: [],
         isLockBottom: false,
+        language: 'ru-RU'
       );
       final meetingOptions = ZoomMeetingOptions(
         userId: 'userId',

@@ -152,7 +152,7 @@ public:
 	
 	/**
 	 * @brief Get the list of all talkback channels.
-	 * @return If the function succeeds, the return value is a pointer to the IList<IMeetingTalkbackChannel*>. Otherwise, the return value is nullptr.
+	 * @return A pointer to the channel list. Returns NULL when the caller is not host, co-host, master-conference host, or BO moderator.
 	 */
 	virtual IList<IMeetingTalkbackChannel*>* GetChannelList() = 0;
 	

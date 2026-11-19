@@ -135,6 +135,13 @@ enum SDKError
 	SDKERR_BREAKOUT_ROOM_NOT_CREATED,
 	/** Too much data sent in a single call. */
 	SDKERR_SEND_TOO_MUCH_DATA_IN_SINGLE_TIME,
+	/**
+	 * Reserved for a lower-layer FIPS initialization error. The current boolean
+	 * mainboard initialization path reports all failures as SDKERR_INTERNAL_ERROR.
+	 */
+	SDKERR_FIPS_INITIALIZATION_FAILED,
+	/** FIPS mode requires a process restart before switching to a Gov domain. */
+	SDKERR_FIPS_RESTART_REQUIRED,
 
 };
 
