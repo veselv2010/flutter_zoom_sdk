@@ -1,27 +1,33 @@
 package com.evilratt.flutter_zoom_sdk.audio;
 
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.evilratt.flutter_zoom_sdk.base.SimpleInMeetingListener;
 
 import io.flutter.plugin.common.EventChannel;
-import kotlin.jvm.Volatile;
-import us.zoom.sdk.ZoomSDK;
+import us.zoom.sdk.InMeetingService;
 
 public class InMeetingAudioStateListener extends SimpleInMeetingListener {
-    final Object arguments;
-    final EventChannel.EventSink sink;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final InMeetingService meetingService;
+    private EventChannel.EventSink events;
 
-    public InMeetingAudioStateListener(Object arguments, EventChannel.EventSink sink) {
-        this.arguments = arguments;
-        this.sink = sink;
+    public InMeetingAudioStateListener(InMeetingService meetingService, EventChannel.EventSink events) {
+        this.meetingService = meetingService;
+        this.events = events;
+    }
+
+    public void close() {
+        events = null;
     }
 
     @Override
-    public void onUserAudioStatusChanged(long var1, AudioStatus var3) {
-        Log.i("Zoom Audio",  String.valueOf(var1) + " AudioStatus " + String.valueOf(var3.ordinal()) + " " + var3.name());
-        if (var1 == ZoomSDK.getInstance().getInMeetingService().getMyUserID()) {
-            sink.success(var3.ordinal());
-        }
+    public void onUserAudioStatusChanged(long userId, AudioStatus status) {
+        mainHandler.post(() -> {
+            if (events != null && status != null && userId == meetingService.getMyUserID()) {
+                events.success(status.ordinal());
+            }
+        });
     }
 }

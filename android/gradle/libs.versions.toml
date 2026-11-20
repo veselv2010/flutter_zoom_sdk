@@ -1,0 +1,180 @@
+# Versions from Zoom Meeting SDK 7.2.5.45150
+[versions]
+activityCompose = "1.11.0"
+androidxCore = "1.16.0"
+appcompat = "1.6.1"
+blueParrottSdk = "4.8.2"
+cameraX = "1.4.1"
+coil = "2.7.0"
+compose = "1.11.0"
+composeMaterial3 = "1.4.0"
+constraintLayout = "2.2.1"
+constraintLayoutCompose = "1.1.1"
+coreSplashscreen = "1.0.1"
+coroutines = "1.9.0"
+credentials = "1.5.0"
+datastorePreferences = "1.1.1"
+exoplayer = "2.17.1"
+fragmentKtx = "1.6.2"
+glide = "4.11.0"
+gson = "2.11.0"
+jetbrainsAnnotations = "23.0.0"
+kotlin = "2.2.20"
+lifecycle = "2.11.0-alpha03"
+lottie = "4.0.0"
+material = "1.11.0"
+mlkitTextRecognition = "16.0.1"
+multidex = "2.0.1"
+navigation3 = "1.1.3"
+navigationCompose = "2.9.4"
+navigationEvent = "1.0.2"
+pagingCompose = "3.3.5"
+profileInstaller = "1.4.0"
+recyclerView = "1.2.1"
+rxAndroid = "3.0.2"
+securityCrypto = "1.1.0-alpha05"
+subsamplingScaleImageView = "3.10.0"
+swipeRefreshLayout = "1.1.0"
+tinkAndroid = "1.7.0"
+webkit = "1.9.0"
+window = "1.1.0"
+workRuntime = "2.9.0"
+zoomSdk = "7.2.5.45150"
+
+[libraries]
+activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+blueParrottSdk = { module = "com.blueparrott:blueparrottsdk", version.ref = "blueParrottSdk" }
+cameraCamera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraX" }
+cameraCore = { module = "androidx.camera:camera-core", version.ref = "cameraX" }
+cameraLifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraX" }
+cameraView = { module = "androidx.camera:camera-view", version.ref = "cameraX" }
+coilCompose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coilGif = { module = "io.coil-kt:coil-gif", version.ref = "coil" }
+composeAnimation = { module = "androidx.compose.animation:animation", version.ref = "compose" }
+composeFoundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
+composeMaterial3 = { module = "androidx.compose.material3:material3", version.ref = "composeMaterial3" }
+composeMaterial3WindowSizeClass = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "composeMaterial3" }
+composeMaterialRipple = { module = "androidx.compose.material:material-ripple", version.ref = "compose" }
+composeRuntime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
+composeUi = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+composeUiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+composeUiViewBinding = { module = "androidx.compose.ui:ui-viewbinding", version.ref = "compose" }
+constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayout" }
+constraintLayoutCompose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintLayoutCompose" }
+core = { module = "androidx.core:core", version.ref = "androidxCore" }
+coreKtx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+coreSplashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutinesCoreJvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "coroutines" }
+coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
+credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+credentialsPlayServicesAuth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+datastorePreferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+exoplayerCore = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
+exoplayerUi = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayer" }
+fragmentKtx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glideAnnotations = { module = "com.github.bumptech.glide:annotations", version.ref = "glide" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+jetbrainsAnnotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
+kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlinStdlibJdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+lifecycleLivedataKtx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+lifecycleRuntimeCompose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+lifecycleRuntimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycleService = { module = "androidx.lifecycle:lifecycle-service", version.ref = "lifecycle" }
+lifecycleViewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+lifecycleViewmodelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+mlkitTextRecognition = { module = "com.google.mlkit:text-recognition", version.ref = "mlkitTextRecognition" }
+multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
+navigation3Runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
+navigation3Ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
+navigationCompose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+navigationEvent = { module = "androidx.navigationevent:navigationevent", version.ref = "navigationEvent" }
+navigationEventCompose = { module = "androidx.navigationevent:navigationevent-compose", version.ref = "navigationEvent" }
+pagingCompose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+profileInstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profileInstaller" }
+recyclerView = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerView" }
+rxAndroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxAndroid" }
+securityCrypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
+subsamplingScaleImageView = { module = "com.davemorrissey.labs:subsampling-scale-image-view", version.ref = "subsamplingScaleImageView" }
+swipeRefreshLayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swipeRefreshLayout" }
+tinkAndroid = { module = "com.google.crypto.tink:tink-android", version.ref = "tinkAndroid" }
+webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
+window = { module = "androidx.window:window", version.ref = "window" }
+windowJava = { module = "androidx.window:window-java", version.ref = "window" }
+workRuntime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
+
+[bundles]
+zoomSdk = [
+    "activityCompose",
+    "appcompat",
+    "blueParrottSdk",
+    "cameraCamera2",
+    "cameraCore",
+    "cameraLifecycle",
+    "cameraView",
+    "coilCompose",
+    "coilGif",
+    "composeAnimation",
+    "composeFoundation",
+    "composeMaterial3",
+    "composeMaterial3WindowSizeClass",
+    "composeMaterialRipple",
+    "composeRuntime",
+    "composeUi",
+    "composeUiToolingPreview",
+    "composeUiViewBinding",
+    "constraintLayout",
+    "constraintLayoutCompose",
+    "core",
+    "coreKtx",
+    "coreSplashscreen",
+    "coroutinesAndroid",
+    "coroutinesCore",
+    "coroutinesCoreJvm",
+    "coroutinesSwing",
+    "credentials",
+    "credentialsPlayServicesAuth",
+    "datastorePreferences",
+    "exoplayerCore",
+    "exoplayerUi",
+    "fragmentKtx",
+    "glide",
+    "glideAnnotations",
+    "gson",
+    "jetbrainsAnnotations",
+    "kotlinStdlib",
+    "kotlinStdlibJdk8",
+    "lifecycleLivedataKtx",
+    "lifecycleRuntimeCompose",
+    "lifecycleRuntimeKtx",
+    "lifecycleService",
+    "lifecycleViewmodelCompose",
+    "lifecycleViewmodelKtx",
+    "lottie",
+    "material",
+    "mlkitTextRecognition",
+    "multidex",
+    "navigation3Runtime",
+    "navigation3Ui",
+    "navigationCompose",
+    "navigationEvent",
+    "navigationEventCompose",
+    "pagingCompose",
+    "profileInstaller",
+    "recyclerView",
+    "rxAndroid",
+    "securityCrypto",
+    "subsamplingScaleImageView",
+    "swipeRefreshLayout",
+    "tinkAndroid",
+    "webkit",
+    "window",
+    "windowJava",
+    "workRuntime",
+]

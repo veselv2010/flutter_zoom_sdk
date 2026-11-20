@@ -1,8 +1,10 @@
 package com.evilratt.flutter_zoom_sdk;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import io.flutter.plugin.common.EventChannel;
 import us.zoom.sdk.MeetingError;
@@ -11,21 +13,30 @@ import us.zoom.sdk.MeetingServiceListener;
 import us.zoom.sdk.MeetingStatus;
 
 public class StatusListener implements MeetingServiceListener {
-    final EventChannel.EventSink events;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private EventChannel.EventSink events;
 
     public StatusListener(EventChannel.EventSink events) {
         this.events = events;
     }
 
+    public void close() {
+        events = null;
+    }
+
     @Override
     public void onMeetingStatusChanged(MeetingStatus meetingStatus, int errorCode, int internalErrorCode) {
-        if (meetingStatus == MeetingStatus.MEETING_STATUS_FAILED &&
-                errorCode == MeetingError.MEETING_ERROR_CLIENT_INCOMPATIBLE) {
-            events.success(Arrays.asList("MEETING_STATUS_UNKNOWN", "Version of ZoomSDK is too low"));
-            return;
-        }
-
-        events.success(getMeetingStatusMessage(meetingStatus));
+        mainHandler.post(() -> {
+            if (events == null) {
+                return;
+            }
+            if (meetingStatus == MeetingStatus.MEETING_STATUS_FAILED &&
+                    errorCode == MeetingError.MEETING_ERROR_CLIENT_INCOMPATIBLE) {
+                events.success(Arrays.asList("MEETING_STATUS_UNKNOWN", "Version of ZoomSDK is too low"));
+                return;
+            }
+            events.success(getMeetingStatusMessage(meetingStatus));
+        });
     }
 
     @Override
@@ -36,9 +47,12 @@ public class StatusListener implements MeetingServiceListener {
     private List<String> getMeetingStatusMessage(MeetingStatus meetingStatus) {
         String[] message = new String[2];
 
-        message[0] = meetingStatus != null ? meetingStatus.name() : "";
+        if (meetingStatus == null) {
+            return Arrays.asList("MEETING_STATUS_UNKNOWN", "No status available.");
+        }
+        message[0] = meetingStatus.name();
 
-        switch (Objects.requireNonNull(meetingStatus)) {
+        switch (meetingStatus) {
             case MEETING_STATUS_CONNECTING:
                 message[1] = "Connect to the meeting server.";
                 break;
@@ -56,6 +70,9 @@ public class StatusListener implements MeetingServiceListener {
                 break;
             case MEETING_STATUS_INMEETING:
                 message[1] = "Meeting is ready and in process.";
+                break;
+            case MEETING_STATUS_ENDED:
+                message[1] = "Meeting ended.";
                 break;
             case MEETING_STATUS_RECONNECTING:
                 message[1] = "Reconnecting meeting server.";

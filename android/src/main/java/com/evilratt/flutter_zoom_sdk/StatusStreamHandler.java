@@ -1,36 +1,50 @@
 package com.evilratt.flutter_zoom_sdk;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
 import io.flutter.plugin.common.EventChannel;
-import us.zoom.sdk.MeetingError;
 import us.zoom.sdk.MeetingService;
-import us.zoom.sdk.MeetingServiceListener;
-import us.zoom.sdk.MeetingStatus;
-import us.zoom.sdk.ZoomSDK;
 
 /**
  * This class implements the handler for the Zoom meeting event in the flutter event channel
  */
 public class StatusStreamHandler implements EventChannel.StreamHandler {
-    private final MeetingService meetingService;
-    private MeetingServiceListener statusListener;
+    private MeetingService meetingService;
+    private EventChannel.EventSink events;
+    private StatusListener listener;
 
-    public StatusStreamHandler(MeetingService meetingService) {
-        this.meetingService = meetingService;
+    public void setMeetingService(MeetingService service) {
+        if (meetingService == service) {
+            return;
+        }
+        removeListener();
+        meetingService = service;
+        addListener();
     }
 
     @Override
-    public void onListen(Object arguments, final EventChannel.EventSink events) {
-        statusListener = new StatusListener(events);
-
-        this.meetingService.addListener(statusListener);
+    public void onListen(Object arguments, EventChannel.EventSink events) {
+        onCancel(null);
+        this.events = events;
+        addListener();
     }
 
     @Override
     public void onCancel(Object arguments) {
-        this.meetingService.removeListener(statusListener);
+        removeListener();
+        events = null;
+    }
+
+    private void addListener() {
+        if (meetingService != null && events != null) {
+            listener = new StatusListener(events);
+            meetingService.addListener(listener);
+        }
+    }
+
+    private void removeListener() {
+        if (listener != null) {
+            listener.close();
+            meetingService.removeListener(listener);
+            listener = null;
+        }
     }
 }

@@ -38,6 +38,10 @@ class ZoomView extends ZoomPlatform {
 
     optionMap.putIfAbsent("domain", () => options.domain);
 
+    if (options.debug != null) {
+      optionMap["debug"] = options.debug.toString();
+    }
+
     return await channel
         .invokeMethod<List>('init', optionMap)
         .then<List>((List? value) => value ?? List.empty());
@@ -118,6 +122,7 @@ class ZoomView extends ZoomPlatform {
     optionMap.putIfAbsent("viewOptions", () => options.viewOptions);
     optionMap.putIfAbsent("noAudio", () => options.noAudio);
     optionMap.putIfAbsent("noVideo", () => options.noVideo);
+    optionMap["autoAudioJoin"] = autoAudioJoin.toString();
 
     return await channel
         .invokeMethod<bool>('join', optionMap)

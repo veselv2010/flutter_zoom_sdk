@@ -14,7 +14,7 @@
 
     <include
         android:id="@+id/meetingContent"
-        layout="@layout/zm_sdk_new_meeting_layout"
+        layout="@layout/zm_sdk_new_meeting_layout_multitasking"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
