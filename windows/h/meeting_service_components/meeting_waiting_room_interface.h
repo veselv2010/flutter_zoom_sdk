@@ -10,7 +10,7 @@
 BEGIN_ZOOM_SDK_NAMESPACE
 
 /**
- * @brief WaitingRoom LayoutType.
+ * @brief Enumeration of waiting room layout type.
  * Here are more detailed structural descriptions.
  */
 enum WaitingRoomLayoutType
@@ -21,7 +21,7 @@ enum WaitingRoomLayoutType
 };
 
 /**
- * @brief Download Status of CustomWaitingRoomData.
+ * @brief Enumeration of custom waiting room data download status.
  * Here are more detailed structural descriptions.
  */
 enum CustomWaitingRoomDataStatus
@@ -95,13 +95,13 @@ public:
 	virtual ~IWaitingRoomDataDownloadHandler() {}
 	
 	/**
-	 * @brief Retry to Download the WaitingRoom CustomizeData information in the waiting room.
-	 * @return True indicates to Retry success.
+	 * @brief Retries downloading the waiting room customize data information in the waiting room.
+	 * @return true if the retry succeeds. Otherwise, false.
 	 */
 	virtual bool Retry() = 0;
 	
 	/**
-	 * @brief Ignore to GDownloadet the WaitingRoom CustomizeData information in the waiting room.
+	 * @brief Ignores downloading the waiting room customize data information in the waiting room.
 	 */
 	virtual void Ignore() = 0;
 };
@@ -128,14 +128,14 @@ public:
 	virtual void onWaitingRoomUserLeft(unsigned int userID) = 0;
 	
 	/**
-	 * @brief During the waiting room, this callback event will be triggered when host change audio status.	
-	 * @param bAudioCanTurnOn TRUE means audio can be turned on. Otherwise not.
+	 * @brief Callback event triggered during the waiting room when the host changes audio status.	
+	 * @param bAudioCanTurnOn true if audio can be turned on, false otherwise.
 	 */
 	virtual void onWaitingRoomPresetAudioStatusChanged(bool bAudioCanTurnOn) = 0;
 	
 	/**
-	 * @brief During the waiting room, this callback event will be triggered when host change video status.	
-	 * @param bVideoCanTurnOn TRUE means video can be turned on. Otherwise not.
+	 * @brief Callback event triggered during the waiting room when the host changes video status.	
+	 * @param bVideoCanTurnOn true if video can be turned on, false otherwise.
 	 */
 	virtual void onWaitingRoomPresetVideoStatusChanged( bool bVideoCanTurnOn) = 0;
 	
@@ -154,7 +154,7 @@ public:
 	
 	/**
 	 * @brief This callback event will be triggered when host or cohost enables or disables waiting room entrance.
-	 * @param bIsEnabled True enables waiting room entrance, false means disables waiting room entrance.
+	 * @param bIsEnabled true enables waiting room entrance, false means disables waiting room entrance.
 	 */
 	virtual void onWaitingRoomEntranceEnabled(bool bIsEnabled) = 0;
 };
@@ -167,73 +167,73 @@ class IMeetingWaitingRoomController
 {
 public:
 	/**
-	 * @brief Set meeting waiting room callback event handler.
+	 * @brief Sets meeting waiting room callback event handler.
 	 * @param pEvent A pointer to the IMeetingWaitingRoomEvent that receives the waiting room event. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(IMeetingWaitingRoomEvent* pEvent) = 0;
 	
 	/**
-	 * @brief Determine whether the current meeting supports the waiting room or not.
-	 * @return True indicates to support.
+	 * @brief Determines whether the current meeting supports the waiting room or not.
+	 * @return true indicates to support.
 	 */
 	virtual bool IsSupportWaitingRoom() = 0;
 	
 	/**
-	 * @brief Determine if the attendee is enabled to enter the waiting room when joining the meeting.
-	 * @return True indicates to enable to enter.
+	 * @brief Determines if the attendee is enabled to enter the waiting room when joining the meeting.
+	 * @return true indicates to enable to enter.
 	 */
 	virtual bool IsWaitingRoomOnEntryFlagOn() = 0;
 	
 	/**
-	 * @brief Set to enable the attendee to enter the waiting room when joining the meeting.
-	 * @param bEnable True indicates to enable to enter. False not.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Sets to enable the attendee to enter the waiting room when joining the meeting.
+	 * @param bEnable true indicates to enable to enter. false not.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EnableWaitingRoomOnEntry(bool bEnable) = 0;
 	
 	/**
-	 * @brief Get the list of attendees who are in the waiting room.
-	 * @return If the function succeeds, the return value is the list of attendees. Otherwise failed, the return is nullptr. 
+	 * @brief Gets the list of attendees who are in the waiting room.
+	 * @return If the function succeeds, the return value is the list of attendees. Otherwise, this function returns nullptr. 
 	 */
 	virtual IList<unsigned int >* GetWaitingRoomLst() = 0;
 	
 	/**
-	 * @brief Get the attendee information in the waiting room via user ID.
+	 * @brief Gets the attendee information in the waiting room via user ID.
 	 * @param userid Specifies the user ID.
-	 * @return If the function succeeds, the return value is a pointer to IUserInfo. Otherwise failed, the return is nullptr. For more details, see \link IUserInfo \endlink.
+	 * @return If the function succeeds, the return value is a pointer to IUserInfo. Otherwise, this function returns nullptr.
 	 */
 	virtual IUserInfo* GetWaitingRoomUserInfoByID(unsigned int userid) = 0;
 	
 	/**
 	 * @brief Permit the specified user to join the meeting.
 	 * @param userid Specifies the user ID.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed, the return is nullptr. For more details, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError AdmitToMeeting(unsigned int userid) = 0;
 	
 	/**
 	 * @brief Permit all of the users currently in the waiting room to join the meeting.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed, the return is nullptr. For more details, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError AdmitAllToMeeting() = 0;
 	
 	/**
-	 * @brief Enable the specified user to enter the waiting room.
+	 * @brief Enables the specified user to enter the waiting room.
 	 * @param userid Specifies the user ID.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError PutInWaitingRoom(unsigned int userid) = 0;
 	
 	/**
-	 * @brief Determine if the attendee is enabled to turn on audio when joining the meeting.
-	 * @return True indicates to enable to turn on.
+	 * @brief Determines if the attendee is enabled to turn on audio when joining the meeting.
+	 * @return true indicates to enable to turn on.
 	 */
 	virtual bool IsAudioEnabledInWaitingRoom() = 0;
 	
 	/**
-	 * @brief Determine if the attendee is enabled to turn on video when joining the meeting.
-	 * @return True indicates to enable to turn on.
+	 * @brief Determines if the attendee is enabled to turn on video when joining the meeting.
+	 * @return true indicates to enable to turn on.
 	 */
 	virtual bool IsVideoEnabledInWaitingRoom() = 0;
 
@@ -245,7 +245,7 @@ public:
 	virtual SDKError PresetAudioInWaitingRoom(bool bMute) = 0;
 
 	/**
-	 * @brief Get the audio pre-set mute or unmute status in waiting room.
+	 * @brief Gets the audio pre-set mute or unmute status in waiting room.
 	 * @return If pre-set audio unmuted, the return value is true, other the return value is false and pre set audio muted.
 	 */
 	virtual bool IsPresetAudioUnmuteInWaitingRoom() = 0;
@@ -258,21 +258,21 @@ public:
 	virtual SDKError PresetVideoInWaitingRoom(bool bMute) = 0;
 
 	/**
-	 * @brief Get the video pre-set mute or unmute status in waiting room.
-	 * @return true means pre-set unmute, false means pre-set mute.
+	 * @brief Gets the video pre-set mute or unmute status in waiting room.
+	 * @return true indicates pre-set unmute, false means pre-set mute.
 	 */
 	virtual bool IsPresetVideoUnmuteInWaitingRoom() = 0;
 
 	/**
-	 * @brief Get the WaitingRoom CustomizeData information in the waiting room.
-	 * @return If the function succeeds, the return value is SDKErr_Success. See \link onCustomWaitingRoomDataUpdated \endlink to access the result data. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Gets the WaitingRoom CustomizeData information in the waiting room.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. See \link onCustomWaitingRoomDataUpdated \endlink to access the result data. Otherwise, this function returns an error.
 	 */
 	virtual SDKError RequestCustomWaitingRoomData() = 0;
 	
 	/**
-	 * @brief Determine if the host or cohost can rename users in the waiting room.
-	 * @param [out] bIsCan True means the host or cohost can rename users in the waiting room. Otherwise they can't.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Determines if the host or cohost can rename users in the waiting room.
+	 * @param [out] bIsCan true indicates the host or cohost can rename users in the waiting room. Otherwise they can't.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CanRenameUser(bool& bIsCan) = 0;
 	
@@ -280,27 +280,27 @@ public:
 	 * @brief Change a user's screen name in the waiting room.
 	 * @param userid The ID of users put into the waiting room by a host or cohost.
 	 * @param userName The new user name.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError RenameUser(unsigned userid, const zchar_t* newName) = 0;
 	
 	/**
-	 * @brief Determine if a host or cohost can expel user(s) in the waiting room.
-	 * @param [out] bIsCan True means that a host or cohost can expel user(s) in the waiting room. Otherwise they may not
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Determines if a host or cohost can expel user(s) in the waiting room.
+	 * @param [out] bIsCan true indicates that a host or cohost can expel user(s) in the waiting room. Otherwise they may not.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CanExpelUser(bool& bIsCan) = 0;
 	
 	/**
 	 * @brief Remove a specified user from the waiting room.
 	 * @param userid The ID of the user  removed from the waiting room by a host or cohost.
-     * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+     * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError ExpelUser(unsigned int userid) = 0;
 	
 	/**
-	 * @brief Determine if the enable waiting room on entry feature is locked, see \link EnableWaitingRoomOnEntry \endlink
-	 * @return True indicates locked, otherwise not.
+	 * @brief Determines if the enable waiting room on entry feature is locked, see \link EnableWaitingRoomOnEntry \endlink
+	 * @return true if locked. Otherwise, false.
 	 */
 	virtual bool IsWaitingRoomOnEntryLocked() = 0;
 };

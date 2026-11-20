@@ -17,19 +17,19 @@ public:
 	virtual ~IMeetingIndicatorHandler() {}
 
 	/**
-	 * @brief get Indicator item ID.
+	 * @brief Gets Indicator item ID.
 	 * @return The item ID of the Indicator.
 	 */
 	virtual const zchar_t* GetIndicatorItemId() = 0;
 
 	/**
-	 * @brief get Indicator name.
+	 * @brief Gets Indicator name.
 	 * @return The name of the Indicator.
 	 */
 	virtual const zchar_t* GetIndicatorName() = 0;
 
 	/**
-	 * @brief get Indicator Icon URL.
+	 * @brief Gets Indicator Icon URL.
 	 * @return The URL of the Indicator.
 	 */
 	virtual const zchar_t* GetIndicatorIcon() = 0;
@@ -38,13 +38,13 @@ public:
 	 * @brief Show Indicator panel window.
 	 * @param x: the horizontal coordinate value. 
 	 * @param y: the coordinate coordinate value. 
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError ShowIndicatorPanel(unsigned int x, unsigned int y) = 0;
 
 	/**
 	 * @brief Hide Indicator panel window.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError HideIndicatorPanel() = 0;
 };
@@ -81,9 +81,9 @@ public:
 	virtual ~IMeetingIndicatorController() {}
 
 	/**
-     * @brief Set the meeting Indicator controller callback event handler.
-     * @param pEvent A pointer to the IMeetingIndicatorCtrlEvent that receives the meeting Indicator event. For more details, see \link IMeetingIndicatorCtrlEvent \endlink.
-     * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+     * @brief Sets the meeting Indicator controller callback event handler.
+     * @param pEvent A pointer to the IMeetingIndicatorCtrlEvent that receives the meeting Indicator event.
+     * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(IMeetingIndicatorCtrlEvent* pEvent) = 0;
 };

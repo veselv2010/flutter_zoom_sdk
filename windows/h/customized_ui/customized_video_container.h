@@ -9,7 +9,7 @@
 BEGIN_ZOOM_SDK_NAMESPACE
 
 /**
- * @brief Type of the video render element.
+ * @brief Enumeration of video render element type.
  * Here are more detailed structural descriptions.
  */ 
 enum VideoRenderElementType
@@ -25,7 +25,7 @@ enum VideoRenderElementType
 };
 
 /**
- * @brief Data type of the video render element.
+ * @brief Enumeration of video render element data type.
  * Here are more detailed structural descriptions.
  */ 
 enum VideoRenderDataType
@@ -40,6 +40,9 @@ enum VideoRenderDataType
 	VideoRenderData_ScreenName,
 };
 
+/**
+ * @brief Enumeration of video render resolution.
+ */
 enum VideoRenderResolution
 {
 	/** For initiation */
@@ -58,14 +61,13 @@ class IVideoRenderElement
 {
 public:
 	/**
-	 * @brief Get the type of the video render element.
-	 * @return If the function succeeds, the return value is the type of the render element. For more details, see \link VideoRenderElementType \endlink enum.
-	 * Otherwise failed, the return value is VideoRenderElement_None.
+	 * @brief Gets the type of the video render element.
+	 * @return If the function succeeds, it returns the type of the render element. Otherwise, this function fails and returns VideoRenderElement_None.
 	 */
 	virtual VideoRenderElementType GetType() = 0;
 	
 	/**
-	 * @brief Get the area where the current render element is.
+	 * @brief Gets the area where the current render element is.
 	 * @return A RECT structure. The value in the structure corresponding to the coordinate system is the client area of the video container.
 	 * The client coordinates corresponds to the client area of the upper-left corner of the parent window.
 	 */
@@ -74,46 +76,46 @@ public:
 	/**
 	 * @brief Specify a new display area of the current render element.
 	 * @param pos Specify a new area through RECT structure. The value in the structure corresponding to the coordinate system is that of the client area of the video main window. 
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed,see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetPos(RECT pos) = 0;
 	
 	/**
 	 * @brief Show the render element.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed,see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Show() = 0;
 	
 	/**
 	 * @brief Hide the render element.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed,see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Hide() = 0;
 	
 	/**
-	 * @brief Get the user ID corresponding to the current render element.
+	 * @brief Gets the user ID corresponding to the current render element.
 	 * @return The ID of the user.
 	 */
 	virtual unsigned int GetCurrentRenderUserId() = 0;
 	
 	/**
-	 * @brief Get the data type of the current render element. 
-	 * @return The data type of the current render elements. For more details, see \link VideoRenderDataType \endlink enum.
+	 * @brief Gets the data type of the current render element. 
+	 * @return The data type of the current render elements.
 	 */
 	virtual VideoRenderDataType GetCurrentRenderDataType() = 0;
 	
 	/**
-	 * @brief Set the visibility of the screen name on the current render element. 
-	 * @param enable_show TRUE indicates to show the screen name.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Sets the visibility of the screen name on the current render element. 
+	 * @param enable_show true indicates to show the screen name.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EnableShowScreenNameOnVideo(bool enable_show) = 0;
 	
 	/**
-	 * @brief Set the resolution for the video in the current render element. Once you specify the value, the resolution will not change even the size of the element is changed.
+	 * @brief Sets the resolution for the video in the current render element. Once you specify the value, the resolution will not change even the size of the element is changed.
 	 * Specify a bigger resolution may cause subscribing fail.
 	 * @param resolution Specify the resolution for the video in the current render element.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetResolution(VideoRenderResolution resolution) = 0;
 
@@ -127,14 +129,14 @@ class IPreviewVideoRenderElement : public IVideoRenderElement
 {
 public:
 	/**
-	 * @brief Start previewing.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed,see \link SDKError \endlink enum.
+	 * @brief Starts previewing.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Start() = 0;
 	
 	/**
-	 * @brief Stop previewing.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed,see \link SDKError \endlink enum.
+	 * @brief Stops previewing.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Stop() = 0;
 	
@@ -149,13 +151,13 @@ class IActiveVideoRenderElement : public IVideoRenderElement
 public:
 	/**
 	 * @brief Display the data of the current active user. 
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed,see \link SDKError \endlink enum 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Start() = 0;
 	
 	/**
 	 * @brief Hide the data of the current active user. 
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed,see \link SDKError \endlink enum 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Stop() = 0;
 	
@@ -214,7 +216,7 @@ public:
 	/**
 	 * @brief The callback will be triggered if the video render element corresponding to data type changes.
 	 * @param pElement The video render elements corresponding to data type that is changed. 
-	 * @param dataType Specify a new render data type. For more details, see \link VideoRenderDataType \endlink enum. 
+	 * @param dataType Specify a new render data type.
 	 */
 	virtual void onRenderDataTypeChanged(IVideoRenderElement* pElement, VideoRenderDataType dataType) = 0;
 	
@@ -257,9 +259,9 @@ class ICustomizedVideoContainer
 {
 public:
 	/**
-	 * @brief Set video container callback event handler.
+	 * @brief Sets video container callback event handler.
 	 * @param pEvent A pointer to the ICustomizedVideoContainerEvent that receives video container callback event. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(ICustomizedVideoContainerEvent* pEvent) = 0;
 	
@@ -267,54 +269,60 @@ public:
 	 * @brief Create a video render element.
 	 * @param [out] ppElement Once the function succeeds, the parameter will store the pointer to the video render element.
 	 * @param type_ Specify the type of the video render element to be created.
-	 * @return If the function succeeds, the return value is SDKErr_Success, the return value of ppElement is not nullptr. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS, the return value of ppElement is not nullptr. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CreateVideoElement(IVideoRenderElement** ppElement, VideoRenderElementType type_) = 0;
 	
 	/**
 	 * @brief Destroy a video render element.
 	 * @param ppElement Specify the video render element to be destroyed.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DestroyVideoElement(IVideoRenderElement* ppElement) = 0;
 	
 	/**
 	 * @brief Destroy all the video render element.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DestroyAllVideoElement() = 0;
 	
 	/**
 	 * @brief Show the video container.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Show() = 0;
 	
 	/**
 	 * @brief Hide the video container.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Hide() = 0;
 	
 	/**
 	 * @brief Resize the video container in the specified area.
 	 * @param rc Specify a new display area. The coordinate value of the structure is that of the parent window of video container.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Resize(RECT rc) = 0;
 	
 	/**
-	 * @brief Set the video container background color.
+	 * @brief Sets the video container background color.
 	 * @param color Specify the color of the video container background in RGB format.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetBkColor(unsigned long color) = 0;
 	
 	/**
-	 * @brief Get the list of video render elements in the current container.
-	 * @return If the function succeeds, the return value is the list that stores the video render element. Otherwise failed, the return list is blank.
+	 * @brief Gets the list of video render elements in the current container.
+	 * @return If the function succeeds, the return value is the list that stores the video render element. Otherwise, this function fails and the return list is blank.
 	 */
 	virtual IList<IVideoRenderElement* >* GetVideoElementList() = 0;
+
+	/**
+	 * @brief Gets the session source specified when the container was created.
+	 * @return SessionSource_CurrentSession or SessionSource_MainSession.
+	 */
+	virtual ZoomSDKSessionSource GetSource() = 0;
 
 	virtual ~ICustomizedVideoContainer(){}
 };

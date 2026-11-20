@@ -25,7 +25,7 @@ struct InMeetingDeviceInfo
 	const zchar_t* meetingId;
 	/** meeting number */
 	UINT64 meetingNumber;
-	/** True indicates this meeting supports joining in companion mode */
+	/** true indicates this meeting supports joining in companion mode */
 	bool isSupportCompanionMode;
 	InMeetingDeviceInfo()
 	{
@@ -39,7 +39,7 @@ struct InMeetingDeviceInfo
 };
 
 /**
- * @brief Type of transfer meeting mode.
+ * @brief Enumeration of transfer meeting mode.
  * Here are more detailed structural descriptions.
  */
 enum TransferMeetingMode
@@ -62,20 +62,20 @@ public:
 	virtual ~ITransferMeetingHandler() {};
 	
 	/**
-	 * @brief Determine if transfer meeting or join meeting in companion mode success.
-	 * @return True indicates transfer meeting or join meeting in companion mode success.
+	 * @brief Determines if transfer meeting or join meeting in companion mode success.
+	 * @return true indicates transfer meeting or join meeting in companion mode success.
 	 */
 	virtual bool IsTransferMeetingSuccess() = 0;
 	
 	/**
-	 * @brief Get the mode of transfer meeting.
-	 * @return The mode of the transfer meeting. For more details, see \link TransferMeetingMode \endlink enum.
+	 * @brief Gets the mode of transfer meeting.
+	 * @return The mode of the transfer meeting.
 	 */
 	virtual TransferMeetingMode GetTransferMeetingMode() = 0;
 	
 	/**
 	 * @brief Try to leave companion mode and rejoin the meeting in normal mode.	
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError LeaveCompanionToJoinMeeting() = 0;
 };
@@ -95,15 +95,8 @@ public:
 	virtual void onMeetingDeviceListChanged(IList<InMeetingDeviceInfo>* pDeviceList) = 0;
 	
 	/**
-	 * @brief Transfer meeting status changed callback.
-	 * @param bSuccess The result of transfer meeting.
-	 * @deprecated This interface is marked as deprecated.
-	 */
-	virtual void onTransferMeetingStatus(bool bSuccess) = 0;
-	
-	/**
 	 * @brief Transfer meeting status changed or join companion mode meeting callback.
-	 * @param handler A pointer to the ITransferMeetingHandler. For more details, see \link ITransferMeetingHandler \endlink.
+	 * @param handler A pointer to the ITransferMeetingHandler.
 	 * @param bSuccess The result of transfer meeting.
 	 */
 	virtual void onTransferMeetingResult(ITransferMeetingHandler* handler) = 0;
@@ -120,39 +113,31 @@ public:
 	virtual ~INotificationServiceHelper () {}
 	
 	/**
-	 * @brief Get the Presence helper.
-	 * @return If the function succeeds, the return value is a pointer to IPresenceHelper. Otherwise the function fails and returns nullptr.
+	 * @brief Gets the Presence helper.
+	 * @return If the function succeeds, the return value is a pointer to IPresenceHelper. Otherwise, this function returns nullptr.
 	 */
 	virtual IPresenceHelper* GetPresenceHelper() = 0;
 	
 	/**
-	 * @brief Set the controller event of notification service.
+	 * @brief Sets the controller event of notification service.
 	 */
 	virtual SDKError SetEvent(INotificationServiceEvent* pEvent) = 0;
 	
 	/**
-	 * @brief Determine whether the transfer meeting feature is enabled.
+	 * @brief Determines whether the transfer meeting feature is enabled.
 	 */
 	virtual bool IsTransferMeetingEnabled() = 0;
 	
 	/**
-	 * @brief Determine whether the presence feature is enabled.
+	 * @brief Determines whether the presence feature is enabled.
 	 */
 	virtual bool IsPresenceFeatureEnabled() = 0;
-	
-	/**
-	 * @brief Try to transfer meeting to current device.
-	 * @param nIndex Specifies the index of meeting list.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
-	 * @deprecated This interface is marked as deprecated.
-	 */
-	virtual SDKError TransferMeeting(int nIndex) = 0;
 	
 	/**
 	 * @brief Try to transfer meeting to current device or join meeting with companion mode.
 	 * @param TransferMeetingMode Specifies the transfer meeting mode. If the mode is TransferMeetingMode_Companion, you will join meeting as a companion,Otherwise will transfer meeting to current device.
 	 * @param meetingId Specifies the meeting list's meeting ID.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError TransferMeeting(TransferMeetingMode mode,const zchar_t* meetingId) = 0;
 

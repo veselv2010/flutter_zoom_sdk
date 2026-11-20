@@ -274,11 +274,13 @@ class ZoomViewWeb extends ZoomPlatform {
         (([JSAny? statusJs]) {
           if (statusJs == null) return;
 
-          final status = statusJs as MeetingStatus;
-          var statusArray = List<String>.filled(2, "");
+          final meetingStatus = (statusJs as MeetingStatus).status;
+          if (meetingStatus == null) return;
+
+          final statusArray = List<String>.filled(2, "");
 
           /// 1(connecting), 2(connected), 3(disconnected), 4(reconnecting)
-          switch (status.meetingStatus) {
+          switch (meetingStatus) {
             case 1:
               statusArray[0] = "MEETING_STATUS_CONNECTING";
               break;
@@ -292,7 +294,7 @@ class ZoomViewWeb extends ZoomPlatform {
               statusArray[0] = "MEETING_STATUS_INMEETING";
               break;
             default:
-              statusArray[0] = status.meetingStatus.toString();
+              statusArray[0] = meetingStatus.toString();
               break;
           }
 

@@ -12,3 +12,4 @@ key.properties
 
 app/build/
 app/.cxx/*
+/.kotlin/

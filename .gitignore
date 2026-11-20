@@ -30,7 +30,6 @@
 .pub/
 /build/
 
-
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
@@ -80,3 +79,6 @@ android/libs/
 android/commonlib/build
 android/mobilertc/build
 android/mobilertc/mobilertc.aar
+
+# FVM Version Cache
+.fvm/

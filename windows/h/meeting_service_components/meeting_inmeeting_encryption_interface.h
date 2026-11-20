@@ -21,6 +21,9 @@ public:
 	virtual void onE2EEMeetingSecurityCodeChanged() = 0;
 };
 
+/**
+ * @brief Enumeration of encryption type.
+ */
 enum EncryptionType
 {
 	/** For initialization. */
@@ -37,14 +40,14 @@ public:
 	virtual ~IMeetingEncryptionController() {}
 	
 	/**
-	 * @brief Set the encryption controller callback handler.
+	 * @brief Sets the encryption controller callback handler.
 	 * @param pEvent A pointer to the IMeetingEncryptionControllerEvent that receives the encryption event. 
 	 */
 	virtual void SetEvent(IMeetingEncryptionControllerEvent* pEvent) = 0;
 	
 	/**
-	 * @brief Get meeting encryption type.
-	 * @return The encryption type. For more details, see \link EncryptionType \endlink enum.
+	 * @brief Gets meeting encryption type.
+	 * @return The encryption type.
 	 */
 	virtual EncryptionType GetEncryptionType() = 0;
 	
@@ -55,26 +58,26 @@ public:
 	virtual const zchar_t* GetE2EEMeetingSecurityCode() = 0;
 	
 	/**
-	 * @brief Get security code passed seconds.
-	 * @return time in seconds.
+	 * @brief Gets security code passed seconds.
+	 * @return Time in seconds.
 	 */
 	virtual unsigned int GetE2EEMeetingSecurityCodePassedSeconds() = 0;
 	
 	/**
-	 * @brief Determine whether unencrypted exception data is valid.
-	 * @return true if it's valid, otherwise return false.
+	 * @brief Determines whether unencrypted exception data is valid.
+	 * @return true if it's valid. Otherwise, false.
 	 */
 	virtual bool IsUnencryptedExceptionDataValid() = 0;
 	
 	/**
-	 * @brief Get unencrypted exception count.
-	 * @return exception count.
+	 * @brief Gets unencrypted exception count.
+	 * @return Exception count.
 	 */
 	virtual unsigned int GetUnencryptedExceptionCount() = 0;
 	
 	/**
-	 * @brief Get unencrypted exception details.
-	 * @return exception details.
+	 * @brief Gets unencrypted exception details.
+	 * @return Exception details.
 	 */
 	virtual const zchar_t* GetUnencryptedExceptionInfo() = 0;
 };

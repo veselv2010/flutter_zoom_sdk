@@ -16,7 +16,10 @@ import us.zoom.sdk.InMeetingEventHandler;
 import us.zoom.sdk.InMeetingServiceListener;
 import us.zoom.sdk.LocalRecordingRequestPrivilegeStatus;
 import us.zoom.sdk.MobileRTCFocusModeShareType;
-import us.zoom.sdk.VideoQuality;
+import us.zoom.sdk.EnumComponentType;
+import us.zoom.sdk.InMeetingAppSignalPanelHandler;
+import us.zoom.sdk.InMeetingPreviewHandler;
+import us.zoom.sdk.MobileRTCNetworkQuality;
 import us.zoom.sdk.CameraControlRequestResult;
 import us.zoom.sdk.ZoomSDKFileSender;
 import us.zoom.sdk.ZoomSDKFileReceiver;
@@ -70,12 +73,6 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     }
 
-    @Deprecated
-    @Override
-    public void onMeetingUserUpdated(long l) {
-
-    }
-
     @Override
     public void onInMeetingUserAvatarPathUpdated(long l) {
 
@@ -118,11 +115,6 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onUserVideoStatusChanged(long l, VideoStatus videoStatus) {
-
-    }
-
-    @Override
-    public void onSinkMeetingVideoQualityChanged(VideoQuality videoQuality, long l) {
 
     }
 
@@ -366,12 +358,6 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     }
 
-    @Deprecated
-    @Override
-    public void onCameraControlRequestResult(long userId, boolean isApproved) {
-
-    }
-
     @Override
     public void onCameraControlRequestResult(long userId, CameraControlRequestResult result) {
 
@@ -444,6 +430,20 @@ public class SimpleInMeetingListener implements InMeetingServiceListener {
 
     @Override
     public void onGrantCoOwnerPrivilegeChanged(boolean b) {
+
+    }
+    @Override
+    public void onMeetingNeedConfirmPreview(InMeetingPreviewHandler handler) {
+
+    }
+
+    @Override
+    public void onUserNetworkStatusChanged(EnumComponentType type, MobileRTCNetworkQuality level, long userID, boolean uplink) {
+
+    }
+
+    @Override
+    public void onAppSignalPanelUpdated(InMeetingAppSignalPanelHandler handler) {
 
     }
 }

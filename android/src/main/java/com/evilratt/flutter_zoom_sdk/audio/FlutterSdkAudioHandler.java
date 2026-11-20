@@ -1,76 +1,87 @@
 package com.evilratt.flutter_zoom_sdk.audio;
 
-import static com.evilratt.flutter_zoom_sdk.utils.Utils.parseBoolean;
-
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+import us.zoom.sdk.InMeetingAudioController;
+import us.zoom.sdk.InMeetingService;
 import us.zoom.sdk.MobileRTCSDKError;
-import us.zoom.sdk.ZoomSDK;
 
 public class FlutterSdkAudioHandler implements MethodChannel.MethodCallHandler, EventChannel.StreamHandler {
-    @Nullable
-    InMeetingAudioStateListener listener;
+    private InMeetingService meetingService;
+    private EventChannel.EventSink events;
+    private InMeetingAudioStateListener listener;
+
+    public void setMeetingService(InMeetingService service) {
+        if (meetingService == service) {
+            return;
+        }
+        removeListener();
+        meetingService = service;
+        addListener();
+    }
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         switch (call.method) {
             case "getMicStatus":
-                final boolean status = getMicStatus();
-                result.success(status);
-                break;
             case "muteMyAudio":
-                if (call.arguments() == null) break;
-                final boolean value = (boolean) call.arguments();
-                final @Nullable String error = changeMicStatus(value);
-
-                if (error != null) {
-                    Log.e("muteMyAudio", error);
-//                    result.error("-1", "Incorrect usage of zoom sdk", error);
-                    break;
-                }
-
-                result.success(value);
                 break;
             default:
-                break;
-        }
-    }
-
-    private @NonNull boolean getMicStatus() {
-        return ZoomSDK.getInstance().getInMeetingService().getInMeetingAudioController().isMyAudioMuted();
-    }
-
-    private @Nullable String changeMicStatus(boolean state) {
-        final MobileRTCSDKError error = ZoomSDK.getInstance().getInMeetingService().getInMeetingAudioController().muteMyAudio(state);
-
-        if (error != null && error.name() != "SDKERR_SUCCESS") {
-            return error.name();
+                result.notImplemented();
+                return;
         }
 
-        return null;
+        InMeetingAudioController controller = meetingService != null && meetingService.isMeetingConnected()
+                ? meetingService.getInMeetingAudioController() : null;
+        if (controller == null) {
+            result.error("NO_MEETING", "Zoom meeting is not connected", null);
+            return;
+        }
+        if ("getMicStatus".equals(call.method)) {
+            result.success(controller.isMyAudioMuted());
+            return;
+        }
+        if (!(call.arguments instanceof Boolean)) {
+            result.error("INVALID_ARGUMENTS", "Expected a mute state", null);
+            return;
+        }
+        boolean muted = (Boolean) call.arguments;
+        MobileRTCSDKError error = controller.muteMyAudio(muted);
+        if (error == MobileRTCSDKError.SDKERR_SUCCESS) {
+            result.success(muted);
+        } else {
+            result.error("ZOOM_AUDIO_ERROR", error != null ? error.name() : "Unknown error", null);
+        }
     }
 
     @Override
     public void onListen(Object arguments, EventChannel.EventSink events) {
-        final long myId = ZoomSDK.getInstance().getInMeetingService().getMyUserID();
-        Log.i("Zoom Audio", String.valueOf(myId) + " MicStream myId");
-        if (listener == null) {
-            listener = new InMeetingAudioStateListener(arguments, events);
-        }
-
-        ZoomSDK.getInstance().getInMeetingService().addListener(listener);
+        onCancel(null);
+        this.events = events;
+        addListener();
     }
 
     @Override
     public void onCancel(Object arguments) {
-        if (listener == null) return;
-        listener.sink.endOfStream();
-        ZoomSDK.getInstance().getInMeetingService().removeListener(listener);
+        removeListener();
+        events = null;
+    }
+
+    private void addListener() {
+        if (meetingService != null && events != null) {
+            listener = new InMeetingAudioStateListener(meetingService, events);
+            meetingService.addListener(listener);
+        }
+    }
+
+    private void removeListener() {
+        if (listener != null) {
+            listener.close();
+            meetingService.removeListener(listener);
+            listener = null;
+        }
     }
 }

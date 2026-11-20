@@ -1,11 +1,14 @@
--keep class  us.zoom.**{*;}
--keep class  com.zipow.**{*;}
--keep class  us.zipow.**{*;}
--keep class  org.webrtc.**{*;}
--keep class  us.google.protobuf.**{*;}
--keep class  com.google.crypto.tink.**{*;}
--keep class  androidx.security.crypto.**{*;}
-
+# Zoom Meeting SDK 7.2.5.45150:
+-keep class us.zoom.** { *; }
+-keep class com.zipow.** { *; }
+-keep class us.zipow.** { *; }
+-keep class org.webrtc.** { *; }
+-keep class us.google.protobuf.** { *; }
+-keep class com.google.crypto.tink.** { *; }
+-keep class androidx.security.crypto.** { *; }
+-keep class androidx.** { *; }
+-keep class android.support.** { *; }
+-keep class com.google.** { *; }
 -dontwarn com.android.**
 -dontwarn com.google.**
 -dontwarn com.microsoft.**
@@ -18,3 +21,6 @@
 -dontwarn xcrash.**
 -dontwarn java.awt.**
 -dontwarn javax.swing.**
+-dontwarn kotlin.uuid.ExperimentalUuidApi
+-dontwarn kotlin.uuid.Uuid$Companion
+-dontwarn kotlin.uuid.Uuid

@@ -225,6 +225,7 @@ class _MeetingWidgetState extends State<MeetingWidget> {
         isSupportPolling: true,
         meetingInfo: [],
         isLockBottom: false,
+        language: 'ru-RU'
       );
       final meetingOptions = ZoomMeetingOptions(
         userId: 'userId',
@@ -500,12 +501,6 @@ class _MeetingWidgetState extends State<MeetingWidget> {
   }
 
   Future<void> hideMeeting() async {
-    bool isWindows = false;
-
-    if (!kIsWeb) {
-      isWindows = Platform.isWindows;
-    }
-
-    await zoom.hideMeeting(isWindows: isWindows);
+    await zoom.hideMeeting();
   }
 }

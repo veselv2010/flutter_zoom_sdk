@@ -10,7 +10,7 @@
 BEGIN_ZOOM_SDK_NAMESPACE
 
 /**
- * @brief Information category for Q&A connecting.
+ * @brief Enumeration of Q&A connect status.
  * Here are more detailed structural descriptions.
  */
 enum QAConnectStatus
@@ -35,50 +35,50 @@ public:
 	virtual ~IAnswerItem(){}
 	
 	/**
-	 * @brief Get the timestamp of the answer.
+	 * @brief Gets the timestamp of the answer.
 	 * @return The timestamp of the answer.
 	 */
 	virtual time_t  GetTimeStamp() = 0;
 	
 	/**
-	 * @brief Get the text of the answer.
+	 * @brief Gets the text of the answer.
 	 * @return The text of the answer.
 	 */
 	virtual const zchar_t* GetText() = 0;
 	
 	/**
-	 * @brief Get the sender's name of the answer.
+	 * @brief Gets the sender's name of the answer.
 	 * @return The sender's name of the answer.
 	 */
 	virtual const zchar_t* GetSenderName() = 0;
 	
 	/**
-	 * @brief Get the related question's id of the answer.
+	 * @brief Gets the related question's id of the answer.
 	 * @return The related question's id of the answer.
 	 */
 	virtual const zchar_t* GetQuestionID() = 0;
 	
 	/**
-	 * @brief Get the answer id.
+	 * @brief Gets the answer id.
 	 * @return The answer id.
 	 */
 	virtual const zchar_t* GetAnswerID() = 0;
 	
 	/**
-	 * @brief Determine if the answer is private or not.
-	 * @return TRUE indicates to the answer is private.
+	 * @brief Determines if the answer is private or not.
+	 * @return true indicates to the answer is private.
 	 */
 	virtual bool IsPrivate() = 0;
 	
 	/**
-	 * @brief Determine if the answer is live or not.
-	 * @return TRUE indicates to the answer is live.
+	 * @brief Determines if the answer is live or not.
+	 * @return true indicates to the answer is live.
 	 */
 	virtual bool IsLiveAnswer() = 0;
 	
 	/**
-	 * @brief Determine whether the answer's sender is the user himself or not.
-	 * @return TRUE indicates that the answer's sender is the user himself.
+	 * @brief Determines whether the answer's sender is the user himself or not.
+	 * @return true indicates that the answer's sender is the user himself.
 	 */
 	virtual bool IsSenderMyself() = 0;
 };
@@ -93,98 +93,98 @@ public:
 	virtual ~IQAItemInfo() {}
 
 	/**
-	 * @brief Get the timestamp of the question.
+	 * @brief Gets the timestamp of the question.
 	 * @return The timestamp of the question.
 	 */
 	virtual time_t GetTimeStamp() = 0;
 	
 	/**
-	 * @brief Get the number of the up_voters of the question.
+	 * @brief Gets the number of the up_voters of the question.
 	 * @return The number of the up_voters of the question.
 	 */
 	virtual unsigned int GetUpvoteNum() = 0;
 	
 	/**
-	 * @brief Get the text of the question.
+	 * @brief Gets the text of the question.
 	 * @return The text of the question.
 	 */
 	virtual const zchar_t* GetText() = 0;
 	
 	/**
-	 * @brief Get the sender's name of the question.
+	 * @brief Gets the sender's name of the question.
 	 * @return The sender's name of the question.
 	 */
 	virtual const zchar_t* GetSenderName() = 0;
 	
 	/**
-	 * @brief Get the question id.
+	 * @brief Gets the question id.
 	 * @return The question id.
 	 */
 	virtual const zchar_t* GetQuestionID() = 0;
 
 	/**
-	 * @brief Determine if the question is anonymous.
-	 * @return TRUE indicates the question is anonymous. 
+	 * @brief Determines if the question is anonymous.
+	 * @return true indicates the question is anonymous. 
 	 */
 	virtual bool IsAnonymous() = 0;
 	
 	/**
-	 * @brief Determine if the question is marked as answered.
-	 * @return TURE indicates the question is marked as answered.
+	 * @brief Determines if the question is marked as answered.
+	 * @return true indicates the question is marked as answered.
 	 */
 	virtual bool IsMarkedAsAnswered() = 0;
 	
 	/**
-	 * @brief Determine if the question is marked as dismissed.
-	 * @return TRUE indicates the question is marked as dismissed.
+	 * @brief Determines if the question is marked as dismissed.
+	 * @return true indicates the question is marked as dismissed.
 	 */
 	virtual bool IsMarkedAsDismissed() = 0;
 	
 	/**
-	 * @brief Determine if the question's sender is the user himself or not.
-	 * @return TRUE indicates that the question's sender is the user himself.
+	 * @brief Determines if the question's sender is the user himself or not.
+	 * @return true indicates that the question's sender is the user himself.
 	 */
 	virtual bool IsSenderMyself() = 0;
 	
 	/**
-	 * @brief Determine if the user himself is an up_voter of the question or not.
-	 * @return TRUE indicates the user himself is an up_voter of the question.
+	 * @brief Determines if the user himself is an up_voter of the question or not.
+	 * @return true indicates the user himself is an up_voter of the question.
 	 */
 	virtual bool IsMySelfUpvoted() = 0;
 
 	/**
-	 * @brief Determine if the question has live answers or not.
-	 * @return TRUE indicates the question has live answers.
+	 * @brief Determines if the question has live answers or not.
+	 * @return true indicates the question has live answers.
 	 */
 	virtual bool HasLiveAnswers() = 0;
 	
 	/**
-	 * @brief Determine if the question has text answers or not.
-	 * @return TRUE indicates the question has text answers.
+	 * @brief Determines if the question has text answers or not.
+	 * @return true indicates the question has text answers.
 	 */
 	virtual bool HasTextAnswers() = 0;
 	
 	/**
-	 * @brief Determine if the user himself is answering the question live or not.
-	 * @return TRUE indicates the user himself is answering the question live.
+	 * @brief Determines if the user himself is answering the question live or not.
+	 * @return true indicates the user himself is answering the question live.
 	 */
 	virtual bool AmILiveAnswering() = 0;
 	
 	/**
-	 * @brief Get all the users' names who answers the question live.
+	 * @brief Gets all the users' names who answers the question live.
 	 * @return All the users' names who answers the question live. Separated by commas.
 	 */
 	virtual const zchar_t* GetLiveAnswerName() = 0;
 	
 	/**
-	 * @brief Determine if the question is being answered live or not.
-	 * @return TRUE indicates the question is being answered live.
+	 * @brief Determines if the question is being answered live or not.
+	 * @return true indicates the question is being answered live.
 	 */
 	virtual bool IsLiveAnswering() = 0;
 	
 	/**
-	 * @brief Get the list of all the answers to the question.
-	 * @return The list of all the answers to the question. For more details, see \link IAnswerItem \endlink.
+	 * @brief Gets the list of all the answers to the question.
+	 * @return The list of all the answers to the question.
 	 */
 	virtual IList<IAnswerItem*>* GetAnswerList() = 0;
 };
@@ -200,7 +200,7 @@ public:
 
 	/**
 	 * @brief Callback event of Q&A connecting status. 
-	 * @param connectStatus: The value of Q&A connecting status. For more details, see \link QAConnectStatus \endlink enum.
+	 * @param connectStatus: The value of Q&A connecting status.
 	 */
 	virtual void OnQAConnectStatus(QAConnectStatus connectStatus) = 0;
 	
@@ -311,7 +311,7 @@ public:
 
 	/**
 	 * @brief Callback event of meeting QA feature status changes
-	 * @param bEnabled True means meeting QA feature is on, otherwise not.
+	 * @param bEnabled true indicates meeting QA feature is on, otherwise not.
 	 */
 	virtual void onMeetingQAStatusChanged(bool bEnabled) = 0;
 
@@ -331,9 +331,9 @@ class IMeetingQAController
 public:
 
 	/**
-	 * @brief Set the meeting q&a controller callback event handler.
-	 * @param pEvent A pointer to the IMeetingQAControllerEvent that receives the meeting q&a event. For more details, see \link IMeetingQAControllerEvent \endlink.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Sets the meeting q&a controller callback event handler.
+	 * @param pEvent A pointer to the IMeetingQAControllerEvent that receives the meeting q&a event.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(IMeetingQAControllerEvent* pEvent) = 0;
 	
@@ -345,19 +345,19 @@ public:
 	 * @brief The attendee adds a question.
 	 * @param questionContent Specifies the content of the question.
 	 * @param bAskAnonymous Specifies whether the question is asked anonymously.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError AddQuestion(const zchar_t* questionContent, bool bAskAnonymous) = 0;
 	
 	/**
-	 * @brief Get the question count of the attendee himself.
+	 * @brief Gets the question count of the attendee himself.
 	 * @return The question count of the attendee himself.
 	 */
 	virtual int GetMyQuestionCount() = 0;
 	
 	/**
-	 * @brief Get the list of all the questions that the attendee himself added.
-	 * @return The list of all the questions that the attendee himself added. For more details, see \link IQAItemInfo \endlink.
+	 * @brief Gets the list of all the questions that the attendee himself added.
+	 * @return The list of all the questions that the attendee himself added.
 	 */
 	virtual IList<IQAItemInfo *>* GetMyQuestionList() = 0;
 	
@@ -365,7 +365,7 @@ public:
 	 * @brief The attendee comments a question.
 	 * @param questionID Specifies the question id.
 	 * @param commentContent Specifies the content of the comment.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note The comment will be cut off if it is over long.
 	 */
 	virtual SDKError CommentQuestion(const zchar_t* questionID, const zchar_t* commentContent) = 0;
@@ -378,7 +378,7 @@ public:
 	 * @brief The host answers the question to the question sender privately.
 	 * @param questionID Specifies the question id.
 	 * @param answerContent Specifies the content of the answer.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note The answer will be cut off if it is over long.
 	 */
 	virtual SDKError AnswerQuestionPrivate(const zchar_t* questionID, const zchar_t* answerContent) = 0;
@@ -387,7 +387,7 @@ public:
 	 * @brief The host answers the question publicly.
 	 * @param questionID Specifies the question id.
 	 * @param answerContent Specifies the content of the answer.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note The answer will be cut off if it is over long.
 	 */
 	virtual SDKError AnswerQuestionPublic(const zchar_t* questionID, const zchar_t* answerContent) = 0;
@@ -395,106 +395,106 @@ public:
 	/**
 	 * @brief The host dismisses the question.
 	 * @param questionID Specifies the question id.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DismissQuestion(const zchar_t* questionID) = 0;
 
 	/**
 	 * @brief The host deletes the question.
 	 * @param questionID Specifies the question id.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DeleteQuestion(const zchar_t* questionID) = 0;
 
 	/**
 	 * @brief The host deletes the answerID.
 	 * @param answerID Specifies the answer id.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DeleteAnswer(const zchar_t* answerID) = 0;
 
 	/**
 	 * @brief The host reopens the question.
 	 * @param questionID Specifies the question id.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError ReopenQuestion(const zchar_t* questionID) = 0;
 	
 	/**
-	 * @brief Set the question can be answered live.
+	 * @brief Sets the question can be answered live.
 	 * @param questionID Specifies the question id.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StartLiving(const zchar_t* questionID) = 0;
 	
 	/**
-	 * @brief Set the question can not be answered live.
+	 * @brief Sets the question can not be answered live.
 	 * @param questionID Specifies the question id.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EndLiving(const zchar_t* questionID) = 0;
 
 	/**
-	 * @brief Get the count of the opened questions.
+	 * @brief Gets the count of the opened questions.
 	 * @return The count of the opened questions.
 	 */
 	virtual int GetOpenQuestionCount() = 0;
 	
 	/**
-	 * @brief Get the count of the dismissed questions.
+	 * @brief Gets the count of the dismissed questions.
 	 * @return The count of the dismissed questions.
 	 */
 	virtual int GetDismissedQuestionCount() = 0;
 	
 	/**
-	 * @brief Get the count of the answered questions.
+	 * @brief Gets the count of the answered questions.
 	 * @return The count of the answered questions.
 	 */
 	virtual int GetAnsweredQuestionCount() = 0;
 	
 	/**
-	 * @brief Get the list of the opened questions.
-	 * @return The list of the opened questions. For more details, see \link IQAItemInfo \endlink.
+	 * @brief Gets the list of the opened questions.
+	 * @return The list of the opened questions.
 	 */
 	virtual IList<IQAItemInfo *>* GetOpenQuestionList() = 0;
 	
 	/**
-	 * @brief Get the list of the dismissed questions.
-	 * @return The list of the dismissed questions. For more details, see \link IQAItemInfo \endlink.
+	 * @brief Gets the list of the dismissed questions.
+	 * @return The list of the dismissed questions.
 	 */
 	virtual IList<IQAItemInfo *>* GetDismissedQuestionList() = 0;
 	
 	/**
-	 * @brief Get the list of the answered questions.
-	 * @return The list of the answered questions. For more details, see \link IQAItemInfo \endlink.
+	 * @brief Gets the list of the answered questions.
+	 * @return The list of the answered questions.
 	 */
 	virtual IList<IQAItemInfo *>* GetAnsweredQuestionList() = 0;
 	
 	/**
-	 * @brief Enable or disable to ask question anonymously.
-	 * @param bEnable TRUE indicates to enable to ask question anonymously.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Enables or disable to ask question anonymously.
+	 * @param bEnable true indicates to enable to ask question anonymously.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EnableAnonymousQuestion(bool bEnable) = 0;
 
 	/**
-	 * @brief Enable or disable the attendees to view all the questions.
-	 * @param bEnable TRUE indicates to enable the attendees to view all the questions.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Enables or disable the attendees to view all the questions.
+	 * @param bEnable true indicates to enable the attendees to view all the questions.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EnableAttendeeViewAllQuestion(bool bEnable) = 0;
 
 	/**
-	 * @brief Enable or disable to comment question.
-	 * @param bEnable TRUE indicates to enable to comment question.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Enables or disable to comment question.
+	 * @param bEnable true indicates to enable to comment question.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EnableQAComment(bool bEnable) = 0;
 
 	/**
-	 * @brief Enable or disable to vote up question.
-	 * @param bEnable TRUE indicates to enable to vote up question.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Enables or disable to vote up question.
+	 * @param bEnable true indicates to enable to vote up question.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EnableQAVoteup(bool bEnable) = 0;
 
@@ -503,102 +503,102 @@ public:
 	 */
 	 
 	/**
-	 * @brief Determine if the meeting q&a service is enabled.
-	 * @return TRUE indicates the meeting q&a service is enabled.
+	 * @brief Determines if the meeting q&a service is enabled.
+	 * @return true indicates the meeting q&a service is enabled.
 	 */
 	virtual bool IsQAEnabled() = 0;
 
 	/**
-	 * @brief Determine if enabled to comment question.
-	 * @return TRUE indicates enabled.
+	 * @brief Determines if enabled to comment question.
+	 * @return true indicates enabled.
 	 */
 	virtual bool IsQACommentEnabled() = 0; 
 
 	/**
-	 * @brief Determine if enabled to vote up question.
-	 * @return TRUE indicates enabled.
+	 * @brief Determines if enabled to vote up question.
+	 * @return true indicates enabled.
 	 */
 	virtual bool IsQAVoteupEnabled() = 0;
 
 	/**
-	 * @brief Determine if enabled to ask question anonymously.
-	 * @return TRUE indicates enabled.
+	 * @brief Determines if enabled to ask question anonymously.
+	 * @return true indicates enabled.
 	 */
 	virtual bool IsAskQuestionAnonymouslyEnabled() = 0;
 
 	/**
-	 * @brief Determine if the attendee can view all the questions.
-	 * @return TRUE indicates the attendee can view all the questions.
+	 * @brief Determines if the attendee can view all the questions.
+	 * @return true indicates the attendee can view all the questions.
 	 */
 	virtual bool IsAttendeeCanViewAllQuestions()=0;
 
 	/**
-	 * @brief Get the list of all the questions.
-	 * @return The list of all the questions. For more details, see \link IQAItemInfo \endlink.
+	 * @brief Gets the list of all the questions.
+	 * @return The list of all the questions.
 	 */
 	virtual IList<IQAItemInfo *>* GetAllQuestionList() = 0;
 
 	/**
-	 * @brief Get a certain question.
+	 * @brief Gets a certain question.
 	 * @param questionID Specifies the question id.
-	 * @return A pointer to IQAItemInfo. For more details, see \link IQAItemInfo \endlink.
+	 * @return A pointer to IQAItemInfo.
 	 */
 	virtual IQAItemInfo* GetQuestion(const zchar_t* questionID) = 0;
 
 	/**
-	 * @brief Get a certain answer.
+	 * @brief Gets a certain answer.
 	 * @param answerID Specifies the answer id.
-	 * @return A pointer to IAnswerItem. For more details, see \link IAnswerItem \endlink.
+	 * @return A pointer to IAnswerItem.
 	 */
 	virtual IAnswerItem* GetAnswer(const zchar_t* answerID) = 0;
 
 	/**
 	 * @brief Vote up or revoke voting up the question.
 	 * @param questionID Specifies the question id.
-	 * @param bVokeup TRUE indicates to vote up, FALSE indicates to revoke voting up.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param bVokeup true indicates to vote up, false indicates to revoke voting up.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError VoteupQuestion(const zchar_t* questionID, bool bVokeup) = 0;
 
 	/**
-	 * @brief Determine whether the legal notice for QA is available
-	 * @return True indicates the legal notice for QA is available. Otherwise False.
+	 * @brief Determines whether the legal notice for QA is available
+	 * @return true indicates the legal notice for QA is available. Otherwise false.
 	 */
 	virtual bool IsQALegalNoticeAvailable() = 0;
 
 	/**
-	 * @brief Get the QA legal notices prompt.
+	 * @brief Gets the QA legal notices prompt.
 	 */
 	virtual const zchar_t* getQALegalNoticesPrompt() = 0;
 
 	/**
-	 * @brief Get the QA legal notices explained.
+	 * @brief Gets the QA legal notices explained.
 	 */
 	virtual const zchar_t* getQALegalNoticesExplained() = 0;
 
 	/**
-	 * @brief Set to enable/disable meeting QA.
-	 * @param bEnable True means enabled, false means disabled.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Sets to enable/disable meeting QA.
+	 * @param bEnable true indicates enabled, false means disabled.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EnableMeetingQAFeature(bool bEnable) = 0;
 
 	/**
-	 * @brief Determine if meeting QA is enabled in current meeting.
-	 * @return True means enabled, otherwise not.
+	 * @brief Determines if meeting QA is enabled in current meeting.
+	 * @return true indicates enabled, otherwise not.
 	 */
 	virtual bool IsMeetingQAFeatureOn() = 0;
 
 	/**
-	 * @brief Set attendee can ask question.
-	 * @param bEnable True means attendee can ask question, otherwise not.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Sets attendee can ask question.
+	 * @param bEnable true indicates attendee can ask question, otherwise not.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EnableAskQuestion(bool bEnable) = 0;
 
 	/**
-	 * @brief Determine if the ask question is allowed by the host/co-host.
-	 * @return True means can ask question, otherwise not.
+	 * @brief Determines if the ask question is allowed by the host/co-host.
+	 * @return true indicates can ask question, otherwise not.
 	 */
 	virtual bool IsAskQuestionEnabled() = 0;
 };

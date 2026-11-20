@@ -1,128 +1,82 @@
 #ifndef FLUTTER_PLUGIN_FLUTTER_ZOOM_SDK_PLUGIN_H_
 #define FLUTTER_PLUGIN_FLUTTER_ZOOM_SDK_PLUGIN_H_
 
+// This must be included before many other Windows headers.
+#include <windows.h>
+
+#include <flutter/event_channel.h>
+#include <flutter/event_sink.h>
 #include <flutter/method_channel.h>
 #include <flutter/plugin_registrar_windows.h>
 #include <flutter/standard_method_codec.h>
-#include <flutter/event_channel.h>
-#include <flutter/event_sink.h>
-#include <flutter/event_stream_handler_functions.h>
 
+#include <cstdint>
+#include <deque>
 #include <map>
 #include <memory>
-#include <sstream>
-#include <thread>
-#include <future>
+#include <mutex>
 #include <string>
-
-#include <zoom_sdk.h>
-#include <meeting_service_interface.h>
-#include <auth_service_interface.h>
-#include <setting_service_interface.h>
-#include <meeting_service_components/meeting_ui_ctrl_interface.h>
-#include <meeting_service_components/meeting_configuration_interface.h>
+#include <thread>
 
 namespace flutter_zoom_sdk {
-	using flutter::EncodableList;
-	using flutter::EncodableMap;
-	using flutter::EncodableValue;
-	using namespace std;
 
-    class MeetingServiceEvent;
+class FlutterZoomSdkPlugin : public flutter::Plugin {
+public:
+	static void RegisterWithRegistrar(flutter::PluginRegistrarWindows* registrar);
 
-    ZOOM_SDK_NAMESPACE::SDK_LANGUAGE_ID LanguageIdFromString(const string &lang_in);
+	FlutterZoomSdkPlugin();
+	~FlutterZoomSdkPlugin() override;
 
-	class FlutterZoomSdkPlugin : public flutter::Plugin {
-	public:
-		static void RegisterWithRegistrar(flutter::PluginRegistrarWindows* registrar);
+	// Disallow copy and assign.
+	FlutterZoomSdkPlugin(const FlutterZoomSdkPlugin&) = delete;
+	FlutterZoomSdkPlugin& operator=(const FlutterZoomSdkPlugin&) = delete;
 
-		FlutterZoomSdkPlugin();
+private:
+	using Result = flutter::MethodResult<flutter::EncodableValue>;
+	using Value = flutter::EncodableValue;
+	using Map = flutter::EncodableMap;
 
-		virtual ~FlutterZoomSdkPlugin();
+	// Called when a method is called on this plugin's channel from Dart.
+	void HandleMethodCall(const flutter::MethodCall<Value>& call,
+		std::unique_ptr<Result> result);
+	void Listen(std::unique_ptr<flutter::EventSink<>>&& events);
+	void HandleMessages();
+	void HandleMessage(const std::string& message);
+	void NotifyStatus(const std::string& status, int code);
+	void FailPending();
+	void CheckTimeouts();
 
-		// Disallow copy and assign.
-		FlutterZoomSdkPlugin(const FlutterZoomSdkPlugin&) = delete;
-		FlutterZoomSdkPlugin& operator=(const FlutterZoomSdkPlugin&) = delete;
+	bool StartHost();
+	void StopHost();
+	bool WriteCommand(const std::string& command);
+	void SendCommand(const std::string& command,
+		std::unique_ptr<Result> result);
+	void ReadHostOutput();
 
-		unique_ptr<flutter::EventSink<>> meeting_event_sink_;
+	static LRESULT CALLBACK WindowProc(HWND window, UINT message,
+		WPARAM wparam, LPARAM lparam);
+	static std::string GetString(const Map& values, const char* key);
+	static std::string Hex(const std::string& input);
 
-		void joinMeeting();
-
-	private:
-		ZOOM_SDK_NAMESPACE::IAuthService* AuthService;
-		ZOOM_SDK_NAMESPACE::IMeetingService* MeetingService;
-		ZOOM_SDK_NAMESPACE::ISettingService* SettingService;
-
-		// Keep meeting options from initAndJoin Zoom for onAuthenticationReturn in AuthEvent
-		EncodableMap ZoomMeetingOptions;
-
-        unique_ptr<MeetingServiceEvent> meetingListener;
-
-		// Called when a method is called on this plugin's channel from Dart.
-		void HandleMethodCall(
-			const flutter::MethodCall<EncodableValue>& method_call,
-			unique_ptr<flutter::MethodResult<EncodableValue>> result);
-
-		void MeetingStreamListen(unique_ptr<flutter::EventSink<>>&& events);
-
-		bool AuthorizeSDK(EncodableMap ZoomInitOptions);
-
-		void createMeetingService();
-
-		void createSettingService();
-
-		bool leaveMeeting();
-
-		bool hideMeeting();
-
-		bool showMeeting();
-
-		void pressWinAndDownKeys();
+	std::wstring app_user_model_id_;
+	HWND dispatcher_ = nullptr;
+	HANDLE process_ = nullptr;
+	HANDLE input_ = nullptr;
+	HANDLE output_ = nullptr;
+	std::thread reader_;
+	std::mutex messages_mutex_;
+	std::deque<std::string> messages_;
+	std::unique_ptr<flutter::EventSink<>> meeting_event_sink_;
+	struct PendingCall {
+		std::unique_ptr<Result> result;
+		ULONGLONG deadline;
 	};
-
-	class AuthEvent : public ZOOM_SDK_NAMESPACE::IAuthServiceEvent {
-	public:
-		AuthEvent();
-
-		virtual ~AuthEvent();
-
-	private:
-		void onAuthenticationReturn(ZOOM_SDK_NAMESPACE::AuthResult ret);
-
-		void onLoginReturnWithReason(ZOOM_SDK_NAMESPACE::LOGINSTATUS ret, ZOOM_SDK_NAMESPACE::IAccountInfo* pAccountInfo, ZOOM_SDK_NAMESPACE::LoginFailReason reason);
-
-		void onLogout();
-
-		void onZoomIdentityExpired();
-
-		void onZoomAuthIdentityExpired();
-
-		void onNotificationServiceStatus(ZOOM_SDK_NAMESPACE::SDKNotificationServiceStatus status);
-
-		void onNotificationServiceStatus(ZOOM_SDK_NAMESPACE::SDKNotificationServiceStatus status, ZOOM_SDK_NAMESPACE::SDKNotificationServiceError error);
-	};
-
-	class MeetingServiceEvent : public ZOOM_SDK_NAMESPACE::IMeetingServiceEvent {
-	public:
-		MeetingServiceEvent();
-
-		virtual ~MeetingServiceEvent();
-
-	private:
-		void onMeetingStatusChanged(ZOOM_SDK_NAMESPACE::MeetingStatus status, int iResult = 0);
-
-		void onMeetingStatisticsWarningNotification(ZOOM_SDK_NAMESPACE::StatisticsWarningType type);
-
-		void onMeetingParameterNotification(const ZOOM_SDK_NAMESPACE::MeetingParameter* meeting_param);
-
-		void onSuspendParticipantsActivities();
-
-		void onAICompanionActiveChangeNotice(bool bActive);
-
-        void onMeetingTopicChanged(const zchar_t *sTopic);
-
-		void onMeetingFullToWatchLiveStream(const zchar_t* sLiveStreamUrl);
-	};
+	std::map<uint64_t, PendingCall> pending_;
+	uint64_t next_id_ = 0;
+	std::string last_status_;
+	int last_status_code_ = 0;
+	bool stopping_ = false;
+};
 
 }  // namespace flutter_zoom_sdk
 

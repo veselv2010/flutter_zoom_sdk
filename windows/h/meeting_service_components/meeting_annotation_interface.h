@@ -10,7 +10,7 @@
 BEGIN_ZOOM_SDK_NAMESPACE
 class ICustomizedShareRender;
 /** 
- * @brief Types of annotation tool.
+ * @brief Enumeration of annotation tool types.
  * Here are more detailed structural descriptions.
  */
 enum AnnotationToolType
@@ -65,7 +65,7 @@ enum AnnotationToolType
 	ANNOTOOL_AUTO_STAMP_QM, 
 };
 /** 
- * @brief Clear types of annotation tools.
+ * @brief Enumeration of annotation tool clear types.
  * Here are more detailed structural descriptions.
  */
 enum AnnotationClearType
@@ -102,85 +102,85 @@ class IAnnotationController
 {
 public:
 	/**
-	 * @brief Set the callback that annotation status changes. 
-	 * @param pEvent An object pointer to the the IMeetingAnnotationSupportEvent that receives the annotation status changing callback event. 
-	 * @return If the user owns the authority, the return value is SDKErr_Success. Otherwise not. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Sets the callback that annotation status changes. 
+	 * @param pEvent An object pointer to the IMeetingAnnotationSupportEvent that receives the annotation status changing callback event. 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(IMeetingAnnotationSupportEvent* pEvent) = 0;
 
 	/**
-	 * @brief Determine whether current meeting supports annotation feature.
-	 * @return true not support, false support.
+	 * @brief Determines whether current meeting supports annotation feature.
+	 * @return true if annotation is disabled. Otherwise, false.
 	 */
 	virtual bool IsAnnotationDisable() = 0;
 	/**
 	 * @brief Display annotation toolbar.
-	 * @param viewtype Specify which view to display the toolbar. For more details, see \link SDKViewType \endlink enum.
+	 * @param viewtype Specify which view to display the toolbar.
 	 * @param left Specify X-axis coordinate of the upper-left corner for the toolbar.
 	 * @param top Specify Y-axis coordinate of the upper-left corner for the toolbar.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. For extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid only for ZOOM style user interface mode.
 	 */
 	virtual SDKError StartAnnotation(SDKViewType viewtype) = 0;
 	/**
 	 * @brief Close the current annotation toolbar.
-	 * @param viewtype Specify which view to close the toolbar. For more details, see \link SDKViewType \endlink enum.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. For extended error information, see \link SDKError \endlink enum.
+	 * @param viewtype Specify which view to close the toolbar.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid only for ZOOM style user interface mode.
 	 */
 	virtual SDKError StopAnnotation(SDKViewType viewtype) = 0;
 	/**
 	 * @brief Choose annotation tool.
-	 * @param viewtype Specify which view to display the toolbar. For more details, see \link SDKViewType \endlink enum.
-	 * @param type Specify the annotation tool to be used. For the definitions of the tools, see \link AnnotationToolType \endlink enum.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param viewtype Specify which view to display the toolbar.
+	 * @param type Specify the annotation tool to be used.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid only for ZOOM style user interface mode. The tool type ANNOTOOL_PICKER and ANNOTOOL_SPOTLIGHT are not support for viewer.
 	 */
 	virtual SDKError SetTool(SDKViewType viewtype, AnnotationToolType type) = 0;
 	/**
 	 * @brief Clear present annotations. 
-	 * @param viewtype Specify on which view to clear the annotations. For more details, see \link SDKViewType \endlink enum.
-	 * @param type Specify the ways to clear annotations. For the definitions of the tools, see \link AnnotationClearType \endlink enum.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param viewtype Specify on which view to clear the annotations.
+	 * @param type Specify the ways to clear annotations.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid only for ZOOM style user interface mode.
 	 */
 	virtual SDKError Clear(SDKViewType viewtype, AnnotationClearType type) = 0;
 
 	/**
-	 * @brief Set the colors of annotation tools.
-	 * @param viewtype The specified color is used on which view. For more details, see \link SDKViewType \endlink enum. 
+	 * @brief Sets the colors of annotation tools.
+	 * @param viewtype The specified color is used on which view.
 	 * @param color Specify the color of the annotation tools in RGB format.  
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid only for ZOOM style user interface mode.
 	 */
 	virtual SDKError SetColor(SDKViewType viewtype, unsigned long color) = 0;
 	/**
-	 * @brief Set the line width of annotation tools.
-	 * @param viewtype The specified line width is used on which view. For more details, see \link SDKViewType \endlink enum. 
+	 * @brief Sets the line width of annotation tools.
+	 * @param viewtype The specified line width is used on which view.
 	 * @param lineWidth Specify the line width to annotate.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid only for ZOOM style user interface mode.
 	 */
 	virtual SDKError SetLineWidth(SDKViewType viewtype, long lineWidth) = 0;
 	
 	/**
 	 * @brief Undo the last annotation.
-	 * @param viewtype Specify on which view to undo the last annotation. For more details, see \link SDKViewType \endlink enum. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param viewtype Specify on which view to undo the last annotation.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid only for ZOOM style user interface mode.
 	 */
 	virtual SDKError Undo(SDKViewType viewtype) = 0;
 	
 	/**
 	 * @brief Redo the last-undo annotation.
-	 * @param viewtype Specify on which view to redo the last-undo annotation. For more details, see \link SDKViewType \endlink enum.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param viewtype Specify on which view to redo the last-undo annotation.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid only for ZOOM style user interface mode.
 	 */
 	virtual SDKError Redo(SDKViewType viewtype) = 0;
 
 	/**
-	 * @brief Get the controller of annotation tools used in user custom interface mode.
+	 * @brief Gets the controller of annotation tools used in user custom interface mode.
 	 * @return If the function succeeds, the return value is the controller of annotation tools used in user custom interface mode. If the function fails, the return value is nullptr.
 	 * @note Valid only for user custom interface mode.
 	 */
@@ -188,49 +188,51 @@ public:
 
 	/**
 	 * @brief Disallow/allow participants to annotate when viewing the sharing content.
-	 * @param [in] viewtype: SDK_FIRST_VIEW/SDK_SECOND_VIEW
-	 * @param [in] disable TRUE means disabled, FALSE not.
-     * @return If the user owns the authority, the return value is SDKErr_Success. Otherwise not. To get extended error information, see \link SDKError \endlink enum.
+	 * @param [in] viewtype SDK_FIRST_VIEW or SDK_SECOND_VIEW.
+	 * @param [in] disable true indicates disabled, false not.
+     * @return If the user owns the authority, the return value is SDKERR_SUCCESS. Otherwise not.
 	 */
 	virtual SDKError DisableViewerAnnotation(SDKViewType viewtype, bool bDisable) = 0;
 
 	/**
-	 * @brief Determine if viewer's privilege of annotation is disabled.
-	 * @param [in] viewtype: SDK_FIRST_VIEW/SDK_SECOND_VIEW
-	 * @param [out] bDisabled TRUE means disabled, FALSE not. It validates only when the return value is SDKErr_Success. 
-	 * @return If the user owns the authority, the return value is SDKErr_Success. Otherwise not. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Determines if viewer's privilege of annotation is disabled.
+	 * @param [in] viewtype SDK_FIRST_VIEW or SDK_SECOND_VIEW.
+	 * @param [out] bDisabled true indicates disabled, false not. It validates only when the return value is SDKERR_SUCCESS. 
+	 * @return If the user owns the authority, the return value is SDKERR_SUCCESS. Otherwise not.
 	 */
 	virtual SDKError IsViewerAnnotationDisabled(SDKViewType viewtype, bool& bDisabled) = 0;
 
 	/**
-	 * @brief Determine if it is able to disallow viewer to annotate. 
-	 * @param [in] viewtype: SDK_FIRST_VIEW/SDK_SECOND_VIEW
-	 * @param [out] bCan TRUE means able, FALSE not. It validates only when the return value is SDKErr_Success. 
-	 * @return If the user owns the authority, the return value is SDKErr_Success. Otherwise not. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Determines if it is able to disallow viewer to annotate. 
+	 * @param [in] viewtype SDK_FIRST_VIEW or SDK_SECOND_VIEW.
+	 * @param [out] bCan true indicates able, false not. It validates only when the return value is SDKERR_SUCCESS. 
+	 * @return If the user owns the authority, the return value is SDKERR_SUCCESS. Otherwise not.
 	 */
 	virtual SDKError CanDisableViewerAnnotation(SDKViewType viewtype, bool& bCan) = 0;
 
 	/**
-	 * @brief Determine if it is able to annotate(Both the presenter and viewer can call the function).
-	 * @param [in] viewtype SDK_FIRST_VIEW/SDK_SECOND_VIEW
-	 * @param [out] bCan TRUE means able, FALSE not. It validates only when the return value is SDKErr_Success. 
-	 * @return If the user owns the authority, the return value is SDKErr_Success. Otherwise not. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Determines if it is able to annotate(Both the presenter and viewer can call the function).
+	 * @param [in] viewtype SDK_FIRST_VIEW or SDK_SECOND_VIEW.
+	 * @param [out] bCan true indicates able, false not. It validates only when the return value is SDKERR_SUCCESS. 
+	 * @return If the user owns the authority, the return value is SDKERR_SUCCESS. Otherwise not.
 	 */
 	virtual SDKError CanDoAnnotation(SDKViewType viewtype,bool& bCan) = 0;
 
 	/**
-	 * @brief Determine whether the legal notice for annotation is available
-	 * @return True indicates the legal notice for annotation transcript is available. Otherwise False.
+	 * @brief Determines whether the legal notice for annotation is available.
+	 * @return true if the legal notice for annotation transcript is available. Otherwise, false.
 	 */
 	virtual bool IsAnnotationLegalNoticeAvailable() = 0;
 
 	/**
- 	 * @brief Get the annotation legal notices prompt.
+ 	 * @brief Gets the annotation legal notices prompt.
+	 * @return The annotation legal notices prompt.
 	 */
 	virtual const zchar_t* getAnnotationLegalNoticesPrompt() = 0;
 
 	/**
-	 * @brief the annotation legal notices explained.
+	 * @brief Gets the annotation legal notices explained.
+	 * @return The annotation legal notices explained.
 	 */
 	virtual const zchar_t* getAnnotationLegalNoticesExplained() = 0;
 

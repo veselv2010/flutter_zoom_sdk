@@ -9,7 +9,7 @@
 BEGIN_ZOOM_SDK_NAMESPACE
 
 /** 
- * @brief Status of live stream.
+ * @brief Enumeration of live stream status.
  * Here are more detailed structural descriptions.
  */
 enum LiveStreamStatus
@@ -58,42 +58,44 @@ public:
 	virtual ~IRequestRawLiveStreamPrivilegeHandler() {};
 	
 	/**
-	 * @brief Get the request ID.
-	 * @return If the function succeeds, the return value is the request ID.
+	 * @brief Gets the request ID.
+	 * @return If the function succeeds, it returns the request ID. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetRequestId() = 0;
 	
 	/**
-	 * @brief Get the user ID who requested privilege.
-	 * @return If the function succeeds, the return value is the user ID. Otherwise, this returns 0.
+	 * @brief Gets the user ID who requested privilege.
+	 * @return If the function succeeds, it returns the user ID. Otherwise, this function returns 0.
 	 */
 	virtual unsigned int GetRequesterId() = 0;
 	
 	/**
-	 * @brief Get the user name who requested privileges.
-	 * @return If the function succeeds, the return value is the user name.
+	 * @brief Gets the user name who requested privileges.
+	 * @return If the function succeeds, it returns the user name. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetRequesterName() = 0;
 	
 	/**
-	 * @brief Get the broadcast URL.
-	 * @return If the function succeeds, the return value is the broadcast URL.
+	 * @brief Gets the broadcast URL.
+	 * @return If the function succeeds, it returns the broadcast URL. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetBroadcastUrl() = 0;
 	
 	/**
-	 * @brief Get the broadcast name.
-	 * @return If the function succeeds, the return value is the broadcast name.
+	 * @brief Gets the broadcast name.
+	 * @return If the function succeeds, it returns the broadcast name. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetBroadcastName() = 0;
 	
 	/**
-	 * @brief Allows the user to start raw live stream and finally self-destroy.
+	 * @brief Grants the user permission to start raw live stream and then destroys this instance.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError GrantRawLiveStreamPrivilege() = 0;
 	
 	/**
-	 * @brief Denies the user permission to start raw live stream and finally self-destroy.
+	 * @brief Denies the user permission to start raw live stream and then destroys this instance.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DenyRawLiveStreamPrivilege() = 0;
 };
@@ -107,7 +109,7 @@ class IMeetingLiveStreamCtrlEvent
 public:
 	/**
 	 * @brief Callback event when live stream status changes.
-	 * @param status Live stream status. For more details, see \link LiveStreamStatus \endlink enum.
+	 * @param status Live stream status.
 	 */
 	virtual void onLiveStreamStatusChange(LiveStreamStatus status) = 0;
 	
@@ -131,7 +133,7 @@ public:
 	
 	/**
 	 * @brief Callback event when a user requests raw live streaming privilege.
-	 * @param handler A pointer to the IRequestRawLiveStreamPrivilegeHandler. For more details, see \link IRequestRawLiveStreamPrivilegeHandler \endlink.
+	 * @param handler A pointer to the IRequestRawLiveStreamPrivilegeHandler.
 	 */
 	virtual void onRawLiveStreamPrivilegeRequested(IRequestRawLiveStreamPrivilegeHandler* handler) = 0;
 	
@@ -143,7 +145,7 @@ public:
 	
 	/**
 	 * @brief Callback event when the live stream reminder enable status changes.
-	 * @param enable True means the live stream reminder is enabled.
+	 * @param enable true indicates the live stream reminder is enabled.
 	 */
 	virtual void onLiveStreamReminderStatusChanged(bool enable) = 0;
 	
@@ -168,20 +170,20 @@ class IMeetingLiveStreamItem
 {
 public:
 	/**
-	 * @brief Get URL of the live stream meeting.
-	 * @return If the function succeeds, the return value is the URL of the live stream meeting.
+	 * @brief Gets the URL of the live stream meeting.
+	 * @return If the function succeeds, it returns the URL of the live stream meeting. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetLiveStreamURL() = 0;
 	
 	/**
-	 * @brief Get the descriptions of live stream.
-	 * @return If the function succeeds, the return value is the description of live stream.
+	 * @brief Gets the description of live stream.
+	 * @return If the function succeeds, it returns the description of live stream. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetLiveStreamURLDescription() = 0;
 	
 	/**
-	 * @brief Get the viewer URL of the live stream meeting.
-	 * @return If the function succeeds, the return value is the viewer URL of the live stream meeting.
+	 * @brief Gets the viewer URL of the live stream meeting.
+	 * @return If the function succeeds, it returns the viewer URL of the live stream meeting. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetLiveStreamViewerURL() = 0;
 	
@@ -196,136 +198,129 @@ class IMeetingLiveStreamController
 {
 public:
 	/**
-	 * @brief Set live stream meeting callback event handler
+	 * @brief Sets live stream meeting callback event handler
 	 * @param pEvent A pointer to the IMeetingLiveStreamCtrlEvent that receives live stream event. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(IMeetingLiveStreamCtrlEvent* pEvent) = 0;
 	
 	/**
-	 * @brief Determine if it is able to start live streaming.
-	 * @return If it is enabled to start the live streaming, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Determines if it is able to start live streaming.
+	 * @return If it is enabled to start the live streaming, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CanStartLiveStream() = 0;
 	
 	/**
-	 * @brief Start live streaming.
-	 * @param item_ A pointer to the IMeetingLiveStreamItem created via IMeetingLiveStreamController::GetSupportLiveStreamURL() API. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Starts live streaming.
+	 * @param item_ A pointer to the IMeetingLiveStreamItem created via IMeetingLiveStreamController::GetSupportLiveStreamItems() API.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StartLiveStream(IMeetingLiveStreamItem* item_) = 0;
 	
 	/**
-	 * @brief Start live streaming.
+	 * @brief Starts live streaming.
 	 * @param streamingURL The URL of live streaming.
 	 * @param streamingKey The key of live streaming. 
 	 * @param broadcastURL The broadcast URL of live-stream.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Get the parameters from the third party of live stream service
 	 */
 	virtual SDKError StartLiveStreamWithSteamingURL(const zchar_t* streamingURL, const zchar_t* streamingKey, const zchar_t* broadcastURL) = 0;
 	
 	/**
-	 * @brief Stop live streaming.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Stops live streaming.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StopLiveStream() = 0;
 	
 	/**
-	 * @brief Get the list of URL and associated information used by live streaming in the current meeting. 
-	 * @return If the function succeeds, the return value is the meeting information to be live streamed. Otherwise failed, the return value is nullptr. For more details, see \link IMeetingLiveStreamItem \endlink.
-	 * @deprecated This interface is marked as deprecated, and is replaced by GetSupportLiveStreamItems().
-	 */
-	virtual IList<IMeetingLiveStreamItem* >* GetSupportLiveStreamURL() = 0;
-	
-	/**
-	 * @brief Get the list of live stream information items in the current meeting.
-	 * @return If the function succeeds, the return value is the live stream item list. Otherwise the function fails and the return value is nullptr. For more details, see \link IMeetingLiveStreamItem \endlink.
+	 * @brief Gets the list of live stream information items in the current meeting.
+	 * @return If the function succeeds, the return value is the live stream item list. Otherwise, the return value is nullptr.
 	 */
 	virtual IList<IMeetingLiveStreamItem* >* GetSupportLiveStreamItems() = 0;
 	
 	/**
-	 * @brief Get the current live stream object. 
-	 * @return If the function succeeds, the return value is the current live stream object. Otherwise the function fails and the return value is nullptr. For more details, see \link IMeetingLiveStreamItem \endlink.
+	 * @brief Gets the current live stream object. 
+	 * @return If the function succeeds, the return value is the current live stream object. Otherwise, the return value is nullptr.
 	 */
 	virtual IMeetingLiveStreamItem* GetCurrentLiveStreamItem() = 0;
 	
 	/**
-	 * @brief Get live stream status of current meeting.
-	 * @return If the function succeeds, the return value is the live stream status of current meeting. Otherwise failed. For more details, see \link LiveStreamStatus \endlink enum.
+	 * @brief Gets live stream status of current meeting.
+	 * @return If the function succeeds, the return value is the live stream status of current meeting.
 	 */
 	virtual LiveStreamStatus GetCurrentLiveStreamStatus() = 0;
 	
 	/**
 	 * @brief Query Whether the meeting supports raw live streams.
-	 * @return true if supported, false if not supported.
+	 * @return true if supported. Otherwise, false.
 	 */
 	virtual bool IsRawLiveStreamSupported() = 0;
 	
 	/**
 	 * @brief Whether if the current user is able to start raw live streaming.
-	 * @return If the current user is able to start raw live streaming, the return value is SDKErr_Success. Otherwise it fails,and returns nullptr. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the current user is able to start raw live streaming, the return value is SDKERR_SUCCESS. Otherwise it fails,and returns nullptr.
 	 */
 	virtual SDKError CanStartRawLiveStream() = 0;
 	
 	/**
-	 * @brief Send a request to enable the SDK to start a raw live stream.
+	 * @brief Sends a request to enable the SDK to start a raw live stream.
 	 * @param broadcastURL The broadcast URL of the live-stream.
 	 * @param broadcastName The broadcast name of the live-stream.
-	 * @return If the function succeeds, the return value is SDKErr_Success and the SDK will send the request. Otherwise it fails and the request will not be sent. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS and the SDK will send the request. Otherwise it fails and the request will not be sent.
 	 */
 	virtual SDKError RequestRawLiveStreaming(const zchar_t* broadcastURL, const zchar_t* broadcastName) = 0;
 	
 	/**
-	 * @brief Start raw live streaming.
+	 * @brief Starts raw live streaming.
 	 * @param broadcastURL The broadcast URL of the live-stream.
 	 * @param broadcastName The broadcast name of the live-stream.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StartRawLiveStreaming(const zchar_t* broadcastURL, const zchar_t* broadcastName) = 0;
 	
 	/**
-	 * @brief Stop raw live streaming.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Stops raw live streaming.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StopRawLiveStream() = 0;
 	
 	/**
 	 * @brief Remove the raw live stream privilege.
 	 * @param userID Specify the ID of the user whose privilege will be removed.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise it fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise it fails.
 	 */
 	virtual SDKError RemoveRawLiveStreamPrivilege(unsigned int userid) = 0;
 	
 	/**
-	 * @brief Get a list of current active raw live streams.
-	 * @return If the function succeeds, the return value is a pointer to the IList object. For more details, see \link IList \endlink.
+	 * @brief Gets a list of current active raw live streams.
+	 * @return If the function succeeds, it returns a pointer to the IList object. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual IList<RawLiveStreamInfo>* GetRawLiveStreamingInfoList() = 0;
 	
 	/**
-	 * @brief Get the list of users'IDs who have raw live stream privileges.
-	 * @return If the function succeeds, the return value is a pointer to the IList object.
+	 * @brief Gets the list of users'IDs who have raw live stream privileges.
+	 * @return If the function succeeds, it returns a pointer to the IList object. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual IList<unsigned int>* GetRawLiveStreamPrivilegeUserList() = 0;
 	
 	/**
-	 * @brief Check if the live stream reminder is enabled.
-	 * @return True means the live stream reminder is enabled.
+	 * @brief Checks if the live stream reminder is enabled.
+	 * @return true indicates the live stream reminder is enabled.
 	 * @note When the live stream reminder is enabled, the new join user is notified that the meeting is at capacity but that they can watch the meeting live stream with the callback IMeetingServiceEvent::onMeetingFullToWatchLiveStream when the meeting user has reached the meeting capability.
 	 */
 	virtual bool IsLiveStreamReminderEnabled() = 0;
 	
 	/**
-	 * @brief Check if the current user can enable/disable the live stream reminder.
-	 * @return True means the current user can enable/disable the live stream reminder.
+	 * @brief Checks if the current user can enable/disable the live stream reminder.
+	 * @return true indicates the current user can enable/disable the live stream reminder.
 	 */
 	virtual bool CanEnableLiveStreamReminder() = 0;
 	
 	/**
-	 * @brief Enable or disable the live stream reminder.
-	 * @param enable True means enable the live stream reminder. False means disable the live stream reminder.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise it fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Enables or disable the live stream reminder.
+	 * @param enable true indicates enable the live stream reminder. false means disable the live stream reminder.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise it fails.
 	 */
 	virtual SDKError EnableLiveStreamReminder(bool enable) = 0;
 };

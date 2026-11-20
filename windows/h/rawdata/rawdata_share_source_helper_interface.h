@@ -1,3 +1,8 @@
+/**
+ * @file rawdata_share_source_helper_interface.h
+ * @brief Raw Data Share Source Helper Interface.
+ */
+
 #ifndef _RAWDATA_SHARE_SOURCE_HELPER_INTERFACE_H_
 #define _RAWDATA_SHARE_SOURCE_HELPER_INTERFACE_H_
 #include "zoom_sdk_def.h"
@@ -9,13 +14,13 @@ class IZoomSDKShareSender
 public:
 	virtual ~IZoomSDKShareSender() {}
 	/**
-	 * @brief Send a frame of YUV data.
+	 * @brief Sends a frame of YUV data.
 	 * @param frameBuffer YUV data buffer.
 	 * @param width Frame width.
 	 * @param height Frame height.
 	 * @param frameLength Buffer length.
 	 * @param format YUV type.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError sendShareFrame(char* frameBuffer, int width, int height, int frameLength, FrameDataFormat format = FrameDataFormat_I420_FULL) = 0;
 };
@@ -26,7 +31,7 @@ public:
 	virtual ~IZoomSDKShareSource() {}
 	/**
 	 * @brief Callback for share source can start send raw data.
-	 * @param pSender See \link IZoomSDKShareSender \endlink.
+	 * @param pSender.
 	 */
 	virtual void onStartSend(IZoomSDKShareSender* pSender) = 0;
 	
@@ -41,16 +46,20 @@ class IZoomSDKShareAudioSender
 public:
 	virtual ~IZoomSDKShareAudioSender() {}
 	/**
-	 * @brief Send audio raw data.
-	 * @param data The audio data¡¯s address.
-	 * @param data_length The audio data¡¯s length, in even numbers.
-	 * @param sample_rate The audio data¡¯s sampling rate.
+	 * @brief Sends audio raw data.
+	 * @param data The audio data's address.
+	 * @param data_length The audio data's length, in even numbers.
+	 * @param sample_rate The audio data's sampling rate.
 	 * @param channel The channel type.
 	 *  Supported audio data properties:
 	 *  Channels: mono and stereo
 	 *  When the channel is mono, supported sample rates: 8000/11025/16000/32000/44100/48000/50000/50400/96000/192000
 	 *  When the channel is stereo, supported sample rates: 8000/16000/32000/44100/48000/50000/50400/96000
 	 *  resolution: little-endian, 16bit
+	 * @note
+	 * 1. The size of a single input must not exceed the number of bytes corresponding to 100 ms of audio. Exceeding this limit returns SDKERR_SEND_TOO_MUCH_DATA_IN_SINGLE_TIME.
+	 * 2. Variable-length input is supported; it is recommended to send audio data in 10 ms, 20 ms, or 30 ms chunks (not exceeding 100 ms).
+	 * 3. If SDKERR_TOO_FREQUENT_CALL is returned, this is not a genuine error; please wait briefly before retryingâ€”for example, sleep for 10 ms before attempting to send the data again.
 	 */
 	virtual SDKError sendShareAudio(char* data, unsigned int data_length, int sample_rate, ZoomSDKAudioChannel channel) = 0;
 };
@@ -61,7 +70,7 @@ public:
 	virtual ~IZoomSDKShareAudioSource() {}
 	/**
 	 * @brief Callback for audio source to start sending raw data.
-	 * @param pShareAudioSender See \link IZoomSDKShareAudioSender \endlink.
+	 * @param pShareAudioSender.
 	 */
 	virtual void onStartSendAudio(IZoomSDKShareAudioSender* pShareAudioSender) = 0;
 	
@@ -77,18 +86,18 @@ public:
 	virtual ~IZoomSDKShareSourceHelper() {}
 	
 	/**
-	 * @brief Start sharing external source.
+	 * @brief Starts sharing external source.
 	 * @param pShareSource the external source object pointer. 
 	 * @param pShareAudioSource the external audio source object pointer. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails and returns an error code. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note If pShareAudioSource is non-null, it indicates sharing user-defined audio at the same time.
 	 */
 	virtual SDKError setExternalShareSource(IZoomSDKShareSource* pShareSource, IZoomSDKShareAudioSource* pShareAudioSource = nullptr) = 0;
 	
 	/**
-	 * @brief Start sharing pure external audio source.
+	 * @brief Starts sharing pure external audio source.
 	 * @param pShareAudioSource the external audio source object pointer. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails and returns an error code. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note The feature is similar to sharing computer audio, except that the shared content is user-defined.	
 	 */
 	virtual SDKError setSharePureAudioSource(IZoomSDKShareAudioSource* pShareAudioSource) = 0;

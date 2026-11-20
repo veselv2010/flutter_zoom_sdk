@@ -8,7 +8,7 @@
 BEGIN_ZOOM_SDK_NAMESPACE
 
 /**
- * @brief Direct sharing status.
+ * @brief Enumeration of direct sharing status.
  * Here are more detailed structural descriptions.
  */
 typedef enum DirectShareStatusStatus_Enum
@@ -60,20 +60,20 @@ public:
 	/**
 	 * @brief Try to match with the specified meeting number.
 	 * @param meetingNumber Specifies the meeting number.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError TryWithMeetingNumber(UINT64 meetingNumber) = 0;
 	
 	/**
 	 * @brief Try to match with the pairing code.
 	 * @param pairingCode Specifies the pairing code.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.	
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError TryWithPairingCode(const zchar_t* pairingCode) = 0;
 	
 	/**
 	 * @brief Delete the present direct sharing.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError Cancel() = 0;
 };
@@ -88,14 +88,14 @@ public:
 	
 	/**
 	 * @brief The callback event will be triggered if the status of direct sharing changes.
-	 * @param status Specifies the status of direct sharing. For more details, see \link DirectShareStatus \endlink enum.
+	 * @param status Specifies the status of direct sharing.
 	 * @param handler A pointer to the IDirectShareViaMeetingIDOrPairingCodeHandler. It is only valid when the value of status is DirectShare_Need_MeetingID_Or_PairingCode.
-	 * @note The SDK user must set the value of the _paring_code or _meeting_number via the functions of IDirectShareViaMeetingIDOrPairingCodeHandler to  start direct sharing. For more details, see \link IDirectShareViaMeetingIDOrPairingCodeHandler \endlink.
+	 * @note The SDK user must set the value of the _paring_code or _meeting_number via the functions of IDirectShareViaMeetingIDOrPairingCodeHandler to  start direct sharing.
 	 */
 	virtual void OnDirectShareStatusUpdate(DirectShareStatus status, IDirectShareViaMeetingIDOrPairingCodeHandler* handler) = 0;
 	
 	/**
-	 * @note only used for customui mode
+	 * @note Only used for customui mode
 	 */
 	virtual void OnDirectShareSpecifyContent(IDirectShareSpecifyContentHandler* handler) = 0;
 };
@@ -109,32 +109,32 @@ public:
 	/**
 	 * @brief Direct sharing helper callback event handler.
 	 * @param pEvent A pointer to the IDirectShareServiceHelperEvent that receives the direct sharing service event. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(IDirectShareServiceHelperEvent* pEvent) = 0;
 	
 	/**
-	 * @brief Determine if it is able to start the direct sharing.
-	 * @return If it is enabled to start the direct sharing, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Determines if it is able to start the direct sharing.
+	 * @return If it is enabled to start the direct sharing, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CanStartDirectShare()= 0;
 	
 	/**
-	 * @brief Determine if direct sharing is in progress.
-	 * @return TRUE indicates that the direct sharing is in progress.
+	 * @brief Determines if direct sharing is in progress.
+	 * @return true indicates that the direct sharing is in progress.
 	 */
 	virtual bool	 IsDirectShareInProgress() = 0;
 	
 	/**
-	 * @brief Start direct sharing.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Starts direct sharing.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note This API can only be called by the logged in user.
 	 */
 	virtual SDKError StartDirectShare() = 0;
 	
 	/**
-	 * @brief Stop direct sharing.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Stops direct sharing.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note This API can only be called by the logged in user.
 	 */
 	virtual SDKError StopDirectShare() = 0;

@@ -29,21 +29,21 @@ class IZoomSDKPSSender
 public:
 	virtual ~IZoomSDKPSSender() {}
 	/**
-	 * @brief Send video raw data.
+	 * @brief Sends video raw data.
 	 * @param frameBuffer The video data address.
-	 * @param format The video data format. For more details, see \link FrameDataFormat \endlink enum.
+	 * @param format The video data format.
 	 * @note The params width, height, format should be consistent with param capability of StartPSMode. 
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError sendVideoFrame(char* frameBuffer, int width, int height, int frameLength, FrameDataFormat format = FrameDataFormat_I420_FULL) = 0;
 	
 	/**
-	 * @brief Send audio raw data.
+	 * @brief Sends audio raw data.
 	 * @param data The audio data address.
 	 * @param data_length The audio data length. Must be an even number.
-	 * @param sample_rate The audio data sampling rate. Support 32k and 48k. 48k is recommended
-	 * @param channelNum Channel number. For more details, see \link ZoomSDKAudioChannel \endlink enum.
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @param sample_rate The audio data sampling rate. Support 32k and 48k. 48k is recommended.
+	 * @param channelNum Channel number.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError sendAudio(char* data, unsigned int data_length, int sample_rate, ZoomSDKAudioChannel channelNum) = 0;
 };
@@ -64,7 +64,7 @@ public:
 	
 	/**
 	 * @brief Callback event for production studio starts.
-	 * @param sender, You can send video or audio data based on this object, see \link IZoomSDKPSSender \endlink.
+	 * @param sender You can send video or audio data based on this object.
 	 */
 	virtual void onStartSend(IZoomSDKPSSender* sender) = 0;
 	
@@ -89,45 +89,45 @@ class IMeetingProductionStudioController
 public:
 	/**
 	 * @brief Configure the meeting production studio controller callback event handler.
-	 * @param pEvent An object pointer to the IMeetingProductionStudioCtrlEvent that receives the meeting production studio callback event. For more details, see \link IMeetingProductionStudioCtrlEvent \endlink.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @param pEvent An object pointer to the IMeetingProductionStudioCtrlEvent that receives the meeting production studio callback event.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note The SDK use pEvent to transmit the callback event to the user's application. If the function is not called or fails, the user's application is unable to retrieve the callback event.
 	 */
 	virtual SDKError SetEvent(IMeetingProductionStudioCtrlEvent* pEvent) = 0;
 	
 	/**
-	 * @brief Determine whether the current meeting supports the production mode or not.
-	 * @return True indicates to support.
+	 * @brief Determines whether the current meeting supports the production mode or not.
+	 * @return true indicates to support.
 	 */
 	virtual bool IsSupportPSMode() = 0;
 	
 	/**
-	 * @brief Determine whether you have permission to start production studio. Only host or co-host can start production studio mode. 
-	 * @return True indicates you can start production studio mode.
+	 * @brief Determines whether you have permission to start production studio. Only host or co-host can start production studio mode. 
+	 * @return true indicates you can start production studio mode.
 	 */
 	virtual bool CanStartPSMode() = 0;
 	
 	/**
-	 * @brief Start production studio mode.  
-	 * @param capability Specify the format description of the video data send. For more details, see \link PSVideoSourceCapability \endlink enum. 
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Starts production studio mode.  
+	 * @param capability Specify the format description of the video data send.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StartPSMode(PSVideoSourceCapability capability) = 0;
 	
 	/**
-	 * @brief Stop production studio mode.  
-	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Stops production studio mode.  
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StopPSMode() = 0;
 	
 	/**
-	 * @brief Get the user ID of current production studio user.
+	 * @brief Gets the user ID of current production studio user.
 	 */
 	virtual unsigned int GetPSUserID() = 0;
 	
 	/**
-	 * @brief Determine whether the current meeting production mode has started.
-	 * @return True indicates to started.
+	 * @brief Determines whether the current meeting production mode has started.
+	 * @return true indicates to started.
 	 */
 	virtual bool IsPSModeStarted() = 0;
 };

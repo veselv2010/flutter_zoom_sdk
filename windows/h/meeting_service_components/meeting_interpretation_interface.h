@@ -108,30 +108,30 @@ public:
 	 */
 	 
 	/**
- 	 * @brief Set the interpretation controller callback event handler.
+ 	 * @brief Sets the interpretation controller callback event handler.
 	 * @param event A pointer to the IMeetingInterpretationControllerEvent that receives the interpretation event.
 	 */
 	virtual void SetEvent(IMeetingInterpretationControllerEvent * event) = 0;  
 	
 	/**
- 	 * @brief Determine if interpretation feature is enabled in the meeting.
+ 	 * @brief Determines if interpretation feature is enabled in the meeting.
 	 */
 	virtual bool IsInterpretationEnabled() = 0;
 	
 	/**
- 	 * @brief Determine if interpretation has been started by host.
+ 	 * @brief Determines if interpretation has been started by host.
 	 */
 	virtual bool IsInterpretationStarted() = 0;
 	
 	/**
- 	 * @brief Determine if myself is interpreter.
+ 	 * @brief Determines if myself is interpreter.
 	 */
 	virtual bool IsInterpreter() = 0;
 	
 	/**
- 	 * @brief Get the interpretation language object of specified language ID.
+ 	 * @brief Gets the interpretation language object of specified language ID.
 	 * @param lanID Specify the language ID for which you want to get the information. 
-	 * @return If the function succeeds, the return value is a pointer to the IInterpretationLanguage, Otherwise failed, the return value is nullptr.
+	 * @return If the function succeeds, it returns a pointer to the IInterpretationLanguage. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual IInterpretationLanguage* GetInterpretationLanguageByID(int lanID) = 0;
 
@@ -140,14 +140,14 @@ public:
 	 */
 	 
 	/**
- 	 * @brief Get the all interpretation language list.
-	 * @return If the function succeeds, the return value is a pointer to the IList<IInterpretationLanguage*>, Otherwise failed, the return value is nullptr.
+ 	 * @brief Gets the all interpretation language list.
+	 * @return If the function succeeds, it returns a pointer to the IList<IInterpretationLanguage*>. Otherwise, this function fails and returns nullptr.
 	 */
     virtual IList<IInterpretationLanguage*>* GetAllLanguageList() = 0;
 	
 	/**
- 	 * @brief Get the interpreters list.
-	 * @return If the function succeeds, the return value is a pointer to the IList<IInterpreter*>, Otherwise failed, the return value is nullptr.
+ 	 * @brief Gets the interpreters list.
+	 * @return If the function succeeds, it returns a pointer to the IList<IInterpreter*>. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual IList<IInterpreter*>* GetInterpreterList() = 0;
 	
@@ -156,14 +156,14 @@ public:
 	 * @param userID Specify the user.
 	 * @param lanID1 Specify the language1.
 	 * @param lanID2 Specify the language2.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError AddInterpreter(unsigned int userID, int lanID1, int lanID2) = 0;
 	
 	/**
  	 * @brief Remove some interpreter.
 	 * @param userID Specify the interpreter.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError RemoveInterpreter(unsigned int userID) = 0;
 	
@@ -172,19 +172,19 @@ public:
 	 * @param userID Specify the interpreter.
 	 * @param lanID1 Specify the new language1.
 	 * @param lanID2 Specify the new language2.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError ModifyInterpreter(unsigned int userID, int lanID1, int lanID2) = 0;
 	
 	/**
- 	 * @brief Start interpretation.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+ 	 * @brief Starts interpretation.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StartInterpretation() = 0;
 	
 	/**
- 	 * @brief Stop interpretation.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+ 	 * @brief Stops interpretation.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StopInterpretation() = 0;
 
@@ -193,41 +193,41 @@ public:
 	 */
 	 
 	/**
- 	 * @brief Get the available interpretation language list.
-	 * @return If the function succeeds, the return value is a pointer to the IList<IInterpretationLanguage*>, Otherwise failed, the return value is nullptr.
+ 	 * @brief Gets the available interpretation language list.
+	 * @return If the function succeeds, it returns a pointer to the IList<IInterpretationLanguage*>. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual IList<IInterpretationLanguage*>* GetAvailableLanguageList() = 0;
 	
 	/**
- 	 * @brief Join some language channel.
+ 	 * @brief Joins some language channel.
 	 * @param lanID Specify the language channel. If lanID is -1 means join major meeting.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError JoinLanguageChannel(int lanID) = 0;
 	
 	/**
- 	 * @brief Get the language ID which myself is in.
+ 	 * @brief Gets the language ID which myself is in.
 	 * @param [out] lanID indicates the language ID which myself is in.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError GetJoinedLanguageID(int& lanID) = 0;
 	
 	/**
  	 * @brief Turn off the major audio, if you are in some interpreter language channel.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError TurnOffMajorAudio() = 0;
 	
 	/**
  	 * @brief Turn on the major audio, if you are in some interpreter language channel.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError TurnOnMajorAudio() = 0;
 	
 	/**
- 	 * @brief Determine if the major audio is off.
+ 	 * @brief Determines if the major audio is off.
 	 * @param [out] bOff indicates the major audio off status.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError IsMajorAudioTurnOff(bool& bOff) = 0;
 
@@ -236,44 +236,44 @@ public:
 	 */
 	 
 	/**
- 	 * @brief Get languages if myself is a interpreter.
+ 	 * @brief Gets languages if myself is a interpreter.
 	 * @param [out] lanID1 Specify the language1.
 	 * @param [out] lanID2 Specify the language2.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError GetInterpreterLans(int& lanID1, int& lanID2) = 0;
 	
 	/**
- 	 * @brief Set a language channel which myself will be in, if myself is a interpreter.
+ 	 * @brief Sets a language channel which myself will be in, if myself is a interpreter.
 	 * @param activeLanID Specify the active language.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetInterpreterActiveLan(int activeLanID) = 0;
 	
 	/**
- 	 * @brief Get the active language ID, if myself is a interpreter.
+ 	 * @brief Gets the active language ID, if myself is a interpreter.
 	 * @param [out] lanID Specify the active language.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError GetInterpreterActiveLan(int& lanID) = 0;
 	
 	/**
- 	 * @brief Get the list of available languages that interpreters can hear
-	 * @return If the function succeeds, the return value is a pointer to the IList<IInterpretationLanguage*>, Otherwise, the return value is nullptr.
+ 	 * @brief Gets the list of available languages that interpreters can hear
+	 * @return If the function succeeds, it returns a pointer to the IList<IInterpretationLanguage*>. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual IList<IInterpretationLanguage*>* GetInterpreterAvailableLanguages() = 0;
 	
 	/**
- 	 * @brief Set a language that I can hear as an interpreter.
+ 	 * @brief Sets a language that I can hear as an interpreter.
 	 * @param lanID Specify the selected language that I can hear as an interpreter.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetInterpreterListenLan(int languageID) = 0;
 	
 	/**
- 	 * @brief Get a language that I can hear as an interpreter.
+ 	 * @brief Gets a language that I can hear as an interpreter.
 	 * @param lanID Specify the selected language that I can hear as an interpreter.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError GetInterpreterListenLan(int& languageID) = 0;
 };

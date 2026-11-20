@@ -89,7 +89,7 @@ class MeetingStatus {
 }
 
 extension MeetingStatusExtension on MeetingStatus {
-  external int get meetingStatus;
+  external int? get status;
 }
 
 @JS()

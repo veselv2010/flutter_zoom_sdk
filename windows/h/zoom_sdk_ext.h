@@ -14,16 +14,16 @@ extern "C"
 	class ICustomizedResourceHelper;
 	
 	/**
-	 * @brief Retrieve user Hooker interface.
+	 * @brief Retrieves user hooker interface.
 	 * @param ppUIHooker A pointer to the IUIHooker*. 
-	 * @return If the function succeeds, the return value is SDKErr_Success, and ppEmbeddedBrowser is not nullptr Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS, and ppUIHooker is not nullptr. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError RetrieveUIHooker(IUIHooker** ppUIHooker);
 	
 	/**
-	 * @brief Retrieve customized resource helper interface.
+	 * @brief Retrieves customized resource helper interface.
 	 * @param ppCustomiezedResourceHelper A pointer to the ICustomizedResourceHelper*. 
-	 * @return If the function succeeds, the return value is SDKErr_Success, and ppCustomiezedResourceHelper is not nullptr Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS, and ppCustomiezedResourceHelper is not nullptr. Otherwise, this function returns an error.
 	 */
 	SDK_API SDKError RetrieveCustomizedResourceHelper(ICustomizedResourceHelper** ppCustomiezedResourceHelper);
 }

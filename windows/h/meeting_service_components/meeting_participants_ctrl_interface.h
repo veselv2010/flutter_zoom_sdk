@@ -11,7 +11,7 @@
 #endif
 BEGIN_ZOOM_SDK_NAMESPACE
 /** 
- * @brief Role of user.
+ * @brief Enumeration of user role.
  * Here are more detailed structural descriptions.
  */
 enum UserRole
@@ -36,7 +36,7 @@ enum UserRole
  */
 typedef struct tagWebinarAttendeeStatus
 {
-	/** TRUE indicates that it is able to talk. */
+	/** true indicates that it is able to talk. */
 	bool allow_talk;
 	tagWebinarAttendeeStatus()
 	{
@@ -45,7 +45,7 @@ typedef struct tagWebinarAttendeeStatus
 }WebinarAttendeeStatus;
 
 /**
- * @brief Type of focus mode.
+ * @brief Enumeration of focus mode type.
  * Here are more detailed structural descriptions.
  */
 enum FocusModeShareType
@@ -81,228 +81,240 @@ class IUserInfo
 {
 public:
 	/**
-	 * @brief Get the username matched with the current user information.
-	 * @return If the function succeeds, the return value is the username. Otherwise failed, the return value is nullptr.
+	 * @brief Gets the username matched with the current user information.
+	 * @return If the function succeeds, it returns the username. Otherwise, this function fails and returns nullptr.
 	 * @note Valid for both normal user and webinar attendee.
 	 */
 	virtual const zchar_t* GetUserName() = 0;
 	
 	/**
-	 * @brief Determine whether the member corresponding with the current information is the host or not.
-	 * @return TRUE indicates the host.
+	 * @brief Determines whether the member corresponding with the current information is the host or not.
+	 * @return true if the user is the host. Otherwise, false.
 	 */
 	virtual bool IsHost() = 0;
 	
 	/**
-	 * @brief Get the user ID matched with the current user information.
-	 * @return If the function succeeds, the return value is the user ID. Otherwise the function fails, and the return value is ZERO(0).
+	 * @brief Gets the user ID matched with the current user information.
+	 * @return If the function succeeds, it returns the user ID. Otherwise, this function returns ZERO(0).
 	 * @note Valid for both normal user and webinar attendee.
 	 */
 	virtual unsigned int GetUserID() = 0;
 	
 	/**
-	 * @brief Get the avatar file path matched with the current user information.
-	 * @return If the function succeeds, the return value is the avatar file path. Otherwise failed, the return value is nullptr.
+	 * @brief Gets the avatar file path matched with the current user information.
+	 * @return If the function succeeds, it returns the avatar file path. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetAvatarPath() = 0;
 	
 	/**
-	 * @brief Get the user persistent id matched with the current user information.
-	 * @return If the function succeeds, the return value is the user persistent id. Otherwise failed, the return value is nullptr.
+	 * @brief Gets the user persistent ID matched with the current user information.
+	 * @return If the function succeeds, it returns the user persistent ID. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetPersistentId() = 0;
 	
 	/**
-	 * @brief Get the customer_key matched with the current user information.
-	 * @return If the function succeeds, the return value is the customer_key. Otherwise failed, the return value is nullptr.
-	 * @note If you assign a customer_key for a user in the start/join meeting parameter, the value you assigned will be returned. Otherwise a empty string will be returned.
+	 * @brief Gets the customer_key matched with the current user information.
+	 * @return If the function succeeds, it returns the customer_key. Otherwise, this function fails and returns nullptr.
+	 * @note If you assign a customer_key for a user in the start or join meeting parameter, the value you assigned will be returned. Otherwise, an empty string will be returned.
 	 */
 	virtual const zchar_t* GetCustomerKey() = 0;
 	
 	/**
-	 * @brief Determine the video status of the user specified by the current information.
-	 * @return TRUE indicates that the video is turned on.
+	 * @brief Determines the video status of the user specified by the current information.
+	 * @return true if the video is turned on. Otherwise, false.
 	 * @note Valid for both normal user and webinar attendee.
 	 */
 	virtual bool IsVideoOn() = 0;
 	
 	/**
-	 * @brief Determine the audio status of the user specified by the current information.
-	 * @return TRUE indicates that the audio status is muted.
+	 * @brief Determines the audio status of the user specified by the current information.
+	 * @return true if the audio status is muted. Otherwise, false.
 	 */
 	virtual bool IsAudioMuted() = 0;
 	
 	/**
-	 * @brief Get the audio type of the user specified by the current information when joins the meeting.
-	 * @return The type of audio when the user joins the meeting. For more details, see \link AudioType \endlink enum.
+	 * @brief Gets the audio type of the user specified by the current information when joining the meeting.
+	 * @return If the function succeeds, it returns the type of audio when the user joins the meeting.
 	 */
 	virtual AudioType GetAudioJoinType() = 0;
 	
 	/**
-	 * @brief Determine whether the current information corresponds to the user himself or not.
-	 * @return TRUE indicates that the current information corresponds to the user himself.
+	 * @brief Determines whether the current information corresponds to the user himself or not.
+	 * @return true if the current information corresponds to the user himself. Otherwise, false.
 	 */
 	virtual bool IsMySelf() = 0;
 	
 	/**
-	 * @brief Determine whether the user specified by the current information is in the waiting room or not.
-	 * @return TRUE indicates that the specified user is in the waiting room.
+	 * @brief Determines whether the user specified by the current information is in the waiting room or not.
+	 * @return true if the specified user is in the waiting room. Otherwise, false.
 	 */
 	virtual bool IsInWaitingRoom() = 0;
 	
 	/**
-	 * @brief Determine whether the user specified by the current information raises hand or not.
-	 * @return TRUE indicates that the user raises hand.
+	 * @brief Determines whether the user specified by the current information raises hand or not.
+	 * @return true if the user raises hand. Otherwise, false.
 	 */
 	virtual bool IsRaiseHand() = 0;
 	
 	/**
-	 * @brief Get the type of role of the user specified by the current information.
-	 * @return The role of the user. For more details, see \link UserRole \endlink enum.
+	 * @brief Gets the type of role of the user specified by the current information.
+	 * @return If the function succeeds, it returns the role of the user.
 	 */
 	virtual UserRole GetUserRole() = 0;
 	
 	/**
-	 * @brief Determine whether the user corresponding to the current information joins the meeting by telephone or not.
-	 * @return TRUE indicates that the user joins the meeting by telephone.
+	 * @brief Determines whether the user corresponding to the current information joins the meeting by telephone or not.
+	 * @return true if the user joins the meeting by telephone. Otherwise, false.
 	 */
 	virtual bool IsPurePhoneUser() = 0;
 	
 	/**
-	 * @brief Get the Mic level of the user corresponding to the current information.
-	 * @return The mic level of the user.
+	 * @brief Gets the mic level of the user corresponding to the current information.
+	 * @return If the function succeeds, it returns the mic level of the user.
 	 */
 	virtual int GetAudioVoiceLevel() = 0;
+
+	/**
+	 * @brief Determine whether the user specified by the current information supports talkback.
+	 * @return TRUE indicates that the user supports talkback.
+	 */
+	virtual bool IsSupportTalkback() = 0;
 	
 	/**
-	 * @brief Determine whether the user corresponding to the current information is the sender of Closed Caption or not.
-	 * @return TRUE indicates that the user is the sender of Closed Caption.
+	 * @brief Determines whether the user corresponding to the current information is the sender of Closed Caption or not.
+	 * @return true if the user is the sender of Closed Caption. Otherwise, false.
 	 */
 	virtual bool IsClosedCaptionSender() = 0;
 	
 	/**
-	 * @brief Determine whether the user specified by the current information is talking or not.
-	 * @return TRUE indicates that the specified user is talking.
+	 * @brief Determines whether the user specified by the current information is talking or not.
+	 * @return true if the specified user is talking. Otherwise, false.
 	 */
 	virtual bool IsTalking() = 0;
 	
 	/**
-	 * @brief Determine whether the user specified by the current information is H323 user or not.
-	 * @return TRUE indicates that the specified user is H323 user.
+	 * @brief Determines whether the user specified by the current information is H323 user or not.
+	 * @return true if the specified user is H323 user. Otherwise, false.
 	 */
 	virtual bool IsH323User() = 0;
 	
 	/**
-	 * @brief Get the webinar status of the user specified by the current information.
-	 * @return The status of the specified user. For more details, see \link WebinarAttendeeStatus \endlink structure.
+	 * @brief Gets the webinar status of the user specified by the current information.
+	 * @return If the function succeeds, it returns the status of the specified user. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual WebinarAttendeeStatus* GetWebinarAttendeeStatus() = 0;
 	
 #if defined(WIN32)
 	/**
-	 * @brief Determine whether the user specified by the current information is a interpreter or not.
-	 * @return TRUE indicates that the specified user is a interpreter, otherwise not.
+	 * @brief Determines whether the user specified by the current information is a interpreter or not.
+	 * @return true if the specified user is an interpreter. Otherwise, false.
 	 */
 	virtual bool IsInterpreter() = 0;
 	
 	/**
-	 * @brief Determine whether the user specified by the current information is a sign language interpreter or not.
-	 * @return TRUE indicates that the specified user is a sign language  interpreter, otherwise false.
+	 * @brief Determines whether the user specified by the current information is a sign language interpreter or not.
+	 * @return true if the specified user is a sign language interpreter. Otherwise, false.
 	 */
 	virtual bool IsSignLanguageInterpreter() = 0;
 	
 	/**
-	 * @brief Get the active language, if the user is a interpreter.
+	 * @brief Gets the active language, if the user is a interpreter.
 	 * @return If success, the return value is the active language abbreviation, Otherwise the return value is ZERO(0).
 	 */
 	virtual const zchar_t* GetInterpreterActiveLanguage() = 0;
 	
 	/**
-	 * @brief Get the emoji feedback type of the user.
-	 * @return The emoji feedback type of the user. For more details, see \link SDKEmojiFeedbackType \endlink enum.
+	 * @brief Gets the emoji feedback type of the user.
+	 * @return The emoji feedback type of the user.
 	 */
 	virtual SDKEmojiFeedbackType GetEmojiFeedbackType() = 0;
 	
 	/**
-	 * @brief Determine whether the user specified by the current information in companion mode or not.
-	 * @return TRUE indicates that the specified user in companion mode.
+	 * @brief Determines whether the user specified by the current information in companion mode or not.
+	 * @return true if the specified user is in companion mode. Otherwise, false.
 	 */
 	virtual bool IsCompanionModeUser() = 0;
 #endif
 
 	/**
-	 * @brief Get the local recording status.
-	 * @return The status of the local recording status. For more details, see \link RecordingStatus \endlink structure
+	 * @brief Gets the local recording status.
+	 * @return The status of the local recording status.
 	 */
 	virtual RecordingStatus GetLocalRecordingStatus() = 0;
 	
 	/**
-	 * @brief Determine whether the user has started a raw live stream.
-	 * @return TRUE indicates that the specified user has started a raw live stream, otherwise false.
+	 * @brief Determines whether the user has started a raw live stream.
+	 * @return true if the specified user has started a raw live stream. Otherwise, false.
 	 */
 	virtual bool IsRawLiveStreaming() = 0;
 	
 	/**
-	 * @brief Determine whether the user has raw live stream privilege.
-	 * @return TRUE indicates that the specified user has raw live stream privilege, otherwise false.
+	 * @brief Determines whether the user has raw live stream privilege.
+	 * @return true if the specified user has raw live stream privilege. Otherwise, false.
 	 */
 	virtual bool HasRawLiveStreamPrivilege() = 0;
 	
 	/**
 	 * @brief Query if the participant has a camera.
-	 * @return TRUE means the user has a camera, otherwise false.
+	 * @return true if the user has a camera. Otherwise, false.
 	 */
 	virtual bool HasCamera() = 0;
 	
 	/**
-	 * @brief Determine whether the user is production studio user.
-	 * @return TRUE indicates that the specified user is production studio user, otherwise false.
+	 * @brief Determines whether the user is production studio user.
+	 * @return true if the specified user is production studio user. Otherwise, false.
 	 */
 	virtual bool IsProductionStudioUser() = 0;
 	
 	/**
-	 * @brief Determine whether the user specified by the current information is in the webinar backstage or not.
-	 * @return TRUE indicates that the specified user is in the webinar backstage.
+	 * @brief Determines whether the user specified by the current information is in the webinar backstage or not.
+	 * @return true if the specified user is in the webinar backstage. Otherwise, false.
 	 */
 	virtual bool IsInWebinarBackstage() = 0;
 	
 	/**
-	 * @brief Get the parent user ID of the production studio user.
+	 * @brief Gets the parent user ID of the production studio user.
 	 * @note Just production studio user has parent. 
 	 */
 	virtual unsigned int GetProductionStudioParent() = 0;
 	
 	/**
-	 * @brief Determine whether the user specified by the current information is bot user or not.
-	 * @return TRUE indicates that the specified user is bot user.
+	 * @brief Determines whether the user specified by the current information is bot user or not.
+	 * @note This function return true only when using Meeting SDK with an On-Behalf token; Otherwise it will always return false.
+	 * @return true if the specified user is a bot user. Otherwise, false.
 	 */
 	virtual bool IsBotUser() = 0;
 	
 	/**
-	 * @brief Get the bot app name.
-	 * @return If the function succeeds, the return value is the bot app name.
-	 * Otherwise the function fails, the return value is nullptr.
+	 * @brief Gets the bot app name.
+	 * @return If the function succeeds, it returns the bot app name. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual const zchar_t* GetBotAppName() = 0;
 	
 	/**
 	 * @brief Query if the participant enabled virtual name tag.
-	 * @return TRUE means enabled, Otherwise not.
+	 * @return true if enabled. Otherwise, false.
 	 */
 	virtual bool IsVirtualNameTagEnabled() = 0;
 	
 	/**
 	 * @brief Query the virtual name tag roster infomation.
-	 * @return If the function succeeds, it return the list of user's virtual name tag roster info. For more details, see \link ZoomSDKVirtualNameTag \endlink structure.
+	 * @return If the function succeeds, it return the list of user's virtual name tag roster info.
 	 */
 	virtual IList<ZoomSDKVirtualNameTag>* GetVirtualNameTagList() = 0;
 
 	/**
 	 * @brief Query the granted assets info when assign a co-owner.
-	 * @return If the function succeeds, it returns the list of user's grant assets info. For more details, see \link GrantCoOwnerAssetsInfo \endlink.
+	 * @return If the function succeeds, it returns the list of user's grant assets info.
 	 * @note If not granted any assets privilege, the default configuration of the web will be queried. If has granted assets privilege, the result after granting will be queried.
 	 */
 	 virtual IList<GrantCoOwnerAssetsInfo>* GetGrantCoOwnerAssetsInfo() = 0;
+
+	/**
+	 * @brief Determines whether the specified user is an audio only user.
+	 * @return true if the specified user is an audio only user. Otherwise, false.
+	 */
+	virtual bool IsAudioOnlyUser() = 0;
 
 	virtual ~IUserInfo(){};
 };
@@ -339,7 +351,7 @@ public:
 	
 	/**
 	 * @brief Callback event of changing the state of the hand.
-	 * @param bLow TRUE indicates to put down the hand, FALSE indicates to raise the hand. 
+	 * @param bLow true indicates to put down the hand, false indicates to raise the hand. 
 	 * @param userid Specify the user ID whose status changes.
 	 */
 	virtual void onLowOrRaiseHandStatusChanged(bool bLow, unsigned int userid) = 0;
@@ -354,7 +366,7 @@ public:
 	/**
 	 * @brief Callback event of changing the co-host.
 	 * @param userId Specify the user ID whose status changes. 
-	 * @param isCoHost TRUE indicates that the specified user is co-host.
+	 * @param isCoHost true indicates that the specified user is co-host.
 	 */
 	virtual void onCoHostChangeNotification(unsigned int userId, bool isCoHost) = 0;
 	
@@ -371,43 +383,43 @@ public:
 	/**
 	 * @brief Callback event that the status of local recording changes.
 	 * @param userId Specify the user ID whose status changes. 
-	 * @param status Value of recording status. For more details, see \link RecordingStatus \endlink enum.
+	 * @param status Value of recording status.
 	 */
 	virtual void onLocalRecordingStatusChanged(unsigned int user_id, RecordingStatus status) = 0;
 	
 	/**
 	 * @brief Callback event that lets participants rename themself.
-	 * @param bAllow True allow. If false, participants may not rename themselves.
+	 * @param bAllow true allow. If false, participants may not rename themselves.
 	 */
 	virtual void onAllowParticipantsRenameNotification(bool bAllow) = 0;
 	
 	/**
 	 * @brief Callback event that lets participants unmute themself.
-	 * @param bAllow True allow. If false, participants may not rename themselves.
+	 * @param bAllow true allow. If false, participants may not rename themselves.
 	 */
 	virtual void onAllowParticipantsUnmuteSelfNotification(bool bAllow) = 0;
 	
 	/**
 	 * @brief Callback event that lets participants start a video.
-	 * @param bAllow True allow. If false, disallow.
+	 * @param bAllow true allow. If false, disallow.
 	 */
 	virtual void onAllowParticipantsStartVideoNotification(bool bAllow) = 0;
 	
 	/**
 	 * @brief Callback event that lets participants share a new whiteboard.
-	 * @param bAllow True allow. If false, participants may not share new whiteboard.
+	 * @param bAllow true allow. If false, participants may not share new whiteboard.
 	 */
 	virtual void onAllowParticipantsShareWhiteBoardNotification(bool bAllow) = 0;
 	
 	/**
 	 * @brief Callback event that the request local recording privilege changes.
-	 * @param status Value of request local recording privilege status. For more details, see \link LocalRecordingRequestPrivilegeStatus \endlink enum.
+	 * @param status Value of request local recording privilege status.
 	 */
 	virtual void onRequestLocalRecordingPrivilegeChanged(LocalRecordingRequestPrivilegeStatus status) = 0;
 	
 	/**
 	 * @brief Callback event that lets participants request that the host starts cloud recording.
-	 * @param bAllow True allow. If false, disallow.
+	 * @param bAllow true allow. If false, disallow.
 	 */
 	virtual void onAllowParticipantsRequestCloudRecording(bool bAllow) = 0;
 	
@@ -419,13 +431,13 @@ public:
 	
 	/**
 	 * @brief Callback event that participant profile status change.
-	 * @param bHide true means hide participant profile picture, false means show participant profile picture. 
+	 * @param bHide true indicates hide participant profile picture, false means show participant profile picture. 
 	 */
 	virtual void onParticipantProfilePictureStatusChange(bool bHidden) = 0;
 	
 	/**
 	 * @brief Callback event that focus mode changed by host or co-host.
-	 * @param bEnabled True means the focus mode change to on. Otherwise off.
+	 * @param bEnabled true indicates the focus mode change to on. Otherwise off.
 	 */
 	virtual void onFocusModeStateChanged(bool bEnabled) = 0;
 	
@@ -443,7 +455,7 @@ public:
 	
 	/**
 	 * @brief Notification of virtual name tag status change.
-	 * @param bOn TRUE means virtual name tag is turn on, Otherwise not.
+	 * @param bOn true indicates virtual name tag is turn on, Otherwise not.
 	 * @param userID The ID of user who virtual name tag status changed.
 	 */
 	virtual void onVirtualNameTagStatusChanged(bool bOn, unsigned int userID) = 0;
@@ -471,77 +483,124 @@ public:
 
 	/**
 	 * @brief Callback event when the user's grant co-owner permission changed.
-	 * @param canGrantOther true means can grant others,otherwise not.
+	 * @param canGrantOther true indicates can grant others,otherwise not.
 	 */
 	 virtual void onGrantCoOwnerPrivilegeChanged(bool canGrantOther) = 0;
 };
 
 /**
+ * @class IUserIDListBuilder
+ * @brief User ID list builder interface. Used to construct the user ID list
+ * required by the SDK interfaces that operate on a batch of users.
+ */
+class IUserIDListBuilder
+{
+public:
+	virtual ~IUserIDListBuilder() {}
+
+	/**
+	 * @brief Adds a user ID to the list under construction.
+	 * @param userid Specifies the user ID to add.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
+	 */
+	virtual SDKError AddUser(unsigned int userid) = 0;
+
+	/**
+	 * @brief Removes a user ID from the list under construction.
+	 * @param userid Specifies the user ID to remove.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
+	 */
+	virtual SDKError RemoveUser(unsigned int userid) = 0;
+
+	/**
+	 * @brief Clears all the added user IDs.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
+	 */
+	virtual SDKError Clear() = 0;
+
+	/**
+	 * @brief Gets the user ID list under construction.
+	 * @return If the function succeeds, it returns the user ID list. Otherwise, this function fails and returns nullptr.
+	 * @note The returned object is owned by the SDK and stays valid until the next call
+	 * to GetUserIDList() or Clear() on the same builder. Do not free it.
+	 */
+	virtual IList<unsigned int>* GetUserIDList() = 0;
+};
+
+/**
  * @class IMeetingParticipantsController
- * @brief Meeting waiting room controller interface
+ * @brief Meeting waiting room controller interface.
  */
 class IMeetingParticipantsController
 {
 public:
 	/**
-	 * @brief Set the participants controller callback event handler.
+	 * @brief Sets the participants controller callback event handler.
 	 * @param pEvent A pointer to the IParticipantsControllerEvent that receives the participants event. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetEvent(IMeetingParticipantsCtrlEvent* pEvent) = 0;
 	
 	/**
-	 * @brief Get the list of all the panelists in the meeting.
-	 * @return If the function succeeds, the return value is the list of the panelists in the meeting. Otherwise the function fails, and the return value is nullptr.
+	 * @brief Gets the list of all the panelists in the meeting.
+	 * @return If the function succeeds, the return value is the list of the panelists in the meeting. Otherwise, the return value is nullptr.
 	 * @note Valid for both ZOOM style and user custom interface mode. Valid for both normal user and webinar attendee.
 	 */
 	virtual IList<unsigned int >* GetParticipantsList() = 0;
 	
 	/**
-	 * @brief Get the information of specified user.
+	 * @brief Gets the information of specified user.
 	 * @param userid Specify the user ID for which you want to get the information. 
-	 * @return If the function succeeds, the return value is a pointer to the IUserInfo. For more details, see \link IUserInfo \endlink. Otherwise the function fails, and the return value is nullptr.
+	 * @return If the function succeeds, the return value is a pointer to the IUserInfo. Otherwise, the return value is nullptr.
 	 * @note Valid for both ZOOM style and user custom interface mode. Valid for both normal user and webinar attendee.
 	 */
 	virtual IUserInfo* GetUserByUserID(unsigned int userid) = 0;
 	
 	/**
-	 * @brief Get the information of current user.
-	 * @return If the function succeeds, the return value is a pointer to the IUserInfo. For more details, see \link IUserInfo \endlink. Otherwise failed, the return value is nullptr.
+	 * @brief Gets the information of current user.
+	 * @return If the function succeeds, the return value is a pointer to the IUserInfo. Otherwise, the return value is nullptr.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual IUserInfo* GetMySelfUser() = 0;
 	
 	/**
-	 * @brief Get the information about the bot's authorized user.
+	 * @brief Gets the information about the bot's authorized user.
 	 * @param userid Specify the user ID for which to get the information. 
-	 * @return If the function succeeds, the return value is a pointer to the IUserInfo. For more details, see \link IUserInfo \endlink. Otherwise the function fails, and the return value is nullptr.
+	 * @return If the function succeeds, the return value is a pointer to the IUserInfo. Otherwise, the return value is nullptr.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual IUserInfo* GetBotAuthorizedUserInfoByUserID(unsigned int userid) = 0;
 	
 	/**
-	 * @brief Get the authorizer's bot list.
+	 * @brief Gets the authorizer's bot list.
 	 * @param userid Specify the user ID for which to get the information. 
-	 * @return If the function succeeds, the return value is the authorizer's bot list in the meeting. Otherwise the function fails, and the return value is nullptr.
+	 * @return If the function succeeds, the return value is the authorizer's bot list in the meeting. Otherwise, the return value is nullptr.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual IList<unsigned int >* GetAuthorizedBotListByUserID(unsigned int userid) = 0;
+
+	/**
+	 * @brief Requests the avatar download for a specified user.
+	 * @param userid The user's ID whose avatar the SDK requests.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
+	 * @note Valid for both ZOOM style and user custom interface mode. Valid for both normal user and webinar attendee.
+	 */
+	virtual SDKError RequestAvatarForUser(unsigned int userid) = 0;
 	
 
 #if defined(WIN32)
 	/**
-	 * @brief Get the information about the user's parent user.
+	 * @brief Gets the information about the user's parent user.
 	 * @param userid Specify the user ID for which to get the information. 
-	 * @return If the function succeeds, the return value is a pointer to the IUserInfo. For more details, see \link IUserInfo \endlink. Otherwise the function fails, and the return value is nullptr.
+	 * @return If the function succeeds, the return value is a pointer to the IUserInfo. Otherwise, the return value is nullptr.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual IUserInfo* GetCompanionParentUser(unsigned int userid) = 0;
 	
 	/**
-	 * @brief Get the user's child list.
+	 * @brief Gets the user's child list.
 	 * @param userid Specify the user ID for which to get the information. 
-	 * @return If the function succeeds, the return value is the sub-user list of user companion mode. Otherwise the function fails, and the return value is nullptr.
+	 * @return If the function succeeds, the return value is the sub-user list of user companion mode. Otherwise, the return value is nullptr.
 	 * @note Valid for both ZOOM style and user custom interface mode.
 	 */
 	virtual IList<unsigned int >* GetCompanionChildList(unsigned int userid) = 0;
@@ -551,7 +610,7 @@ public:
 	 * @brief Cancel all hands raised.
 	 * @param forWebinarAttendees is true, the SDK sends the lower all hands command only to webinar attendees.
 	 * forWebinarAttendees is false, the SDK sends the lower all hands command to anyone who is not a webinar attendee, such as the webinar host/cohost/panelist or everyone in a regular meeting.. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError LowerAllHands(bool forWebinarAttendees) = 0;
@@ -561,7 +620,7 @@ public:
 	 * @param userid Specify the user ID whose name needed to be changed. 
 	 * @param userName Specify a new screen name for the user.
 	 * @param bSaveUserName Save the screen name to join the meeting next time.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError ChangeUserName(const unsigned int userid, const zchar_t* userName, bool bSaveUserName) = 0;
@@ -569,46 +628,46 @@ public:
 	/**
 	 * @brief Cancel the hands raised of specified user.
 	 * @param userid Specify the user ID to put down the hands.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError LowerHand(unsigned int userid) = 0;
 	
 	/**
 	 * @brief Raise hands in the meeting.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError RaiseHand() = 0;
 	
 	/**
-	 * @brief Set the specified user as the host.
+	 * @brief Sets the specified user as the host.
 	 * @param userid Specify the user ID to be the host.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError MakeHost(unsigned int userid) = 0;
 	
 	/**
-	 * @brief Determine if it is able to change the specified user role as the co-host.
+	 * @brief Determines if it is able to change the specified user role as the co-host.
 	 * @param userid Specify the user ID.
-	 * @return If the specified user can be the co-host, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the specified user can be the co-host, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError CanbeCohost(unsigned int userid) = 0;
 	
 	/**
-	 * @brief Set the specified user as the co-host.
+	 * @brief Sets the specified user as the co-host.
 	 * @param userid Specify the user ID who is to be the co-host.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError AssignCoHost(unsigned int userid) = 0;
 	
 	/**
-	 * @brief Get back the co-host role from the specified user.
+	 * @brief Gets back the co-host role from the specified user.
 	 * @param userid Specify the user ID to get back the co-host.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError RevokeCoHost(unsigned int userid) = 0;
@@ -616,28 +675,28 @@ public:
 	/**
 	 * @brief Expel the specified user.
 	 * @param userid Specify the ID of user to be expelled.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError ExpelUser(unsigned int userid) = 0;
 	
 	/**
-	 * @brief Check whether myself is original host.
-	 * @return true means that myself is original host, otherwise not.
+	 * @brief Checks whether myself is original host.
+	 * @return true if the current user is the original host. Otherwise, false.
 	 */
 	virtual bool IsSelfOriginalHost() = 0;
 	
 	/**
 	 * @brief Reclaim the role of the host.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid only for Zoom style user interface mode.
 	 */
 	virtual SDKError ReclaimHost() = 0;
 	
 	/**
-	 * @brief Determine if the user has the right to reclaim the host role.
-	 * @param [out] bCanReclaimHost TRUE indicates to have the right to reclaim the host role.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Determines if the user has the right to reclaim the host role.
+	 * @param [out] bCanReclaimHost true indicates to have the right to reclaim the host role.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError CanReclaimHost(bool& bCanReclaimHost) = 0;
@@ -645,7 +704,7 @@ public:
 	/**
 	 * @brief Reclaim role of host via host_key.
 	 * @param host_key The key to get the role of host.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError ReclaimHostByHostKey(const zchar_t* host_key) = 0;
@@ -662,34 +721,34 @@ public:
 	
 	/**
 	 * @brief Allowing the regular attendees to start video, it can only be used in regular meeetings(no bo).
-	 * @param bAllow TRUE indicates Allowing the regular attendees to start video. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param bAllow true indicates Allowing the regular attendees to start video. 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError AllowParticipantsToStartVideo(bool bAllow) = 0;
 	
 	/**
-	 * @brief Check whether the current meeting allows participants to start video, it can only be used in regular meeetings(no bo).
+	 * @brief Checks whether the current meeting allows participants to start video, it can only be used in regular meeetings(no bo).
 	 * @return If allows participants to start video, the return value is true.
 	 */
 	virtual bool IsParticipantsStartVideoAllowed() = 0;
 	
 	/**
 	 * @brief Allowing the regular attendees to share whiteboard, it can only be used in regular meeetings(no bo).
-	 * @param bAllow TRUE indicates Allowing the regular attendees to share whiteboard. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param bAllow true indicates Allowing the regular attendees to share whiteboard. 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError AllowParticipantsToShareWhiteBoard(bool bAllow) = 0;
 	
 	/**
-	 * @brief Check whether the current meeting allows participants to share whiteboard, it can only be used in regular meeetings(no bo).
+	 * @brief Checks whether the current meeting allows participants to share whiteboard, it can only be used in regular meeetings(no bo).
 	 * @return If allows participants to share whiteboard, the return value is true.
 	 */
 	virtual bool IsParticipantsShareWhiteBoardAllowed() = 0;
 	
 	/**
 	 * @brief Allowing the regular attendees to use chat, it can only be used in regular meeetings(no webinar or bo).
-	 * @param bAllow TRUE indicates Allowing the regular attendees to use chat. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param bAllow true indicates Allowing the regular attendees to use chat. 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note Valid for both ZOOM style and user custom interface mode..
 	 */
 	virtual SDKError AllowParticipantsToChat(bool bAllow) = 0;
@@ -702,125 +761,124 @@ public:
 	virtual bool IsParticipantAllowedToChat() = 0;
 	
 	/**
-	 * @brief Check whether the current meeting allows participants to send local recording privilege request, it can only be used in regular meeetings(no webinar or bo).
+	 * @brief Checks whether the current meeting allows participants to send local recording privilege request, it can only be used in regular meeetings(no webinar or bo).
 	 * @return If allows participants to send request, the return value is true.
 	 */
 	virtual bool IsParticipantRequestLocalRecordingAllowed() = 0;
 	
 	/**
 	 * @brief Allowing the regular attendees to send local recording privilege request, it can only be used in regular meeetings(no bo).
-	 * @param bAllow TRUE indicates Allowing the regular attendees to send local recording privilege request. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param bAllow true indicates Allowing the regular attendees to send local recording privilege request. 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError AllowParticipantsToRequestLocalRecording(bool bAllow) = 0;
 	
 	/**
-	 * @brief Check whether the current meeting auto grant participants local recording privilege request, it can only be used in regular meeetings(no webinar or bo).
+	 * @brief Checks whether the current meeting auto grant participants local recording privilege request, it can only be used in regular meeetings(no webinar or bo).
 	 * @return If auto grant participants local recording privilege request, the return value is true.
 	 */
 	virtual bool IsAutoAllowLocalRecordingRequest() = 0;
 	
 	/**
 	 * @brief Auto grant or deny the regular attendee's local recording privilege request, it can only be used in regular meeetings(no bo).
-	 * @param bAllow TRUE indicates Auto grant or deny the regular attendee's local recording privilege request. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param bAllow true indicates Auto grant or deny the regular attendee's local recording privilege request. 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError AutoAllowLocalRecordingRequest(bool bAllow) = 0;
 	
 	/**
-	 * @brief Determine if the current user can hide participant profile pictures.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Determines if the current user can hide participant profile pictures.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError CanHideParticipantProfilePictures() = 0;
 	
 	/**
-	 * @brief Check whether the current meeting hides participant pictures.
+	 * @brief Checks whether the current meeting hides participant pictures.
 	 * @return If participants profile pictures be hidden, the return value is true.
 	 */
 	virtual bool IsParticipantProfilePicturesHidden() = 0;
 	
 	/**
 	 * @brief Hide/Show participant profile pictures.
-	 * @param bHide TRUE indicates Hide participant profile pictures. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param bHide true indicates Hide participant profile pictures. 
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError HideParticipantProfilePictures(bool bHide) = 0;
 	
 	/**
-	 * @brief Determine if the focus mode enabled or not by web portal.
-	 * @return True means focus mode enabled. Otherwise not.
+	 * @brief Determines if the focus mode enabled or not by web portal.
+	 * @return true indicates focus mode enabled. Otherwise not.
 	 */
 	virtual bool IsFocusModeEnabled() = 0;
 	
 	/**
-	 * @brief Determine if the focus mode on or off.
-	 * @return True means focus mode on. Otherwise off.
+	 * @brief Determines if the focus mode on or off.
+	 * @return true indicates focus mode on. Otherwise off.
 	 */
 	virtual bool IsFocusModeOn() = 0;
 	
 	/**
 	 * @brief Turn focus mode on or off. Focus mode on means Participants will only be able to see hosts' videos and shared content, and videos of spotlighted participants.
-	 * @param turnOn True means to turen on, false means to turn off.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @param turnOn true indicates to turen on, false means to turn off.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError TurnFocusModeOn(bool turnOn) = 0;
 	
 	/**
-	 * @brief Get focus mode share type indicating who can see the shared content which is controlled by host or co-host.
+	 * @brief Gets focus mode share type indicating who can see the shared content which is controlled by host or co-host.
 	 * @return The current focus mode share type.
 	 */
 	virtual FocusModeShareType GetFocusModeShareType() = 0;
 	
 	/**
-	 * @brief Set the focus mode type indicating who can see the shared content which is controlled by host or co-host.
+	 * @brief Sets the focus mode type indicating who can see the shared content which is controlled by host or co-host.
 	 * @param shareType The type of focus mode share type.
-	 * @return If the function succeeds, the return value is SDKErr_Success.
-	 * Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetFocusModeShareType(FocusModeShareType shareType) = 0;
 	
 	/**
-	 * @brief Determine if the current user can enable participant request clould recording.
-	 * @return true means the current user can enable participant request clould recording.
+	 * @brief Determines if the current user can enable participant request clould recording.
+	 * @return true if the current user can enable participant request cloud recording. Otherwise, false.
 	 */
 	virtual bool CanEnableParticipantRequestCloudRecording() = 0;
 	
 	/**
-	 * @brief Check whether the current meeting allows participants to send cloud recording privilege request, This can only be used in regular meeetings and webinar(no breakout rooms).
+	 * @brief Checks whether the current meeting allows participants to send cloud recording privilege request, This can only be used in regular meeetings and webinar(no breakout rooms).
 	 * @return If allows participants to send request, the return value is true.
 	 */
 	virtual bool IsParticipantRequestCloudRecordingAllowed() = 0;
 	
 	/**
 	 * @brief Toggle whether attendees can requests for the host to start a cloud recording. This can only be used in regular meeetings and webinar(no breakout rooms).
-	 * @param bAllow TRUE indicates that participants are allowed to send cloud recording privilege requests.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @param bAllow true indicates that participants are allowed to send cloud recording privilege requests.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError AllowParticipantsToRequestCloudRecording(bool bAllow) = 0;
 	
 	/**
-	 * @brief Determine if support virtual name tag feature.
-	 * @return TRUE means supports the virtual name tag feature. NO means not.
+	 * @brief Determines if support virtual name tag feature.
+	 * @return true if supports the virtual name tag feature. Otherwise, false.
 	 */
 	virtual bool IsSupportVirtualNameTag() = 0;
 	
 	/**
-	 * @brief Enable the virtual name tag feature for the account.
-	 * @param bEnabled TRUE means enabled, Otherwise not.
-	 * @return If the function succeeds, it return SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Enables the virtual name tag feature for the account.
+	 * @param bEnabled true indicates enabled, Otherwise not.
+	 * @return If the function succeeds, it return SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EnableVirtualNameTag(bool bEnabled) = 0;
 	
 	/**
 	 * @brief Prepare to Update virtual name tag roster infomation.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note If the function succeeds, all the created virtual name tag roster will be removed.
 	 */
 	virtual SDKError CreateVirtualNameTagRosterInfoBegin() = 0;
 	
 	/**
 	 * @brief Add the userRoster to a prepared list.
-	 * @param userRoster, The virtual name tag roster info list for specify user. For more details, see \link ZoomSDKVirtualNameTag \endlink structure.
+	 * @param userRoster, The virtual name tag roster info list for specify user.
 	 * @return true if the userRoster is added to the prepared list successfully.
 	 * @note The maximum size of userRoster should less 20. User should sepcify the tagName and tagID of echo ZoomSDKVirtualNameTag object. The range of tagID is 0-1024.
 	 */
@@ -828,7 +886,7 @@ public:
 	
 	/**
 	 * @brief Batch create virtual name tag roster infoTo according to the prepare list.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise failed. To get extended error information, see \link SDKError \endlink enum
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note CreateVirtualNameTagRosterInfoBegin() must be called before this function is called. Otherwise SDKErr_WRONG_USAGE will be returned.
 	 */
 	virtual SDKError CreateVirtualNameTagRosterInfoCommit() = 0;
@@ -836,7 +894,7 @@ public:
 	/**
 	 * @brief Query if the user can be assigned as co-owner in meeting. Co-owner can be grant with privilege to manage some assets after the meeting.
 	 * @param userid The ID of user who will be assigned as co-owner in meeting.
-	 * @return true means that the user can be assigned as co-owner. Otherwise cannot.
+	 * @return true if the user can be assigned as co-owner. Otherwise, false.
 	 */
 	 virtual bool CanBeCoOwner(unsigned int userid) = 0;
 
@@ -844,7 +902,7 @@ public:
 	  * @brief Assigns a user as co-host and grants privileges to manage assets after the meeting.
 	  * @param userid The ID of user to be assigned as co-host.
 	  * @param list A List of \link GrantCoOwnerAssetsInfo \endlink struct representing the assets and privileges to grant.
-	  * @return If the function succeeds, it will return SDKERR_SUCCESS. Otherwise failed. For more information, see the \link SDKError \endlink enum.
+	  * @return If the function succeeds, it will return SDKERR_SUCCESS. Otherwise, this function returns an error.
 	  * @note The co-host cannot be assigned as co-host by himself. And the user should have the power to assign the role.
 	  */
 	 virtual SDKError AssignCoHostWithAssetsPrivilege(unsigned int userid, IList<GrantCoOwnerAssetsInfo>* list) = 0;
@@ -853,11 +911,17 @@ public:
 	  * @brief Assigns a user as host and grants privileges to manage assets after the meeting.
 	  * @param userid The ID of user to be assigned as host.
 	  * @param list A List of \link GrantCoOwnerAssetsInfo \endlink struct representing the assets and privileges to grant.
-	  * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise failed. For detailed error codes, see the \link SDKError \endlink enum.
+	  * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	  * @note The host cannot be assigned as host by himself. And the user should have the power to assign the role.
 	  */
-	 virtual SDKError MakeHostWithAssetsPrivilege(unsigned int userid, IList<GrantCoOwnerAssetsInfo>* list) = 0; 
+	 virtual SDKError MakeHostWithAssetsPrivilege(unsigned int userid, IList<GrantCoOwnerAssetsInfo>* list) = 0;
 
+	/**
+	 * @brief Gets the user ID list builder which can help construct a user ID list.
+	 * @return If the function succeeds, it returns the builder. Otherwise, this function fails and returns nullptr.
+	 * @note The builder is owned by the SDK. Call IUserIDListBuilder::Clear() before reuse.
+	 */
+	virtual IUserIDListBuilder* GetUserIDListBuilder() = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

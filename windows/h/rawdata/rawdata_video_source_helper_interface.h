@@ -1,3 +1,8 @@
+/**
+ * @file rawdata_video_source_helper_interface.h
+ * @brief Raw Data Video Source Helper Interface.
+ */
+ 
 #ifndef _RAWDATA_VIDEO_SOURCE_HELPER_INTERFACE_H_
 #define _RAWDATA_VIDEO_SOURCE_HELPER_INTERFACE_H_
 #include "zoom_sdk_def.h"
@@ -17,7 +22,7 @@ class IZoomSDKVideoSender
 {
 public:
 	virtual ~IZoomSDKVideoSender(){}
-	virtual SDKError sendVideoFrame(char* frameBuffer, int width, int height, int frameLength, int rotation, FrameDataFormat format = FrameDataFormat_I420_FULL) = 0;
+	virtual SDKError sendVideoFrame(char* frameBuffer, int width, int height, int frameLength, int rotation) = 0;
 };
 
 struct VideoSourceCapability
@@ -76,14 +81,14 @@ class IZoomSDKVideoSourceHelper
 public:
 	virtual ~IZoomSDKVideoSourceHelper(){}
 	/**
-	 * @brief Set a PreProcessor to edit the zoom camera video source before send to other.
+	 * @brief Sets a PreProcessor to edit the zoom camera video source before send to other.
 	 */
     virtual SDKError setPreProcessor(IZoomSDKPreProcessor* processor) = 0;		
 	
 	/**
-	 * @brief Set external video source for capture video by self.
+	 * @brief Sets external video source for capture video by self.
 	 */
-    virtual SDKError setExternalVideoSource(IZoomSDKVideoSource* source) = 0;  
+	virtual SDKError setExternalVideoSource(IZoomSDKVideoSource* source, FrameDataFormat format) = 0;
 };
 END_ZOOM_SDK_NAMESPACE
 #endif

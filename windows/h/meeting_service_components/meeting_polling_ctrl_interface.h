@@ -9,7 +9,7 @@
 BEGIN_ZOOM_SDK_NAMESPACE
 
 /**
- * @brief Status of polling.
+ * @brief Enumeration of polling status.
  */
 typedef enum
 {
@@ -24,7 +24,7 @@ typedef enum
 }SDKPollingStatus;
 
 /**
- * @brief Type of polling.
+ * @brief Enumeration of polling type.
  */
 typedef enum
 {
@@ -34,7 +34,7 @@ typedef enum
 }SDKPollingType;
 
 /**
- * @brief Type of polling question.
+ * @brief Enumeration of polling question type.
  */
 typedef enum
 {
@@ -52,7 +52,7 @@ typedef enum
 
 
 /**
- * @brief Type of polling action.
+ * @brief Enumeration of polling action type.
  */
 typedef enum
 {
@@ -142,7 +142,7 @@ public:
 	/**
 	 * @brief Polling status changed callback. Use this function to inform the user that the polling has been started, share result or stopped.
 	 * @param pollingID Specify the status changed poll's ID.
-	 * @param status Specify current polling status. For more details, see \link SDKPollingStatus \endlink enum.
+	 * @param status Specify current polling status.
 	 */
 	virtual void onPollingStatusChanged(const zchar_t* pollingID, SDKPollingStatus status) = 0;
 	/**
@@ -156,7 +156,7 @@ public:
 	virtual void onPollingListUpdated() = 0;
 	/**
 	 * @brief Polling action result callback. This is triggered when a user perform an action for a poll.
-	 * @param actionType Specify the action type. For more details, see \link SDKPollingActionType \endlink enum.
+	 * @param actionType Specify the action type.
 	 * @param pollingID Specify the action poll's ID.
 	 * @param bSuccess Specify whether the action succeeds.
 	 * @param errorMsg Specify the error message when the action fails. It is only for  SDKPollingActionType_Error.
@@ -196,8 +196,8 @@ class IMeetingPollingController
 public:
 	/**
 	 * @brief Configure the meeting polling controller callback event handler.
-	 * @param pEvent An object pointer to the IMeetingPollingCtrlEvent that receives the meeting polling callback event. For more details, see \link IMeetingPollingCtrlEvent \endlink.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @param pEvent An object pointer to the IMeetingPollingCtrlEvent that receives the meeting polling callback event.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 * @note The SDK use pEvent to transmit the callback event to the user's application. If the function is not called or fails, the user's application is unable to retrieve the callback event.
 	 */
 	virtual SDKError SetEvent(IMeetingPollingCtrlEvent* pEvent) = 0;
@@ -207,68 +207,68 @@ public:
 	 */
 	 
 	/**
-	 * @brief Determine whether the current meeting can do the polling.
-	 * @return True indicates you can do polling.
+	 * @brief Determines whether the current meeting can do the polling.
+	 * @return true indicates you can do polling.
 	 */
 	virtual bool CanDoPolling() = 0;
 	/**
-	 * @brief Get the active poll's ID.
+	 * @brief Gets the active poll's ID.
 	 * @return The shared result or started poll's ID.
 	 */
 	virtual const zchar_t* GetActivePollingID() = 0;
 	/**
-	 * @brief Get the list of poll's question.
+	 * @brief Gets the list of poll's question.
 	 * @param pollingID Specify the question's polling ID. 
 	 * @return If the function succeeds, the return value is a pointer to the IList<IPollingQuestionItem*>. Otherwise, the return value is nullptr.
 	 */
 	virtual IList<IPollingQuestionItem*>* GetPollingQuestionItemList(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Determine if the right answer item list can be allowed to get.
+	 * @brief Determines if the right answer item list can be allowed to get.
 	 * @param pollingID Specify the right answer's polling ID. 
 	 */
 	virtual bool CanGetRightAnswerItemList(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Get the list of polling question or subquestion's right answer.
+	 * @brief Gets the list of polling question or subquestion's right answer.
 	 * @param pollingID Specify the right answer's polling ID. 
-	 * @return If the function succeeds, the return value is a pointer to the IList<IPollingAnswerItem*>, Otherwise, the return value is nullptr.
+	 * @return If the function succeeds, it returns a pointer to the IList<IPollingAnswerItem*>, Otherwise, the return value is nullptr. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual IList<IPollingAnswerItem*>* GetPollingRightAnswerItemList(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Determine if the answer result list can be show.
+	 * @brief Determines if the answer result list can be show.
 	 * @param pollingID Specify the answer result's polling ID. 
 	 */
 	virtual bool CanShowAnswerResultList(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Get the list of polling answer result item.
+	 * @brief Gets the list of polling answer result item.
 	 * @param pollingID Specify the answer result's polling ID. 
 	 * @return If the function succeeds, the return value is a pointer to the IList<IPollingAnswerResultItem*>. Otherwise, the return value is nullptr.
 	 */
 	virtual IList<IPollingAnswerResultItem*>* GetPollingAnswerResultItemList(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Get the polling item object of specified polling ID.
+	 * @brief Gets the polling item object of specified polling ID.
 	 * @param pollingID Specify the polling ID where you want to get the information. 
-	 * @return If the function succeeds, the return value is a pointer to the IPollingItem, Otherwise the function fails, and the return value is nullptr.
+	 * @return If the function succeeds, it returns a pointer to the IPollingItem. Otherwise, this function fails and returns nullptr.
 	 */
 	virtual IPollingItem* GetPollingItemByID(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Get the polling question's image path.
+	 * @brief Gets the polling question's image path.
 	 * @param pollingID Specify the answer's polling ID. 
 	 * @param questionID Specify the answer's question ID. 
-	 * @return If the function succeeds, the return value is the question's image path. Otherwise the function fails, and the return value is nullptr.
+	 * @return If the function succeeds, the return value is the question's image path. Otherwise, the return value is nullptr.
 	 */
 	virtual const zchar_t* GetPollingQuestionImagePath(const zchar_t* pollingID, const zchar_t* questionID) = 0;
 	/**
-	 * @brief Get the polling question's minimum character and maximum character count.
+	 * @brief Gets the polling question's minimum character and maximum character count.
 	 * @param pollingID Specify the question's polling ID. 
 	 * @param pollingID Specify the question's question ID. 
 	 * @param minLen Specify the minimum number of words to submit. 
 	 * @param maxLen Specify the maximum number of words to submit. 
 	 * @note This function can only be used by short answer question and long answer question. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError GetQuestionCharactersLengthRange(const zchar_t* pollingID, const zchar_t* questionID, unsigned int& minLen, unsigned int& maxLen) = 0;
 	/**
-	 * @brief Determine if the question is case sensitive.
+	 * @brief Determines if the question is case sensitive.
 	 * @param pollingID Specify the question's polling ID. 
 	 * @param questionID Specify the question's question ID.  
 	 * @note This function can only be used by fill blank questions. 
@@ -280,17 +280,17 @@ public:
 	 */
 	
 	/**
-	 * @brief Determine if the host can add polling.
+	 * @brief Determines if the host can add polling.
 	 * @note Only the origin host can add polling. 
 	 */
 	virtual bool CanAddPolling() = 0;
 	/**
 	 * @brief Open create polling in a web browser.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError AddPolling() = 0;
 	/**
-	 * @brief Determine if the host can edit polling.
+	 * @brief Determines if the host can edit polling.
 	 * @param pollingID Specify the edit poll's polling ID. 
 	 * @note Only the origin host can edit polling.
 	 */
@@ -298,11 +298,11 @@ public:
 	/**
 	 * @brief Open edit polling in a web browser.
 	 * @param pollingID Specify the edit poll's polling ID. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EditPolling(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Determine if the host can delete polling.
+	 * @brief Determines if the host can delete polling.
 	 * @param pollingID Specify the delete poll's polling ID. 
 	 * @note Only the origin host can delete polling. 
 	 */
@@ -310,11 +310,11 @@ public:
 	/**
 	 * @brief Delete the polling.
 	 * @param pollingID Specify the delete poll's polling ID. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DeletePolling(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Determine if the host can duplicate polling.
+	 * @brief Determines if the host can duplicate polling.
 	 * @param pollingID Specify the duplicate poll's polling ID. 
 	 * @note Only the origin host can duplicate polling. 
 	 */
@@ -322,11 +322,11 @@ public:
 	/**
 	 * @brief Duplicate the polling.
 	 * @param pollingID Specify the duplicate poll's polling ID. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DuplicatePolling(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Determine if the user can view polling results in the browser.
+	 * @brief Determines if the user can view polling results in the browser.
 	 * @param pollingID Specify the poll's polling ID. 
 	 * @note Only the origin host can view. 
 	 */
@@ -337,69 +337,69 @@ public:
 	 */
 	virtual SDKError ViewPollingResultFromBrowser(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Get the list of poll item. 
+	 * @brief Gets the list of poll item. 
 	 * @return If the function succeeds, the return value is a pointer to the IList<IPollingItem*>. Otherwise, the return value is nullptr.
 	 */
 	virtual IList<IPollingItem*>* GetPollingItemList() = 0;
 	/**
-	 * @brief Determine if the host or co-host can start the polling.
+	 * @brief Determines if the host or co-host can start the polling.
 	 * @param pollingID Specify the poll's polling ID. 
 	 */
 	virtual bool CanStartPolling(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Start the polling.
+	 * @brief Starts the polling.
 	 * @param pollingID Specify the poll's polling ID. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StartPolling(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Stop the polling.
+	 * @brief Stops the polling.
 	 * @param pollingID Specify the poll's polling ID. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StopPolling(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Determine if the host or co-host can restart the polling.
+	 * @brief Determines if the host or co-host can restart the polling.
 	 * @param pollingID Specify the poll's polling ID. 
 	 */
 	virtual bool CanRestartPolling(const zchar_t* pollingID) = 0;
 	/**
 	 * @brief Restart the polling.
 	 * @param pollingID Specify the poll's polling ID. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError RestartPolling(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Determine if the host or co-host can share the poll's result.
+	 * @brief Determines if the host or co-host can share the poll's result.
 	 * @param pollingID Specify the poll's polling ID. 
 	 */
 	virtual bool CanSharePollingResult(const zchar_t* pollingID) = 0;
 	/**
 	 * @brief Share the poll's result.
 	 * @param pollingID Specify the poll's polling ID. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StartSharePollingResult(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Stop the poll's result.
+	 * @brief Stops the poll's result.
 	 * @param pollingID Specify the poll's polling ID. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError StopSharePollingResult(const zchar_t* pollingID) = 0;
 	/**
-	 * @brief Set to enable show right answer to participants when share quiz's result. 
-	 * @param bEnable TRUE indicates to enable. FALSE not.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @brief Sets to enable show right answer to participants when share quiz's result. 
+	 * @param bEnable true indicates to enable. false not.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError EnableGetRightAnswerList(bool bEnable) = 0;
 	/**
-	 * @brief Determine if the host can download poll's result from browser.
+	 * @brief Determines if the host can download poll's result from browser.
 	 * @note Only the origin host can download. 
 	 */
 	virtual bool CanDownloadResult() = 0;
 	/**
 	 * @brief Download all stopped poll's result from browser.
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError DownLoadResult() = 0;
 
@@ -409,29 +409,29 @@ public:
 	 
 	/**
 	 * @brief Attendee set answer's check.
-	 * @param answerItem Specify the answer item to set. To get extended information, see \link IPollingAnswerItem \endlink enum.
+	 * @param answerItem Specify the answer item to set.
 	 * @param bCheck Specify you want to select the answer or not. 
 	 * @note This function should only be used by single, matching, rank order, multi, rating scale or drop down questions. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetAnswerCheck(IPollingAnswerItem* answerItem, bool bCheck) = 0;
 	/**
 	 * @brief Attendee set answer's content.
-	 * @param answerItem Specify the answer item to set. To get extended information, see \link IPollingAnswerItem \endlink enum.
+	 * @param answerItem Specify the answer item to set.
 	 * @param answerText Specify you want to reply answer's content. 
 	 * @note This function should only be used by fill blank, short answer or long answer questions. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SetAnswerContent(IPollingAnswerItem* answerItem, const zchar_t* answerText) = 0;
 	/**
-	 * @brief Determine if the attendee can submit the polling.
+	 * @brief Determines if the attendee can submit the polling.
 	 * @param pollingID Specify the submit poll's polling ID. 
 	 */
 	virtual bool CanSubmitPolling(const zchar_t* pollingID) = 0;
 	/**
 	 * @brief Submit the polling.
 	 * @param pollingID Specify the submit poll's polling ID. 
-	 * @return If the function succeeds, the return value is SDKErr_Success. Otherwise the function fails. To get extended error information, see \link SDKError \endlink enum.
+	 * @return If the function succeeds, the return value is SDKERR_SUCCESS. Otherwise, this function returns an error.
 	 */
 	virtual SDKError SubmitPolling(const zchar_t* pollingID) = 0;
 };
